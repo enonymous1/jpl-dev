@@ -1,4 +1,159 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Local storage key for the checklist data
+    const STORAGE_KEY = 'gsa_mas_checklist_data';
+    
+    // Load saved data from local storage
+    function loadChecklistData() {
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        return savedData ? JSON.parse(savedData) : {};
+    }
+    
+    // Save data to local storage
+    function saveChecklistData(data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        showSaveIndicator();
+    }
+    
+    // Show save indicator
+    function showSaveIndicator() {
+        const indicator = document.getElementById('save-indicator');
+        if (indicator) {
+            indicator.style.display = 'block';
+            indicator.textContent = 'Saved ✓';
+            indicator.className = 'save-indicator saved';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
+        }
+    }
+    
+    // Get current checklist state
+    function getCurrentState() {
+        const state = {
+            formData: {},
+            checkboxes: {},
+            notes: {}
+        };
+        
+        // Save form data
+        const formElements = document.querySelectorAll('#offer-form input, #offer-form select');
+        formElements.forEach(element => {
+            state.formData[element.id] = element.value;
+        });
+        
+        // Save checkbox states
+        const checkboxes = document.querySelectorAll('.checklist-card-header input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            state.checkboxes[checkbox.id] = checkbox.checked;
+        });
+        
+        // Save notes from Quill editors
+        Object.keys(quillInstances).forEach(editorId => {
+            const quill = quillInstances[editorId];
+            state.notes[editorId] = quill.getContents();
+        });
+        
+        return state;
+    }
+    
+    // Load saved state
+    function loadSavedState() {
+        const savedState = loadChecklistData();
+        
+        // Load form data
+        if (savedState.formData) {
+            Object.keys(savedState.formData).forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.value = savedState.formData[id];
+                    // Trigger change event for button groups
+                    if (element.type === 'hidden' && element.id === 'commodity_type') {
+                        const btnGroup = document.getElementById('commodity_type_group');
+                        const buttons = btnGroup.querySelectorAll('.btn');
+                        buttons.forEach(btn => {
+                            btn.classList.remove('active');
+                            if (btn.textContent === savedState.formData[id]) {
+                                btn.classList.add('active');
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        
+        // Load checkbox states
+        if (savedState.checkboxes) {
+            Object.keys(savedState.checkboxes).forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox) {
+                    checkbox.checked = savedState.checkboxes[id];
+                    updateModalStatus(checkbox);
+                }
+            });
+        }
+        
+        // Load notes (will be loaded when modals open)
+        return savedState;
+    }
+    
+    // Auto-save functionality
+    function setupAutoSave() {
+        // Save on form input changes
+        const formElements = document.querySelectorAll('#offer-form input, #offer-form select');
+        formElements.forEach(element => {
+            element.addEventListener('input', () => {
+                saveChecklistData(getCurrentState());
+            });
+        });
+        
+        // Save on checkbox changes
+        const checkboxes = document.querySelectorAll('.checklist-card-header input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                saveChecklistData(getCurrentState());
+            });
+        });
+    }
+    
+    // Export/Import functionality
+    function exportData() {
+        const data = getCurrentState();
+        const dataStr = JSON.stringify(data, null, 2);
+        const dataBlob = new Blob([dataStr], {type: 'application/json'});
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'gsa_mas_checklist_backup.json';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+    
+    function importData(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(importedData));
+                    location.reload(); // Reload to apply imported data
+                } catch (error) {
+                    alert('Error importing data: Invalid file format');
+                }
+            };
+            reader.readAsText(file);
+        }
+    }
+    
+    function clearData() {
+        if (confirm('Are you sure you want to clear all saved data? This action cannot be undone.')) {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
+    }
+
     // Commodity type button group logic
     var btnGroup = document.getElementById('commodity_type_group');
     var hiddenInput = document.getElementById('commodity_type');
@@ -16,6 +171,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Update the hidden input value
             hiddenInput.value = e.target.textContent;
+            
+            // Auto-save
+            saveChecklistData(getCurrentState());
         }
     });
 
@@ -24,6 +182,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const modals = document.querySelectorAll('.modal');
     const closeButtons = document.querySelectorAll('.close-button');
     const checkboxes = document.querySelectorAll('.checklist-card-header input[type="checkbox"]');
+
+    // Progress tracking
+    function updateProgress() {
+        const checkboxes = document.querySelectorAll('.checklist-card-header input[type="checkbox"]');
+        const totalCount = checkboxes.length;
+        const completedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+        const percentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+        
+        const progressCount = document.getElementById('progress-count');
+        const totalCountElement = document.getElementById('total-count');
+        const progressFill = document.getElementById('progress-fill');
+        
+        if (progressCount) progressCount.textContent = completedCount;
+        if (totalCountElement) totalCountElement.textContent = totalCount;
+        if (progressFill) progressFill.style.width = `${percentage}%`;
+    }
 
     function updateModalStatus(checkbox) {
         const line_number = checkbox.id.split('-')[1];
@@ -37,6 +211,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 status_span.className = 'modal-status incomplete';
             }
         }
+        // Update progress whenever checkbox state changes
+        updateProgress();
     }
 
     checklistItems.forEach(item => {
@@ -73,6 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize Quill editor on modal open
     const quillInstances = {};
+    const savedState = loadSavedState();
     
     checklistItems.forEach(item => {
         item.addEventListener('click', (e) => {
@@ -97,7 +274,34 @@ document.addEventListener('DOMContentLoaded', function() {
                         ]
                     }
                 });
+                
+                // Load saved content if available
+                if (savedState.notes && savedState.notes[editorDiv.id]) {
+                    quillInstances[editorDiv.id].setContents(savedState.notes[editorDiv.id]);
+                }
+                
+                // Auto-save on content change
+                quillInstances[editorDiv.id].on('text-change', function() {
+                    saveChecklistData(getCurrentState());
+                });
             }
         });
     });
+    
+    // Setup auto-save
+    setupAutoSave();
+    
+    // Initialize progress display
+    updateProgress();
+    
+    // Add event listeners for export/import buttons
+    const exportBtn = document.getElementById('export-btn');
+    const importBtn = document.getElementById('import-btn');
+    const importFile = document.getElementById('import-file');
+    const clearBtn = document.getElementById('clear-btn');
+    
+    if (exportBtn) exportBtn.addEventListener('click', exportData);
+    if (importBtn) importBtn.addEventListener('click', () => importFile.click());
+    if (importFile) importFile.addEventListener('change', importData);
+    if (clearBtn) clearBtn.addEventListener('click', clearData);
 });

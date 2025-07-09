@@ -13,7 +13,7 @@
     </div>
 
     <div class="card">
-        <form>
+        <form id="offer-form">
             <h3>Offer Details</h3>
             <div class="form-row">
                 <div class="form-group">
@@ -47,6 +47,15 @@
                 </div>
             </div>
         </form>
+        <div class="save-controls">
+            <div id="save-indicator" class="save-indicator" style="display: none;"></div>
+            <div class="control-buttons">
+                <button id="export-btn" class="btn btn-secondary">Export Data</button>
+                <button id="import-btn" class="btn btn-secondary">Import Data</button>
+                <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
+                <input type="file" id="import-file" accept=".json" style="display: none;">
+            </div>
+        </div>
         <div class="file-links">
             <hr>
             <h4>Checklist Resources</h4>
@@ -57,6 +66,14 @@
 
     <div class="card">
         <h3>Offer Review Checklist</h3>
+        <div class="progress-summary">
+            <div class="progress-text">
+                <span id="progress-count">0</span> of <span id="total-count">0</span> items completed
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
         <div class="checklist">
             {% for section in sections %}
                 <h2 class="checklist-section-header">{{ section.name }}</h2>
