@@ -5,7 +5,8 @@
     <link rel="stylesheet" href="../../static/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<!-- Quill 2.0 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 
 </head>
 <body>
@@ -28,6 +29,18 @@
     <div class="project-header">
         <h1>Interactive GSA New Offer Checklist</h1>
         <h2>Navigate the GSA MAS proposal requirements with ease.</h2>
+    </div>
+
+    <div class="save-controls">
+        <div class="save-controls-row">
+            <div class="control-buttons">
+                <button id="export-btn" class="btn btn-secondary">Export Data</button>
+                <button id="import-btn" class="btn btn-secondary">Import Data</button>
+                <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
+                <input type="file" id="import-file" accept=".json" style="display: none;">
+            </div>
+            <div id="save-indicator" class="save-indicator"></div>
+        </div>
     </div>
 
     <div class="card">
@@ -65,17 +78,6 @@
                 </div>
             </div>
         </form>
-        <div class="save-controls">
-            <div class="save-controls-row">
-                <div class="control-buttons">
-                    <button id="export-btn" class="btn btn-secondary">Export Data</button>
-                    <button id="import-btn" class="btn btn-secondary">Import Data</button>
-                    <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
-                    <input type="file" id="import-file" accept=".json" style="display: none;">
-                </div>
-                <div id="save-indicator" class="save-indicator"></div>
-            </div>
-        </div>
         <div class="file-links">
             <hr>
             <h4>Checklist Resources</h4>
@@ -85,27 +87,28 @@
     </div>
 
     <div class="card">
-        <h3>Offer Review Checklist</h3>
-        <div class="progress-summary">
-            <div class="progress-text">
-                <span id="progress-count">0</span> of <span id="total-count">0</span> items completed
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
-        </div>
-        <div class="section-progress">
-            <h4>Section Progress</h4>
-            <div id="section-progress-list">
-                <!-- Section progress items will be dynamically generated -->
+        <div class="checklist-header">
+            <h3>Offer Review Checklist</h3>
+            <div class="progress-indicator-compact" id="progress-indicator-compact">
+                <div class="progress-text-compact">
+                    <span id="progress-count">0</span>/<span id="total-count">0</span>
+                </div>
+                <div class="progress-bar-compact">
+                    <div class="progress-fill-compact" id="progress-fill"></div>
+                </div>
             </div>
         </div>
         <div class="checklist">
             
-                <h2 class="checklist-section-header" data-section="Preliminary Review">
-                    Preliminary Review
-                    <span class="section-badge" id="badge-0">0/0</span>
-                </h2>
+                <div class="section-container" data-section="Preliminary Review">
+                    <h2 class="checklist-section-header accordion-header" data-section="Preliminary Review" data-section-index="0">
+                        <span class="section-title">Preliminary Review</span>
+                        <div class="section-header-right">
+                            <span class="section-badge" id="badge-0">0/0</span>
+                            <span class="accordion-toggle">▼</span>
+                        </div>
+                    </h2>
+                    <div class="section-content expanded" id="section-0">
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -120,7 +123,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (c)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-1">
                                 <small><strong>Content:</strong> (c) Offers must be current, accurate, and complete, and demonstrate a thorough understanding of solicitation requirements. By submission of an...</small>
                             </div>
                             
@@ -154,8 +157,37 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-1" class="note-editor" data-item-id="1"></div>
+                            <button id="save-note-1" class="save-notes-btn" data-item-id="1">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-1" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 1</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (c)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(c) Offers must be current, accurate, and complete, and demonstrate a thorough understanding of solicitation requirements. By submission of an offer:<br>
+(1) The offeror has not taken exceptions to the terms and conditions of this solicitation unless explicitly identified in eOffer (see "Exceptions to Terms and Conditions" under the Standard Response module).<br>
+(2) The offeror understands and agrees to comply with the requirements of all clauses and provisions. Failure to comply with applicable clauses and provisions will result in rejection of the offer. Offerors are responsible for ensuring that their offers meet ALL solicitation requirements and should not assume that deficient items will be clarified prior to the offer being rejected.<br>
+(3) The offeror understands and agrees to comply with the requirements of GSAR clause, 552.238-80 Industrial Funding Fee and Sales Reporting OR GSAR clause 552.238-80, Industrial Funding Fee and Sales Reporting (Alternate I) if participating in Transactional Data Reporting (TDR) (see paragraph (f) below for more information on TDR).</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -170,7 +202,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(d) (1-4)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-2">
                                 <small><strong>Content:</strong> (d) Existing Federal Supply Schedule (FSS) Program contractors and any small business who does not have its own FSS program contract but is...</small>
                             </div>
                             
@@ -207,8 +239,38 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-2" class="note-editor" data-item-id="2"></div>
+                            <button id="save-note-2" class="save-notes-btn" data-item-id="2">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-2" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 2</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(d) (1-4)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(d) Existing Federal Supply Schedule (FSS) Program contractors and any small business who does not have its own FSS program contract but is performing under an active FSS program joint venture contract as a joint venture partner may submit a streamlined offer if the following criteria are met:<br>
+(1) The offeror is requesting award of Special Item Number(s) (SIN(s)) under the same subcategory as its current FSS program contract(s);<br>
+(2) The offeror is not requesting award of any new labor categories under a services SIN;<br>
+(3) The offeror is not requesting award of any new SINs that would change the predominant contract type of the FSS program contract (i.e., supply to service or service to supply); and<br>
+(4) The offeror held an FSS program contract that was not canceled for cause, non-compliance, or convenience of the Government due to the contractor's non-performance.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -223,7 +285,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(e)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-3">
                                 <small><strong>Content:</strong> (e) A current FSS contractor can submit an offer for a continuous contract beginning on the first day of the month following the month in which...</small>
                             </div>
                             
@@ -254,8 +316,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-3" class="note-editor" data-item-id="3"></div>
+                            <button id="save-note-3" class="save-notes-btn" data-item-id="3">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-3" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 3</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(e)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(e) A current FSS contractor can submit an offer for a continuous contract beginning on the first day of the month following the month in which the FSS contractor's current contract expires. However, the offeror must satisfy the eligibility criteria in paragraph (d) above. Additionally, the offeror must be in good standing (i.e., current on reporting requirements and Industrial Funding Fee (IFF) payments) on its current FSS program contract. Continuous contracts will be awarded for the full ordering period.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -282,8 +370,12 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-4" class="note-editor" data-item-id="4"></div>
+                            <button id="save-note-4" class="save-notes-btn" data-item-id="4">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -298,7 +390,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(i)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-5">
                                 <small><strong>Content:</strong> (i) Rejection of Offer. If GSA previously rejected an offeror&#39;s offer, GSA will not consider a new offer from the same offeror for award of the...</small>
                             </div>
                             
@@ -329,14 +421,47 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-5" class="note-editor" data-item-id="5"></div>
+                            <button id="save-note-5" class="save-notes-btn" data-item-id="5">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-5" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 5</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(i)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(i) Rejection of Offer. If GSA previously rejected an offeror's offer, GSA will not consider a new offer from the same offeror for award of the same SIN(s) unless the offeror submits a point-by-point response to GSA's rejection letter with its new offer. The new offer must also address all deficiencies noted in the previous rejection letter. The point-by-point response must be submitted as a separate document and uploaded to eOffer. See "Rejection of Offer" under the Standard Response module for more information.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
+                    </div>
+                </div>
             
-                <h2 class="checklist-section-header" data-section="Administrative Proposal">
-                    Administrative Proposal
-                    <span class="section-badge" id="badge-1">0/0</span>
-                </h2>
+                <div class="section-container" data-section="Administrative Proposal">
+                    <h2 class="checklist-section-header accordion-header" data-section="Administrative Proposal" data-section-index="1">
+                        <span class="section-title">Administrative Proposal</span>
+                        <div class="section-header-right">
+                            <span class="section-badge" id="badge-1">0/0</span>
+                            <span class="accordion-toggle">▼</span>
+                        </div>
+                    </h2>
+                    <div class="section-content" id="section-1">
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -351,7 +476,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (i.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-6">
                                 <small><strong>Content:</strong> (j) (1) (i.) Pathway to Success. The offeror must acknowledge that it has downloaded and completed the Pathway to Success training within the past...</small>
                             </div>
                             
@@ -382,8 +507,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-6" class="note-editor" data-item-id="6"></div>
+                            <button id="save-note-6" class="save-notes-btn" data-item-id="6">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-6" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 6</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (i.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (i.) Pathway to Success. The offeror must acknowledge that it has downloaded and completed the Pathway to Success training within the past 12 months. The Pathway to Success training is available at GSA.gov/PathwaytoSuccess. This training covers the fundamental concepts of the FSS program and the GSA Advantage!® online catalog. Completion of this training is required for all new FSS contractors and is strongly recommended for existing FSS contractors submitting offers for additional SINs.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -398,7 +549,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-7">
                                 <small><strong>Content:</strong> (j) (1) (ii.) Readiness Assessment. The offeror must acknowledge that it has downloaded and completed the Readiness Assessment within the past 12...</small>
                             </div>
                             
@@ -429,8 +580,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-7" class="note-editor" data-item-id="7"></div>
+                            <button id="save-note-7" class="save-notes-btn" data-item-id="7">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-7" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 7</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (ii.) Readiness Assessment. The offeror must acknowledge that it has downloaded and completed the Readiness Assessment within the past 12 months. The Readiness Assessment is available at GSA.gov/ReadinessAssessment. This assessment helps offerors determine their readiness to compete for and manage an FSS contract.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -445,7 +622,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-8">
                                 <small><strong>Content:</strong> (j) (1) (iii.) System for Award Management (SAM) Registration. The offeror must have a current, accurate, and complete SAM registration that...</small>
                             </div>
                             
@@ -482,8 +659,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-8" class="note-editor" data-item-id="8"></div>
+                            <button id="save-note-8" class="save-notes-btn" data-item-id="8">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-8" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 8</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (iii.) System for Award Management (SAM) Registration. The offeror must have a current, accurate, and complete SAM registration that reflects the North American Industrial Classification System (NAICS) code(s) for this solicitation and the products/services proposed. The offeror must maintain an active SAM registration throughout the life of any contract awarded as a result of this solicitation.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -498,7 +701,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iv.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-9">
                                 <small><strong>Content:</strong> (j) (1) (iv.) Previous Contract Performance. If an offeror was previously awarded a Schedule contract, and it was subsequently cancelled or...</small>
                             </div>
                             
@@ -533,8 +736,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-9" class="note-editor" data-item-id="9"></div>
+                            <button id="save-note-9" class="save-notes-btn" data-item-id="9">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-9" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 9</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iv.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (iv.) Previous Contract Performance. If an offeror was previously awarded a Schedule contract, and it was subsequently cancelled or allowed to expire due to low sales or non-compliance with other contract terms and conditions, the offeror must provide a detailed description of the steps the offeror plans to take to generate sales and/or ensure compliance through a new contract.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -549,7 +778,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (v.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-10">
                                 <small><strong>Content:</strong> (j) (1) (v.) Financial Responsibility. The offeror must provide annual financial statements for the previous 2 years (balance sheet and income...</small>
                             </div>
                             
@@ -586,8 +815,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-10" class="note-editor" data-item-id="10"></div>
+                            <button id="save-note-10" class="save-notes-btn" data-item-id="10">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-10" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 10</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (v.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (v.) Financial Responsibility. The offeror must provide annual financial statements for the previous 2 years (balance sheet and income statement), unless submitting under Startup Springboard. The firm must provide an explanation for any negative financial information disclosed.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -602,7 +857,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (vi.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-11">
                                 <small><strong>Content:</strong> (j) (1) (vi.) Subcontracting Plan. If applicable, the offeror must submit a subcontracting plan in accordance with FAR 19.7 and the clause at...</small>
                             </div>
                             
@@ -633,8 +888,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-11" class="note-editor" data-item-id="11"></div>
+                            <button id="save-note-11" class="save-notes-btn" data-item-id="11">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-11" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 11</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (vi.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (vi.) Subcontracting Plan. If applicable, the offeror must submit a subcontracting plan in accordance with FAR 19.7 and the clause at 52.219-9, Small Business Subcontracting Plan.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -649,7 +930,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (viii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-12">
                                 <small><strong>Content:</strong> (j) (1) (viii.) Agent Authorization Letter. If applicable, an Agent Authorization Letter must be completed and submitted as part of the offer if a...</small>
                             </div>
                             
@@ -680,8 +961,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-12" class="note-editor" data-item-id="12"></div>
+                            <button id="save-note-12" class="save-notes-btn" data-item-id="12">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-12" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 12</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (viii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (viii.) Agent Authorization Letter. If applicable, an Agent Authorization Letter must be completed and submitted as part of the offer if a consultant or third-party agent assisted in the preparation of the offer, will be involved in any part of the negotiation of the offer, or will be involved in any post-award actions.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -696,7 +1003,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ix.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-13">
                                 <small><strong>Content:</strong> (j) (1) (ix.) Section 508 Compliance. Section 508 of the Rehabilitation Act, as amended by the Workforce Investment Act of 1998 (P.L. 105-220)...</small>
                             </div>
                             
@@ -727,8 +1034,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-13" class="note-editor" data-item-id="13"></div>
+                            <button id="save-note-13" class="save-notes-btn" data-item-id="13">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-13" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 13</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ix.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (ix.) Section 508 Compliance. Section 508 of the Rehabilitation Act, as amended by the Workforce Investment Act of 1998 (P.L. 105-220) requires that when Federal agencies develop, procure, maintain, or use information and communication technology (ICT), it must be accessible to people with disabilities.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -743,7 +1076,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (x.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-14">
                                 <small><strong>Content:</strong> (j) (1) (x.) Trade Agreements Act (TAA) Compliance. The offeror must identify the country of origin for all products offered. All products must...</small>
                             </div>
                             
@@ -774,8 +1107,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-14" class="note-editor" data-item-id="14"></div>
+                            <button id="save-note-14" class="save-notes-btn" data-item-id="14">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-14" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 14</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (x.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (x.) Trade Agreements Act (TAA) Compliance. The offeror must identify the country of origin for all products offered. All products must comply with the Trade Agreements Act.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -790,7 +1149,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xi.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-15">
                                 <small><strong>Content:</strong> (j) (1) (xi.) Letter of Commitment/Supply. If applicable, the offeror must provide a Letter of Commitment/Supply from the manufacturer or...</small>
                             </div>
                             
@@ -821,8 +1180,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-15" class="note-editor" data-item-id="15"></div>
+                            <button id="save-note-15" class="save-notes-btn" data-item-id="15">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-15" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 15</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xi.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (xi.) Letter of Commitment/Supply. If applicable, the offeror must provide a Letter of Commitment/Supply from the manufacturer or authorized distributor for all products offered.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -837,7 +1222,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-16">
                                 <small><strong>Content:</strong> (j) (1) (xii.) Product Obsolescence. If an item appears to be obsolete, GSA may request additional information, such as confirmation of sufficient...</small>
                             </div>
                             
@@ -868,8 +1253,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-16" class="note-editor" data-item-id="16"></div>
+                            <button id="save-note-16" class="save-notes-btn" data-item-id="16">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-16" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 16</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (xii.) Product Obsolescence. If an item appears to be obsolete, GSA may request additional information, such as confirmation of sufficient availability of supply and may decide the item should not be offered under the MAS program.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -884,7 +1295,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-17">
                                 <small><strong>Content:</strong> (j) (1) (xiii.) Prohibited Products. Products that are solely compatible with products that are prohibited for national security reasons (e.g.,...</small>
                             </div>
                             
@@ -917,8 +1328,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-17" class="note-editor" data-item-id="17"></div>
+                            <button id="save-note-17" class="save-notes-btn" data-item-id="17">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-17" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 17</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (xiii.) Prohibited Products. Products that are solely compatible with products that are prohibited for national security reasons (e.g., FAR clauses 52.204-23; 52.204-25; and 52.204-30) may not be offered under MAS contracts.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -933,7 +1370,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiv)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-18">
                                 <small><strong>Content:</strong> (j) (1) (xiv.) Dealer/Reseller Functions. If applicable, the offeror must describe dealer/reseller functions for products offered.</small>
                             </div>
                             
@@ -964,8 +1401,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-18" class="note-editor" data-item-id="18"></div>
+                            <button id="save-note-18" class="save-notes-btn" data-item-id="18">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-18" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 18</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiv)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (xiv.) Dealer/Reseller Functions. If applicable, the offeror must describe dealer/reseller functions for products offered.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -980,7 +1443,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xv.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-19">
                                 <small><strong>Content:</strong> (j) (1) (xv.) AbilityOne Program. If applicable, the offeror must be an authorized AbilityOne Program distributor for products on the AbilityOne...</small>
                             </div>
                             
@@ -1013,8 +1476,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-19" class="note-editor" data-item-id="19"></div>
+                            <button id="save-note-19" class="save-notes-btn" data-item-id="19">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-19" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 19</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xv.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (xv.) AbilityOne Program. If applicable, the offeror must be an authorized AbilityOne Program distributor for products on the AbilityOne Procurement List.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1029,7 +1518,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvi.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-20">
                                 <small><strong>Content:</strong> (j) (1) (xvi.) Manufacturer Part Number (MPN) and Universal Product Code (UPC-A). For products only, accurate MPN and/or UPC-A data must be submitted.</small>
                             </div>
                             
@@ -1060,8 +1549,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-20" class="note-editor" data-item-id="20"></div>
+                            <button id="save-note-20" class="save-notes-btn" data-item-id="20">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-20" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 20</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvi.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (xvi.) Manufacturer Part Number (MPN) and Universal Product Code (UPC-A). For products only, accurate MPN and/or UPC-A data must be submitted.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1076,7 +1591,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-21">
                                 <small><strong>Content:</strong> (j) (1) (xvii.) Electronic Contract Data. Following contract award, Schedule contractors offering products under designated Special Item Numbers...</small>
                             </div>
                             
@@ -1109,8 +1624,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-21" class="note-editor" data-item-id="21"></div>
+                            <button id="save-note-21" class="save-notes-btn" data-item-id="21">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-21" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 21</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (xvii.) Electronic Contract Data. Following contract award, Schedule contractors offering products under designated Special Item Numbers (SINs) must submit detailed electronic contract data, such as, but not limited to, Universal Product Codes (UPC) and product photos for each item offered on GSA Advantage!®.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1125,7 +1666,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xviii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-22">
                                 <small><strong>Content:</strong> (j) (1) (xviii.) GSA Advantage Purchase Order (PO) Portal. The offeror must use EDI, cXML or the GSA Advantage Purchase Order (PO) Portal to...</small>
                             </div>
                             
@@ -1158,8 +1699,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-22" class="note-editor" data-item-id="22"></div>
+                            <button id="save-note-22" class="save-notes-btn" data-item-id="22">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-22" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 22</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xviii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (xviii.) GSA Advantage Purchase Order (PO) Portal. The offeror must use EDI, cXML or the GSA Advantage Purchase Order (PO) Portal to provide order acknowledgment information that enables ordering agencies to track the location of an order at any time.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1174,7 +1741,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xix.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-23">
                                 <small><strong>Content:</strong> (j) (1) (xix.) Frustrated Freight. For products only, GSAR Clause 552.211-73, Marking, establishes marking and labeling requirements for shipping...</small>
                             </div>
                             
@@ -1205,8 +1772,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-23" class="note-editor" data-item-id="23"></div>
+                            <button id="save-note-23" class="save-notes-btn" data-item-id="23">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-23" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 23</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xix.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (xix.) Frustrated Freight. For products only, GSAR Clause 552.211-73, Marking, establishes marking and labeling requirements for shipping Federal Government orders. The Government reserves the right to require sample electronic versions of all required documents.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1223,7 +1816,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xx.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-24">
                                 <small><strong>Content:</strong> (j) (1) (xx.) Joint Ventures. All joint venture offerors, regardless of size status, must complete the All Joint Ventures section of the Joint...</small>
                             </div>
                             
@@ -1262,14 +1855,47 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-24" class="note-editor" data-item-id="24"></div>
+                            <button id="save-note-24" class="save-notes-btn" data-item-id="24">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-24" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 24</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xx.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (1) (xx.) Joint Ventures. All joint venture offerors, regardless of size status, must complete the All Joint Ventures section of the Joint Venture Solicitation Attachment and Appendix A.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
+                    </div>
+                </div>
             
-                <h2 class="checklist-section-header" data-section="Technical Proposal">
-                    Technical Proposal
-                    <span class="section-badge" id="badge-2">0/0</span>
-                </h2>
+                <div class="section-container" data-section="Technical Proposal">
+                    <h2 class="checklist-section-header accordion-header" data-section="Technical Proposal" data-section-index="2">
+                        <span class="section-title">Technical Proposal</span>
+                        <div class="section-header-right">
+                            <span class="section-badge" id="badge-2">0/0</span>
+                            <span class="accordion-toggle">▼</span>
+                        </div>
+                    </h2>
+                    <div class="section-content" id="section-2">
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1284,7 +1910,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (i.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-25">
                                 <small><strong>Content:</strong> (j) (2) (i.) Corporate Experience Narrative. The offeror must provide a minimum of 2 years of corporate experience, unless submitting under...</small>
                             </div>
                             
@@ -1321,8 +1947,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-25" class="note-editor" data-item-id="25"></div>
+                            <button id="save-note-25" class="save-notes-btn" data-item-id="25">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-25" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 25</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (i.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (2) (i.) Corporate Experience Narrative. The offeror must provide a minimum of 2 years of corporate experience, unless submitting under Startup Springboard. This narrative should demonstrate the offeror's ability to successfully perform under this solicitation.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1337,7 +1989,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (ii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-26">
                                 <small><strong>Content:</strong> (j) (2) (ii.) Past Performance. The offeror must provide past performance information, including contractor performance assessment reports (CPARS)...</small>
                             </div>
                             
@@ -1372,8 +2024,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-26" class="note-editor" data-item-id="26"></div>
+                            <button id="save-note-26" class="save-notes-btn" data-item-id="26">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-26" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 26</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (ii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (2) (ii.) Past Performance. The offeror must provide past performance information, including contractor performance assessment reports (CPARS) or customer references and past performance questionnaires.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1388,7 +2066,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-27">
                                 <small><strong>Content:</strong> (j) (2) (iii.) Quality Control Narrative. The offeror must provide a quality control narrative describing the offeror&#39;s quality control procedures...</small>
                             </div>
                             
@@ -1419,8 +2097,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-27" class="note-editor" data-item-id="27"></div>
+                            <button id="save-note-27" class="save-notes-btn" data-item-id="27">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-27" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 27</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (2) (iii.) Quality Control Narrative. The offeror must provide a quality control narrative describing the offeror's quality control procedures and processes.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1435,7 +2139,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iv.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-28">
                                 <small><strong>Content:</strong> (j) (2) (iv.) Relative Project Experience Narrative. For offers including services, the offeror must provide a narrative describing relevant...</small>
                             </div>
                             
@@ -1468,14 +2172,47 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-28" class="note-editor" data-item-id="28"></div>
+                            <button id="save-note-28" class="save-notes-btn" data-item-id="28">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-28" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 28</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iv.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (2) (iv.) Relative Project Experience Narrative. For offers including services, the offeror must provide a narrative describing relevant project experience for the services being offered.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
+                    </div>
+                </div>
             
-                <h2 class="checklist-section-header" data-section="Price Proposal">
-                    Price Proposal
-                    <span class="section-badge" id="badge-3">0/0</span>
-                </h2>
+                <div class="section-container" data-section="Price Proposal">
+                    <h2 class="checklist-section-header accordion-header" data-section="Price Proposal" data-section-index="3">
+                        <span class="section-title">Price Proposal</span>
+                        <div class="section-header-right">
+                            <span class="section-badge" id="badge-3">0/0</span>
+                            <span class="accordion-toggle">▼</span>
+                        </div>
+                    </h2>
+                    <div class="section-content" id="section-3">
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1490,7 +2227,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-29">
                                 <small><strong>Content:</strong> (j) (3) (ii.) Completed Price Proposal Template. The offeror must submit a completed Price Proposal Template in Excel format with all proposed...</small>
                             </div>
                             
@@ -1534,8 +2271,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-29" class="note-editor" data-item-id="29"></div>
+                            <button id="save-note-29" class="save-notes-btn" data-item-id="29">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-29" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 29</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (ii.) Completed Price Proposal Template. The offeror must submit a completed Price Proposal Template in Excel format with all proposed prices and supporting documentation.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1566,8 +2329,12 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-30" class="note-editor" data-item-id="30"></div>
+                            <button id="save-note-30" class="save-notes-btn" data-item-id="30">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1583,7 +2350,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-31">
                                 <small><strong>Content:</strong> (j) (3) (iii.) Supporting Documentation. The offeror must provide supporting documentation for EACH proposed product/service price. Supporting...</small>
                             </div>
                             
@@ -1618,8 +2385,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-31" class="note-editor" data-item-id="31"></div>
+                            <button id="save-note-31" class="save-notes-btn" data-item-id="31">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-31" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 31</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (iii.) Supporting Documentation. The offeror must provide supporting documentation for EACH proposed product/service price. Supporting pricing documentation may consist of published and publicly-available commercial catalogs/price lists, copies of invoices, contracts, or quote sheets.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1634,7 +2427,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iv.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-32">
                                 <small><strong>Content:</strong> (j) (3) (iv.) Most Favored Customer Justification. If the pricing offered is not equal to or better than the pricing extended to the Most Favored...</small>
                             </div>
                             
@@ -1665,8 +2458,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-32" class="note-editor" data-item-id="32"></div>
+                            <button id="save-note-32" class="save-notes-btn" data-item-id="32">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-32" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 32</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iv.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (iv.) Most Favored Customer Justification. If the pricing offered is not equal to or better than the pricing extended to the Most Favored Customer, the offeror must provide justification.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1681,7 +2500,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (v.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-33">
                                 <small><strong>Content:</strong> (j) (3) (v.) Proposed Escalation Method. The offeror must propose an escalation method: 552.216-70 (EPA) for Commercial Price List or I-FSS-969...</small>
                             </div>
                             
@@ -1712,8 +2531,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-33" class="note-editor" data-item-id="33"></div>
+                            <button id="save-note-33" class="save-notes-btn" data-item-id="33">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-33" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 33</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (v.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (v.) Proposed Escalation Method. The offeror must propose an escalation method: 552.216-70 (EPA) for Commercial Price List or I-FSS-969 (Escalation Rate) for Market Pricing.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1728,7 +2573,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vi.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-34">
                                 <small><strong>Content:</strong> (j) (3) (vi.) Commercial Sales Practices Document (CSP-1). The offeror must complete the CSP-1 with rationale to support projected MAS sales. This...</small>
                             </div>
                             
@@ -1761,8 +2606,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-34" class="note-editor" data-item-id="34"></div>
+                            <button id="save-note-34" class="save-notes-btn" data-item-id="34">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-34" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 34</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vi.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (vi.) Commercial Sales Practices Document (CSP-1). The offeror must complete the CSP-1 with rationale to support projected MAS sales. This document is applicable to Non-TDR offers only.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1777,7 +2648,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-35">
                                 <small><strong>Content:</strong> (j) (3) (vii.) Full and Broad Offering. The offeror must present a total solution with a full and broad offering of services and/or products.</small>
                             </div>
                             
@@ -1810,8 +2681,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-35" class="note-editor" data-item-id="35"></div>
+                            <button id="save-note-35" class="save-notes-btn" data-item-id="35">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-35" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 35</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (vii.) Full and Broad Offering. The offeror must present a total solution with a full and broad offering of services and/or products.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1826,7 +2723,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (viii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-36">
                                 <small><strong>Content:</strong> (j) (3) (viii.) Remanufactured Items. Remanufactured items are only allowable under specific MAS SINs and must be identified per clause 552.238-78...</small>
                             </div>
                             
@@ -1859,8 +2756,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-36" class="note-editor" data-item-id="36"></div>
+                            <button id="save-note-36" class="save-notes-btn" data-item-id="36">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-36" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 36</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (viii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (viii.) Remanufactured Items. Remanufactured items are only allowable under specific MAS SINs and must be identified per clause 552.238-78 and meet the prescribed definition of "factory rebuilt to original specifications.".</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1875,7 +2798,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ix.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-37">
                                 <small><strong>Content:</strong> (j) (3) (ix.) Fair and Reasonable Pricing. All offers must demonstrate fair and reasonable pricing. This requirement is applicable to ALL offers.</small>
                             </div>
                             
@@ -1908,14 +2831,47 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-37" class="note-editor" data-item-id="37"></div>
+                            <button id="save-note-37" class="save-notes-btn" data-item-id="37">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-37" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 37</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ix.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (ix.) Fair and Reasonable Pricing. All offers must demonstrate fair and reasonable pricing. This requirement is applicable to ALL offers.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
+                    </div>
+                </div>
             
-                <h2 class="checklist-section-header" data-section="Price Proposal - Services Only">
-                    Price Proposal - Services Only
-                    <span class="section-badge" id="badge-4">0/0</span>
-                </h2>
+                <div class="section-container" data-section="Price Proposal - Services Only">
+                    <h2 class="checklist-section-header accordion-header" data-section="Price Proposal - Services Only" data-section-index="4">
+                        <span class="section-title">Price Proposal - Services Only</span>
+                        <div class="section-header-right">
+                            <span class="section-badge" id="badge-4">0/0</span>
+                            <span class="accordion-toggle">▼</span>
+                        </div>
+                    </h2>
+                    <div class="section-content" id="section-4">
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1930,7 +2886,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (A))</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-38">
                                 <small><strong>Content:</strong> Could not find provision text for reference: &#34;(j) (3) (x.) (A))&#34;</small>
                             </div>
                             
@@ -1963,8 +2919,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-38" class="note-editor" data-item-id="38"></div>
+                            <button id="save-note-38" class="save-notes-btn" data-item-id="38">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-38" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 38</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (A))</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">Could not find provision text for reference: "(j) (3) (x.) (A))"</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1979,7 +2961,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (B)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-39">
                                 <small><strong>Content:</strong> (j) (3) (x.) (B) Training Course Descriptions. For offers containing training SINs, the offeror must provide detailed training course descriptions.</small>
                             </div>
                             
@@ -2010,8 +2992,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-39" class="note-editor" data-item-id="39"></div>
+                            <button id="save-note-39" class="save-notes-btn" data-item-id="39">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-39" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 39</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (B)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (x.) (B) Training Course Descriptions. For offers containing training SINs, the offeror must provide detailed training course descriptions.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -2026,7 +3034,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (C)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-40">
                                 <small><strong>Content:</strong> (j) (3) (x.) (C) Fixed Price Services Descriptions. For offers containing fixed price solutions, the offeror must provide descriptions that...</small>
                             </div>
                             
@@ -2059,8 +3067,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-40" class="note-editor" data-item-id="40"></div>
+                            <button id="save-note-40" class="save-notes-btn" data-item-id="40">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-40" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 40</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (C)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (x.) (C) Fixed Price Services Descriptions. For offers containing fixed price solutions, the offeror must provide descriptions that clearly demonstrate how each service is within scope of the applicable SIN(s).</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -2075,7 +3109,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (D)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-41">
                                 <small><strong>Content:</strong> (j) (3) (x.) (D) Ancillary Supplies and Services/ODCs Descriptions. If applicable, the offeror must provide descriptions of ancillary supplies and...</small>
                             </div>
                             
@@ -2106,8 +3140,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-41" class="note-editor" data-item-id="41"></div>
+                            <button id="save-note-41" class="save-notes-btn" data-item-id="41">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-41" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 41</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (D)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (x.) (D) Ancillary Supplies and Services/ODCs Descriptions. If applicable, the offeror must provide descriptions of ancillary supplies and services or Other Direct Costs (ODCs).</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -2122,7 +3182,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (E)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-42">
                                 <small><strong>Content:</strong> (j) (3) (x.) (E) Fully Burdened Rates. All proposed prices must be inclusive of all cost factors and represent fully burdened rates.</small>
                             </div>
                             
@@ -2153,8 +3213,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-42" class="note-editor" data-item-id="42"></div>
+                            <button id="save-note-42" class="save-notes-btn" data-item-id="42">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-42" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 42</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (E)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (x.) (E) Fully Burdened Rates. All proposed prices must be inclusive of all cost factors and represent fully burdened rates.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -2170,7 +3256,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xi.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-43">
                                 <small><strong>Content:</strong> (j) (3) (xi.) Professional Compensation Plan. For professional services offers, the offeror must provide a Professional Compensation Plan in...</small>
                             </div>
                             
@@ -2204,8 +3290,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-43" class="note-editor" data-item-id="43"></div>
+                            <button id="save-note-43" class="save-notes-btn" data-item-id="43">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-43" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 43</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xi.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (xi.) Professional Compensation Plan. For professional services offers, the offeror must provide a Professional Compensation Plan in accordance with provision 52.222-46 Evaluation of Compensation for Professional Employees.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -2220,7 +3332,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xii.)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-44">
                                 <small><strong>Content:</strong> (j) (3) (xii.) Policy on Uncompensated Overtime. For services offers, the offeror must provide a policy on uncompensated overtime that clearly...</small>
                             </div>
                             
@@ -2253,8 +3365,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-44" class="note-editor" data-item-id="44"></div>
+                            <button id="save-note-44" class="save-notes-btn" data-item-id="44">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-44" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 44</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xii.)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (xii.) Policy on Uncompensated Overtime. For services offers, the offeror must provide a policy on uncompensated overtime that clearly shows how the company addresses uncompensated overtime without resulting in unreasonably low hourly rates.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -2269,7 +3407,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (B)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-45">
                                 <small><strong>Content:</strong> (j) (3) (xiii.) (B) Service Contract Labor Standards (SCLS) Wage Determination. For applicable services offers, the offeror must comply with...</small>
                             </div>
                             
@@ -2300,8 +3438,34 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-45" class="note-editor" data-item-id="45"></div>
+                            <button id="save-note-45" class="save-notes-btn" data-item-id="45">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-45" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 45</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (B)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (xiii.) (B) Service Contract Labor Standards (SCLS) Wage Determination. For applicable services offers, the offeror must comply with Service Contract Labor Standards wage determination requirements.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -2316,7 +3480,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (C)</small>
                             
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-46">
                                 <small><strong>Content:</strong> (j) (3) (xiii.) (C) Service Contract Labor Standards (SCLS)/SCA Matrix. For all offers that include services, the offeror must submit a matrix...</small>
                             </div>
                             
@@ -2347,9 +3511,37 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-46" class="note-editor" data-item-id="46"></div>
+                            <button id="save-note-46" class="save-notes-btn" data-item-id="46">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    
+                    
+                    
+                    <div id="content-modal-46" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line 46</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (C)</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">(j) (3) (xiii.) (C) Service Contract Labor Standards (SCLS)/SCA Matrix. For all offers that include services, the offeror must submit a matrix that lists all employees that will work on the contract and identifies which employees are considered "Service Employees" as defined by clause 52.222-41.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 
+                    </div>
+                </div>
             
         </div>
     </div>
@@ -2362,7 +3554,8 @@
         </footer>
         <script src="../../static/script.js"></script>
         
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<!-- Quill 2.0 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script src="../../static/projects/gsa_mas_checklist.js"></script>
 
     </div>

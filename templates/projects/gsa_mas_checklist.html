@@ -3,13 +3,26 @@
 {% block title %}Interactive GSA MAS Checklist{% endblock %}
 
 {% block head %}
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<!-- Quill 2.0 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
     <div class="project-header">
         <h1>Interactive GSA New Offer Checklist</h1>
         <h2>Navigate the GSA MAS proposal requirements with ease.</h2>
+    </div>
+
+    <div class="save-controls">
+        <div class="save-controls-row">
+            <div class="control-buttons">
+                <button id="export-btn" class="btn btn-secondary">Export Data</button>
+                <button id="import-btn" class="btn btn-secondary">Import Data</button>
+                <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
+                <input type="file" id="import-file" accept=".json" style="display: none;">
+            </div>
+            <div id="save-indicator" class="save-indicator"></div>
+        </div>
     </div>
 
     <div class="card">
@@ -47,17 +60,6 @@
                 </div>
             </div>
         </form>
-        <div class="save-controls">
-            <div class="save-controls-row">
-                <div class="control-buttons">
-                    <button id="export-btn" class="btn btn-secondary">Export Data</button>
-                    <button id="import-btn" class="btn btn-secondary">Import Data</button>
-                    <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
-                    <input type="file" id="import-file" accept=".json" style="display: none;">
-                </div>
-                <div id="save-indicator" class="save-indicator"></div>
-            </div>
-        </div>
         <div class="file-links">
             <hr>
             <h4>Checklist Resources</h4>
@@ -67,27 +69,28 @@
     </div>
 
     <div class="card">
-        <h3>Offer Review Checklist</h3>
-        <div class="progress-summary">
-            <div class="progress-text">
-                <span id="progress-count">0</span> of <span id="total-count">0</span> items completed
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
-        </div>
-        <div class="section-progress">
-            <h4>Section Progress</h4>
-            <div id="section-progress-list">
-                <!-- Section progress items will be dynamically generated -->
+        <div class="checklist-header">
+            <h3>Offer Review Checklist</h3>
+            <div class="progress-indicator-compact" id="progress-indicator-compact">
+                <div class="progress-text-compact">
+                    <span id="progress-count">0</span>/<span id="total-count">0</span>
+                </div>
+                <div class="progress-bar-compact">
+                    <div class="progress-fill-compact" id="progress-fill"></div>
+                </div>
             </div>
         </div>
         <div class="checklist">
             {% for section in sections %}
-                <h2 class="checklist-section-header" data-section="{{ section.name }}">
-                    {{ section.name }}
-                    <span class="section-badge" id="badge-{{ loop.index0 }}">0/0</span>
-                </h2>
+                <div class="section-container" data-section="{{ section.name }}">
+                    <h2 class="checklist-section-header accordion-header" data-section="{{ section.name }}" data-section-index="{{ loop.index0 }}">
+                        <span class="section-title">{{ section.name }}</span>
+                        <div class="section-header-right">
+                            <span class="section-badge" id="badge-{{ loop.index0 }}">0/0</span>
+                            <span class="accordion-toggle">▼</span>
+                        </div>
+                    </h2>
+                    <div class="section-content{% if loop.index0 == 0 %} expanded{% endif %}" id="section-{{ loop.index0 }}">
                 {% for item in section.item_list %}
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -102,7 +105,7 @@
                         <div class="checklist-card-footer">
                             <small>Reference: {{ ref_data.link | replace('/static/files/SCP-FSS-001.pdf', url_for('static', filename='files/SCP-FSS-001.pdf')) | safe }}</small>
                             {% if ref_data.content %}
-                            <div class="reference-content">
+                            <div class="reference-content clickable-content" data-content-modal="#content-modal-{{ item['LINE Number'] }}">
                                 <small><strong>Content:</strong> {{ ref_data.content | truncate(150) }}</small>
                             </div>
                             {% endif %}
@@ -135,9 +138,37 @@
                             <hr>
                             <h4>Notes</h4>
                             <div id="note-{{ item['LINE Number'] }}" class="note-editor" data-item-id="{{ item['LINE Number'] }}"></div>
+                            <button id="save-note-{{ item['LINE Number'] }}" class="save-notes-btn" data-item-id="{{ item['LINE Number'] }}">Save Notes</button>
                         </div>
                     </div>
+
+                    <!-- Content Modal for each item -->
+                    {% if item['Solicitation Reference'] %}
+                    {% set ref_data = create_pdf_link(item['Solicitation Reference'], 'SCP-FSS-001.pdf') %}
+                    {% if ref_data.content %}
+                    <div id="content-modal-{{ item['LINE Number'] }}" class="modal content-modal">
+                        <div class="modal-content content-modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="content-modal-header">
+                                <h3>Regulation Reference</h3>
+                                <span class="content-modal-line">Line {{ item['LINE Number'] }}</span>
+                            </div>
+                            <div class="content-modal-body">
+                                <div class="source-reference">
+                                    <p><strong>Source:</strong> {{ ref_data.link | replace('/static/files/SCP-FSS-001.pdf', url_for('static', filename='files/SCP-FSS-001.pdf')) | safe }}</p>
+                                </div>
+                                <div class="regulation-text">
+                                    <h4>Full Text:</h4>
+                                    <div class="regulation-content">{{ ref_data.content | nl2br | safe }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endif %}
                 {% endfor %}
+                    </div>
+                </div>
             {% endfor %}
         </div>
     </div>
@@ -145,6 +176,7 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<!-- Quill 2.0 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script src="{{ url_for('static', filename='projects/gsa_mas_checklist.js') }}"></script>
 {% endblock %}

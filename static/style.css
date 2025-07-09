@@ -282,8 +282,12 @@ nav a:hover {
     border: 1px solid #888;
     width: 80%; 
     max-width: 600px;
+    max-height: 80vh;
     border-radius: 5px;
     position: relative;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-header {
@@ -352,20 +356,141 @@ nav a:hover {
     color: white;
 }
 
-/* Quill Editor Styles */
+/* Notes Editor Styles */
 .note-editor {
     margin-top: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    max-width: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
 }
 
-.note-editor .ql-toolbar {
-    border-bottom: 1px solid #ccc;
+/* Quill Editor Styles */
+.note-editor {
+    min-height: 150px;
+    max-height: 300px;
+    background: white;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    /* Default styling before Quill loads */
+    padding: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .note-editor .ql-container {
-    min-height: 150px;
+    border: none;
+    border-radius: 0 0 4px 4px;
+    height: auto;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.note-editor .ql-editor {
+    min-height: 120px;
+    max-height: 220px;
+    padding: 12px;
     font-family: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-y: auto;
+}
+
+.note-editor .ql-toolbar {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 4px 4px 0 0;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.note-editor .ql-toolbar .ql-picker-label {
+    border: none;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.note-editor .ql-toolbar button {
+    padding: 4px;
+    margin: 1px;
+    border-radius: 3px;
+    border: none;
+    background: transparent;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.note-editor .ql-toolbar button:hover {
+    background: #e9ecef;
+}
+
+.note-editor .ql-toolbar button.ql-active {
+    background: #007bff;
+    color: white;
+}
+
+.note-editor .ql-toolbar .ql-stroke {
+    stroke: currentColor;
+}
+
+.note-editor .ql-toolbar .ql-fill {
+    fill: currentColor;
+}
+
+/* Fallback textarea styles */
+.note-editor textarea {
+    width: 100%;
+    max-width: 100%;
+    min-height: 150px;
+    max-height: 300px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.note-editor textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Save Notes Button */
+.save-notes-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.save-notes-btn:hover {
+    background: #0056b3;
+}
+
+.save-notes-btn.saved {
+    background: #28a745;
+}
+
+.save-notes-btn.saved:hover {
+    background: #1e7e34;
 }
 
 /* PDF Link Styles */
@@ -415,7 +540,7 @@ nav a:hover {
 
 /* Save Controls */
 .save-controls {
-    margin-top: 1rem;
+    margin-bottom: 1.5rem;
     padding: 1rem;
     background-color: #f8f9fa;
     border-radius: 5px;
@@ -425,6 +550,7 @@ nav a:hover {
 .save-controls-row {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 1rem;
     flex-wrap: wrap;
 }
@@ -490,6 +616,61 @@ nav a:hover {
 }
 
 /* Progress indicator */
+.checklist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.checklist-header h3 {
+    margin: 0;
+}
+
+.progress-indicator-compact {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 20px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.progress-indicator-compact.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.progress-text-compact {
+    font-weight: 600;
+    color: #495057;
+    white-space: nowrap;
+}
+
+.progress-bar-compact {
+    width: 80px;
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill-compact {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+    transition: width 0.4s ease;
+    border-radius: 4px;
+}
+
 .progress-summary {
     margin-top: 1rem;
     padding: 1rem;
@@ -514,67 +695,65 @@ nav a:hover {
 }
 
 /* Section progress */
-.section-progress {
-    margin-top: 1rem;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    border: 1px solid #dee2e6;
-}
-
-.section-progress h4 {
-    margin-top: 0;
+.section-container {
     margin-bottom: 1rem;
-    color: #495057;
-}
-
-.section-progress-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.section-progress-item:last-child {
-    border-bottom: none;
-}
-
-.section-name {
-    font-weight: 500;
-    color: #495057;
-}
-
-.section-count {
-    font-size: 0.9rem;
-    color: #6c757d;
-}
-
-.section-mini-bar {
-    width: 60px;
-    height: 8px;
-    background-color: #dee2e6;
-    border-radius: 4px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
     overflow: hidden;
-    margin-left: 0.5rem;
-}
-
-.section-mini-fill {
-    height: 100%;
-    background-color: #28a745;
-    transition: width 0.3s ease;
 }
 
 .checklist-section-header {
     position: relative;
-    padding-right: 100px;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+}
+
+.checklist-section-header:hover {
+    background-color: #e9ecef;
+}
+
+.section-title {
+    font-weight: 600;
+    color: #495057;
+}
+
+.section-header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background-color: white;
+}
+
+.section-content.expanded {
+    max-height: none;
+    padding: 1rem;
+}
+
+.accordion-toggle {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+    color: #6c757d;
+}
+
+.accordion-toggle.rotated {
+    transform: rotate(180deg);
 }
 
 .section-badge {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
     background-color: #6c757d;
     color: white;
     padding: 0.25rem 0.5rem;
@@ -593,21 +772,111 @@ nav a:hover {
 }
 
 /* Modal status styles */
-.modal-status.complete {
-    color: #28a745;
+.modal-status {
     font-weight: bold;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.modal-status.complete {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
 .modal-status.incomplete {
-    color: #dc3545;
-    font-weight: bold;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Clickable content styles */
+.clickable-content {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    padding: 0.25rem;
+    border-radius: 3px;
+}
+
+.clickable-content:hover {
+    background-color: #e3f2fd;
+}
+
+/* Content Modal Styles */
+.content-modal .modal-content {
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.content-modal-content {
+    padding: 2rem;
+}
+
+.content-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.content-modal-header h3 {
+    margin: 0;
+    color: #495057;
+}
+
+.content-modal-line {
+    background-color: #6c757d;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.content-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.source-reference {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 5px;
+    border-left: 4px solid #007bff;
+}
+
+.source-reference p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.regulation-text h4 {
+    margin: 0 0 1rem 0;
+    color: #495057;
+    font-size: 1.1rem;
+}
+
+.regulation-content {
+    background-color: white;
+    padding: 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: #333;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .save-controls-row {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         gap: 0.5rem;
     }
     
@@ -625,22 +894,45 @@ nav a:hover {
         align-self: center;
     }
     
-    .section-progress-item {
+    .checklist-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .progress-indicator-compact {
+        align-self: stretch;
+        justify-content: center;
+    }
+    
+    .checklist-section-header {
+        padding: 0.75rem;
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
     }
     
-    .checklist-section-header {
-        padding-right: 0;
-        padding-bottom: 2rem;
-        position: relative;
+    .section-header-right {
+        width: 100%;
+        justify-content: space-between;
     }
     
-    .section-badge {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        transform: none;
+    .section-content.expanded {
+        padding: 0.75rem;
+    }
+    
+    .content-modal .modal-content {
+        max-width: 95vw;
+        margin: 1rem;
+    }
+    
+    .content-modal-content {
+        padding: 1rem;
+    }
+    
+    .content-modal-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
     }
 }

@@ -46,11 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
             state.checkboxes[checkbox.id] = checkbox.checked;
         });
         
-        // Save notes from Quill editors
-        Object.keys(quillInstances).forEach(editorId => {
-            const quill = quillInstances[editorId];
-            state.notes[editorId] = quill.getContents();
-        });
+        // Save notes from Editor.js instances (called when manually saving)
+        // Notes are saved individually when the save button is clicked
         
         return state;
     }
@@ -181,6 +178,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const modals = document.querySelectorAll('.modal');
     const closeButtons = document.querySelectorAll('.close-button');
     const checkboxes = document.querySelectorAll('.checklist-card-header input[type="checkbox"]');
+    const clickableContent = document.querySelectorAll('.clickable-content');
+
+    // Content modal functionality
+    clickableContent.forEach(content => {
+        content.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // Prevent triggering parent click events
+            const modalTarget = content.getAttribute('data-content-modal');
+            const modal = document.querySelector(modalTarget);
+            if (modal) {
+                modal.style.display = "block";
+            }
+        });
+    });
 
     // Progress tracking
     function updateProgress() {
@@ -189,47 +200,37 @@ document.addEventListener('DOMContentLoaded', function() {
         const completedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
         const percentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
         
-        // Update overall progress
+        // Update compact progress indicator
         const progressCount = document.getElementById('progress-count');
         const totalCountElement = document.getElementById('total-count');
         const progressFill = document.getElementById('progress-fill');
+        const progressIndicator = document.getElementById('progress-indicator-compact');
         
         if (progressCount) progressCount.textContent = completedCount;
         if (totalCountElement) totalCountElement.textContent = totalCount;
         if (progressFill) progressFill.style.width = `${percentage}%`;
         
-        // Update section progress
-        updateSectionProgress();
+        // Show progress indicator with animation after first update
+        if (progressIndicator && !progressIndicator.classList.contains('show')) {
+            setTimeout(() => {
+                progressIndicator.classList.add('show');
+            }, 500); // Small delay for better UX
+        }
+        
+        // Update section badges
+        updateSectionBadges();
     }
     
-    function updateSectionProgress() {
-        const sections = document.querySelectorAll('.checklist-section-header');
-        const sectionProgressList = document.getElementById('section-progress-list');
+    function updateSectionBadges() {
+        const sections = document.querySelectorAll('.section-container');
         
-        if (!sectionProgressList) return;
-        
-        // Clear existing progress items
-        sectionProgressList.innerHTML = '';
-        
-        sections.forEach((sectionHeader, index) => {
-            const sectionName = sectionHeader.getAttribute('data-section');
+        sections.forEach((sectionContainer, index) => {
             const badge = document.getElementById(`badge-${index}`);
             
             // Find all checkboxes in this section
-            let nextElement = sectionHeader.nextElementSibling;
-            const sectionCheckboxes = [];
-            
-            while (nextElement && !nextElement.classList.contains('checklist-section-header')) {
-                const checkbox = nextElement.querySelector('.checklist-card-header input[type="checkbox"]');
-                if (checkbox) {
-                    sectionCheckboxes.push(checkbox);
-                }
-                nextElement = nextElement.nextElementSibling;
-            }
-            
+            const sectionCheckboxes = sectionContainer.querySelectorAll('.checklist-card-header input[type="checkbox"]');
             const totalInSection = sectionCheckboxes.length;
-            const completedInSection = sectionCheckboxes.filter(cb => cb.checked).length;
-            const sectionPercentage = totalInSection > 0 ? (completedInSection / totalInSection) * 100 : 0;
+            const completedInSection = Array.from(sectionCheckboxes).filter(cb => cb.checked).length;
             
             // Update section badge
             if (badge) {
@@ -241,21 +242,35 @@ document.addEventListener('DOMContentLoaded', function() {
                     badge.classList.add('partial');
                 }
             }
+        });
+    }
+    
+    // Accordion functionality
+    function setupAccordions() {
+        const sectionHeaders = document.querySelectorAll('.accordion-header');
+        
+        sectionHeaders.forEach((header, index) => {
+            const toggle = header.querySelector('.accordion-toggle');
+            const sectionContent = document.getElementById(`section-${index}`);
             
-            // Create section progress item
-            const progressItem = document.createElement('div');
-            progressItem.className = 'section-progress-item';
-            progressItem.innerHTML = `
-                <span class="section-name">${sectionName}</span>
-                <div style="display: flex; align-items: center;">
-                    <span class="section-count">${completedInSection}/${totalInSection}</span>
-                    <div class="section-mini-bar">
-                        <div class="section-mini-fill" style="width: ${sectionPercentage}%"></div>
-                    </div>
-                </div>
-            `;
+            // Set initial state for first section
+            if (index === 0) {
+                toggle.classList.add('rotated');
+            }
             
-            sectionProgressList.appendChild(progressItem);
+            header.addEventListener('click', () => {
+                const isExpanded = sectionContent.classList.contains('expanded');
+                
+                if (isExpanded) {
+                    // Collapse
+                    sectionContent.classList.remove('expanded');
+                    toggle.classList.remove('rotated');
+                } else {
+                    // Expand
+                    sectionContent.classList.add('expanded');
+                    toggle.classList.add('rotated');
+                }
+            });
         });
     }
 
@@ -307,8 +322,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Initialize Quill editor on modal open
-    const quillInstances = {};
+    // Initialize Editor.js on modal open
+    const editorInstances = {};
     const savedState = loadSavedState();
     
     checklistItems.forEach(item => {
@@ -317,39 +332,139 @@ document.addEventListener('DOMContentLoaded', function() {
             const editorDiv = modal.querySelector('.note-editor');
             
             // Check if the editor is already initialized
-            if (!quillInstances[editorDiv.id]) {
-                quillInstances[editorDiv.id] = new Quill(`#${editorDiv.id}`, {
-                    theme: 'snow',
-                    placeholder: 'Add your notes here...',
-                    modules: {
-                        toolbar: [
-                            ['bold', 'italic', 'underline', 'strike'],
-                            ['blockquote', 'code-block'],
-                            [{ 'header': 1 }, { 'header': 2 }],
-                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                            [{ 'script': 'sub'}, { 'script': 'super' }],
-                            [{ 'indent': '-1'}, { 'indent': '+1' }],
-                            ['link'],
-                            ['clean']
-                        ]
+            if (!editorInstances[editorDiv.id]) {
+                // Check if Quill is available
+                if (typeof Quill === 'undefined') {
+                    console.log('Quill not loaded, falling back to simple textarea');
+                    // Fallback to simple textarea if Quill fails to load
+                    const textarea = document.createElement('textarea');
+                    textarea.placeholder = 'Add your notes here...';
+                    textarea.style.width = '100%';
+                    textarea.style.minHeight = '150px';
+                    textarea.style.padding = '12px';
+                    textarea.style.border = '1px solid #ccc';
+                    textarea.style.borderRadius = '4px';
+                    textarea.style.fontFamily = 'inherit';
+                    textarea.style.resize = 'vertical';
+                    
+                    // Load saved content if available
+                    if (savedState.notes && savedState.notes[editorDiv.id]) {
+                        textarea.value = savedState.notes[editorDiv.id];
                     }
-                });
-                
-                // Load saved content if available
-                if (savedState.notes && savedState.notes[editorDiv.id]) {
-                    quillInstances[editorDiv.id].setContents(savedState.notes[editorDiv.id]);
+                    
+                    editorDiv.innerHTML = '';
+                    editorDiv.appendChild(textarea);
+                    editorInstances[editorDiv.id] = {
+                        element: textarea,
+                        getContents: () => textarea.value,
+                        setContents: (content) => { textarea.value = content || ''; }
+                    };
+                    return;
                 }
                 
-                // Auto-save on content change
-                quillInstances[editorDiv.id].on('text-change', function() {
-                    saveChecklistData(getCurrentState());
-                });
+                try {
+                    // Clear existing content and prepare the editor div
+                    editorDiv.innerHTML = '';
+                    editorDiv.style.minHeight = '150px';
+                    editorDiv.style.maxHeight = '300px';
+                    editorDiv.style.border = '1px solid #ccc';
+                    editorDiv.style.borderRadius = '4px';
+                    editorDiv.style.backgroundColor = 'white';
+                    
+                    // Initialize Quill directly on the editor div
+                    const quill = new Quill(editorDiv, {
+                        theme: 'snow',
+                        placeholder: 'Add your notes here...',
+                        modules: {
+                            toolbar: [
+                                ['bold', 'italic', 'underline', 'strike'],
+                                ['blockquote', 'code-block'],
+                                [{ 'color': [] }, { 'background': [] }],
+                                ['clean']
+                            ]
+                        },
+                        formats: ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block', 'color', 'background']
+                    });
+                    
+                    // Load saved content if available
+                    if (savedState.notes && savedState.notes[editorDiv.id]) {
+                        try {
+                            // Try to parse as Delta (Quill's native format)
+                            const savedData = savedState.notes[editorDiv.id];
+                            if (typeof savedData === 'object' && savedData.ops) {
+                                quill.setContents(savedData);
+                            } else if (typeof savedData === 'string') {
+                                quill.setText(savedData);
+                            }
+                        } catch (error) {
+                            console.error('Error loading saved content:', error);
+                            // Fallback to plain text
+                            if (typeof savedState.notes[editorDiv.id] === 'string') {
+                                quill.setText(savedState.notes[editorDiv.id]);
+                            }
+                        }
+                    }
+                    
+                    // Store Quill instance
+                    editorInstances[editorDiv.id] = {
+                        quill: quill,
+                        getContents: () => quill.getContents(),
+                        setContents: (content) => {
+                            if (typeof content === 'object' && content.ops) {
+                                quill.setContents(content);
+                            } else {
+                                quill.setText(content || '');
+                            }
+                        }
+                    };
+                    
+                } catch (error) {
+                    console.error('Failed to initialize Quill:', error);
+                    // Fallback to simple textarea on error
+                    const textarea = document.createElement('textarea');
+                    textarea.placeholder = 'Add your notes here...';
+                    textarea.style.width = '100%';
+                    textarea.style.minHeight = '150px';
+                    textarea.style.padding = '12px';
+                    textarea.style.border = '1px solid #ccc';
+                    textarea.style.borderRadius = '4px';
+                    textarea.style.fontFamily = 'inherit';
+                    textarea.style.resize = 'vertical';
+                    
+                    // Load saved content if available
+                    if (savedState.notes && savedState.notes[editorDiv.id]) {
+                        const savedData = savedState.notes[editorDiv.id];
+                        if (typeof savedData === 'object' && savedData.ops) {
+                            // Convert Delta to plain text
+                            textarea.value = savedData.ops.map(op => op.insert || '').join('');
+                        } else {
+                            textarea.value = savedData || '';
+                        }
+                    }
+                    
+                    editorDiv.innerHTML = '';
+                    editorDiv.appendChild(textarea);
+                    editorInstances[editorDiv.id] = {
+                        element: textarea,
+                        getContents: () => textarea.value,
+                        setContents: (content) => { 
+                            if (typeof content === 'object' && content.ops) {
+                                textarea.value = content.ops.map(op => op.insert || '').join('');
+                            } else {
+                                textarea.value = content || '';
+                            }
+                        }
+                    };
+                }
             }
         });
     });
     
     // Setup auto-save
     setupAutoSave();
+    
+    // Setup accordion functionality
+    setupAccordions();
     
     // Initialize progress display
     updateProgress();
@@ -364,4 +479,56 @@ document.addEventListener('DOMContentLoaded', function() {
     if (importBtn) importBtn.addEventListener('click', () => importFile.click());
     if (importFile) importFile.addEventListener('change', importData);
     if (clearBtn) clearBtn.addEventListener('click', clearData);
+    
+    // Setup manual save functionality for notes
+    function setupManualNoteSave() {
+        const saveButtons = document.querySelectorAll('.save-notes-btn');
+        saveButtons.forEach(button => {
+            button.addEventListener('click', async function() {
+                const itemId = this.dataset.itemId;
+                const editorId = `note-${itemId}`;
+                const editor = editorInstances[editorId];
+                
+                if (editor) {
+                    try {
+                        // Get the current state
+                        const state = getCurrentState();
+                        
+                        // Save the editor content
+                        if (editor.getContents) {
+                            state.notes[editorId] = editor.getContents();
+                        } else if (editor.element) {
+                            // Fallback textarea
+                            state.notes[editorId] = editor.element.value || '';
+                        }
+                        
+                        // Save to localStorage
+                        saveChecklistData(state);
+                        
+                        // Show feedback
+                        this.textContent = 'Saved!';
+                        this.classList.add('saved');
+                        
+                        setTimeout(() => {
+                            this.textContent = 'Save Notes';
+                            this.classList.remove('saved');
+                        }, 2000);
+                        
+                    } catch (error) {
+                        console.error('Error saving notes:', error);
+                        this.textContent = 'Error saving';
+                        this.style.background = '#dc3545';
+                        
+                        setTimeout(() => {
+                            this.textContent = 'Save Notes';
+                            this.style.background = '';
+                        }, 2000);
+                    }
+                }
+            });
+        });
+    }
+    
+    // Initialize manual save after a short delay to ensure buttons are rendered
+    setTimeout(setupManualNoteSave, 100);
 });
