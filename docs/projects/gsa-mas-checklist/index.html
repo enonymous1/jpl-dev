@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive GSA MAS Checklist - JPL-DEV</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+</head>
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/">Home</a>
+        <a href="/projects/">Projects</a>
+    </div>
+
+    <div id="content-wrapper">
+        <header id="header">
+            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+            
+                <a href="/" class="header-link">JPL-DEV</a>
+            
+        </header>
+
+        <main id="main">
+            
+    <div class="project-header">
+        <h1>Interactive GSA New Offer Checklist</h1>
+        <h2>Navigate the GSA MAS proposal requirements with ease.</h2>
+    </div>
+
+    <div class="card">
+        <form>
+            <h3>Offer Details</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="offeror_name">Offeror Name:</label>
+                    <input type="text" id="offeror_name" name="offeror_name">
+                </div>
+                <div class="form-group">
+                    <label for="offer_number">Offer Number:</label>
+                    <input type="text" id="offer_number" name="offer_number">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="uei">UEI:</label>
+                    <input type="text" id="uei" name="uei">
+                </div>
+                <div class="form-group">
+                    <label for="sins_offered">SINs Offered:</label>
+                    <input type="text" id="sins_offered" name="sins_offered" placeholder="e.g., 54151S, 54151HACS">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label for="commodity_type">Commodity Type:</label>
+                    <div class="btn-group" id="commodity_type_group">
+                        <button type="button" class="btn">Product</button>
+                        <button type="button" class="btn">Services</button>
+                        <button type="button" class="btn">Both</button>
+                    </div>
+                    <input type="hidden" id="commodity_type" name="commodity_type">
+                </div>
+            </div>
+        </form>
+        <div class="file-links">
+            <hr>
+            <h4>Checklist Resources</h4>
+            <a href="/static/files/New-Offer-Checklist_June2025_Industry_1_0.xlsx" download class="file-link-btn">Download Checklist</a>
+            <a href="https://docs.google.com/spreadsheets/d/17tfPkPBbNWTtWaPjFaFzpF7MA6kUD8PXYHVI1HF0uJs/edit?usp=sharing" target="_blank" class="file-link-btn">View Checklist</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Offer Review Checklist</h3>
+        <div class="checklist">
+            
+                <h2 class="checklist-section-header">Preliminary Review</h2>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-1" name="item-1">
+                            <label for="item-1" class="checklist-item" data-modal-target="#modal-1">
+                                Offer is current, accurate, and complete, and demonstrates a thorough understanding of solicitation requirements; no exceptions are taken to the terms and conditions or the exceptions are explicitly stated in the offer
+                            </label>
+                            <span class="checklist-card-line-number">1</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (c)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (c) Offers must be current, accurate, and complete, and demonstrate a thorough understanding of solicitation requirements. By submission of an...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-1" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 1</span>
+                                <span class="modal-status" id="status-1"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Offer is current, accurate, and complete, and demonstrates a thorough understanding of solicitation requirements; no exceptions are taken to the terms and conditions or the exceptions are explicitly stated in the offer</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (c)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(c) Offers must be current, accurate, and complete, and demonstrate a thorough understanding of solicitation requirements. By submission of an offer:<br>
+(1) The offeror has not taken exceptions to the terms and conditions of this solicitation unless explicitly identified in eOffer (see "Exceptions to Terms and Conditions" under the Standard Response module).<br>
+(2) The offeror understands and agrees to comply with the requirements of all clauses and provisions. Failure to comply with applicable clauses and provisions will result in rejection of the offer. Offerors are responsible for ensuring that their offers meet ALL solicitation requirements and should not assume that deficient items will be clarified prior to the offer being rejected.<br>
+(3) The offeror understands and agrees to comply with the requirements of GSAR clause, 552.238-80 Industrial Funding Fee and Sales Reporting OR GSAR clause 552.238-80, Industrial Funding Fee and Sales Reporting (Alternate I) if participating in Transactional Data Reporting (TDR) (see paragraph (f) below for more information on TDR).</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-1" class="note-editor" data-item-id="1"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-2" name="item-2">
+                            <label for="item-2" class="checklist-item" data-modal-target="#modal-2">
+                                Streamlined offer-meets all criteria for submission
+                            </label>
+                            <span class="checklist-card-line-number">2</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(d) (1-4)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (d) Existing Federal Supply Schedule (FSS) Program contractors and any small business who does not have its own FSS program contract but is...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-2" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 2</span>
+                                <span class="modal-status" id="status-2"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Streamlined offer-meets all criteria for submission</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> Applicable to Existing Federal Supply Schedule (FSS) Program contractors, and any small business who does not have its own FSS program contract but is performing under an existing FSS program joint venture contract as a joint venture partner. ****Bullet 4 is ONLY applicable to a small business who does not have its own FSS program contract but is performing under an active FSS program joint venture contract as a joint venture partner.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(d) (1-4)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(d) Existing Federal Supply Schedule (FSS) Program contractors and any small business who does not have its own FSS program contract but is performing under an active FSS program joint venture contract as a joint venture partner may submit a streamlined offer if the following criteria are met:<br>
+(1) The offeror is requesting award of Special Item Number(s) (SIN(s)) under the same subcategory as its current FSS program contract(s);<br>
+(2) The offeror is not requesting award of any new labor categories under a services SIN;<br>
+(3) The offeror is not requesting award of any new SINs that would change the predominant contract type of the FSS program contract (i.e., supply to service or service to supply); and<br>
+(4) The offeror held an FSS program contract that was not canceled for cause, non-compliance, or convenience of the Government due to the contractor's non-performance.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-2" class="note-editor" data-item-id="2"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-3" name="item-3">
+                            <label for="item-3" class="checklist-item" data-modal-target="#modal-3">
+                                Continuous contract offer-meets all criteria for submission
+                            </label>
+                            <span class="checklist-card-line-number">3</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(e)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (e) A current FSS contractor can submit an offer for a continuous contract beginning on the first day of the month following the month in which...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-3" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 3</span>
+                                <span class="modal-status" id="status-3"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Continuous contract offer-meets all criteria for submission</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(e)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(e) A current FSS contractor can submit an offer for a continuous contract beginning on the first day of the month following the month in which the FSS contractor's current contract expires. However, the offeror must satisfy the eligibility criteria in paragraph (d) above. Additionally, the offeror must be in good standing (i.e., current on reporting requirements and Industrial Funding Fee (IFF) payments) on its current FSS program contract. Continuous contracts will be awarded for the full ordering period.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-3" class="note-editor" data-item-id="3"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-4" name="item-4">
+                            <label for="item-4" class="checklist-item" data-modal-target="#modal-4">
+                                If this is an 8(a) offer, did the offeror indicate they are a current 8(a) Program participant at the time of their offer?
+                            </label>
+                            <span class="checklist-card-line-number">4</span>
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-4" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 4</span>
+                                <span class="modal-status" id="status-4"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">If this is an 8(a) offer, did the offeror indicate they are a current 8(a) Program participant at the time of their offer?</span></p>
+                            
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-4" class="note-editor" data-item-id="4"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-5" name="item-5">
+                            <label for="item-5" class="checklist-item" data-modal-target="#modal-5">
+                                Rejection of Offer: If previously rejected, did the offeror provide a response to the rejection letter with their new offer?
+                            </label>
+                            <span class="checklist-card-line-number">5</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(i)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (i) Rejection of Offer. If GSA previously rejected an offeror&#39;s offer, GSA will not consider a new offer from the same offeror for award of the...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-5" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 5</span>
+                                <span class="modal-status" id="status-5"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Rejection of Offer: If previously rejected, did the offeror provide a response to the rejection letter with their new offer?</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(i)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(i) Rejection of Offer. If GSA previously rejected an offeror's offer, GSA will not consider a new offer from the same offeror for award of the same SIN(s) unless the offeror submits a point-by-point response to GSA's rejection letter with its new offer. The new offer must also address all deficiencies noted in the previous rejection letter. The point-by-point response must be submitted as a separate document and uploaded to eOffer. See "Rejection of Offer" under the Standard Response module for more information.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-5" class="note-editor" data-item-id="5"></div>
+                        </div>
+                    </div>
+                
+            
+                <h2 class="checklist-section-header">Administrative Proposal</h2>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-6" name="item-6">
+                            <label for="item-6" class="checklist-item" data-modal-target="#modal-6">
+                                Vendor acknowledged the “Pathway to Success” training was downloaded and completed within the past 12 months (N/A for streamlined offers).
+                            </label>
+                            <span class="checklist-card-line-number">6</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (i.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (i.) Pathway to Success. The offeror must acknowledge that it has downloaded and completed the Pathway to Success training within the past...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-6" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 6</span>
+                                <span class="modal-status" id="status-6"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Vendor acknowledged the “Pathway to Success” training was downloaded and completed within the past 12 months (N/A for streamlined offers).</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (i.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (i.) Pathway to Success. The offeror must acknowledge that it has downloaded and completed the Pathway to Success training within the past 12 months. The Pathway to Success training is available at GSA.gov/PathwaytoSuccess. This training covers the fundamental concepts of the FSS program and the GSA Advantage!® online catalog. Completion of this training is required for all new FSS contractors and is strongly recommended for existing FSS contractors submitting offers for additional SINs.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-6" class="note-editor" data-item-id="6"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-7" name="item-7">
+                            <label for="item-7" class="checklist-item" data-modal-target="#modal-7">
+                                Vendor acknowledged the Readiness Assessment was downloaded and completed within the past 12 months (N/A for streamlined offers).
+                            </label>
+                            <span class="checklist-card-line-number">7</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (ii.) Readiness Assessment. The offeror must acknowledge that it has downloaded and completed the Readiness Assessment within the past 12...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-7" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 7</span>
+                                <span class="modal-status" id="status-7"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Vendor acknowledged the Readiness Assessment was downloaded and completed within the past 12 months (N/A for streamlined offers).</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (ii.) Readiness Assessment. The offeror must acknowledge that it has downloaded and completed the Readiness Assessment within the past 12 months. The Readiness Assessment is available at GSA.gov/ReadinessAssessment. This assessment helps offerors determine their readiness to compete for and manage an FSS contract.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-7" class="note-editor" data-item-id="7"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-8" name="item-8">
+                            <label for="item-8" class="checklist-item" data-modal-target="#modal-8">
+                                Vendor has valid SAM registration -must be current, accurate, and complete, and reflect the North American Industrial Classification System (NAICS) code(s) for this solicitation and the products/services proposed.
+                            </label>
+                            <span class="checklist-card-line-number">8</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (iii.) System for Award Management (SAM) Registration. The offeror must have a current, accurate, and complete SAM registration that...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-8" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 8</span>
+                                <span class="modal-status" id="status-8"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Vendor has valid SAM registration -must be current, accurate, and complete, and reflect the North American Industrial Classification System (NAICS) code(s) for this solicitation and the products/services proposed.</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> 889 “Part A”: Ensure that the vendor has completed the provision at 52.212-3(v)(2)(i): If the vendor indicates that it “does provide” covered telecom in SAM, the vendor is required to complete the provision at 52.204-24(d)(1) via eOffer.
+ 
+ 889 “Part B”: Per 52.212-3(v)(2)(ii), if the vendor indicates that it “does use” covered telecomm in SAM, the vendor is required to complete and upload 52.204-24(d)(2) via eOffer and, if necessary, provide the information required at 52.204-24(e)(2) via eOffer. 
+ 
+ Joint venture offerors: A joint venture offeror must be a separate legal entity registered in SAM under its own UEI and CAGE code. The joint venture offeror cannot share a UEI or CAGE coe with any of its joint venture partners.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (iii.) System for Award Management (SAM) Registration. The offeror must have a current, accurate, and complete SAM registration that reflects the North American Industrial Classification System (NAICS) code(s) for this solicitation and the products/services proposed. The offeror must maintain an active SAM registration throughout the life of any contract awarded as a result of this solicitation.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-8" class="note-editor" data-item-id="8"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-9" name="item-9">
+                            <label for="item-9" class="checklist-item" data-modal-target="#modal-9">
+                                If an offeror was previously awarded a Schedule contract, and it was subsequently cancelled or allowed to expire due to low sales or non-compliance with other contract terms and conditions, the offeror provided a detailed description of the steps the offeror plans to take to generate sales and/or ensure compliance through a new contract.
+                            </label>
+                            <span class="checklist-card-line-number">9</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iv.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (iv.) Previous Contract Performance. If an offeror was previously awarded a Schedule contract, and it was subsequently cancelled or...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-9" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 9</span>
+                                <span class="modal-status" id="status-9"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">If an offeror was previously awarded a Schedule contract, and it was subsequently cancelled or allowed to expire due to low sales or non-compliance with other contract terms and conditions, the offeror provided a detailed description of the steps the offeror plans to take to generate sales and/or ensure compliance through a new contract.</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> Note: &gt; 24 Months since previous contract low sales cancellation/expiration for a new offer for the same SINs will be rejected.
+ 
+ Note: &gt; 24 Months since previous contract was canceled/expired due to non-compliance for a new offer for any SIN(s) will be rejected.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iv.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (iv.) Previous Contract Performance. If an offeror was previously awarded a Schedule contract, and it was subsequently cancelled or allowed to expire due to low sales or non-compliance with other contract terms and conditions, the offeror must provide a detailed description of the steps the offeror plans to take to generate sales and/or ensure compliance through a new contract.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-9" class="note-editor" data-item-id="9"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-10" name="item-10">
+                            <label for="item-10" class="checklist-item" data-modal-target="#modal-10">
+                                Financial Documents - annual financial statements for the previous 2 years (balance sheet and income statement), unless submitting under Startup Springboard.** Firm must provide an explanation for any negative financial information disclosed.
+                            </label>
+                            <span class="checklist-card-line-number">10</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (v.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (v.) Financial Responsibility. The offeror must provide annual financial statements for the previous 2 years (balance sheet and income...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-10" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 10</span>
+                                <span class="modal-status" id="status-10"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Financial Documents - annual financial statements for the previous 2 years (balance sheet and income statement), unless submitting under Startup Springboard.** Firm must provide an explanation for any negative financial information disclosed.</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> Requirement does not apply to streamline offers (active FSS contract) or small businesses performing under an active FSS program joint venture contract as a joint venture partner.
+ 
+ **Startup Springboard. Offerors with less than two (2) years of corporate experience must provide financial documentation that demonstrates the Offeror&#39;s financial responsibility. If no financial statements exist, the contracting officer, after submission, may request additional documentation. - The GSA contracting officer (CO) is required to make a determination of financial responsibility as indicated above. Financial documentation submitted by the Offeror in lieu of financial statements must provide the required information to make this determination.
+ 
+ The Startup Springboard process is available for joint venture offerors with less than two years of corporate experience. When evaluating financial responsibility, the CO will consider financial documentation of the joint venture partners in addition to any financial documentation of the joint venture entity itself.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (v.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (v.) Financial Responsibility. The offeror must provide annual financial statements for the previous 2 years (balance sheet and income statement), unless submitting under Startup Springboard. The firm must provide an explanation for any negative financial information disclosed.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-10" class="note-editor" data-item-id="10"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-11" name="item-11">
+                            <label for="item-11" class="checklist-item" data-modal-target="#modal-11">
+                                Subcontracting Plan - (As Applicable)
+                            </label>
+                            <span class="checklist-card-line-number">11</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (vi.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (vi.) Subcontracting Plan. If applicable, the offeror must submit a subcontracting plan in accordance with FAR 19.7 and the clause at...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-11" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 11</span>
+                                <span class="modal-status" id="status-11"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Subcontracting Plan - (As Applicable)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (vi.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (vi.) Subcontracting Plan. If applicable, the offeror must submit a subcontracting plan in accordance with FAR 19.7 and the clause at 52.219-9, Small Business Subcontracting Plan.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-11" class="note-editor" data-item-id="11"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-12" name="item-12">
+                            <label for="item-12" class="checklist-item" data-modal-target="#modal-12">
+                                Agent Authorization Letter - (As Applicable)
+                            </label>
+                            <span class="checklist-card-line-number">12</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (viii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (viii.) Agent Authorization Letter. If applicable, an Agent Authorization Letter must be completed and submitted as part of the offer if a...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-12" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 12</span>
+                                <span class="modal-status" id="status-12"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Agent Authorization Letter - (As Applicable)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (viii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (viii.) Agent Authorization Letter. If applicable, an Agent Authorization Letter must be completed and submitted as part of the offer if a consultant or third-party agent assisted in the preparation of the offer, will be involved in any part of the negotiation of the offer, or will be involved in any post-award actions.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-12" class="note-editor" data-item-id="12"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-13" name="item-13">
+                            <label for="item-13" class="checklist-item" data-modal-target="#modal-13">
+                                Section 508 Compliance - Section 508 of the Rehabilitation Act, as amended by the Workforce Investment Act of 1998 (P.L. 105-220) requires that when Federal agencies develop, procure, maintain, or use information and communication technology (ICT), it must be accessible to people with disabilities. Federal employees and members of the public who have disabilities must have access to, and use of, information and data that is comparable to people without disabilities. (As Applicable to ICT Offerings only)
+                            </label>
+                            <span class="checklist-card-line-number">13</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ix.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (ix.) Section 508 Compliance. Section 508 of the Rehabilitation Act, as amended by the Workforce Investment Act of 1998 (P.L. 105-220)...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-13" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 13</span>
+                                <span class="modal-status" id="status-13"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Section 508 Compliance - Section 508 of the Rehabilitation Act, as amended by the Workforce Investment Act of 1998 (P.L. 105-220) requires that when Federal agencies develop, procure, maintain, or use information and communication technology (ICT), it must be accessible to people with disabilities. Federal employees and members of the public who have disabilities must have access to, and use of, information and data that is comparable to people without disabilities. (As Applicable to ICT Offerings only)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ix.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (ix.) Section 508 Compliance. Section 508 of the Rehabilitation Act, as amended by the Workforce Investment Act of 1998 (P.L. 105-220) requires that when Federal agencies develop, procure, maintain, or use information and communication technology (ICT), it must be accessible to people with disabilities.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-13" class="note-editor" data-item-id="13"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-14" name="item-14">
+                            <label for="item-14" class="checklist-item" data-modal-target="#modal-14">
+                                TAA Compliance - Country of Origin identified (As Applicable)
+                            </label>
+                            <span class="checklist-card-line-number">14</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (x.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (x.) Trade Agreements Act (TAA) Compliance. The offeror must identify the country of origin for all products offered. All products must...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-14" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 14</span>
+                                <span class="modal-status" id="status-14"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">TAA Compliance - Country of Origin identified (As Applicable)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (x.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (x.) Trade Agreements Act (TAA) Compliance. The offeror must identify the country of origin for all products offered. All products must comply with the Trade Agreements Act.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-14" class="note-editor" data-item-id="14"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-15" name="item-15">
+                            <label for="item-15" class="checklist-item" data-modal-target="#modal-15">
+                                Letter of Commitment/Supply - (As Applicable) (Products Only)
+                            </label>
+                            <span class="checklist-card-line-number">15</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xi.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (xi.) Letter of Commitment/Supply. If applicable, the offeror must provide a Letter of Commitment/Supply from the manufacturer or...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-15" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 15</span>
+                                <span class="modal-status" id="status-15"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Letter of Commitment/Supply - (As Applicable) (Products Only)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xi.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (xi.) Letter of Commitment/Supply. If applicable, the offeror must provide a Letter of Commitment/Supply from the manufacturer or authorized distributor for all products offered.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-15" class="note-editor" data-item-id="15"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-16" name="item-16">
+                            <label for="item-16" class="checklist-item" data-modal-target="#modal-16">
+                                If an item appears to be obsolete the GSA may request additional information, such as confirmation of sufficient availability of supply and may decide the item should not be offered under the MAS program and will not award such item(s).(Products Only)
+                            </label>
+                            <span class="checklist-card-line-number">16</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (xii.) Product Obsolescence. If an item appears to be obsolete, GSA may request additional information, such as confirmation of sufficient...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-16" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 16</span>
+                                <span class="modal-status" id="status-16"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">If an item appears to be obsolete the GSA may request additional information, such as confirmation of sufficient availability of supply and may decide the item should not be offered under the MAS program and will not award such item(s).(Products Only)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (xii.) Product Obsolescence. If an item appears to be obsolete, GSA may request additional information, such as confirmation of sufficient availability of supply and may decide the item should not be offered under the MAS program.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-16" class="note-editor" data-item-id="16"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-17" name="item-17">
+                            <label for="item-17" class="checklist-item" data-modal-target="#modal-17">
+                                Products that are solely compatible with products that are prohibited for national security reasons (e.g., FAR clauses 52.204-23; 52.204-25; and 52.204-30) may not be offered under MAS contracts.
+                            </label>
+                            <span class="checklist-card-line-number">17</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (xiii.) Prohibited Products. Products that are solely compatible with products that are prohibited for national security reasons (e.g.,...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-17" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 17</span>
+                                <span class="modal-status" id="status-17"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Products that are solely compatible with products that are prohibited for national security reasons (e.g., FAR clauses 52.204-23; 52.204-25; and 52.204-30) may not be offered under MAS contracts.</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> “Solely compatible products” are items that can only fulfill their intended purpose in conjunction with another product(s). For example, a small pluggable module that only functions with a covered telecommunications equipment as defined in FAR 52.204-25 is considered to be solely compatible with a prohibited product.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (xiii.) Prohibited Products. Products that are solely compatible with products that are prohibited for national security reasons (e.g., FAR clauses 52.204-23; 52.204-25; and 52.204-30) may not be offered under MAS contracts.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-17" class="note-editor" data-item-id="17"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-18" name="item-18">
+                            <label for="item-18" class="checklist-item" data-modal-target="#modal-18">
+                                Dealer/reseller functions described (As Applicable) (Products Only)
+                            </label>
+                            <span class="checklist-card-line-number">18</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiv)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (xiv.) Dealer/Reseller Functions. If applicable, the offeror must describe dealer/reseller functions for products offered.</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-18" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 18</span>
+                                <span class="modal-status" id="status-18"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Dealer/reseller functions described (As Applicable) (Products Only)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiv)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (xiv.) Dealer/Reseller Functions. If applicable, the offeror must describe dealer/reseller functions for products offered.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-18" class="note-editor" data-item-id="18"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-19" name="item-19">
+                            <label for="item-19" class="checklist-item" data-modal-target="#modal-19">
+                                Ability One - Offeror is an authorized AbilityOne Program distributor (As Applicable) (Products Only)
+                            </label>
+                            <span class="checklist-card-line-number">19</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xv.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (xv.) AbilityOne Program. If applicable, the offeror must be an authorized AbilityOne Program distributor for products on the AbilityOne...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-19" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 19</span>
+                                <span class="modal-status" id="status-19"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Ability One - Offeror is an authorized AbilityOne Program distributor (As Applicable) (Products Only)</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> Joint venture offerors: If the joint venture offeror will not source the offered product(s) itself (e.g., unpopulated which means joint venture offeror does not have its own separate employees to perform contracts awarded to the joint venture), the joint venture offeror must provide evidence that the joint venture partner(s) sourcing the products on the AbilityOne Procurement List is an authorized distributor under the AbilityOne Program. The joint venture offeror must also submit evidence of the AbilityOne Commission’s concurrence with the joint venture partner(s) providing products on the AbilityOne Procurement List on behalf of the joint venture entity.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xv.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (xv.) AbilityOne Program. If applicable, the offeror must be an authorized AbilityOne Program distributor for products on the AbilityOne Procurement List.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-19" class="note-editor" data-item-id="19"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-20" name="item-20">
+                            <label for="item-20" class="checklist-item" data-modal-target="#modal-20">
+                                Manufacturer Part Number (MPN) and/ or (UPC-A) data must be submitted and accurate (Products Only)
+                            </label>
+                            <span class="checklist-card-line-number">20</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvi.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (xvi.) Manufacturer Part Number (MPN) and Universal Product Code (UPC-A). For products only, accurate MPN and/or UPC-A data must be submitted.</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-20" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 20</span>
+                                <span class="modal-status" id="status-20"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Manufacturer Part Number (MPN) and/ or (UPC-A) data must be submitted and accurate (Products Only)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvi.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (xvi.) Manufacturer Part Number (MPN) and Universal Product Code (UPC-A). For products only, accurate MPN and/or UPC-A data must be submitted.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-20" class="note-editor" data-item-id="20"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-21" name="item-21">
+                            <label for="item-21" class="checklist-item" data-modal-target="#modal-21">
+                                Offerors are advised that following contract award, Schedule contractors offering products under designated Special Item Numbers (SINs) must submit detailed electronic contract data, such as, but not limited to, Universal Product Codes (UPC) and product photos for each item offered on GSA Advantage! using the Schedule Input Program (SIP), Electronic Data Interchange (EDI) or other common-use electronic medium prescribed by GSA (Products Only)
+                            </label>
+                            <span class="checklist-card-line-number">21</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (xvii.) Electronic Contract Data. Following contract award, Schedule contractors offering products under designated Special Item Numbers...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-21" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 21</span>
+                                <span class="modal-status" id="status-21"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Offerors are advised that following contract award, Schedule contractors offering products under designated Special Item Numbers (SINs) must submit detailed electronic contract data, such as, but not limited to, Universal Product Codes (UPC) and product photos for each item offered on GSA Advantage! using the Schedule Input Program (SIP), Electronic Data Interchange (EDI) or other common-use electronic medium prescribed by GSA (Products Only)</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> Contractors must follow the detailed guidance and requirements provided on the &#39;Requiremens after getting a MAS contract&#39; page when submitting electronic contract data for inclusion on the GSA Advantage! website</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (xvii.) Electronic Contract Data. Following contract award, Schedule contractors offering products under designated Special Item Numbers (SINs) must submit detailed electronic contract data, such as, but not limited to, Universal Product Codes (UPC) and product photos for each item offered on GSA Advantage!®.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-21" class="note-editor" data-item-id="21"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-22" name="item-22">
+                            <label for="item-22" class="checklist-item" data-modal-target="#modal-22">
+                                GSA Advantage Purchase Order (PO Portal). The offeror must use EDI, cXML or the GSA Advantage Purchase Order (PO) Portal to provide order acknowledgment information that enables ordering agencies to track the location of an order at any time, from the moment the order is shipped, to the point of delivery and acceptance. (Products Only)
+                            </label>
+                            <span class="checklist-card-line-number">22</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xviii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (xviii.) GSA Advantage Purchase Order (PO) Portal. The offeror must use EDI, cXML or the GSA Advantage Purchase Order (PO) Portal to...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-22" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 22</span>
+                                <span class="modal-status" id="status-22"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">GSA Advantage Purchase Order (PO Portal). The offeror must use EDI, cXML or the GSA Advantage Purchase Order (PO) Portal to provide order acknowledgment information that enables ordering agencies to track the location of an order at any time, from the moment the order is shipped, to the point of delivery and acceptance. (Products Only)</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> Note: Contractors must provide a valid status for each order line no later than the specified number of days established as the &#39;Normal Delivery Terms&#39; of the contract.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xviii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (xviii.) GSA Advantage Purchase Order (PO) Portal. The offeror must use EDI, cXML or the GSA Advantage Purchase Order (PO) Portal to provide order acknowledgment information that enables ordering agencies to track the location of an order at any time.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-22" class="note-editor" data-item-id="22"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-23" name="item-23">
+                            <label for="item-23" class="checklist-item" data-modal-target="#modal-23">
+                                Frustrated Freight (Products only). GSAR Clause 552.211-73, Marking, establishes marking and labeling requirements for shipping Federal Government orders. The Government reserves the right to require sample electronic versions of all documents (including but not limited to: Military Shipping Labels, Packing Lists, Unit Level Markings, HAZMAT related documents, etc.) that are required for compliance with the FED-STD-123 and MIL-STD-129 edition in effect as of the date of solicitation issuance.
+                            </label>
+                            <span class="checklist-card-line-number">23</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xix.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (xix.) Frustrated Freight. For products only, GSAR Clause 552.211-73, Marking, establishes marking and labeling requirements for shipping...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-23" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 23</span>
+                                <span class="modal-status" id="status-23"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Frustrated Freight (Products only). GSAR Clause 552.211-73, Marking, establishes marking and labeling requirements for shipping Federal Government orders. The Government reserves the right to require sample electronic versions of all documents (including but not limited to: Military Shipping Labels, Packing Lists, Unit Level Markings, HAZMAT related documents, etc.) that are required for compliance with the FED-STD-123 and MIL-STD-129 edition in effect as of the date of solicitation issuance.</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xix.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (xix.) Frustrated Freight. For products only, GSAR Clause 552.211-73, Marking, establishes marking and labeling requirements for shipping Federal Government orders. The Government reserves the right to require sample electronic versions of all required documents.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-23" class="note-editor" data-item-id="23"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-24" name="item-24">
+                            <label for="item-24" class="checklist-item" data-modal-target="#modal-24">
+                                Joint Ventures. All joint venture offerors, regardless of size status, must complete the All Joint Ventures section of the Joint Venture Solicitation Attachment and Appendix A.
+ 
+ In addition to the All Joint Ventures section and Appendix A, all joint venture offerors representing themselves as a small or socioeconomic category must complete the Small Business Joint Venture section of the Joint Venture Solicitation Attachment and Appendix B (as applicable).
+                            </label>
+                            <span class="checklist-card-line-number">24</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xx.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (1) (xx.) Joint Ventures. All joint venture offerors, regardless of size status, must complete the All Joint Ventures section of the Joint...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-24" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 24</span>
+                                <span class="modal-status" id="status-24"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Joint Ventures. All joint venture offerors, regardless of size status, must complete the All Joint Ventures section of the Joint Venture Solicitation Attachment and Appendix A.
+ 
+ In addition to the All Joint Ventures section and Appendix A, all joint venture offerors representing themselves as a small or socioeconomic category must complete the Small Business Joint Venture section of the Joint Venture Solicitation Attachment and Appendix B (as applicable).</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> **Note: Appendix B of the Joint Venture Solicitation
+ Attachment is not required to be completed by a small
+ business joint venture offeror between two or more small
+ businesses who are not mentor-protégé joint ventures (see
+ 13 CFR 125.8(d)).</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xx.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (1) (xx.) Joint Ventures. All joint venture offerors, regardless of size status, must complete the All Joint Ventures section of the Joint Venture Solicitation Attachment and Appendix A.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-24" class="note-editor" data-item-id="24"></div>
+                        </div>
+                    </div>
+                
+            
+                <h2 class="checklist-section-header">Technical Proposal</h2>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-25" name="item-25">
+                            <label for="item-25" class="checklist-item" data-modal-target="#modal-25">
+                                Factor One - Corporate Experience Narrative (minimum of 2 years required, unless submitting under Startup Springboard**) (N/A for streamlined offers and small businesses performing under an active FSS program contract as a joint venture partner)
+                            </label>
+                            <span class="checklist-card-line-number">25</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (i.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (2) (i.) Corporate Experience Narrative. The offeror must provide a minimum of 2 years of corporate experience, unless submitting under...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-25" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 25</span>
+                                <span class="modal-status" id="status-25"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Factor One - Corporate Experience Narrative (minimum of 2 years required, unless submitting under Startup Springboard**) (N/A for streamlined offers and small businesses performing under an active FSS program contract as a joint venture partner)</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> Document exception to the SCP Provision if necessary  
+ 
+ **Startup Springboard: Offerors with less than two (2) years of corporate experience, must submit additional information that demonstrates their ability to manage a company and provide the products/services described under this Schedule. (ie. information on the professional management and project experience of company executives and key personnel)
+ 
+ The Startup Springboard process is available for joint venture offerors with less than two years of corporate experience. The information required by the Startup Springboard process must be provided for the joint venture entity and/or each of the joint venture partners (each joint venture partner must be addressed in the narrative submitted).</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (i.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (2) (i.) Corporate Experience Narrative. The offeror must provide a minimum of 2 years of corporate experience, unless submitting under Startup Springboard. This narrative should demonstrate the offeror's ability to successfully perform under this solicitation.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-25" class="note-editor" data-item-id="25"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-26" name="item-26">
+                            <label for="item-26" class="checklist-item" data-modal-target="#modal-26">
+                                Factor Two - Past Performance (N/A for streamlined offers and small businesses performing under an active FSS program contract as a joint venture partner)
+                            </label>
+                            <span class="checklist-card-line-number">26</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (ii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (2) (ii.) Past Performance. The offeror must provide past performance information, including contractor performance assessment reports (CPARS)...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-26" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 26</span>
+                                <span class="modal-status" id="status-26"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Factor Two - Past Performance (N/A for streamlined offers and small businesses performing under an active FSS program contract as a joint venture partner)</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> Documents not required for streamlined offers
+  
+ If the joint venture offeror cannot demonstrate past performance, the joint venture offeror must provide the information required for each joint venture partner in accordance with the instructions below. If the joint venture offeror is a mentor-protégé joint venture or a socioeconomic joint venture, the protégé or socioeconomic category joint venture partner(s) must verify at least one contractor performance assessment report (available in CPARS) in eOffer in accordance with the instructions under (A) or submit at least one customer reference and one (1) past performance questionnaire in accordance with the instructions under (B). The mentor, or other joint venture partner(s) in a socioeconomic joint venture, must satisfy the remaining past performance requirements.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (ii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (2) (ii.) Past Performance. The offeror must provide past performance information, including contractor performance assessment reports (CPARS) or customer references and past performance questionnaires.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-26" class="note-editor" data-item-id="26"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-27" name="item-27">
+                            <label for="item-27" class="checklist-item" data-modal-target="#modal-27">
+                                Factor Three - Quality Control Narrative
+                            </label>
+                            <span class="checklist-card-line-number">27</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (2) (iii.) Quality Control Narrative. The offeror must provide a quality control narrative describing the offeror&#39;s quality control procedures...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-27" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 27</span>
+                                <span class="modal-status" id="status-27"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Factor Three - Quality Control Narrative</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (2) (iii.) Quality Control Narrative. The offeror must provide a quality control narrative describing the offeror's quality control procedures and processes.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-27" class="note-editor" data-item-id="27"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-28" name="item-28">
+                            <label for="item-28" class="checklist-item" data-modal-target="#modal-28">
+                                Factor Four - Relative Project Experience Narrative (Offers Including Services) (N/A for streamlined offers and small businesses performing under an active FSS program contract as a joint venture partner)
+                            </label>
+                            <span class="checklist-card-line-number">28</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iv.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (2) (iv.) Relative Project Experience Narrative. For offers including services, the offeror must provide a narrative describing relevant...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-28" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 28</span>
+                                <span class="modal-status" id="status-28"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Factor Four - Relative Project Experience Narrative (Offers Including Services) (N/A for streamlined offers and small businesses performing under an active FSS program contract as a joint venture partner)</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> If a joint venture offeror does not have relevant project experience for a particular SIN, a joint venture partner may submit the required project experience. The narratives must clearly identify the joint venture partner that performed the work. For a mentor-protégé joint venture or socioeconomic joint venture, the protégé and/or socioeconomic joint venture partner must have relevant project experience for at least one of the SIN(s) offered. (Note: Pursuant to SBA requirements, a protege and/or socioeconomic joint venture partner must have some experience in the type of work to be performed under the contract.)</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iv.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (2) (iv.) Relative Project Experience Narrative. For offers including services, the offeror must provide a narrative describing relevant project experience for the services being offered.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-28" class="note-editor" data-item-id="28"></div>
+                        </div>
+                    </div>
+                
+            
+                <h2 class="checklist-section-header">Price Proposal</h2>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-29" name="item-29">
+                            <label for="item-29" class="checklist-item" data-modal-target="#modal-29">
+                                Completed Price Proposal Template in Excel Format
+                            </label>
+                            <span class="checklist-card-line-number">29</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (ii.) Completed Price Proposal Template. The offeror must submit a completed Price Proposal Template in Excel format with all proposed...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-29" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 29</span>
+                                <span class="modal-status" id="status-29"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Completed Price Proposal Template in Excel Format</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> If the joint venture offeror does not have MFC information, it must complete the PPT using the MFC information
+ for the joint venture partner(s) who will be providing the product(s)/service(s) offered.
+ 
+ For products, the joint venture partner providing the product must be identified in the “Product Name” column of the Products PPT.
+ 
+ For services, the joint venture partner providing the labor catgeory/service must be identified in the &#34;Labor Category/Service Title&#34; column of the Services PPT.
+ 
+ Accessories function similar to base items (can be sold alone or with a base item), each accessory must have supporting documentation to justify price.
+ 
+ Options have their own part numbers, but cannot be sold independently of a base item or accessory. Options that impact the price of a base item or accessory must have supporting documentation to justify the price.
+ 
+ Note: Proposed prices must be inclusive of all costs associated with acceptance of the Governmentwide commercial purchase card (e.g., payment processing fees). Schedule contractors may not impose a surcharge at the order level for payment by Governmentwide commercial purchase card. For additional information, see SCP-FSS-001 Instructions Applicable to All Offerors and Smart Bulletin No. 039.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (ii.) Completed Price Proposal Template. The offeror must submit a completed Price Proposal Template in Excel format with all proposed prices and supporting documentation.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-29" class="note-editor" data-item-id="29"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-30" name="item-30">
+                            <label for="item-30" class="checklist-item" data-modal-target="#modal-30">
+                                Pricing Terms
+                            </label>
+                            <span class="checklist-card-line-number">30</span>
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-30" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 30</span>
+                                <span class="modal-status" id="status-30"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Pricing Terms</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> Required for all offerors
+ 
+ Located on the Required templates for a MAS offeror page</p>
+                            
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-30" class="note-editor" data-item-id="30"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-31" name="item-31">
+                            <label for="item-31" class="checklist-item" data-modal-target="#modal-31">
+                                Provide supporting documentation for EACH proposed product/service price. Supporting pricing documentation may consist of published and publicly-available commercial catalogs/price lists, copies of invoices, contracts, or quote
+ sheets, and must be submitted with the offer. There must be a clear and relevant relationship between the supporting document and the proposed price it is meant to substantiate. Applicable to Non-TDR Offers only.
+                            </label>
+                            <span class="checklist-card-line-number">31</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (iii.) Supporting Documentation. The offeror must provide supporting documentation for EACH proposed product/service price. Supporting...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-31" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 31</span>
+                                <span class="modal-status" id="status-31"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Provide supporting documentation for EACH proposed product/service price. Supporting pricing documentation may consist of published and publicly-available commercial catalogs/price lists, copies of invoices, contracts, or quote
+ sheets, and must be submitted with the offer. There must be a clear and relevant relationship between the supporting document and the proposed price it is meant to substantiate. Applicable to Non-TDR Offers only.</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> Supporting documentation may be sourced from the joint venture offeror or a joint venture partner. Note: If the
+ proposed pricing for a product, service, or labor category is based on the CSP-1 disclosures of a joint venture partner, the supporting documentation substantiating the proposed price must be from the same joint venture partner.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (iii.) Supporting Documentation. The offeror must provide supporting documentation for EACH proposed product/service price. Supporting pricing documentation may consist of published and publicly-available commercial catalogs/price lists, copies of invoices, contracts, or quote sheets.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-31" class="note-editor" data-item-id="31"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-32" name="item-32">
+                            <label for="item-32" class="checklist-item" data-modal-target="#modal-32">
+                                Justification If the pricing offered is not equal to or better than the pricing extended to the Most Favored (commercial) Customer. Applicable to Non-TDR Offers only
+                            </label>
+                            <span class="checklist-card-line-number">32</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iv.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (iv.) Most Favored Customer Justification. If the pricing offered is not equal to or better than the pricing extended to the Most Favored...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-32" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 32</span>
+                                <span class="modal-status" id="status-32"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Justification If the pricing offered is not equal to or better than the pricing extended to the Most Favored (commercial) Customer. Applicable to Non-TDR Offers only</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iv.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (iv.) Most Favored Customer Justification. If the pricing offered is not equal to or better than the pricing extended to the Most Favored Customer, the offeror must provide justification.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-32" class="note-editor" data-item-id="32"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-33" name="item-33">
+                            <label for="item-33" class="checklist-item" data-modal-target="#modal-33">
+                                Proposed Escalation Method: 552.216-70 (EPA) for Commercial Price List; I-FSS-969 (Escalation Rate) for Market Pricing
+                            </label>
+                            <span class="checklist-card-line-number">33</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (v.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (v.) Proposed Escalation Method. The offeror must propose an escalation method: 552.216-70 (EPA) for Commercial Price List or I-FSS-969...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-33" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 33</span>
+                                <span class="modal-status" id="status-33"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Proposed Escalation Method: 552.216-70 (EPA) for Commercial Price List; I-FSS-969 (Escalation Rate) for Market Pricing</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (v.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (v.) Proposed Escalation Method. The offeror must propose an escalation method: 552.216-70 (EPA) for Commercial Price List or I-FSS-969 (Escalation Rate) for Market Pricing.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-33" class="note-editor" data-item-id="33"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-34" name="item-34">
+                            <label for="item-34" class="checklist-item" data-modal-target="#modal-34">
+                                Completed Commercial Sales Practices Document (CSP-1) with rationale to support projected MAS sales. Applicable to Non-TDR Offers only
+                            </label>
+                            <span class="checklist-card-line-number">34</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vi.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (vi.) Commercial Sales Practices Document (CSP-1). The offeror must complete the CSP-1 with rationale to support projected MAS sales. This...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-34" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 34</span>
+                                <span class="modal-status" id="status-34"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Completed Commercial Sales Practices Document (CSP-1) with rationale to support projected MAS sales. Applicable to Non-TDR Offers only</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> If the joint venture offeror will not perform the service(s) or provide the product(s) offered itself, the joing venture offeror must respond to questions 3, 4, nd 5 by disclosing the commercial sales practices of the joint venture partner who will be providing the product(s)/service(s) under a particular SIN(s). All information must be submitted to eOffer by the joint venture offeror on one CSP-1 form. The disclosure(s) must clearly identify the joint venture partner who will be providing the product(s)/service(s) under a particular SIN(s).</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vi.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (vi.) Commercial Sales Practices Document (CSP-1). The offeror must complete the CSP-1 with rationale to support projected MAS sales. This document is applicable to Non-TDR offers only.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-34" class="note-editor" data-item-id="34"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-35" name="item-35">
+                            <label for="item-35" class="checklist-item" data-modal-target="#modal-35">
+                                Full and Broad Offering of services and/or products- Offeror must present a total solution.
+                            </label>
+                            <span class="checklist-card-line-number">35</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (vii.) Full and Broad Offering. The offeror must present a total solution with a full and broad offering of services and/or products.</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-35" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 35</span>
+                                <span class="modal-status" id="status-35"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Full and Broad Offering of services and/or products- Offeror must present a total solution.</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> The Government has/has not determined that sales under the resultant contract can reasonably be expected to exceed $100,000 in sales within the first 60 months following contract award, and are expected to exceed $125,000 in sales each 60 month period thereafter.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (vii.) Full and Broad Offering. The offeror must present a total solution with a full and broad offering of services and/or products.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-35" class="note-editor" data-item-id="35"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-36" name="item-36">
+                            <label for="item-36" class="checklist-item" data-modal-target="#modal-36">
+                                Remanufactured items are only allowable under specific MAS SINs and are designated as such by their SIN description. The remanufactured items must be identified per clause 552.238-78 and meet the prescribed definition of “factory rebuilt to original specifications.” Note: Refurbished, reconditioned, remarketed, repaired items are not within scope of the MAS Solicitation.
+                            </label>
+                            <span class="checklist-card-line-number">36</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (viii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (viii.) Remanufactured Items. Remanufactured items are only allowable under specific MAS SINs and must be identified per clause 552.238-78...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-36" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 36</span>
+                                <span class="modal-status" id="status-36"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Remanufactured items are only allowable under specific MAS SINs and are designated as such by their SIN description. The remanufactured items must be identified per clause 552.238-78 and meet the prescribed definition of “factory rebuilt to original specifications.” Note: Refurbished, reconditioned, remarketed, repaired items are not within scope of the MAS Solicitation.</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> Allowable SINs: 339940, 339940OS4, 339940OVER,339940SVC (TONER CARTRIDGES ONLY), 33721RSB, 532490ESA, &amp; 336350</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (viii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (viii.) Remanufactured Items. Remanufactured items are only allowable under specific MAS SINs and must be identified per clause 552.238-78 and meet the prescribed definition of "factory rebuilt to original specifications.".</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-36" class="note-editor" data-item-id="36"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-37" name="item-37">
+                            <label for="item-37" class="checklist-item" data-modal-target="#modal-37">
+                                Fair and Reasonable Pricing - Applicable to ALL Offers
+                            </label>
+                            <span class="checklist-card-line-number">37</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ix.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (ix.) Fair and Reasonable Pricing. All offers must demonstrate fair and reasonable pricing. This requirement is applicable to ALL offers.</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-37" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 37</span>
+                                <span class="modal-status" id="status-37"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Fair and Reasonable Pricing - Applicable to ALL Offers</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> If a joint venture partner holds an individual FSS rpogram contract, the joint venture offeror must upload the joint venture partner&#39;s FSS Price List (I-FSS-600), inclsuive of the awarded prices/rates, to eOffer. If the joint venture offeror proposes the same products or services with less favorable pricing or pricing terms than those awarded under a joint venture partner&#39;s individual FSS program contract(s), the joint venture offeror must provide written rationale and any supporting evidence/documentation for the less favorable offered prices/rates and/or pricing terms (e.g., labor category performs broader scope of work).</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ix.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (ix.) Fair and Reasonable Pricing. All offers must demonstrate fair and reasonable pricing. This requirement is applicable to ALL offers.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-37" class="note-editor" data-item-id="37"></div>
+                        </div>
+                    </div>
+                
+            
+                <h2 class="checklist-section-header">Price Proposal - Services Only</h2>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-38" name="item-38">
+                            <label for="item-38" class="checklist-item" data-modal-target="#modal-38">
+                                Detailed Position Descriptions for each labor category proposed including minimum years of relevant experience and educational requirements (As applicable for offers containing services SINs)
+                            </label>
+                            <span class="checklist-card-line-number">38</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (A))</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> Could not find provision text for reference: &#34;(j) (3) (x.) (A))&#34;</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-38" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 38</span>
+                                <span class="modal-status" id="status-38"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Detailed Position Descriptions for each labor category proposed including minimum years of relevant experience and educational requirements (As applicable for offers containing services SINs)</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> For a joint venture offeror who is not performing the labor category(ies)/services itself, each applicable position description must also include the nam eof the joint venture partner that will provide the labor category.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (A))</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">Could not find provision text for reference: "(j) (3) (x.) (A))"</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-38" class="note-editor" data-item-id="38"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-39" name="item-39">
+                            <label for="item-39" class="checklist-item" data-modal-target="#modal-39">
+                                Detailed Training Course Descriptions (As applicable for offers containing training SINs)
+                            </label>
+                            <span class="checklist-card-line-number">39</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (B)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (x.) (B) Training Course Descriptions. For offers containing training SINs, the offeror must provide detailed training course descriptions.</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-39" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 39</span>
+                                <span class="modal-status" id="status-39"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Detailed Training Course Descriptions (As applicable for offers containing training SINs)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (B)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (x.) (B) Training Course Descriptions. For offers containing training SINs, the offeror must provide detailed training course descriptions.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-39" class="note-editor" data-item-id="39"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-40" name="item-40">
+                            <label for="item-40" class="checklist-item" data-modal-target="#modal-40">
+                                Fixed Price Services Descriptions - Must clearly demonstrate how each service is within scope of the applicable SIN(s). (As applicable for offers containing fixed price solutions)
+                            </label>
+                            <span class="checklist-card-line-number">40</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (C)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (x.) (C) Fixed Price Services Descriptions. For offers containing fixed price solutions, the offeror must provide descriptions that...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-40" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 40</span>
+                                <span class="modal-status" id="status-40"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Fixed Price Services Descriptions - Must clearly demonstrate how each service is within scope of the applicable SIN(s). (As applicable for offers containing fixed price solutions)</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> For a joint venture offeror who does not perform the service itself, each applicable description must also include the name of the joint venture partner that will provide the service.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (C)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (x.) (C) Fixed Price Services Descriptions. For offers containing fixed price solutions, the offeror must provide descriptions that clearly demonstrate how each service is within scope of the applicable SIN(s).</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-40" class="note-editor" data-item-id="40"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-41" name="item-41">
+                            <label for="item-41" class="checklist-item" data-modal-target="#modal-41">
+                                Ancillary Supplies and Services/ODCs Descriptions (As applicable)
+                            </label>
+                            <span class="checklist-card-line-number">41</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (D)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (x.) (D) Ancillary Supplies and Services/ODCs Descriptions. If applicable, the offeror must provide descriptions of ancillary supplies and...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-41" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 41</span>
+                                <span class="modal-status" id="status-41"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Ancillary Supplies and Services/ODCs Descriptions (As applicable)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (D)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (x.) (D) Ancillary Supplies and Services/ODCs Descriptions. If applicable, the offeror must provide descriptions of ancillary supplies and services or Other Direct Costs (ODCs).</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-41" class="note-editor" data-item-id="41"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-42" name="item-42">
+                            <label for="item-42" class="checklist-item" data-modal-target="#modal-42">
+                                Fully Burdened Rates - All proposed prices must be inclusive of all cost factors
+                            </label>
+                            <span class="checklist-card-line-number">42</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (E)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (x.) (E) Fully Burdened Rates. All proposed prices must be inclusive of all cost factors and represent fully burdened rates.</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-42" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 42</span>
+                                <span class="modal-status" id="status-42"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Fully Burdened Rates - All proposed prices must be inclusive of all cost factors</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (E)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (x.) (E) Fully Burdened Rates. All proposed prices must be inclusive of all cost factors and represent fully burdened rates.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-42" class="note-editor" data-item-id="42"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-43" name="item-43">
+                            <label for="item-43" class="checklist-item" data-modal-target="#modal-43">
+                                Professional Compensation Plan - Must be in accordance with provision 52.222-46 Evaluation of Compensation for Professional Employees.
+ Individual compensation disclosure is not required (As applicable for professional services offers)
+                            </label>
+                            <span class="checklist-card-line-number">43</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xi.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (xi.) Professional Compensation Plan. For professional services offers, the offeror must provide a Professional Compensation Plan in...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-43" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 43</span>
+                                <span class="modal-status" id="status-43"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Professional Compensation Plan - Must be in accordance with provision 52.222-46 Evaluation of Compensation for Professional Employees.
+ Individual compensation disclosure is not required (As applicable for professional services offers)</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> For a joint venture offeror that is unpopulated, the Professional Compensation Plan for each joint venture partner who will be performing the work must be submitted as a substitution for the Professional Compensation Plan of the joint venture offeror itself.</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xi.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (xi.) Professional Compensation Plan. For professional services offers, the offeror must provide a Professional Compensation Plan in accordance with provision 52.222-46 Evaluation of Compensation for Professional Employees.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-43" class="note-editor" data-item-id="43"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-44" name="item-44">
+                            <label for="item-44" class="checklist-item" data-modal-target="#modal-44">
+                                Policy on Uncompensated Overtime - Must clearly show how a company addresses uncompensated overtime without resulting in unreasonably low hourly rates. Reference 52.237-10 for evaluation (As applicable to services offers)
+                            </label>
+                            <span class="checklist-card-line-number">44</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xii.)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (xii.) Policy on Uncompensated Overtime. For services offers, the offeror must provide a policy on uncompensated overtime that clearly...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-44" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 44</span>
+                                <span class="modal-status" id="status-44"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Policy on Uncompensated Overtime - Must clearly show how a company addresses uncompensated overtime without resulting in unreasonably low hourly rates. Reference 52.237-10 for evaluation (As applicable to services offers)</span></p>
+                            
+                                <p><strong>Additional Comments/Instructions:</strong> For a joint venture offeror that is unpopulated, the joint venture offeror must submit a copy of the policy that addresses uncompensated overtime for each joint venture partner who will be performing the work. The joint venture offeror must also submit its own uncompensated overtime policy if it employs administrative employees or security officers (which is authorized for unpopulated joint ventures).</p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xii.)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (xii.) Policy on Uncompensated Overtime. For services offers, the offeror must provide a policy on uncompensated overtime that clearly shows how the company addresses uncompensated overtime without resulting in unreasonably low hourly rates.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-44" class="note-editor" data-item-id="44"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-45" name="item-45">
+                            <label for="item-45" class="checklist-item" data-modal-target="#modal-45">
+                                Service Contract Labor Standards (SCLS) Wage Determination (As Applicable to services offers)
+                            </label>
+                            <span class="checklist-card-line-number">45</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (B)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (xiii.) (B) Service Contract Labor Standards (SCLS) Wage Determination. For applicable services offers, the offeror must comply with...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-45" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 45</span>
+                                <span class="modal-status" id="status-45"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Service Contract Labor Standards (SCLS) Wage Determination (As Applicable to services offers)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (B)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (xiii.) (B) Service Contract Labor Standards (SCLS) Wage Determination. For applicable services offers, the offeror must comply with Service Contract Labor Standards wage determination requirements.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-45" class="note-editor" data-item-id="45"></div>
+                        </div>
+                    </div>
+                
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-46" name="item-46">
+                            <label for="item-46" class="checklist-item" data-modal-target="#modal-46">
+                                Service Contract Labor Standards (SCLS)/ SCA Matrix must be submitted for all offers that include services. Matrix must list all employees that will work on the subject contract and identify which employees are considered &#34;Service Employees&#34; as defined by clause 52.222-41 (As Applicable to services offers)
+                            </label>
+                            <span class="checklist-card-line-number">46</span>
+                        </div>
+                        
+                        
+                        <div class="checklist-card-footer">
+                            <small>Reference: Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (C)</small>
+                            
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> (j) (3) (xiii.) (C) Service Contract Labor Standards (SCLS)/SCA Matrix. For all offers that include services, the offeror must submit a matrix...</small>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-46" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line 46</span>
+                                <span class="modal-status" id="status-46"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">Service Contract Labor Standards (SCLS)/ SCA Matrix must be submitted for all offers that include services. Matrix must list all employees that will work on the subject contract and identify which employees are considered &#34;Service Employees&#34; as defined by clause 52.222-41 (As Applicable to services offers)</span></p>
+                            
+                            
+                                
+                                <p><strong>Reference:</strong> Provision <a href="/static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (C)</p>
+                                
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">(j) (3) (xiii.) (C) Service Contract Labor Standards (SCLS)/SCA Matrix. For all offers that include services, the offeror must submit a matrix that lists all employees that will work on the contract and identifies which employees are considered "Service Employees" as defined by clause 52.222-41.</div>
+                                </div>
+                                
+                            
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-46" class="note-editor" data-item-id="46"></div>
+                        </div>
+                    </div>
+                
+            
+        </div>
+    </div>
+
+
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Justin Lyons</p>
+        </footer>
+        <script src="/static/script.js"></script>
+        
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="/static/projects/gsa_mas_checklist.js"></script>
+
+    </div>
+</body>
+</html>

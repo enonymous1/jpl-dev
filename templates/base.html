@@ -4,6 +4,7 @@
     <title>{% block title %}{% endblock %} - JPL-DEV</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block head %}{% endblock %}
 </head>
 <body>
     <div id="mySidenav" class="sidenav">
@@ -15,7 +16,11 @@
     <div id="content-wrapper">
         <header id="header">
             <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
-            <h1>JPL-DEV</h1>
+            {% if request.endpoint == 'index' %}
+                <h1>JPL-DEV</h1>
+            {% else %}
+                <a href="{{ url_for('index') }}" class="header-link">JPL-DEV</a>
+            {% endif %}
         </header>
 
         <main id="main">
@@ -25,7 +30,8 @@
         <footer>
             <p>&copy; 2025 Justin Lyons</p>
         </footer>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+        {% block scripts %}{% endblock %}
     </div>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

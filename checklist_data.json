@@ -1,0 +1,370 @@
+[
+    {
+        "Section":"Preliminary Review",
+        "LINE Number":1,
+        "Required Documentation":"Offer is current, accurate, and complete, and demonstrates a thorough understanding of solicitation requirements; no exceptions are taken to the terms and conditions or the exceptions are explicitly stated in the offer",
+        "Solicitation Reference":"Provision SCP-FSS-001 (c)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Preliminary Review",
+        "LINE Number":2,
+        "Required Documentation":"Streamlined offer-meets all criteria for submission",
+        "Solicitation Reference":"Provision SCP-FSS-001(d) (1-4)",
+        "Additional Comments\/Instructions":"Applicable to Existing Federal Supply Schedule (FSS) Program contractors, and any small business who does not have its own FSS program contract but is performing under an existing FSS program joint venture contract as a joint venture partner. ****Bullet 4 is ONLY applicable to a small business who does not have its own FSS program contract but is performing under an active FSS program joint venture contract as a joint venture partner.",
+        "Notes":null
+    },
+    {
+        "Section":"Preliminary Review",
+        "LINE Number":3,
+        "Required Documentation":"Continuous contract offer-meets all criteria for submission",
+        "Solicitation Reference":"Provision SCP-FSS-001(e)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Preliminary Review",
+        "LINE Number":4,
+        "Required Documentation":"If this is an 8(a) offer, did the offeror indicate they are a current 8(a) Program participant at the time of their offer?",
+        "Solicitation Reference":null,
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Preliminary Review",
+        "LINE Number":5,
+        "Required Documentation":"Rejection of Offer: If previously rejected, did the offeror provide a response to the rejection letter with their new offer?",
+        "Solicitation Reference":"Provision SCP-FSS-001(i)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":6,
+        "Required Documentation":"Vendor acknowledged the \u201cPathway to Success\u201d training was downloaded and completed within the past 12 months (N\/A for streamlined offers).",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (i.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":7,
+        "Required Documentation":"Vendor acknowledged the Readiness Assessment was downloaded and completed within the past 12 months (N\/A for streamlined offers).",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (ii.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":8,
+        "Required Documentation":"Vendor has valid SAM registration -must be current, accurate, and complete, and reflect the North American Industrial Classification System (NAICS) code(s) for this solicitation and the products\/services proposed.",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (iii.)",
+        "Additional Comments\/Instructions":"889 \u201cPart A\u201d: Ensure that the vendor has completed the provision at 52.212-3(v)(2)(i): If the vendor indicates that it \u201cdoes provide\u201d covered telecom in SAM, the vendor is required to complete the provision at 52.204-24(d)(1) via eOffer.\n \n 889 \u201cPart B\u201d: Per 52.212-3(v)(2)(ii), if the vendor indicates that it \u201cdoes use\u201d covered telecomm in SAM, the vendor is required to complete and upload 52.204-24(d)(2) via eOffer and, if necessary, provide the information required at 52.204-24(e)(2) via eOffer. \n \n Joint venture offerors: A joint venture offeror must be a separate legal entity registered in SAM under its own UEI and CAGE code. The joint venture offeror cannot share a UEI or CAGE coe with any of its joint venture partners.",
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":9,
+        "Required Documentation":"If an offeror was previously awarded a Schedule contract, and it was subsequently cancelled or allowed to expire due to low sales or non-compliance with other contract terms and conditions, the offeror provided a detailed description of the steps the offeror plans to take to generate sales and\/or ensure compliance through a new contract.",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (iv.)",
+        "Additional Comments\/Instructions":"Note: > 24 Months since previous contract low sales cancellation\/expiration for a new offer for the same SINs will be rejected.\n \n Note: > 24 Months since previous contract was canceled\/expired due to non-compliance for a new offer for any SIN(s) will be rejected.",
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":10,
+        "Required Documentation":"Financial Documents - annual financial statements for the previous 2 years (balance sheet and income statement), unless submitting under Startup Springboard.** Firm must provide an explanation for any negative financial information disclosed.",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (v.)",
+        "Additional Comments\/Instructions":"Requirement does not apply to streamline offers (active FSS contract) or small businesses performing under an active FSS program joint venture contract as a joint venture partner.\n \n **Startup Springboard. Offerors with less than two (2) years of corporate experience must provide financial documentation that demonstrates the Offeror's financial responsibility. If no financial statements exist, the contracting officer, after submission, may request additional documentation. - The GSA contracting officer (CO) is required to make a determination of financial responsibility as indicated above. Financial documentation submitted by the Offeror in lieu of financial statements must provide the required information to make this determination.\n \n The Startup Springboard process is available for joint venture offerors with less than two years of corporate experience. When evaluating financial responsibility, the CO will consider financial documentation of the joint venture partners in addition to any financial documentation of the joint venture entity itself.",
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":11,
+        "Required Documentation":"Subcontracting Plan - (As Applicable)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (vi.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":12,
+        "Required Documentation":"Agent Authorization Letter - (As Applicable)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (viii.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":13,
+        "Required Documentation":"Section 508 Compliance - Section 508 of the Rehabilitation Act, as amended by the Workforce Investment Act of 1998 (P.L. 105-220) requires that when Federal agencies develop, procure, maintain, or use information and communication technology (ICT), it must be accessible to people with disabilities. Federal employees and members of the public who have disabilities must have access to, and use of, information and data that is comparable to people without disabilities. (As Applicable to ICT Offerings only)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (ix.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":14,
+        "Required Documentation":"TAA Compliance - Country of Origin identified (As Applicable)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (x.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":15,
+        "Required Documentation":"Letter of Commitment\/Supply - (As Applicable) (Products Only)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (xi.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":16,
+        "Required Documentation":"If an item appears to be obsolete the GSA may request additional information, such as confirmation of sufficient availability of supply and may decide the item should not be offered under the MAS program and will not award such item(s).(Products Only)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (xii.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":17,
+        "Required Documentation":"Products that are solely compatible with products that are prohibited for national security reasons (e.g., FAR clauses 52.204-23; 52.204-25; and 52.204-30) may not be offered under MAS contracts.",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (xiii.)",
+        "Additional Comments\/Instructions":"\u201cSolely compatible products\u201d are items that can only fulfill their intended purpose in conjunction with another product(s). For example, a small pluggable module that only functions with a covered telecommunications equipment as defined in FAR 52.204-25 is considered to be solely compatible with a prohibited product.",
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":18,
+        "Required Documentation":"Dealer\/reseller functions described (As Applicable) (Products Only)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (xiv)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":19,
+        "Required Documentation":"Ability One - Offeror is an authorized AbilityOne Program distributor (As Applicable) (Products Only)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (xv.)",
+        "Additional Comments\/Instructions":"Joint venture offerors: If the joint venture offeror will not source the offered product(s) itself (e.g., unpopulated which means joint venture offeror does not have its own separate employees to perform contracts awarded to the joint venture), the joint venture offeror must provide evidence that the joint venture partner(s) sourcing the products on the AbilityOne Procurement List is an authorized distributor under the AbilityOne Program. The joint venture offeror must also submit evidence of the AbilityOne Commission\u2019s concurrence with the joint venture partner(s) providing products on the AbilityOne Procurement List on behalf of the joint venture entity.",
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":20,
+        "Required Documentation":"Manufacturer Part Number (MPN) and\/ or (UPC-A) data must be submitted and accurate (Products Only)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (xvi.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":21,
+        "Required Documentation":"Offerors are advised that following contract award, Schedule contractors offering products under designated Special Item Numbers (SINs) must submit detailed electronic contract data, such as, but not limited to, Universal Product Codes (UPC) and product photos for each item offered on GSA Advantage! using the Schedule Input Program (SIP), Electronic Data Interchange (EDI) or other common-use electronic medium prescribed by GSA (Products Only)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (xvii.)",
+        "Additional Comments\/Instructions":"Contractors must follow the detailed guidance and requirements provided on the 'Requiremens after getting a MAS contract' page when submitting electronic contract data for inclusion on the GSA Advantage! website",
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":22,
+        "Required Documentation":"GSA Advantage Purchase Order (PO Portal). The offeror must use EDI, cXML or the GSA Advantage Purchase Order (PO) Portal to provide order acknowledgment information that enables ordering agencies to track the location of an order at any time, from the moment the order is shipped, to the point of delivery and acceptance. (Products Only)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (xviii.)",
+        "Additional Comments\/Instructions":"Note: Contractors must provide a valid status for each order line no later than the specified number of days established as the 'Normal Delivery Terms' of the contract.",
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":23,
+        "Required Documentation":"Frustrated Freight (Products only). GSAR Clause 552.211-73, Marking, establishes marking and labeling requirements for shipping Federal Government orders. The Government reserves the right to require sample electronic versions of all documents (including but not limited to: Military Shipping Labels, Packing Lists, Unit Level Markings, HAZMAT related documents, etc.) that are required for compliance with the FED-STD-123 and MIL-STD-129 edition in effect as of the date of solicitation issuance.",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (xix.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Administrative Proposal",
+        "LINE Number":24,
+        "Required Documentation":"Joint Ventures. All joint venture offerors, regardless of size status, must complete the All Joint Ventures section of the Joint Venture Solicitation Attachment and Appendix A.\n \n In addition to the All Joint Ventures section and Appendix A, all joint venture offerors representing themselves as a small or socioeconomic category must complete the Small Business Joint Venture section of the Joint Venture Solicitation Attachment and Appendix B (as applicable).",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (1) (xx.)",
+        "Additional Comments\/Instructions":"**Note: Appendix B of the Joint Venture Solicitation\n Attachment is not required to be completed by a small\n business joint venture offeror between two or more small\n businesses who are not mentor-prot\u00e9g\u00e9 joint ventures (see\n 13 CFR 125.8(d)).",
+        "Notes":null
+    },
+    {
+        "Section":"Technical Proposal",
+        "LINE Number":25,
+        "Required Documentation":"Factor One - Corporate Experience Narrative (minimum of 2 years required, unless submitting under Startup Springboard**) (N\/A for streamlined offers and small businesses performing under an active FSS program contract as a joint venture partner)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (2) (i.)",
+        "Additional Comments\/Instructions":"Document exception to the SCP Provision if necessary  \n \n **Startup Springboard: Offerors with less than two (2) years of corporate experience, must submit additional information that demonstrates their ability to manage a company and provide the products\/services described under this Schedule. (ie. information on the professional management and project experience of company executives and key personnel)\n \n The Startup Springboard process is available for joint venture offerors with less than two years of corporate experience. The information required by the Startup Springboard process must be provided for the joint venture entity and\/or each of the joint venture partners (each joint venture partner must be addressed in the narrative submitted).",
+        "Notes":null
+    },
+    {
+        "Section":"Technical Proposal",
+        "LINE Number":26,
+        "Required Documentation":"Factor Two - Past Performance (N\/A for streamlined offers and small businesses performing under an active FSS program contract as a joint venture partner)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (2) (ii.)",
+        "Additional Comments\/Instructions":"Documents not required for streamlined offers\n  \n If the joint venture offeror cannot demonstrate past performance, the joint venture offeror must provide the information required for each joint venture partner in accordance with the instructions below. If the joint venture offeror is a mentor-prot\u00e9g\u00e9 joint venture or a socioeconomic joint venture, the prot\u00e9g\u00e9 or socioeconomic category joint venture partner(s) must verify at least one contractor performance assessment report (available in CPARS) in eOffer in accordance with the instructions under (A) or submit at least one customer reference and one (1) past performance questionnaire in accordance with the instructions under (B). The mentor, or other joint venture partner(s) in a socioeconomic joint venture, must satisfy the remaining past performance requirements.",
+        "Notes":null
+    },
+    {
+        "Section":"Technical Proposal",
+        "LINE Number":27,
+        "Required Documentation":"Factor Three - Quality Control Narrative",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (2) (iii.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Technical Proposal",
+        "LINE Number":28,
+        "Required Documentation":"Factor Four - Relative Project Experience Narrative (Offers Including Services) (N\/A for streamlined offers and small businesses performing under an active FSS program contract as a joint venture partner)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (2) (iv.)",
+        "Additional Comments\/Instructions":"If a joint venture offeror does not have relevant project experience for a particular SIN, a joint venture partner may submit the required project experience. The narratives must clearly identify the joint venture partner that performed the work. For a mentor-prot\u00e9g\u00e9 joint venture or socioeconomic joint venture, the prot\u00e9g\u00e9 and\/or socioeconomic joint venture partner must have relevant project experience for at least one of the SIN(s) offered. (Note: Pursuant to SBA requirements, a protege and\/or socioeconomic joint venture partner must have some experience in the type of work to be performed under the contract.)",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal",
+        "LINE Number":29,
+        "Required Documentation":"Completed Price Proposal Template in Excel Format",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (ii.)",
+        "Additional Comments\/Instructions":"If the joint venture offeror does not have MFC information, it must complete the PPT using the MFC information\n for the joint venture partner(s) who will be providing the product(s)\/service(s) offered.\n \n For products, the joint venture partner providing the product must be identified in the \u201cProduct Name\u201d column of the Products PPT.\n \n For services, the joint venture partner providing the labor catgeory\/service must be identified in the \"Labor Category\/Service Title\" column of the Services PPT.\n \n Accessories function similar to base items (can be sold alone or with a base item), each accessory must have supporting documentation to justify price.\n \n Options have their own part numbers, but cannot be sold independently of a base item or accessory. Options that impact the price of a base item or accessory must have supporting documentation to justify the price.\n \n Note: Proposed prices must be inclusive of all costs associated with acceptance of the Governmentwide commercial purchase card (e.g., payment processing fees). Schedule contractors may not impose a surcharge at the order level for payment by Governmentwide commercial purchase card. For additional information, see SCP-FSS-001 Instructions Applicable to All Offerors and Smart Bulletin No. 039.",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal",
+        "LINE Number":30,
+        "Required Documentation":"Pricing Terms",
+        "Solicitation Reference":null,
+        "Additional Comments\/Instructions":"Required for all offerors\n \n Located on the Required templates for a MAS offeror page",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal",
+        "LINE Number":31,
+        "Required Documentation":"Provide supporting documentation for EACH proposed product\/service price. Supporting pricing documentation may consist of published and publicly-available commercial catalogs\/price lists, copies of invoices, contracts, or quote\n sheets, and must be submitted with the offer. There must be a clear and relevant relationship between the supporting document and the proposed price it is meant to substantiate. Applicable to Non-TDR Offers only.",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (iii.)",
+        "Additional Comments\/Instructions":"Supporting documentation may be sourced from the joint venture offeror or a joint venture partner. Note: If the\n proposed pricing for a product, service, or labor category is based on the CSP-1 disclosures of a joint venture partner, the supporting documentation substantiating the proposed price must be from the same joint venture partner.",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal",
+        "LINE Number":32,
+        "Required Documentation":"Justification If the pricing offered is not equal to or better than the pricing extended to the Most Favored (commercial) Customer. Applicable to Non-TDR Offers only",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (iv.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal",
+        "LINE Number":33,
+        "Required Documentation":"Proposed Escalation Method: 552.216-70 (EPA) for Commercial Price List; I-FSS-969 (Escalation Rate) for Market Pricing",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (v.)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal",
+        "LINE Number":34,
+        "Required Documentation":"Completed Commercial Sales Practices Document (CSP-1) with rationale to support projected MAS sales. Applicable to Non-TDR Offers only",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (vi.)",
+        "Additional Comments\/Instructions":"If the joint venture offeror will not perform the service(s) or provide the product(s) offered itself, the joing venture offeror must respond to questions 3, 4, nd 5 by disclosing the commercial sales practices of the joint venture partner who will be providing the product(s)\/service(s) under a particular SIN(s). All information must be submitted to eOffer by the joint venture offeror on one CSP-1 form. The disclosure(s) must clearly identify the joint venture partner who will be providing the product(s)\/service(s) under a particular SIN(s).",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal",
+        "LINE Number":35,
+        "Required Documentation":"Full and Broad Offering of services and\/or products- Offeror must present a total solution.",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (vii.)",
+        "Additional Comments\/Instructions":"The Government has\/has not determined that sales under the resultant contract can reasonably be expected to exceed $100,000 in sales within the first 60 months following contract award, and are expected to exceed $125,000 in sales each 60 month period thereafter.",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal",
+        "LINE Number":36,
+        "Required Documentation":"Remanufactured items are only allowable under specific MAS SINs and are designated as such by their SIN description. The remanufactured items must be identified per clause 552.238-78 and meet the prescribed definition of \u201cfactory rebuilt to original specifications.\u201d Note: Refurbished, reconditioned, remarketed, repaired items are not within scope of the MAS Solicitation.",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (viii.)",
+        "Additional Comments\/Instructions":"Allowable SINs: 339940, 339940OS4, 339940OVER,339940SVC (TONER CARTRIDGES ONLY), 33721RSB, 532490ESA, & 336350",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal",
+        "LINE Number":37,
+        "Required Documentation":"Fair and Reasonable Pricing - Applicable to ALL Offers",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (ix.)",
+        "Additional Comments\/Instructions":"If a joint venture partner holds an individual FSS rpogram contract, the joint venture offeror must upload the joint venture partner's FSS Price List (I-FSS-600), inclsuive of the awarded prices\/rates, to eOffer. If the joint venture offeror proposes the same products or services with less favorable pricing or pricing terms than those awarded under a joint venture partner's individual FSS program contract(s), the joint venture offeror must provide written rationale and any supporting evidence\/documentation for the less favorable offered prices\/rates and\/or pricing terms (e.g., labor category performs broader scope of work).",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal - Services Only",
+        "LINE Number":38,
+        "Required Documentation":"Detailed Position Descriptions for each labor category proposed including minimum years of relevant experience and educational requirements (As applicable for offers containing services SINs)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (x.) (A))",
+        "Additional Comments\/Instructions":"For a joint venture offeror who is not performing the labor category(ies)\/services itself, each applicable position description must also include the nam eof the joint venture partner that will provide the labor category.",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal - Services Only",
+        "LINE Number":39,
+        "Required Documentation":"Detailed Training Course Descriptions (As applicable for offers containing training SINs)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (x.) (B)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal - Services Only",
+        "LINE Number":40,
+        "Required Documentation":"Fixed Price Services Descriptions - Must clearly demonstrate how each service is within scope of the applicable SIN(s). (As applicable for offers containing fixed price solutions)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (x.) (C)",
+        "Additional Comments\/Instructions":"For a joint venture offeror who does not perform the service itself, each applicable description must also include the name of the joint venture partner that will provide the service.",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal - Services Only",
+        "LINE Number":41,
+        "Required Documentation":"Ancillary Supplies and Services\/ODCs Descriptions (As applicable)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (x.) (D)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal - Services Only",
+        "LINE Number":42,
+        "Required Documentation":"Fully Burdened Rates - All proposed prices must be inclusive of all cost factors",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (x.) (E)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal - Services Only",
+        "LINE Number":43,
+        "Required Documentation":"Professional Compensation Plan - Must be in accordance with provision 52.222-46 Evaluation of Compensation for Professional Employees.\n Individual compensation disclosure is not required (As applicable for professional services offers)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (xi.)",
+        "Additional Comments\/Instructions":"For a joint venture offeror that is unpopulated, the Professional Compensation Plan for each joint venture partner who will be performing the work must be submitted as a substitution for the Professional Compensation Plan of the joint venture offeror itself.",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal - Services Only",
+        "LINE Number":44,
+        "Required Documentation":"Policy on Uncompensated Overtime - Must clearly show how a company addresses uncompensated overtime without resulting in unreasonably low hourly rates. Reference 52.237-10 for evaluation (As applicable to services offers)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (xii.)",
+        "Additional Comments\/Instructions":"For a joint venture offeror that is unpopulated, the joint venture offeror must submit a copy of the policy that addresses uncompensated overtime for each joint venture partner who will be performing the work. The joint venture offeror must also submit its own uncompensated overtime policy if it employs administrative employees or security officers (which is authorized for unpopulated joint ventures).",
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal - Services Only",
+        "LINE Number":45,
+        "Required Documentation":"Service Contract Labor Standards (SCLS) Wage Determination (As Applicable to services offers)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (xiii.) (B)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    },
+    {
+        "Section":"Price Proposal - Services Only",
+        "LINE Number":46,
+        "Required Documentation":"Service Contract Labor Standards (SCLS)\/ SCA Matrix must be submitted for all offers that include services. Matrix must list all employees that will work on the subject contract and identify which employees are considered \"Service Employees\" as defined by clause 52.222-41 (As Applicable to services offers)",
+        "Solicitation Reference":"Provision SCP-FSS-001 (j) (3) (xiii.) (C)",
+        "Additional Comments\/Instructions":null,
+        "Notes":null
+    }
+]

@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Interactive GSA MAS Checklist{% endblock %}
+
+{% block head %}
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="project-header">
+        <h1>Interactive GSA New Offer Checklist</h1>
+        <h2>Navigate the GSA MAS proposal requirements with ease.</h2>
+    </div>
+
+    <div class="card">
+        <form>
+            <h3>Offer Details</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="offeror_name">Offeror Name:</label>
+                    <input type="text" id="offeror_name" name="offeror_name">
+                </div>
+                <div class="form-group">
+                    <label for="offer_number">Offer Number:</label>
+                    <input type="text" id="offer_number" name="offer_number">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="uei">UEI:</label>
+                    <input type="text" id="uei" name="uei">
+                </div>
+                <div class="form-group">
+                    <label for="sins_offered">SINs Offered:</label>
+                    <input type="text" id="sins_offered" name="sins_offered" placeholder="e.g., 54151S, 54151HACS">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label for="commodity_type">Commodity Type:</label>
+                    <div class="btn-group" id="commodity_type_group">
+                        <button type="button" class="btn">Product</button>
+                        <button type="button" class="btn">Services</button>
+                        <button type="button" class="btn">Both</button>
+                    </div>
+                    <input type="hidden" id="commodity_type" name="commodity_type">
+                </div>
+            </div>
+        </form>
+        <div class="file-links">
+            <hr>
+            <h4>Checklist Resources</h4>
+            <a href="{{ url_for('static', filename='files/New-Offer-Checklist_June2025_Industry_1_0.xlsx') }}" download class="file-link-btn">Download Checklist</a>
+            <a href="https://docs.google.com/spreadsheets/d/17tfPkPBbNWTtWaPjFaFzpF7MA6kUD8PXYHVI1HF0uJs/edit?usp=sharing" target="_blank" class="file-link-btn">View Checklist</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Offer Review Checklist</h3>
+        <div class="checklist">
+            {% for section in sections %}
+                <h2 class="checklist-section-header">{{ section.name }}</h2>
+                {% for item in section.item_list %}
+                    <div class="checklist-card">
+                        <div class="checklist-card-header">
+                            <input type="checkbox" id="item-{{ item['LINE Number'] }}" name="item-{{ item['LINE Number'] }}">
+                            <label for="item-{{ item['LINE Number'] }}" class="checklist-item" data-modal-target="#modal-{{ item['LINE Number'] }}">
+                                {{ item['Required Documentation'] }}
+                            </label>
+                            <span class="checklist-card-line-number">{{ item['LINE Number'] }}</span>
+                        </div>
+                        {% if item['Solicitation Reference'] %}
+                        {% set ref_data = create_pdf_link(item['Solicitation Reference'], 'SCP-FSS-001.pdf') %}
+                        <div class="checklist-card-footer">
+                            <small>Reference: {{ ref_data.link | safe }}</small>
+                            {% if ref_data.content %}
+                            <div class="reference-content">
+                                <small><strong>Content:</strong> {{ ref_data.content | truncate(150) }}</small>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Modal for each item -->
+                    <div id="modal-{{ item['LINE Number'] }}" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            <div class="modal-header">
+                                <span class="modal-line-number">Line {{ item['LINE Number'] }}</span>
+                                <span class="modal-status" id="status-{{ item['LINE Number'] }}"></span>
+                            </div>
+                            <p><strong>Required Documentation:</strong> <span class="modal-doc-text">{{ item['Required Documentation'] }}</span></p>
+                            {% if item['Additional Comments/Instructions'] %}
+                                <p><strong>Additional Comments/Instructions:</strong> {{ item['Additional Comments/Instructions'] }}</p>
+                            {% endif %}
+                            {% if item['Solicitation Reference'] %}
+                                {% set ref_data = create_pdf_link(item['Solicitation Reference'], 'SCP-FSS-001.pdf') %}
+                                <p><strong>Reference:</strong> {{ ref_data.link | safe }}</p>
+                                {% if ref_data.content %}
+                                <div class="reference-content-modal">
+                                    <p><strong>Reference Content:</strong></p>
+                                    <div class="reference-text">{{ ref_data.content | nl2br | safe }}</div>
+                                </div>
+                                {% endif %}
+                            {% endif %}
+                            <hr>
+                            <h4>Notes</h4>
+                            <div id="note-{{ item['LINE Number'] }}" class="note-editor" data-item-id="{{ item['LINE Number'] }}"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="{{ url_for('static', filename='projects/gsa_mas_checklist.js') }}"></script>
+{% endblock %}
