@@ -66,12 +66,14 @@
             </div>
         </form>
         <div class="save-controls">
-            <div id="save-indicator" class="save-indicator" style="display: none;"></div>
-            <div class="control-buttons">
-                <button id="export-btn" class="btn btn-secondary">Export Data</button>
-                <button id="import-btn" class="btn btn-secondary">Import Data</button>
-                <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
-                <input type="file" id="import-file" accept=".json" style="display: none;">
+            <div class="save-controls-row">
+                <div class="control-buttons">
+                    <button id="export-btn" class="btn btn-secondary">Export Data</button>
+                    <button id="import-btn" class="btn btn-secondary">Import Data</button>
+                    <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
+                    <input type="file" id="import-file" accept=".json" style="display: none;">
+                </div>
+                <div id="save-indicator" class="save-indicator"></div>
             </div>
         </div>
         <div class="file-links">
@@ -92,9 +94,18 @@
                 <div class="progress-fill" id="progress-fill"></div>
             </div>
         </div>
+        <div class="section-progress">
+            <h4>Section Progress</h4>
+            <div id="section-progress-list">
+                <!-- Section progress items will be dynamically generated -->
+            </div>
+        </div>
         <div class="checklist">
             
-                <h2 class="checklist-section-header">Preliminary Review</h2>
+                <h2 class="checklist-section-header" data-section="Preliminary Review">
+                    Preliminary Review
+                    <span class="section-badge" id="badge-0">0/0</span>
+                </h2>
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -322,7 +333,10 @@
                     </div>
                 
             
-                <h2 class="checklist-section-header">Administrative Proposal</h2>
+                <h2 class="checklist-section-header" data-section="Administrative Proposal">
+                    Administrative Proposal
+                    <span class="section-badge" id="badge-1">0/0</span>
+                </h2>
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1252,7 +1266,10 @@
                     </div>
                 
             
-                <h2 class="checklist-section-header">Technical Proposal</h2>
+                <h2 class="checklist-section-header" data-section="Technical Proposal">
+                    Technical Proposal
+                    <span class="section-badge" id="badge-2">0/0</span>
+                </h2>
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1455,7 +1472,10 @@
                     </div>
                 
             
-                <h2 class="checklist-section-header">Price Proposal</h2>
+                <h2 class="checklist-section-header" data-section="Price Proposal">
+                    Price Proposal
+                    <span class="section-badge" id="badge-3">0/0</span>
+                </h2>
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -1892,7 +1912,10 @@
                     </div>
                 
             
-                <h2 class="checklist-section-header">Price Proposal - Services Only</h2>
+                <h2 class="checklist-section-header" data-section="Price Proposal - Services Only">
+                    Price Proposal - Services Only
+                    <span class="section-badge" id="badge-4">0/0</span>
+                </h2>
                 
                     <div class="checklist-card">
                         <div class="checklist-card-header">

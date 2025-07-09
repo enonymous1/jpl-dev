@@ -18,11 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function showSaveIndicator() {
         const indicator = document.getElementById('save-indicator');
         if (indicator) {
-            indicator.style.display = 'block';
             indicator.textContent = 'Saved ✓';
-            indicator.className = 'save-indicator saved';
+            indicator.className = 'save-indicator saved show';
             setTimeout(() => {
-                indicator.style.display = 'none';
+                indicator.classList.remove('show');
             }, 2000);
         }
     }
@@ -190,6 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const completedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
         const percentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
         
+        // Update overall progress
         const progressCount = document.getElementById('progress-count');
         const totalCountElement = document.getElementById('total-count');
         const progressFill = document.getElementById('progress-fill');
@@ -197,6 +197,66 @@ document.addEventListener('DOMContentLoaded', function() {
         if (progressCount) progressCount.textContent = completedCount;
         if (totalCountElement) totalCountElement.textContent = totalCount;
         if (progressFill) progressFill.style.width = `${percentage}%`;
+        
+        // Update section progress
+        updateSectionProgress();
+    }
+    
+    function updateSectionProgress() {
+        const sections = document.querySelectorAll('.checklist-section-header');
+        const sectionProgressList = document.getElementById('section-progress-list');
+        
+        if (!sectionProgressList) return;
+        
+        // Clear existing progress items
+        sectionProgressList.innerHTML = '';
+        
+        sections.forEach((sectionHeader, index) => {
+            const sectionName = sectionHeader.getAttribute('data-section');
+            const badge = document.getElementById(`badge-${index}`);
+            
+            // Find all checkboxes in this section
+            let nextElement = sectionHeader.nextElementSibling;
+            const sectionCheckboxes = [];
+            
+            while (nextElement && !nextElement.classList.contains('checklist-section-header')) {
+                const checkbox = nextElement.querySelector('.checklist-card-header input[type="checkbox"]');
+                if (checkbox) {
+                    sectionCheckboxes.push(checkbox);
+                }
+                nextElement = nextElement.nextElementSibling;
+            }
+            
+            const totalInSection = sectionCheckboxes.length;
+            const completedInSection = sectionCheckboxes.filter(cb => cb.checked).length;
+            const sectionPercentage = totalInSection > 0 ? (completedInSection / totalInSection) * 100 : 0;
+            
+            // Update section badge
+            if (badge) {
+                badge.textContent = `${completedInSection}/${totalInSection}`;
+                badge.className = 'section-badge';
+                if (completedInSection === totalInSection && totalInSection > 0) {
+                    badge.classList.add('completed');
+                } else if (completedInSection > 0) {
+                    badge.classList.add('partial');
+                }
+            }
+            
+            // Create section progress item
+            const progressItem = document.createElement('div');
+            progressItem.className = 'section-progress-item';
+            progressItem.innerHTML = `
+                <span class="section-name">${sectionName}</span>
+                <div style="display: flex; align-items: center;">
+                    <span class="section-count">${completedInSection}/${totalInSection}</span>
+                    <div class="section-mini-bar">
+                        <div class="section-mini-fill" style="width: ${sectionPercentage}%"></div>
+                    </div>
+                </div>
+            `;
+            
+            sectionProgressList.appendChild(progressItem);
+        });
     }
 
     function updateModalStatus(checkbox) {

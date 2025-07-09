@@ -422,13 +422,26 @@ nav a:hover {
     border: 1px solid #dee2e6;
 }
 
+.save-controls-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 .save-indicator {
     font-size: 0.9rem;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 3px;
-    text-align: center;
     font-weight: 500;
+    min-width: 80px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.save-indicator.show {
+    opacity: 1;
 }
 
 .save-indicator.saved {
@@ -500,6 +513,85 @@ nav a:hover {
     transition: width 0.3s ease;
 }
 
+/* Section progress */
+.section-progress {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.section-progress h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #495057;
+}
+
+.section-progress-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.section-progress-item:last-child {
+    border-bottom: none;
+}
+
+.section-name {
+    font-weight: 500;
+    color: #495057;
+}
+
+.section-count {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.section-mini-bar {
+    width: 60px;
+    height: 8px;
+    background-color: #dee2e6;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-left: 0.5rem;
+}
+
+.section-mini-fill {
+    height: 100%;
+    background-color: #28a745;
+    transition: width 0.3s ease;
+}
+
+.checklist-section-header {
+    position: relative;
+    padding-right: 100px;
+}
+
+.section-badge {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #6c757d;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.section-badge.completed {
+    background-color: #28a745;
+}
+
+.section-badge.partial {
+    background-color: #ffc107;
+    color: #212529;
+}
+
 /* Modal status styles */
 .modal-status.complete {
     color: #28a745;
@@ -513,12 +605,42 @@ nav a:hover {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .save-controls-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
     .control-buttons {
         flex-direction: column;
+        width: 100%;
     }
     
     .btn {
         width: 100%;
         margin-bottom: 0.5rem;
+    }
+    
+    .save-indicator {
+        align-self: center;
+    }
+    
+    .section-progress-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .checklist-section-header {
+        padding-right: 0;
+        padding-bottom: 2rem;
+        position: relative;
+    }
+    
+    .section-badge {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transform: none;
     }
 }

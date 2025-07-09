@@ -48,12 +48,14 @@
             </div>
         </form>
         <div class="save-controls">
-            <div id="save-indicator" class="save-indicator" style="display: none;"></div>
-            <div class="control-buttons">
-                <button id="export-btn" class="btn btn-secondary">Export Data</button>
-                <button id="import-btn" class="btn btn-secondary">Import Data</button>
-                <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
-                <input type="file" id="import-file" accept=".json" style="display: none;">
+            <div class="save-controls-row">
+                <div class="control-buttons">
+                    <button id="export-btn" class="btn btn-secondary">Export Data</button>
+                    <button id="import-btn" class="btn btn-secondary">Import Data</button>
+                    <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
+                    <input type="file" id="import-file" accept=".json" style="display: none;">
+                </div>
+                <div id="save-indicator" class="save-indicator"></div>
             </div>
         </div>
         <div class="file-links">
@@ -74,9 +76,18 @@
                 <div class="progress-fill" id="progress-fill"></div>
             </div>
         </div>
+        <div class="section-progress">
+            <h4>Section Progress</h4>
+            <div id="section-progress-list">
+                <!-- Section progress items will be dynamically generated -->
+            </div>
+        </div>
         <div class="checklist">
             {% for section in sections %}
-                <h2 class="checklist-section-header">{{ section.name }}</h2>
+                <h2 class="checklist-section-header" data-section="{{ section.name }}">
+                    {{ section.name }}
+                    <span class="section-badge" id="badge-{{ loop.index0 }}">0/0</span>
+                </h2>
                 {% for item in section.item_list %}
                     <div class="checklist-card">
                         <div class="checklist-card-header">
