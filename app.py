@@ -1,10 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 from flask_frozen import Freezer
 import json
 import re
 
 app = Flask(__name__)
 app.config['FREEZER_DESTINATION'] = 'docs'
+app.config['FREEZER_RELATIVE_URLS'] = True
 freezer = Freezer(app)
 
 # Custom filter to convert newlines to HTML breaks
@@ -128,8 +129,8 @@ def create_pdf_link(reference_text, pdf_filename):
     if not reference_text or 'SCP-FSS-001' not in reference_text:
         return {'link': reference_text, 'content': None}
     
-    # Create a simple PDF link without page anchors
-    pdf_url = f"/static/files/{pdf_filename}"
+    # Create a PDF link using url_for for proper path generation
+    pdf_url = url_for('static', filename=f'files/{pdf_filename}')
     pdf_link = reference_text.replace('SCP-FSS-001', f'<a href="{pdf_url}" target="_blank" class="pdf-link">SCP-FSS-001</a>')
     
     # Get content using direct lookup

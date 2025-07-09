@@ -72,7 +72,7 @@
                         {% if item['Solicitation Reference'] %}
                         {% set ref_data = create_pdf_link(item['Solicitation Reference'], 'SCP-FSS-001.pdf') %}
                         <div class="checklist-card-footer">
-                            <small>Reference: {{ ref_data.link | safe }}</small>
+                            <small>Reference: {{ ref_data.link | replace('/static/files/SCP-FSS-001.pdf', url_for('static', filename='files/SCP-FSS-001.pdf')) | safe }}</small>
                             {% if ref_data.content %}
                             <div class="reference-content">
                                 <small><strong>Content:</strong> {{ ref_data.content | truncate(150) }}</small>
@@ -96,7 +96,7 @@
                             {% endif %}
                             {% if item['Solicitation Reference'] %}
                                 {% set ref_data = create_pdf_link(item['Solicitation Reference'], 'SCP-FSS-001.pdf') %}
-                                <p><strong>Reference:</strong> {{ ref_data.link | safe }}</p>
+                                <p><strong>Reference:</strong> {{ ref_data.link | replace('/static/files/SCP-FSS-001.pdf', url_for('static', filename='files/SCP-FSS-001.pdf')) | safe }}</p>
                                 {% if ref_data.content %}
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
