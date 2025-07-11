@@ -1,0 +1,467 @@
+/* Checklist and section styles */
+.checklist {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.checklist-section-header {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+    position: relative;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border: none;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    list-style: none;
+    outline: none;
+}
+
+.checklist-section-header::-webkit-details-marker {
+    display: none;
+}
+
+.checklist-section-header::before {
+    content: '▼';
+    color: #6c757d;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+    margin-right: 1rem;
+    order: -1;
+}
+
+details[open] .checklist-section-header::before {
+    transform: rotate(180deg);
+}
+
+.checklist-section-header:hover {
+    background-color: var(--button-hover-bg);
+}
+
+.checklist-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.checklist-card.full-width {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.checklist-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.checklist-card-header input[type="checkbox"] {
+    margin-right: 10px;
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.checklist-card-header .checklist-item {
+    flex-grow: 1;
+    cursor: pointer;
+    color: inherit;
+}
+
+.checklist-card-line-number {
+    font-size: 0.9em;
+    color: #999;
+    margin-left: 1rem;
+}
+
+.checklist-card-body {
+    padding: 0.5rem 0;
+    color: #555;
+}
+
+.checklist-card-footer {
+    font-size: 0.8em;
+    color: #777;
+    margin-top: 0.5rem;
+}
+
+.section-container {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--card-bg);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.section-container:hover {
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.section-content {
+    padding: 1rem;
+    background-color: var(--card-bg);
+}
+
+.section-content.expanded {
+    max-height: none;
+    padding: 1rem;
+}
+
+.section-title {
+    font-weight: 600;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.section-header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.section-badge {
+    background-color: #6c757d;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.section-badge.completed {
+    background-color: #28a745;
+}
+
+.section-badge.partial {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.checklist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.checklist-header h3 {
+    margin: 0;
+}
+
+/* Modal status styles */
+.modal-status {
+    font-weight: bold;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.modal-status.complete {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.modal-status.incomplete {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.modal-line-number {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--text-secondary);
+    background-color: var(--bg-secondary);
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.modal-doc-text {
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+/* Notes Editor Styles */
+.note-editor {
+    margin-top: 1rem;
+    max-width: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+    min-height: 150px;
+    max-height: 300px;
+    background: var(--input-bg);
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.note-editor .ql-container {
+    border: none;
+    border-radius: 0 0 4px 4px;
+    height: auto;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.note-editor .ql-editor {
+    min-height: 120px;
+    max-height: 220px;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-y: auto;
+}
+
+.note-editor .ql-toolbar {
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 4px 4px 0 0;
+    padding: 8px 12px;
+    background: var(--bg-secondary);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.note-editor .ql-toolbar button {
+    padding: 4px;
+    margin: 1px;
+    border-radius: 3px;
+    border: none;
+    background: transparent;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.note-editor .ql-toolbar button:hover {
+    background: var(--button-hover-bg);
+}
+
+.note-editor .ql-toolbar button.ql-active {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Save Notes Button */
+.save-notes-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.save-notes-btn:hover {
+    background: var(--primary-hover-color);
+}
+
+.save-notes-btn.saved {
+    background: #28a745;
+}
+
+.save-notes-btn.saved:hover {
+    background: #1e7e34;
+}
+
+/* SINs Modal and Input Styles */
+.input-with-button {
+    display: flex;
+    align-items: stretch;
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+}
+
+.input-with-button:focus-within {
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.input-with-button input {
+    flex: 1;
+    margin: 0;
+    border-radius: 6px 0 0 6px;
+    border-right: none;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    padding: 0.6rem 0.75rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.input-with-button input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: var(--bg-color);
+}
+
+.add-sins-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.8rem;
+    background: var(--primary-color);
+    color: white;
+    border: 1px solid var(--primary-color);
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 42px;
+    height: 38px;
+    box-sizing: border-box;
+}
+
+.add-sins-btn:hover {
+    background: var(--primary-hover-color);
+    border-color: var(--primary-hover-color);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Button Group Styles */
+.btn-group {
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-group .btn {
+    border: none;
+    border-radius: 0;
+    border-right: 1px solid var(--border-color);
+    background-color: transparent;
+    flex: 1;
+    text-align: center;
+    position: relative;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    transform: none;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.btn-group .btn:last-child {
+    border-right: none;
+}
+
+.btn-group .btn:hover {
+    background-color: var(--button-hover-bg);
+    color: var(--text-color);
+    transform: none;
+    z-index: 1;
+}
+
+.btn-group .btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    box-shadow: 
+        inset 0 1px 3px rgba(0, 0, 0, 0.2),
+        0 0 0 2px rgba(0, 123, 255, 0.3);
+    z-index: 2;
+    border-color: var(--primary-color);
+}
+
+.btn-group .btn.active:hover {
+    background-color: var(--primary-hover-color);
+    color: white;
+    transform: none;
+}
+
+/* Reference Content Styles */
+.reference-content {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--bg-secondary);
+    border-left: 3px solid #d73027;
+    border-radius: 3px;
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.reference-content-modal {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.reference-text {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    white-space: pre-wrap;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.resource-note {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--primary-color);
+    border-radius: 4px;
+}
+
+.resource-note small {
+    color: var(--text-secondary);
+    font-style: italic;
+}

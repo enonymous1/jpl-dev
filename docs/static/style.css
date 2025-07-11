@@ -173,60 +173,52 @@ nav a:hover {
   .sidenav a {font-size: 18px;}
 }
 
+/* Prevent horizontal overflow */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
 /* Project Page Styles */
 .project-header {
     text-align: center;
     margin-bottom: 2rem;
-    padding: 3rem 2rem;
-    background: linear-gradient(135deg, var(--primary-color) 0%, #4f46e5 100%);
+    padding: 2rem 1.5rem;
+    background: var(--bg-secondary);
     border-radius: 12px;
-    box-shadow: 0 4px 20px var(--shadow-color);
-    max-width: 800px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    max-width: 100%;
     margin: 0 auto 2rem auto;
-    width: calc(100% - 4rem);
-    position: relative;
-    overflow: hidden;
-}
-
-.project-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-    pointer-events: none;
+    box-sizing: border-box;
 }
 
 .project-header.full-width {
-    max-width: calc(100vw - 4rem);
-    width: auto;
-    margin: 0 auto 2rem auto;
+    max-width: 100%;
+    width: 100%;
+    margin: 0 0 2rem 0;
 }
 
 .header-content {
-    position: relative;
-    z-index: 1;
-    max-width: 800px;
+    max-width: 100%;
     margin: 0 auto;
 }
 
 .header-text h1 {
-    margin-bottom: 0.75rem;
-    color: white;
-    font-size: 2.5rem;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    letter-spacing: -0.025em;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-size: 2.25rem;
+    font-weight: 600;
 }
 
 .header-text h2 {
     margin: 0;
-    color: rgba(255,255,255,0.9);
+    color: var(--text-secondary);
     font-weight: 400;
-    font-size: 1.25rem;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    font-size: 1.2rem;
 }
 
 /* Sticky Header Styles */
@@ -248,14 +240,17 @@ nav a:hover {
 
 .main-content-area {
     padding: 0 2rem 2rem 2rem;
-    max-width: 1200px; /* Increased from 800px for wider layout */
+    max-width: 100%;
     margin: 0 auto;
     width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .main-content-area.full-width {
-    max-width: calc(100vw - 4rem); /* Viewport width minus padding */
+    max-width: 100%;
     padding: 0 2rem 2rem 2rem;
+    box-sizing: border-box;
 }
 
 .project-header.full-width {
@@ -266,24 +261,30 @@ nav a:hover {
 
 .cards-row {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     margin-bottom: 2rem;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .offer-details-card {
     flex: 2;
-    min-width: 0; /* Allow flex item to shrink */
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .resources-card {
     flex: 1;
-    min-width: 0; /* Allow flex item to shrink */
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .card.full-width {
     width: 100%;
-    max-width: none;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .resource-links {
@@ -325,6 +326,10 @@ nav a:hover {
 
 .resource-link-btn.sheets:hover svg {
     color: #0F9D58; /* Google Sheets green */
+}
+
+.resource-link-btn.sam-gov:hover svg {
+    color: #1f5582; /* SAM.gov blue */
 }
 
 /* Header Action Buttons */
@@ -442,6 +447,7 @@ nav a:hover {
 }
 
 /* Theme Toggle Button */
+
 .theme-toggle {
     display: flex;
     align-items: center;
@@ -451,11 +457,27 @@ nav a:hover {
     border: 2px solid var(--border-color);
     border-radius: 50%;
     background: var(--bg-secondary);
-    color: var(--text-color);
+    color: #e6b800; /* bright gold for sun/moon icon by default */
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+}
+
+/* Make sure the icon is visible in both themes */
+.theme-toggle .sun-icon,
+.theme-toggle .moon-icon {
+    color: #e6b800; /* gold for sun */
+    filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 1px #0008);
+}
+
+[data-theme="dark"] .theme-toggle {
+    color: #ffe066; /* lighter gold for dark mode */
+}
+[data-theme="dark"] .theme-toggle .sun-icon,
+[data-theme="dark"] .theme-toggle .moon-icon {
+    color: #ffe066;
+    filter: drop-shadow(0 0 2px #222) drop-shadow(0 0 1px #fff8);
 }
 
 .theme-toggle:hover {
@@ -547,24 +569,24 @@ nav a:hover {
     }
     
     .main-content-area.full-width {
-        max-width: calc(100vw - 3rem);
+        max-width: 100%;
         padding: 0 1.5rem 2rem 1.5rem;
     }
     
     .project-header.full-width {
-        max-width: calc(100vw - 3rem);
+        max-width: 100%;
     }
 }
 
 @media (max-width: 768px) {
     .main-content-area,
     .main-content-area.full-width {
-        max-width: calc(100vw - 2rem);
+        max-width: 100%;
         padding: 0 1rem 1rem 1rem;
     }
     
     .project-header.full-width {
-        max-width: calc(100vw - 2rem);
+        max-width: 100%;
         padding: 1.5rem 1rem;
     }
     
@@ -585,13 +607,13 @@ nav a:hover {
 @media (max-width: 480px) {
     .main-content-area,
     .main-content-area.full-width {
-        max-width: calc(100vw - 1rem);
-        padding: 0 0.5rem 1rem 0.5rem;
+        max-width: 100%;
+        padding: 0 0.75rem 1rem 0.75rem;
     }
     
     .project-header.full-width {
-        max-width: calc(100vw - 1rem);
-        padding: 1rem 0.5rem;
+        max-width: 100%;
+        padding: 1rem 0.75rem;
     }
 }
 
@@ -1267,16 +1289,22 @@ nav a:hover {
 /* Section progress */
 .section-container {
     margin-bottom: 1rem;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     overflow: hidden;
+    background: var(--card-bg);
+    transition: all 0.3s ease;
+}
+
+.section-container:hover {
+    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .checklist-section-header {
     position: relative;
     padding: 1rem;
     background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
+    border: none;
     cursor: pointer;
     user-select: none;
     transition: background-color 0.2s ease;
@@ -1284,44 +1312,44 @@ nav a:hover {
     justify-content: space-between;
     align-items: center;
     margin: 0;
+    list-style: none;
+    outline: none;
+}
+
+.checklist-section-header::-webkit-details-marker {
+    display: none;
+}
+
+.checklist-section-header::before {
+    content: '▼';
+    color: #6c757d;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+    margin-right: 1rem;
+    order: -1;
+}
+
+details[open] .checklist-section-header::before {
+    transform: rotate(180deg);
 }
 
 .checklist-section-header:hover {
     background-color: var(--button-hover-bg);
 }
 
-.section-title {
-    font-weight: 600;
-    color: var(--text-color);
-    transition: color 0.3s ease;
-}
-
-.section-header-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
 .section-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+    padding: 1rem;
     background-color: var(--card-bg);
 }
 
-.section-content.expanded {
-    max-height: 2000px; /* Set a large max-height instead of none for smooth animation */
-    padding: 1rem;
-}
-
+/* Remove the old accordion styles */
 .accordion-toggle {
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
-    color: #6c757d;
+    display: none;
 }
 
-.accordion-toggle.rotated {
-    transform: rotate(180deg);
+.section-content.expanded {
+    max-height: none;
+    padding: 1rem;
 }
 
 .section-badge {
@@ -2278,29 +2306,13 @@ nav a:hover {
 /* Responsive Header Styles */
 @media (max-width: 768px) {
     .project-header {
-        padding: 2rem 1.5rem;
-    }
-    
-    .project-header.full-width {
-        max-width: calc(100vw - 2rem);
-    }
-    
-    .header-text h1 {
-        font-size: 2rem;
-    }
-    
-    .header-text h2 {
-        font-size: 1.1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .project-header {
         padding: 1.5rem 1rem;
+        margin: 0 0 1.5rem 0;
     }
     
     .project-header.full-width {
-        max-width: calc(100vw - 1rem);
+        max-width: 100%;
+        width: 100%;
     }
     
     .header-text h1 {
@@ -2310,4 +2322,210 @@ nav a:hover {
     .header-text h2 {
         font-size: 1rem;
     }
+}
+
+@media (max-width: 480px) {
+    .project-header {
+        padding: 1rem 0.75rem;
+    }
+    
+    .header-text h1 {
+        font-size: 1.5rem;
+    }
+    
+    .header-text h2 {
+        font-size: 0.9rem;
+    }
+}
+
+.section-title {
+    font-weight: 600;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.section-header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.resource-note {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--primary-color);
+    border-radius: 4px;
+}
+
+.resource-note small {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Profile Card Styles */
+.profile-card {
+    max-width: 420px;
+    margin: 40px auto 24px auto;
+    padding: 32px 28px 24px 28px;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border-color);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+    z-index: 2;
+}
+
+.profile-card:hover {
+    box-shadow: 0 12px 40px var(--shadow-color);
+    transform: translateY(-2px) scale(1.01);
+}
+
+.profile-avatar {
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+    box-shadow: 0 2px 12px var(--shadow-color);
+    margin-bottom: 18px;
+    background: var(--bg-secondary);
+    display: block;
+}
+
+.profile-avatar-fallback {
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 3px solid var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 18px;
+    box-shadow: 0 2px 12px var(--shadow-color);
+}
+
+.profile-name {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.01em;
+}
+
+.profile-title {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 0.7rem;
+}
+
+.profile-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.1rem;
+    line-height: 1.5;
+}
+
+.profile-linkedin {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-color);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.55rem 1.2rem;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.profile-linkedin:hover {
+    background: var(--primary-hover-color);
+    color: #fff;
+    box-shadow: 0 4px 16px var(--shadow-color);
+    text-decoration: none;
+}
+
+.profile-linkedin svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+    vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+    .profile-card {
+        max-width: 98vw;
+        padding: 20px 8vw 18px 8vw;
+        margin: 24px 0 16px 0;
+    }
+    .profile-avatar, .profile-avatar-fallback {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+    .profile-name {
+        font-size: 1.1rem;
+    }
+    .profile-title {
+        font-size: 0.95rem;
+    }
+    .profile-desc {
+        font-size: 0.95rem;
+    }
+    .profile-linkedin {
+        font-size: 0.95rem;
+        padding: 0.45rem 0.9rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .profile-card {
+        padding: 12px 2vw 10px 2vw;
+    }
+    .profile-avatar, .profile-avatar-fallback {
+        width: 60px;
+        height: 60px;
+        font-size: 1.2rem;
+    }
+}
+
+/* Dark theme for profile card */
+[data-theme="dark"] .profile-card {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+    box-shadow: 0 8px 32px var(--shadow-color);
+}
+[data-theme="dark"] .profile-avatar,
+[data-theme="dark"] .profile-avatar-fallback {
+    background: var(--bg-secondary);
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 12px var(--shadow-color);
+}
+[data-theme="dark"] .profile-name {
+    color: var(--text-color);
+}
+[data-theme="dark"] .profile-title,
+[data-theme="dark"] .profile-desc {
+    color: var(--text-secondary);
+}
+[data-theme="dark"] .profile-linkedin {
+    background: var(--primary-color);
+    color: #fff;
+}
+[data-theme="dark"] .profile-linkedin:hover {
+    background: var(--primary-hover-color);
+    color: #fff;
 }

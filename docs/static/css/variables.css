@@ -1,0 +1,42 @@
+/* Theme variables and custom properties */
+:root {
+    --bg-color: #f4f4f4;
+    --bg-secondary: #ffffff;
+    --text-color: #333;
+    --text-secondary: #666;
+    --border-color: #ddd;
+    --primary-color: #007bff;
+    --primary-hover-color: #0056b3;
+    --card-bg: #ffffff;
+    --modal-bg: #ffffff;
+    --header-bg: #333;
+    --header-text: #fff;
+    --input-bg: #ffffff;
+    --input-border: #ccc;
+    --button-bg: #f8f9fa;
+    --button-hover-bg: #e9ecef;
+    --tooltip-bg: #333;
+    --tooltip-text: #fff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-color: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --border-color: #404040;
+    --primary-color: #4dabf7;
+    --primary-hover-color: #74c0fc;
+    --card-bg: #2d2d2d;
+    --modal-bg: #2d2d2d;
+    --header-bg: #1a1a1a;
+    --header-text: #e0e0e0;
+    --input-bg: #404040;
+    --input-border: #606060;
+    --button-bg: #404040;
+    --button-hover-bg: #505050;
+    --tooltip-bg: #e0e0e0;
+    --tooltip-text: #1a1a1a;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}

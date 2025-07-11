@@ -1,0 +1,279 @@
+/* Profile card styles */
+.profile-card {
+    max-width: 420px;
+    margin: 40px auto 24px auto;
+    padding: 32px 28px 24px 28px;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border-color);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+    z-index: 2;
+}
+
+.profile-card:hover {
+    box-shadow: 0 12px 40px var(--shadow-color);
+    transform: translateY(-2px) scale(1.01);
+}
+
+.profile-image-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    background: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profile-image-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-secondary);
+    border-radius: 50%;
+}
+
+.profile-content {
+    width: 100%;
+}
+
+.profile-name {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0.25rem 0;
+    color: var(--text-color);
+}
+
+.profile-title {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin: 0 0 0.75rem 0;
+    font-weight: 500;
+}
+
+.profile-description {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.profile-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.profile-link:hover {
+    color: var(--primary-hover-color);
+}
+
+.profile-link.linkedin {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-color);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.55rem 1.2rem;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.profile-link.linkedin:hover {
+    background: var(--primary-hover-color);
+    color: #fff;
+    box-shadow: 0 4px 16px var(--shadow-color);
+    text-decoration: none;
+}
+
+.profile-link.linkedin svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+    vertical-align: middle;
+}
+
+/* Welcome Card Styles */
+.welcome-card {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 40px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px var(--shadow-color);
+    position: relative;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.welcome-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px var(--shadow-color);
+}
+
+.welcome-message {
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    font-weight: 400;
+    color: var(--text-color);
+    position: relative;
+    z-index: 2;
+}
+
+.quote-mark {
+    font-family: Georgia, serif;
+    font-size: 4rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    opacity: 0.3;
+    position: absolute;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.quote-mark.opening {
+    top: 10px;
+    left: 20px;
+}
+
+.quote-mark.closing {
+    bottom: 10px;
+    right: 20px;
+    transform: rotate(180deg);
+}
+
+@media (max-width: 600px) {
+    .profile-card {
+        max-width: 98vw;
+        padding: 20px 8vw 18px 8vw;
+        margin: 24px 0 16px 0;
+    }
+    
+    .profile-image-container {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .profile-name {
+        font-size: 1.1rem;
+    }
+    
+    .profile-title {
+        font-size: 0.95rem;
+    }
+    
+    .profile-description {
+        font-size: 0.95rem;
+    }
+    
+    .profile-link.linkedin {
+        font-size: 0.95rem;
+        padding: 0.45rem 0.9rem;
+    }
+    
+    .welcome-card {
+        margin: 30px 20px;
+        padding: 30px 25px;
+    }
+    
+    .welcome-message {
+        font-size: 1.25rem;
+        line-height: 1.5;
+    }
+    
+    .quote-mark {
+        font-size: 3rem;
+    }
+    
+    .quote-mark.opening {
+        top: 5px;
+        left: 15px;
+    }
+    
+    .quote-mark.closing {
+        bottom: 5px;
+        right: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-card {
+        margin: 20px 16px;
+        padding: 25px 20px;
+    }
+    
+    .welcome-message {
+        font-size: 1.1rem;
+    }
+    
+    .quote-mark {
+        font-size: 2.5rem;
+    }
+}
+
+/* Dark theme for profile card */
+[data-theme="dark"] .profile-card {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+    box-shadow: 0 8px 32px var(--shadow-color);
+}
+
+[data-theme="dark"] .profile-image-container {
+    background: var(--bg-secondary);
+    box-shadow: 0 2px 12px var(--shadow-color);
+}
+
+[data-theme="dark"] .profile-name {
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .profile-title,
+[data-theme="dark"] .profile-description {
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .profile-link.linkedin {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+[data-theme="dark"] .profile-link.linkedin:hover {
+    background: var(--primary-hover-color);
+    color: #fff;
+}

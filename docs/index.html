@@ -2,7 +2,14 @@
 <html>
 <head>
     <title>Home - JPL-DEV</title>
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/css/variables.css">
+    <link rel="stylesheet" href="static/css/base.css">
+    <link rel="stylesheet" href="static/css/layout.css">
+    <link rel="stylesheet" href="static/css/components.css">
+    <link rel="stylesheet" href="static/css/profile-card.css">
+    <link rel="stylesheet" href="static/css/checklist.css">
+    <link rel="stylesheet" href="static/css/theme-toggle.css">
+    <link rel="stylesheet" href="static/css/projects.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 </head>
@@ -17,21 +24,82 @@
         <header id="header">
             <div class="header-left">
                 <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+                
             </div>
             
             
+                
+            <div class="header-right">
+                <button id="theme-toggle" class="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="5" fill="#FFD600" stroke="#FFA000" stroke-width="2"/>
+                            <g stroke="#FFA000" stroke-width="2">
+                                <line x1="12" y1="2" x2="12" y2="5"/>
+                                <line x1="12" y1="19" x2="12" y2="22"/>
+                                <line x1="2" y1="12" x2="5" y2="12"/>
+                                <line x1="19" y1="12" x2="22" y2="12"/>
+                                <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
+                                <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+                                <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
+                                <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+                            </g>
+                        </g>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="9" fill="#B0BEC5"/>
+                            <path d="M16 12.5A4.5 4.5 0 0 1 11.5 8c0-2.485 2.015-4.5 4.5-4.5a7 7 0 1 0 0 14c-2.485 0-4.5-2.015-4.5-4.5z" fill="#FFFDE7"/>
+                        </g>
+                    </svg>
+                </button>
+            </div>
         </header>
 
         <main id="main">
             
-    <h1>Hey there, welcome to my digital sandbox! Here, I experiment with code, share my musings, and build things that spark joy. Grab a seat, explore, and let's get acquainted!</h1>
+    <div class="profile-card">
+        <div class="profile-image-container">
+            <img src="https://media.licdn.com/dms/image/v2/D5603AQEHtlB-dVjCuw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1699568652406?e=1740614400&v=beta&t=9IG5lS8X8V8uNFz9rYKD5r6q7KD5r6q7KD5r6q7KD5r" 
+                 alt="Justin P. Lyons" 
+                 class="profile-image"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="profile-image-fallback" style="display: none;">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+                </svg>
+            </div>
+        </div>
+        <div class="profile-content">
+            <h1 class="profile-name">Justin P. Lyons</h1>
+            <p class="profile-title">Digital Innovation Strategist & Developer</p>
+            <p class="profile-description">
+                Passionate about bridging technology and human experience. I specialize in creating digital solutions 
+                that solve real-world problems while keeping user experience at the forefront.
+            </p>
+            <div class="profile-links">
+                <a href="https://www.linkedin.com/in/justinplyons/" target="_blank" class="profile-link linkedin">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    LinkedIn
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    
 
         </main>
 
         <footer>
             <p>&copy; 2025 Justin Lyons</p>
         </footer>
+        
+        <!-- Global Scripts -->
         <script src="static/script.js"></script>
+        <script src="static/global-theme.js"></script>
         
         
         <!-- File input for import functionality (only on GSA MAS checklist page) -->

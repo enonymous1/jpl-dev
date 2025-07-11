@@ -256,41 +256,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Accordion functionality
-    function setupAccordions() {
-        console.log('Setting up accordions...');
-        const sectionHeaders = document.querySelectorAll('.accordion-header');
-        console.log('Found section headers:', sectionHeaders.length);
-        
-        sectionHeaders.forEach((header, index) => {
-            const toggle = header.querySelector('.accordion-toggle');
-            const sectionContent = document.getElementById(`section-${index}`);
-            
-            console.log(`Setting up section ${index}:`, header, sectionContent);
-            
-            // Set initial state for first section
-            if (index === 0) {
-                toggle.classList.add('rotated');
-            }
-            
-            header.addEventListener('click', () => {
-                console.log(`Accordion clicked for section ${index}`);
-                const isExpanded = sectionContent.classList.contains('expanded');
-                
-                if (isExpanded) {
-                    // Collapse
-                    console.log('Collapsing section');
-                    sectionContent.classList.remove('expanded');
-                    toggle.classList.remove('rotated');
-                } else {
-                    // Expand
-                    console.log('Expanding section');
-                    sectionContent.classList.add('expanded');
-                    toggle.classList.add('rotated');
-                }
-            });
-        });
-    }
+    // Native HTML5 details/summary handles accordion functionality
+    // No custom JavaScript needed for accordion behavior
 
     function updateModalStatus(checkbox) {
         const line_number = checkbox.id.split('-')[1];
@@ -928,13 +895,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-    
-    // Initialize manual save after a short delay to ensure buttons are rendered
+      // Initialize manual save after a short delay to ensure buttons are rendered
     setTimeout(setupManualNoteSave, 100);
-
-    // Initialize core functionality after DOM is fully ready
+    
+    // Initialize functionality after DOM is fully ready
     setTimeout(() => {
-        setupAccordions();
         setupAutoSave();
         updateSectionBadges();
         
@@ -943,5 +908,5 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Update progress indicator
         updateProgressIndicator();
-    }, 200);
+    }, 300);
 });
