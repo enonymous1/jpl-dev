@@ -1,0 +1,88 @@
+/* Custom styles for the Schedule Maker application */
+body {
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden; /* Prevent horizontal scrollbar from flyouts */
+}
+
+/* Styles for printing the schedule */
+@media print {
+    #nav-flyout, #header-actions, #page-header, footer, #overlay, #modal-overlay, #monthly-view, #weekly-view-controls, #employee-popover {
+        display: none !important;
+    }
+    #weekly-view { display: block !important; }
+    main { width: 100%; margin: 0; padding: 0; }
+    body, #app-container { display: block; background-color: white; }
+    table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+    th, td { border: 1px solid #ccc; padding: 8px; color: #000; }
+    #weekly-view::before {
+        content: "Weekly Schedule";
+        display: block; text-align: center; font-size: 18pt;
+        font-weight: bold; margin-bottom: 20px;
+    }
+}
+
+.transition-all { transition: all 0.3s ease-in-out; }
+.transition-transform { transition: transform 0.3s ease-in-out; }
+
+/* Drag and Drop styles */
+.drop-target-active {
+    outline: 2px dashed #38bdf8; /* sky-400 */
+    outline-offset: -2px;
+    background-color: #f0f9ff; /* sky-50 */
+}
+.draggable-employee {
+    cursor: grab;
+}
+.draggable-employee:active {
+    cursor: grabbing;
+}
+.trash-active {
+    transform: scale(1.1);
+    color: #ef4444; /* red-500 */
+}
+
+/* Calendar day styling */
+.calendar-day-btn:hover { background-color: #e0f2fe; /* sky-100 */ }
+
+/* Active button state for view toggles and month quantity */
+.btn-active {
+    background-color: #0ea5e9 !important; /* sky-500 */
+    color: white !important;
+    border-color: #0ea5e9 !important;
+}
+
+/* View toggle button styles */
+.view-toggle-btn {
+    transition: all 0.2s ease;
+}
+
+.view-toggle-btn.btn-active {
+    background-color: #0ea5e9 !important;
+    color: white !important;
+    border-color: #0ea5e9 !important;
+}
+
+/* Month quantity button styles */
+.month-qty-btn {
+    transition: all 0.2s ease;
+}
+
+.month-qty-btn.btn-active {
+    background-color: #0ea5e9 !important;
+    color: white !important;
+}
+
+/* Employee popup styles */
+.hidden {
+    display: none !important;
+}
+
+.flex {
+    display: flex !important;
+}
+
+/* Force initialization styles */
+.schedule-force-visible {
+    display: block !important;
+    visibility: visible !important;
+}

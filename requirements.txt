@@ -1,2 +1,9 @@
-Flask
-Frozen-Flask
+# Core Flask dependencies
+Flask==3.1.1
+Frozen-Flask==1.0.2
+pandas==2.3.1
+openpyxl==3.1.5
+PyPDF2==3.0.1
+
+# Standard library modules used (no install needed, but documenting)
+# json - built-in

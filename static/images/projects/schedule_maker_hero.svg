@@ -1,0 +1,51 @@
+<svg width="400" height="250" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="250" fill="url(#bg)" />
+
+  <g transform="translate(30, 20)">
+    <rect x="0" y="0" width="340" height="175" rx="12" fill="#ffffff" opacity="0.95" />
+
+    <g transform="translate(15, 15)">
+      <rect x="0" y="0" width="310" height="25" fill="#f1f5f9" />
+      <g fill="#0369a1" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">
+        <text x="22" y="16">MON</text>
+        <text x="66" y="16">TUE</text>
+        <text x="110" y="16">WED</text>
+        <text x="154" y="16">THU</text>
+        <text x="198" y="16">FRI</text>
+        <text x="242" y="16">SAT</text>
+        <text x="286" y="16">SUN</text>
+      </g>
+
+      <g stroke="#e5e7eb" stroke-width="1">
+        <line x1="44" y1="0" x2="44" y2="150" />
+        <line x1="88" y1="0" x2="88" y2="150" />
+        <line x1="132" y1="0" x2="132" y2="150" />
+        <line x1="176" y1="0" x2="176" y2="150" />
+        <line x1="220" y1="0" x2="220" y2="150" />
+        <line x1="264" y1="0" x2="264" y2="150" />
+        <line x1="0" y1="25" x2="310" y2="25" />
+        <line x1="0" y1="88" x2="310" y2="88" />
+      </g>
+
+      <g>
+        <rect x="45" y="32" width="40" height="25" rx="3" fill="#4F46E5" opacity="0.9" />
+        <text x="65" y="46" font-family="Arial, sans-serif" font-size="8" fill="white" text-anchor="middle">Jason</text>
+        <rect x="130" y="62" width="40" height="25" rx="3" fill="#10B981" opacity="0.9" />
+        <text x="150" y="76" font-family="Arial, sans-serif" font-size="8" fill="white" text-anchor="middle">Emily</text>
+        <rect x="174" y="32" width="40" height="55" rx="3" fill="#F59E0B" opacity="0.9" />
+        <text x="194" y="46" font-family="Arial, sans-serif" font-size="8" fill="white" text-anchor="middle"></text>
+        <text x="194" y="56" font-family="Arial, sans-serif" font-size="8" fill="white" text-anchor="middle">John</text>
+      </g>
+    </g>
+  </g>
+
+  <text x="200" y="218" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#ffffff">Schedule Maker</text>
+  <text x="200" y="235" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#ffffff" opacity="0.8">Interactive Calendar Tool</text>
+</svg>

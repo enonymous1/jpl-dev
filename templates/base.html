@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>{% block title %}{% endblock %} - JPL-DEV</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
@@ -59,6 +59,8 @@
                         </svg>
                     </button>
                 </div>
+            {% elif request.endpoint == 'schedule_maker.schedule_maker' %}
+                {% block header_actions %}{% endblock %}
             {% endif %}
                 
             <div class="header-right">
