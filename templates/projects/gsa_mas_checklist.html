@@ -8,89 +8,166 @@
 {% endblock %}
 
 {% block content %}
-    <div class="project-header">
-        <h1>Interactive GSA New Offer Checklist</h1>
-        <h2>Navigate the GSA MAS proposal requirements with ease.</h2>
-    </div>
-
-    <div class="save-controls">
-        <div class="save-controls-row">
-            <div class="control-buttons">
-                <button id="export-btn" class="btn btn-secondary">Export Data</button>
-                <button id="import-btn" class="btn btn-secondary">Import Data</button>
-                <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
-                <input type="file" id="import-file" accept=".json" style="display: none;">
+    <div class="project-header full-width">
+        <div class="header-content">
+            <div class="header-text">
+                <h1>Interactive GSA New Offer Checklist</h1>
+                <h2>Navigate the GSA MAS proposal requirements with ease.</h2>
             </div>
-            <div id="save-indicator" class="save-indicator"></div>
         </div>
     </div>
 
-    <div class="card">
-        <form id="offer-form">
-            <h3>Offer Details</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="offeror_name">Offeror Name:</label>
-                    <input type="text" id="offeror_name" name="offeror_name">
-                </div>
-                <div class="form-group">
-                    <label for="offer_number">Offer Number:</label>
-                    <input type="text" id="offer_number" name="offer_number">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="uei">UEI:</label>
-                    <input type="text" id="uei" name="uei">
-                </div>
-                <div class="form-group">
-                    <label for="sins_offered">SINs Offered:</label>
-                    <input type="text" id="sins_offered" name="sins_offered" placeholder="e.g., 54151S, 54151HACS">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <label for="commodity_type">Commodity Type:</label>
-                    <div class="btn-group" id="commodity_type_group">
-                        <button type="button" class="btn">Product</button>
-                        <button type="button" class="btn">Services</button>
-                        <button type="button" class="btn">Both</button>
+    <div class="main-content-area full-width">
+        <div class="cards-row">
+            <!-- Offer Details Card -->
+            <div class="card offer-details-card">
+                <form id="offer-form">
+                    <h3>Offer Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="offeror_name">
+                                Offeror Name:
+                                <span class="info-icon" data-tooltip="Enter the full legal name of your company as registered with SAM.gov">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                        <path d="m9,9 0,0 a3,3 0 0,1 6,0c0,2 -3,2 -3,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="m12,17 .01,0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </label>
+                            <input type="text" id="offeror_name" name="offeror_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="offer_number">
+                                Offer Number:
+                                <span class="info-icon" data-tooltip="Your internal tracking number for this GSA MAS offer submission">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                        <path d="m9,9 0,0 a3,3 0 0,1 6,0c0,2 -3,2 -3,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="m12,17 .01,0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </label>
+                            <input type="text" id="offer_number" name="offer_number">
+                        </div>
                     </div>
-                    <input type="hidden" id="commodity_type" name="commodity_type">
-                </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="uei">
+                                UEI:
+                                <span class="info-icon" data-tooltip="Unique Entity Identifier - Your 12-character alphanumeric identifier from SAM.gov (replaces DUNS number)">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                        <path d="m9,9 0,0 a3,3 0 0,1 6,0c0,2 -3,2 -3,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="m12,17 .01,0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </label>
+                            <input type="text" id="uei" name="uei">
+                        </div>
+                        <div class="form-group">
+                            <label for="sins_offered">
+                                SINs Offered:
+                                <span class="info-icon" data-tooltip="Special Item Numbers you're requesting under this MAS solicitation (e.g., 54151S for IT Professional Services, 541380 for Testing Services)">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                        <path d="m9,9 0,0 a3,3 0 0,1 6,0c0,2 -3,2 -3,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="m12,17 .01,0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </label>
+                            <div class="input-with-button">
+                                <input type="text" id="sins_offered" name="sins_offered" placeholder="e.g., 54151S, 54151HACS">
+                                <button type="button" class="add-sins-btn" id="add-sins-btn" title="Browse and select SINs" aria-label="Browse and select Special Item Numbers">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="commodity_type">
+                                Commodity Type:
+                                <span class="info-icon" data-tooltip="Select whether you're offering Products, Services, or Both. This affects which checklist items apply to your offer">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                        <path d="m9,9 0,0 a3,3 0 0,1 6,0c0,2 -3,2 -3,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="m12,17 .01,0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </label>
+                            <div class="btn-group" id="commodity_type_group">
+                                <button type="button" class="btn">Product</button>
+                                <button type="button" class="btn">Services</button>
+                                <button type="button" class="btn">Both</button>
+                            </div>
+                            <input type="hidden" id="commodity_type" name="commodity_type">
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
-        <div class="file-links">
-            <hr>
-            <h4>Checklist Resources</h4>
-            <a href="{{ url_for('static', filename='files/New-Offer-Checklist_June2025_Industry_1_0.xlsx') }}" download class="file-link-btn">Download Checklist</a>
-            <a href="https://docs.google.com/spreadsheets/d/17tfPkPBbNWTtWaPjFaFzpF7MA6kUD8PXYHVI1HF0uJs/edit?usp=sharing" target="_blank" class="file-link-btn">View Checklist</a>
-        </div>
-    </div>
 
-    <div class="card">
-        <div class="checklist-header">
-            <h3>Offer Review Checklist</h3>
-            <div class="progress-indicator-compact" id="progress-indicator-compact">
-                <div class="progress-text-compact">
-                    <span id="progress-count">0</span>/<span id="total-count">0</span>
-                </div>
-                <div class="progress-bar-compact">
-                    <div class="progress-fill-compact" id="progress-fill"></div>
+            <!-- Checklist Resources Card -->
+            <div class="card resources-card">
+                <h3>Checklist Resources</h3>
+                <div class="resource-links">
+                    <a href="{{ url_for('static', filename='projects/gsa_mas_checklist/files/New-Offer-Checklist_June2025_Industry_1_0.xlsx') }}" download class="resource-link-btn excel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 13h2l2 3 2-3h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 17h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Download Excel Checklist (.xlsx)</span>
+                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/17tfPkPBbNWTtWaPjFaFzpF7MA6kUD8PXYHVI1HF0uJs/edit?usp=sharing" target="_blank" class="resource-link-btn sheets">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="18" height="18" x="3" y="3" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M8 7h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M8 11h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M8 15h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span>View in Google Sheets</span>
+                    </a>
+                    <a href="https://sam.gov/entity-information" target="_blank" class="resource-link-btn sam-gov">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>SAM.gov Entity Search</span>
+                    </a>
+                    <div class="resource-note">
+                        <small><strong>Note:</strong> SAM.gov account required for entity search access</small>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="checklist">
-            {% for section in sections %}
-                <div class="section-container" data-section="{{ section.name }}">
-                    <h2 class="checklist-section-header accordion-header" data-section="{{ section.name }}" data-section-index="{{ loop.index0 }}">
+
+        <div class="card checklist-card full-width">
+            <div class="checklist-header">
+                <h3>Offer Review Checklist</h3>
+                <div class="progress-indicator-compact" id="progress-indicator-compact">
+                    <div class="progress-text-compact">
+                        <span id="progress-count">0</span>/<span id="total-count">0</span>
+                    </div>
+                    <div class="progress-bar-compact">
+                        <div class="progress-fill-compact" id="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="checklist">
+                {% for section in sections %}
+                <details class="section-container" data-section="{{ section.name }}"{% if loop.index0 == 0 %} open{% endif %}>
+                    <summary class="checklist-section-header">
                         <span class="section-title">{{ section.name }}</span>
                         <div class="section-header-right">
                             <span class="section-badge" id="badge-{{ loop.index0 }}">0/0</span>
-                            <span class="accordion-toggle">▼</span>
                         </div>
-                    </h2>
-                    <div class="section-content{% if loop.index0 == 0 %} expanded{% endif %}" id="section-{{ loop.index0 }}">
+                    </summary>
+                    <div class="section-content" id="section-{{ loop.index0 }}">
                 {% for item in section.item_list %}
                     <div class="checklist-card">
                         <div class="checklist-card-header">
@@ -168,10 +245,91 @@
                     {% endif %}
                 {% endfor %}
                     </div>
-                </div>
+                </details>
             {% endfor %}
+            </div>
+        </div>
+
+    <!-- SINs Selection Modal -->
+    <div id="sins-modal" class="modal sins-modal">
+        <div class="modal-content sins-modal-content">
+            <div class="modal-header">
+                <h3>Select Special Item Numbers (SINs)</h3>
+                <span class="close-button">&times;</span>
+            </div>
+            <div class="sins-modal-body">
+                <div class="sins-search-container">
+                    <input type="text" id="sins-search" placeholder="Search SINs by number or description..." class="sins-search">
+                    <div class="sins-filters-grid">
+                        <div class="sins-filter-container">
+                            <label for="sins-category-filter">Category:</label>
+                            <select id="sins-category-filter" class="sins-filter-select">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <label for="sins-commodity-filter">Commodity Type:</label>
+                            <select id="sins-commodity-filter" class="sins-filter-select">
+                                <option value="">All Types</option>
+                                <option value="B">Both Products & Services</option>
+                                <option value="S">Services Only</option>
+                                <option value="P">Products Only</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <label for="sins-state-local-filter">State/Local:</label>
+                            <select id="sins-state-local-filter" class="sins-filter-select">
+                                <option value="">Any</option>
+                                <option value="Y">Available</option>
+                                <option value="N">Not Available</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <label for="sins-set-aside-filter">Set Aside:</label>
+                            <select id="sins-set-aside-filter" class="sins-filter-select">
+                                <option value="">Any</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <label for="sins-tdr-filter">TDR Available:</label>
+                            <select id="sins-tdr-filter" class="sins-filter-select">
+                                <option value="">Any</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <label for="sins-olm-filter">OLM Available:</label>
+                            <select id="sins-olm-filter" class="sins-filter-select">
+                                <option value="">Any</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <button type="button" id="clear-all-filters-btn" class="btn btn-secondary">Clear All Filters</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="selected-sins-container">
+                    <h4>Selected SINs <span id="selected-count">(0)</span></h4>
+                    <div id="selected-sins" class="selected-sins"></div>
+                </div>
+                <div class="sins-list-container">
+                    <div id="sins-list" class="sins-list">
+                        <div class="loading-message">Loading SINs data...</div>
+                    </div>
+                </div>
+                <div class="sins-modal-footer">
+                    <button type="button" class="btn btn-secondary" id="clear-selection-btn">Clear Selection</button>
+                    <button type="button" class="btn btn-primary" id="add-selected-sins-btn">Add Selected SINs</button>
+                </div>
+            </div>
         </div>
     </div>
+</div> <!-- Close main-content-area -->
 
 {% endblock %}
 

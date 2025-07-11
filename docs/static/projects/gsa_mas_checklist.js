@@ -17,11 +17,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show save indicator
     function showSaveIndicator() {
         const indicator = document.getElementById('save-indicator');
+        const headerSaveBtn = document.getElementById('save-btn');
+        
+        // Legacy save indicator (if present)
         if (indicator) {
             indicator.textContent = 'Saved ✓';
             indicator.className = 'save-indicator saved show';
             setTimeout(() => {
                 indicator.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Header save button feedback
+        if (headerSaveBtn) {
+            headerSaveBtn.classList.add('saved');
+            setTimeout(() => {
+                headerSaveBtn.classList.remove('saved');
             }, 2000);
         }
     }
@@ -247,11 +258,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Accordion functionality
     function setupAccordions() {
+        console.log('Setting up accordions...');
         const sectionHeaders = document.querySelectorAll('.accordion-header');
+        console.log('Found section headers:', sectionHeaders.length);
         
         sectionHeaders.forEach((header, index) => {
             const toggle = header.querySelector('.accordion-toggle');
             const sectionContent = document.getElementById(`section-${index}`);
+            
+            console.log(`Setting up section ${index}:`, header, sectionContent);
             
             // Set initial state for first section
             if (index === 0) {
@@ -259,14 +274,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             header.addEventListener('click', () => {
+                console.log(`Accordion clicked for section ${index}`);
                 const isExpanded = sectionContent.classList.contains('expanded');
                 
                 if (isExpanded) {
                     // Collapse
+                    console.log('Collapsing section');
                     sectionContent.classList.remove('expanded');
                     toggle.classList.remove('rotated');
                 } else {
                     // Expand
+                    console.log('Expanding section');
                     sectionContent.classList.add('expanded');
                     toggle.classList.add('rotated');
                 }
@@ -460,26 +478,408 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Setup auto-save
-    setupAutoSave();
+    // SINs Selection Modal Functionality
+    let sinsData = [];
+    let selectedSins = new Set();
     
-    // Setup accordion functionality
-    setupAccordions();
+    // Load SINs data
+    async function loadSinsData() {
+        try {
+            const response = await fetch('/static/projects/gsa_mas_checklist/data/sins_data.json');
+            if (!response.ok) {
+                throw new Error('Failed to load SINs data');
+            }
+            sinsData = await response.json();
+            populateCategoryFilter();
+            renderSinsList();
+        } catch (error) {
+            console.error('Error loading SINs data:', error);
+            document.getElementById('sins-list').innerHTML = 
+                '<div class="no-results">Failed to load SINs data. Please try again later.</div>';
+        }
+    }
     
-    // Initialize progress display
-    updateProgress();
+    // Populate category filter dropdown
+    function populateCategoryFilter() {
+        const categoryFilter = document.getElementById('sins-category-filter');
+        const categories = [...new Set(sinsData.map(sin => sin['Large Category'] || 'Other'))].sort();
+        
+        categoryFilter.innerHTML = '<option value="">All Categories</option>';
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            categoryFilter.appendChild(option);
+        });
+    }
     
-    // Add event listeners for export/import buttons
-    const exportBtn = document.getElementById('export-btn');
-    const importBtn = document.getElementById('import-btn');
-    const importFile = document.getElementById('import-file');
-    const clearBtn = document.getElementById('clear-btn');
+    // Filter SINs based on search and all filter criteria
+    function filterSins() {
+        const searchTerm = document.getElementById('sins-search').value.toLowerCase();
+        const selectedCategory = document.getElementById('sins-category-filter').value;
+        const selectedCommodity = document.getElementById('sins-commodity-filter').value;
+        const selectedStateLocal = document.getElementById('sins-state-local-filter').value;
+        const selectedSetAside = document.getElementById('sins-set-aside-filter').value;
+        const selectedTdr = document.getElementById('sins-tdr-filter').value;
+        const selectedOlm = document.getElementById('sins-olm-filter').value;
+        
+        return sinsData.filter(sin => {
+            const sinNumber = sin._primary_sin || sin.SIN || '';
+            const sinTitle = sin['SIN Title'] || '';
+            const sinDescription = sin['SIN Descripion'] || '';
+            const subcategory = sin.Subcategory || '';
+            const keywords = sin._generated_keywords || [];
+            const naics = String(sin['List of NAICS'] || '');
+            
+            // Search filter
+            const matchesSearch = !searchTerm || 
+                sinNumber.toLowerCase().includes(searchTerm) ||
+                sinTitle.toLowerCase().includes(searchTerm) ||
+                sinDescription.toLowerCase().includes(searchTerm) ||
+                subcategory.toLowerCase().includes(searchTerm) ||
+                naics.toLowerCase().includes(searchTerm) ||
+                keywords.some(keyword => keyword.toLowerCase().includes(searchTerm));
+            
+            // Category filter
+            const sinCategory = sin['Large Category'] || 'Other';
+            const matchesCategory = !selectedCategory || sinCategory === selectedCategory;
+            
+            // Commodity filter
+            const commodityCode = sin['Commodity Code'] || '';
+            const matchesCommodity = !selectedCommodity || commodityCode === selectedCommodity;
+            
+            // State/Local filter
+            const stateLocal = sin['State Local'] || '';
+            const matchesStateLocal = !selectedStateLocal || stateLocal === selectedStateLocal;
+            
+            // Set Aside filter
+            const setAside = sin['Set Aside'] || '';
+            const matchesSetAside = !selectedSetAside || setAside === selectedSetAside;
+            
+            // TDR filter
+            const tdr = sin.TDR || '';
+            const matchesTdr = !selectedTdr || tdr === selectedTdr;
+            
+            // OLM filter
+            const olm = sin.OLM || '';
+            const matchesOlm = !selectedOlm || olm === selectedOlm;
+            
+            return matchesSearch && matchesCategory && matchesCommodity && 
+                   matchesStateLocal && matchesSetAside && matchesTdr && matchesOlm;
+        });
+    }
     
-    if (exportBtn) exportBtn.addEventListener('click', exportData);
-    if (importBtn) importBtn.addEventListener('click', () => importFile.click());
-    if (importFile) importFile.addEventListener('change', importData);
-    if (clearBtn) clearBtn.addEventListener('click', clearData);
+    // Render the SINs list
+    function renderSinsList() {
+        const sinsList = document.getElementById('sins-list');
+        const filteredSins = filterSins();
+        
+        if (filteredSins.length === 0) {
+            sinsList.innerHTML = '<div class="no-results">No SINs found matching your criteria.</div>';
+            return;
+        }
+        
+        sinsList.innerHTML = '';
+        filteredSins.forEach(sin => {
+            const sinItem = document.createElement('div');
+            sinItem.className = 'sin-item';
+            sinItem.dataset.sinNumber = sin._primary_sin;
+            
+            if (selectedSins.has(sin._primary_sin)) {
+                sinItem.classList.add('selected');
+            }
+            
+            // Extract data from the Excel columns
+            const sinNumber = sin.SIN || sin._primary_sin || 'N/A';
+            const sinTitle = sin['SIN Title'] || 'No title available';
+            const sinDescription = sin['SIN Descripion'] || sin['SIN Description'] || 'No description available';
+            const largeCategory = sin['Large Category'] || '';
+            const largeCategoryCode = sin['Large Category Code '] || sin['Large Category Code'] || '';
+            const subcategory = sin.Subcategory || '';
+            const subcategoryCode = sin['Subcategory Code'] || '';
+            const naicsList = sin['List of NAICS'] || 'Not specified';
+            const maxOrderLimit = sin['Maximum Order Limit'];
+            const pscCode = sin['PSC Cd'] || 'Not specified';
+            const stateLocal = sin['State Local'] === 'Y' ? 'Yes' : sin['State Local'] === 'N' ? 'No' : 'Not specified';
+            const setAside = sin['Set Aside'] === 'Y' ? 'Yes' : sin['Set Aside'] === 'N' ? 'No' : 'Not specified';
+            const commodityCode = sin['Commodity Code'] || 'Not specified';
+            const tdr = sin.TDR === 'Y' ? 'Yes' : sin.TDR === 'N' ? 'No' : 'Not specified';
+            const olm = sin.OLM === 'Y' ? 'Yes' : sin.OLM === 'N' ? 'No' : 'Not specified';
+            
+            // Format the order limit
+            let formattedOrderLimit = 'Not specified';
+            if (maxOrderLimit && maxOrderLimit !== '' && !isNaN(maxOrderLimit)) {
+                const limitNum = parseFloat(maxOrderLimit);
+                formattedOrderLimit = '$' + limitNum.toLocaleString();
+            }
+            
+            // Create category display with codes
+            const categoryDisplay = `${largeCategory} (${largeCategoryCode.trim()})` + 
+                                  (subcategory ? ` > ${subcategory} (${subcategoryCode})` : '');
+            
+            sinItem.innerHTML = `
+                <div class="sin-item-header">
+                    <input type="checkbox" class="sin-checkbox" ${selectedSins.has(sin._primary_sin) ? 'checked' : ''}>
+                    <div class="sin-main-info">
+                        <div class="sin-number">${sinNumber}</div>
+                        <div class="sin-category-display"><strong>${categoryDisplay}</strong></div>
+                    </div>
+                </div>
+                <div class="sin-metadata">
+                    <div class="sin-metadata-item sin-metadata-full-width">
+                        <div class="sin-metadata-label">SIN Title:</div>
+                        <div class="sin-metadata-value">${sinTitle}</div>
+                    </div>
+                    <div class="sin-metadata-item sin-metadata-full-width">
+                        <div class="sin-metadata-label">SIN Description:</div>
+                        <div class="sin-metadata-value">${sinDescription}</div>
+                    </div>
+                    <div class="sin-metadata-section-title">Codes & Classification</div>
+                    <div class="sin-metadata-item">
+                        <div class="sin-metadata-label">NAICS Code(s):</div>
+                        <div class="sin-metadata-value">${naicsList}</div>
+                    </div>
+                    <div class="sin-metadata-item">
+                        <div class="sin-metadata-label">Product Service Code (PSC):</div>
+                        <div class="sin-metadata-value">${pscCode}</div>
+                    </div>
+                    <div class="sin-metadata-item">
+                        <div class="sin-metadata-label">Commodity Code:</div>
+                        <div class="sin-metadata-value">${commodityCode === 'B' ? 'Both Products & Services' : commodityCode === 'S' ? 'Services' : commodityCode === 'P' ? 'Products' : commodityCode}</div>
+                    </div>
+                    <div class="sin-metadata-item">
+                        <div class="sin-metadata-label">Maximum Order Limit:</div>
+                        <div class="sin-metadata-value sin-order-limit">${formattedOrderLimit}</div>
+                    </div>
+                    <div class="sin-metadata-section-title">Contract Options</div>
+                    <div class="sin-metadata-item">
+                        <div class="sin-metadata-label">State/Local Available:</div>
+                        <div class="sin-metadata-value">${stateLocal}</div>
+                    </div>
+                    <div class="sin-metadata-item">
+                        <div class="sin-metadata-label">Set Aside:</div>
+                        <div class="sin-metadata-value">${setAside}</div>
+                    </div>
+                    <div class="sin-metadata-item">
+                        <div class="sin-metadata-label">Trade Discounts/Rebates (TDR):</div>
+                        <div class="sin-metadata-value">${tdr}</div>
+                    </div>
+                    <div class="sin-metadata-item">
+                        <div class="sin-metadata-label">Order Level Materials (OLM):</div>
+                        <div class="sin-metadata-value">${olm}</div>
+                    </div>
+                </div>
+            `;
+            
+            sinItem.addEventListener('click', function(e) {
+                // Don't trigger selection if clicking on the checkbox directly
+                if (e.target.type !== 'checkbox') {
+                    toggleSinSelection(sin._primary_sin);
+                }
+            });
+            
+            // Handle checkbox click separately
+            const checkbox = sinItem.querySelector('.sin-checkbox');
+            checkbox.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent double triggering
+                toggleSinSelection(sin._primary_sin);
+            });
+            
+            sinsList.appendChild(sinItem);
+        });
+    }
     
+    // Toggle SIN selection
+    function toggleSinSelection(sinNumber) {
+        if (selectedSins.has(sinNumber)) {
+            selectedSins.delete(sinNumber);
+        } else {
+            selectedSins.add(sinNumber);
+        }
+        updateSelectedSinsDisplay();
+        renderSinsList(); // Re-render to update selection states
+    }
+    
+    // Update selected SINs display
+    function updateSelectedSinsDisplay() {
+        const selectedSinsContainer = document.getElementById('selected-sins');
+        const selectedCountSpan = document.getElementById('selected-count');
+        
+        selectedCountSpan.textContent = `(${selectedSins.size})`;
+        
+        if (selectedSins.size === 0) {
+            selectedSinsContainer.innerHTML = '<div class="no-selection">No SINs selected</div>';
+            return;
+        }
+        
+        selectedSinsContainer.innerHTML = '';
+        selectedSins.forEach(sinNumber => {
+            const sin = sinsData.find(s => s._primary_sin === sinNumber);
+            if (sin) {
+                const tag = document.createElement('div');
+                tag.className = 'selected-sin-tag';
+                tag.innerHTML = `
+                    <span>${sinNumber}</span>
+                    <span class="remove-sin" data-sin="${sinNumber}">×</span>
+                `;
+                
+                tag.querySelector('.remove-sin').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleSinSelection(sinNumber);
+                });
+                
+                selectedSinsContainer.appendChild(tag);
+            }
+        });
+    }
+    
+    // Add selected SINs to the input field
+    function addSelectedSinsToField() {
+        const sinsField = document.getElementById('sins_offered');
+        const currentValue = sinsField.value.trim();
+        const currentSins = currentValue ? currentValue.split(',').map(s => s.trim()).filter(s => s) : [];
+        
+        // Add new SINs that aren't already in the field
+        selectedSins.forEach(sinNumber => {
+            if (!currentSins.includes(sinNumber)) {
+                currentSins.push(sinNumber);
+            }
+        });
+        
+        sinsField.value = currentSins.join(', ');
+        
+        // Close modal and clear selection
+        document.getElementById('sins-modal').style.display = 'none';
+        selectedSins.clear();
+        updateSelectedSinsDisplay();
+        
+        // Auto-save the form data
+        saveChecklistData(getCurrentState());
+    }
+    
+    // SINs Modal Event Listeners
+    const addSinsBtn = document.getElementById('add-sins-btn');
+    const sinsModal = document.getElementById('sins-modal');
+    const sinsModalCloseBtn = sinsModal.querySelector('.close-button');
+    const addSelectedSinsBtn = document.getElementById('add-selected-sins-btn');
+    const clearSelectionBtn = document.getElementById('clear-selection-btn');
+    const sinsSearch = document.getElementById('sins-search');
+    const sinsCategoryFilter = document.getElementById('sins-category-filter');
+    const sinsCommodityFilter = document.getElementById('sins-commodity-filter');
+    const sinsStateLocalFilter = document.getElementById('sins-state-local-filter');
+    const sinsSetAsideFilter = document.getElementById('sins-set-aside-filter');
+    const sinsTdrFilter = document.getElementById('sins-tdr-filter');
+    const sinsOlmFilter = document.getElementById('sins-olm-filter');
+    
+    // Open SINs modal
+    addSinsBtn.addEventListener('click', function() {
+        sinsModal.style.display = 'block';
+        if (sinsData.length === 0) {
+            loadSinsData();
+        }
+    });
+    
+    // Close SINs modal
+    sinsModalCloseBtn.addEventListener('click', function() {
+        sinsModal.style.display = 'none';
+        selectedSins.clear();
+        updateSelectedSinsDisplay();
+    });
+    
+    // Close modal when clicking outside
+    sinsModal.addEventListener('click', function(e) {
+        if (e.target === sinsModal) {
+            sinsModal.style.display = 'none';
+            selectedSins.clear();
+            updateSelectedSinsDisplay();
+        }
+    });
+    
+    // Add selected SINs button
+    addSelectedSinsBtn.addEventListener('click', addSelectedSinsToField);
+    
+    // Clear selection button
+    clearSelectionBtn.addEventListener('click', function() {
+        selectedSins.clear();
+        updateSelectedSinsDisplay();
+        renderSinsList();
+    });
+    
+    // Search and filter functionality
+    sinsSearch.addEventListener('input', function() {
+        renderSinsList();
+    });
+    
+    sinsCategoryFilter.addEventListener('change', function() {
+        renderSinsList();
+    });
+    
+    sinsCommodityFilter.addEventListener('change', function() {
+        renderSinsList();
+    });
+    
+    sinsStateLocalFilter.addEventListener('change', function() {
+        renderSinsList();
+    });
+    
+    sinsSetAsideFilter.addEventListener('change', function() {
+        renderSinsList();
+    });
+    
+    sinsTdrFilter.addEventListener('change', function() {
+        renderSinsList();
+    });
+    
+    sinsOlmFilter.addEventListener('change', function() {
+        renderSinsList();
+    });
+
+    // Clear all filters functionality
+    const clearAllFiltersBtn = document.getElementById('clear-all-filters-btn');
+    clearAllFiltersBtn.addEventListener('click', function() {
+        document.getElementById('sins-search').value = '';
+        document.getElementById('sins-category-filter').value = '';
+        document.getElementById('sins-commodity-filter').value = '';
+        document.getElementById('sins-state-local-filter').value = '';
+        document.getElementById('sins-set-aside-filter').value = '';
+        document.getElementById('sins-tdr-filter').value = '';
+        document.getElementById('sins-olm-filter').value = '';
+        renderSinsList();
+    });
+
+    // Header action button event listeners
+    const headerSaveBtn = document.getElementById('save-btn');
+    const headerExportBtn = document.getElementById('export-btn');
+    const headerImportBtn = document.getElementById('import-btn');
+    const headerClearBtn = document.getElementById('clear-btn');
+    const importFileInput = document.getElementById('import-file');
+    
+    // Manual save button
+    headerSaveBtn.addEventListener('click', function() {
+        const currentState = getCurrentState();
+        saveChecklistData(currentState);
+        
+        // Visual feedback
+        this.classList.add('saved');
+        setTimeout(() => {
+            this.classList.remove('saved');
+        }, 2000);
+    });
+    
+    // Export button
+    headerExportBtn.addEventListener('click', exportData);
+    
+    // Import button
+    headerImportBtn.addEventListener('click', function() {
+        importFileInput.click();
+    });
+    
+    // Clear button
+    headerClearBtn.addEventListener('click', clearData);
+    
+    // File input change event
+    importFileInput.addEventListener('change', importData);
+
     // Setup manual save functionality for notes
     function setupManualNoteSave() {
         const saveButtons = document.querySelectorAll('.save-notes-btn');
@@ -531,4 +931,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize manual save after a short delay to ensure buttons are rendered
     setTimeout(setupManualNoteSave, 100);
+
+    // Initialize core functionality after DOM is fully ready
+    setTimeout(() => {
+        setupAccordions();
+        setupAutoSave();
+        updateSectionBadges();
+        
+        // Load and restore saved state
+        loadSavedState();
+        
+        // Update progress indicator
+        updateProgressIndicator();
+    }, 200);
 });

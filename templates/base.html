@@ -2,7 +2,14 @@
 <html>
 <head>
     <title>{% block title %}{% endblock %} - JPL-DEV</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile-card.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/checklist.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme-toggle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/projects.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block head %}{% endblock %}
 </head>
@@ -15,12 +22,70 @@
 
     <div id="content-wrapper">
         <header id="header">
-            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
-            {% if request.endpoint == 'index' %}
-                <h1>JPL-DEV</h1>
-            {% else %}
-                <a href="{{ url_for('index') }}" class="header-link">JPL-DEV</a>
+            <div class="header-left">
+                <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+                {% block header_title %}{% endblock %}
+            </div>
+            
+            {% if request.endpoint == 'gsa_mas_checklist.gsa_mas_checklist' %}
+                <div class="header-actions">
+                    <button id="save-btn" class="header-action-btn" title="Save current data" aria-label="Save data">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button id="export-btn" class="header-action-btn" title="Export data to file" aria-label="Export data">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="7,10 12,15 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    <button id="import-btn" class="header-action-btn" title="Import data from file" aria-label="Import data">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="17,8 12,3 7,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="12" y1="3" x2="12" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    <button id="clear-btn" class="header-action-btn danger" title="Clear all data" aria-label="Clear all data">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="10" y1="11" x2="10" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="14" y1="11" x2="14" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
             {% endif %}
+                
+            <div class="header-right">
+                <button id="theme-toggle" class="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="5" fill="#FFD600" stroke="#FFA000" stroke-width="2"/>
+                            <g stroke="#FFA000" stroke-width="2">
+                                <line x1="12" y1="2" x2="12" y2="5"/>
+                                <line x1="12" y1="19" x2="12" y2="22"/>
+                                <line x1="2" y1="12" x2="5" y2="12"/>
+                                <line x1="19" y1="12" x2="22" y2="12"/>
+                                <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
+                                <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+                                <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
+                                <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+                            </g>
+                        </g>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <circle cx="12" cy="12" r="9" fill="#B0BEC5"/>
+                            <path d="M16 12.5A4.5 4.5 0 0 1 11.5 8c0-2.485 2.015-4.5 4.5-4.5a7 7 0 1 0 0 14c-2.485 0-4.5-2.015-4.5-4.5z" fill="#FFFDE7"/>
+                        </g>
+                    </svg>
+                </button>
+            </div>
         </header>
 
         <main id="main">
@@ -30,8 +95,16 @@
         <footer>
             <p>&copy; 2025 Justin Lyons</p>
         </footer>
+        
+        <!-- Global Scripts -->
         <script src="{{ url_for('static', filename='script.js') }}"></script>
+        <script src="{{ url_for('static', filename='global-theme.js') }}"></script>
         {% block scripts %}{% endblock %}
+        
+        <!-- File input for import functionality (only on GSA MAS checklist page) -->
+        {% if request.endpoint == 'gsa_mas_checklist.gsa_mas_checklist' %}
+            <input type="file" id="import-file" accept=".json" style="display: none;">
+        {% endif %}
     </div>
 </body>
 </html>

@@ -1,0 +1,8 @@
+/* Theme toggle button and icon transitions */
+.theme-toggle { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 2px solid var(--border-color); border-radius: 50%; background: var(--bg-secondary); color: #e6b800; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+.theme-toggle .sun-icon, .theme-toggle .moon-icon { position: absolute; transition: all 0.3s ease; }
+.theme-toggle .moon-icon { opacity: 0; transform: rotate(90deg); }
+[data-theme="dark"] .theme-toggle .sun-icon { opacity: 0; transform: rotate(-90deg); }
+[data-theme="dark"] .theme-toggle .moon-icon { opacity: 1; transform: rotate(0deg); }
+.theme-toggle:hover { background: var(--button-hover-bg); transform: scale(1.05); }
+.theme-toggle:focus { outline: 2px solid var(--primary-color); outline-offset: 2px; }

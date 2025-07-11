@@ -18,57 +18,103 @@
 
     <div id="content-wrapper">
         <header id="header">
-            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+            <div class="header-left">
+                <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+            </div>
             
-                <a href="../../index.html" class="header-link">JPL-DEV</a>
             
         </header>
 
         <main id="main">
             
     <div class="project-header">
-        <h1>Interactive GSA New Offer Checklist</h1>
-        <h2>Navigate the GSA MAS proposal requirements with ease.</h2>
-    </div>
-
-    <div class="save-controls">
-        <div class="save-controls-row">
-            <div class="control-buttons">
-                <button id="export-btn" class="btn btn-secondary">Export Data</button>
-                <button id="import-btn" class="btn btn-secondary">Import Data</button>
-                <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
-                <input type="file" id="import-file" accept=".json" style="display: none;">
+        <div class="header-content">
+            <div class="header-text">
+                <h1>Interactive GSA New Offer Checklist</h1>
+                <h2>Navigate the GSA MAS proposal requirements with ease.</h2>
             </div>
-            <div id="save-indicator" class="save-indicator"></div>
         </div>
     </div>
 
-    <div class="card">
+    <div class="main-content-area">
+        <div class="card">
         <form id="offer-form">
             <h3>Offer Details</h3>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="offeror_name">Offeror Name:</label>
+                    <label for="offeror_name">
+                        Offeror Name:
+                        <span class="info-icon" data-tooltip="Enter the full legal name of your company as registered with SAM.gov">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="m9,9 0,0 a3,3 0 0,1 6,0c0,2 -3,2 -3,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="m12,17 .01,0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </label>
                     <input type="text" id="offeror_name" name="offeror_name">
                 </div>
                 <div class="form-group">
-                    <label for="offer_number">Offer Number:</label>
+                    <label for="offer_number">
+                        Offer Number:
+                        <span class="info-icon" data-tooltip="Your internal tracking number for this GSA MAS offer submission">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="m9,9 0,0 a3,3 0 0,1 6,0c0,2 -3,2 -3,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="m12,17 .01,0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </label>
                     <input type="text" id="offer_number" name="offer_number">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="uei">UEI:</label>
+                    <label for="uei">
+                        UEI:
+                        <span class="info-icon" data-tooltip="Unique Entity Identifier - Your 12-character alphanumeric identifier from SAM.gov (replaces DUNS number)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="m9,9 0,0 a3,3 0 0,1 6,0c0,2 -3,2 -3,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="m12,17 .01,0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </label>
                     <input type="text" id="uei" name="uei">
                 </div>
                 <div class="form-group">
-                    <label for="sins_offered">SINs Offered:</label>
-                    <input type="text" id="sins_offered" name="sins_offered" placeholder="e.g., 54151S, 54151HACS">
+                    <label for="sins_offered">
+                        SINs Offered:
+                        <span class="info-icon" data-tooltip="Special Item Numbers you're requesting under this MAS solicitation (e.g., 54151S for IT Professional Services, 541380 for Testing Services)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="m9,9 0,0 a3,3 0 0,1 6,0c0,2 -3,2 -3,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="m12,17 .01,0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </label>
+                    <div class="input-with-button">
+                        <input type="text" id="sins_offered" name="sins_offered" placeholder="e.g., 54151S, 54151HACS">
+                        <button type="button" class="add-sins-btn" id="add-sins-btn" title="Browse and select SINs" aria-label="Browse and select Special Item Numbers">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group full-width">
-                    <label for="commodity_type">Commodity Type:</label>
+                    <label for="commodity_type">
+                        Commodity Type:
+                        <span class="info-icon" data-tooltip="Select whether you're offering Products, Services, or Both. This affects which checklist items apply to your offer">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="m9,9 0,0 a3,3 0 0,1 6,0c0,2 -3,2 -3,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="m12,17 .01,0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </label>
                     <div class="btn-group" id="commodity_type_group">
                         <button type="button" class="btn">Product</button>
                         <button type="button" class="btn">Services</button>
@@ -121,7 +167,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (c)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (c)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-1">
                                 <small><strong>Content:</strong> (c) Offers must be current, accurate, and complete, and demonstrate a thorough understanding of solicitation requirements. By submission of an...</small>
@@ -143,7 +189,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (c)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (c)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -174,7 +220,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (c)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (c)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -200,7 +246,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(d) (1-4)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(d) (1-4)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-2">
                                 <small><strong>Content:</strong> (d) Existing Federal Supply Schedule (FSS) Program contractors and any small business who does not have its own FSS program contract but is...</small>
@@ -224,7 +270,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(d) (1-4)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(d) (1-4)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -256,7 +302,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(d) (1-4)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(d) (1-4)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -283,7 +329,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(e)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(e)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-3">
                                 <small><strong>Content:</strong> (e) A current FSS contractor can submit an offer for a continuous contract beginning on the first day of the month following the month in which...</small>
@@ -305,7 +351,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(e)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(e)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -333,7 +379,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(e)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(e)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -388,7 +434,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(i)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(i)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-5">
                                 <small><strong>Content:</strong> (i) Rejection of Offer. If GSA previously rejected an offeror&#39;s offer, GSA will not consider a new offer from the same offeror for award of the...</small>
@@ -410,7 +456,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(i)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(i)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -438,7 +484,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(i)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a>(i)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -474,7 +520,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (i.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (i.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-6">
                                 <small><strong>Content:</strong> (j) (1) (i.) Pathway to Success. The offeror must acknowledge that it has downloaded and completed the Pathway to Success training within the past...</small>
@@ -496,7 +542,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (i.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (i.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -524,7 +570,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (i.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (i.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -547,7 +593,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-7">
                                 <small><strong>Content:</strong> (j) (1) (ii.) Readiness Assessment. The offeror must acknowledge that it has downloaded and completed the Readiness Assessment within the past 12...</small>
@@ -569,7 +615,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -597,7 +643,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -620,7 +666,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-8">
                                 <small><strong>Content:</strong> (j) (1) (iii.) System for Award Management (SAM) Registration. The offeror must have a current, accurate, and complete SAM registration that...</small>
@@ -648,7 +694,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -676,7 +722,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -699,7 +745,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iv.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iv.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-9">
                                 <small><strong>Content:</strong> (j) (1) (iv.) Previous Contract Performance. If an offeror was previously awarded a Schedule contract, and it was subsequently cancelled or...</small>
@@ -725,7 +771,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iv.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iv.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -753,7 +799,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iv.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (iv.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -776,7 +822,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (v.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (v.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-10">
                                 <small><strong>Content:</strong> (j) (1) (v.) Financial Responsibility. The offeror must provide annual financial statements for the previous 2 years (balance sheet and income...</small>
@@ -804,7 +850,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (v.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (v.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -832,7 +878,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (v.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (v.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -855,7 +901,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (vi.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (vi.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-11">
                                 <small><strong>Content:</strong> (j) (1) (vi.) Subcontracting Plan. If applicable, the offeror must submit a subcontracting plan in accordance with FAR 19.7 and the clause at...</small>
@@ -877,7 +923,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (vi.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (vi.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -905,7 +951,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (vi.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (vi.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -928,7 +974,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (viii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (viii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-12">
                                 <small><strong>Content:</strong> (j) (1) (viii.) Agent Authorization Letter. If applicable, an Agent Authorization Letter must be completed and submitted as part of the offer if a...</small>
@@ -950,7 +996,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (viii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (viii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -978,7 +1024,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (viii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (viii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1001,7 +1047,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ix.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ix.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-13">
                                 <small><strong>Content:</strong> (j) (1) (ix.) Section 508 Compliance. Section 508 of the Rehabilitation Act, as amended by the Workforce Investment Act of 1998 (P.L. 105-220)...</small>
@@ -1023,7 +1069,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ix.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ix.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1051,7 +1097,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ix.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (ix.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1074,7 +1120,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (x.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (x.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-14">
                                 <small><strong>Content:</strong> (j) (1) (x.) Trade Agreements Act (TAA) Compliance. The offeror must identify the country of origin for all products offered. All products must...</small>
@@ -1096,7 +1142,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (x.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (x.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1124,7 +1170,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (x.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (x.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1147,7 +1193,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xi.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xi.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-15">
                                 <small><strong>Content:</strong> (j) (1) (xi.) Letter of Commitment/Supply. If applicable, the offeror must provide a Letter of Commitment/Supply from the manufacturer or...</small>
@@ -1169,7 +1215,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xi.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xi.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1197,7 +1243,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xi.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xi.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1220,7 +1266,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-16">
                                 <small><strong>Content:</strong> (j) (1) (xii.) Product Obsolescence. If an item appears to be obsolete, GSA may request additional information, such as confirmation of sufficient...</small>
@@ -1242,7 +1288,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1270,7 +1316,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1293,7 +1339,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-17">
                                 <small><strong>Content:</strong> (j) (1) (xiii.) Prohibited Products. Products that are solely compatible with products that are prohibited for national security reasons (e.g.,...</small>
@@ -1317,7 +1363,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1345,7 +1391,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1368,7 +1414,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiv)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiv)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-18">
                                 <small><strong>Content:</strong> (j) (1) (xiv.) Dealer/Reseller Functions. If applicable, the offeror must describe dealer/reseller functions for products offered.</small>
@@ -1390,7 +1436,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiv)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiv)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1418,7 +1464,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiv)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xiv)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1441,7 +1487,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xv.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xv.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-19">
                                 <small><strong>Content:</strong> (j) (1) (xv.) AbilityOne Program. If applicable, the offeror must be an authorized AbilityOne Program distributor for products on the AbilityOne...</small>
@@ -1465,7 +1511,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xv.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xv.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1493,7 +1539,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xv.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xv.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1516,7 +1562,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvi.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvi.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-20">
                                 <small><strong>Content:</strong> (j) (1) (xvi.) Manufacturer Part Number (MPN) and Universal Product Code (UPC-A). For products only, accurate MPN and/or UPC-A data must be submitted.</small>
@@ -1538,7 +1584,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvi.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvi.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1566,7 +1612,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvi.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvi.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1589,7 +1635,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-21">
                                 <small><strong>Content:</strong> (j) (1) (xvii.) Electronic Contract Data. Following contract award, Schedule contractors offering products under designated Special Item Numbers...</small>
@@ -1613,7 +1659,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1641,7 +1687,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xvii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1664,7 +1710,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xviii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xviii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-22">
                                 <small><strong>Content:</strong> (j) (1) (xviii.) GSA Advantage Purchase Order (PO) Portal. The offeror must use EDI, cXML or the GSA Advantage Purchase Order (PO) Portal to...</small>
@@ -1688,7 +1734,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xviii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xviii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1716,7 +1762,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xviii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xviii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1739,7 +1785,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xix.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xix.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-23">
                                 <small><strong>Content:</strong> (j) (1) (xix.) Frustrated Freight. For products only, GSAR Clause 552.211-73, Marking, establishes marking and labeling requirements for shipping...</small>
@@ -1761,7 +1807,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xix.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xix.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1789,7 +1835,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xix.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xix.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1814,7 +1860,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xx.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xx.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-24">
                                 <small><strong>Content:</strong> (j) (1) (xx.) Joint Ventures. All joint venture offerors, regardless of size status, must complete the All Joint Ventures section of the Joint...</small>
@@ -1844,7 +1890,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xx.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xx.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1872,7 +1918,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xx.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (1) (xx.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1908,7 +1954,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (i.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (i.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-25">
                                 <small><strong>Content:</strong> (j) (2) (i.) Corporate Experience Narrative. The offeror must provide a minimum of 2 years of corporate experience, unless submitting under...</small>
@@ -1936,7 +1982,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (i.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (i.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -1964,7 +2010,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (i.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (i.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -1987,7 +2033,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (ii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (ii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-26">
                                 <small><strong>Content:</strong> (j) (2) (ii.) Past Performance. The offeror must provide past performance information, including contractor performance assessment reports (CPARS)...</small>
@@ -2013,7 +2059,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (ii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (ii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2041,7 +2087,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (ii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (ii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2064,7 +2110,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-27">
                                 <small><strong>Content:</strong> (j) (2) (iii.) Quality Control Narrative. The offeror must provide a quality control narrative describing the offeror&#39;s quality control procedures...</small>
@@ -2086,7 +2132,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2114,7 +2160,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2137,7 +2183,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iv.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iv.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-28">
                                 <small><strong>Content:</strong> (j) (2) (iv.) Relative Project Experience Narrative. For offers including services, the offeror must provide a narrative describing relevant...</small>
@@ -2161,7 +2207,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iv.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iv.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2189,7 +2235,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iv.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (2) (iv.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2225,7 +2271,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-29">
                                 <small><strong>Content:</strong> (j) (3) (ii.) Completed Price Proposal Template. The offeror must submit a completed Price Proposal Template in Excel format with all proposed...</small>
@@ -2260,7 +2306,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2288,7 +2334,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2348,7 +2394,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-31">
                                 <small><strong>Content:</strong> (j) (3) (iii.) Supporting Documentation. The offeror must provide supporting documentation for EACH proposed product/service price. Supporting...</small>
@@ -2374,7 +2420,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2402,7 +2448,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2425,7 +2471,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iv.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iv.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-32">
                                 <small><strong>Content:</strong> (j) (3) (iv.) Most Favored Customer Justification. If the pricing offered is not equal to or better than the pricing extended to the Most Favored...</small>
@@ -2447,7 +2493,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iv.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iv.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2475,7 +2521,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iv.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (iv.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2498,7 +2544,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (v.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (v.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-33">
                                 <small><strong>Content:</strong> (j) (3) (v.) Proposed Escalation Method. The offeror must propose an escalation method: 552.216-70 (EPA) for Commercial Price List or I-FSS-969...</small>
@@ -2520,7 +2566,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (v.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (v.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2548,7 +2594,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (v.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (v.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2571,7 +2617,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vi.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vi.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-34">
                                 <small><strong>Content:</strong> (j) (3) (vi.) Commercial Sales Practices Document (CSP-1). The offeror must complete the CSP-1 with rationale to support projected MAS sales. This...</small>
@@ -2595,7 +2641,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vi.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vi.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2623,7 +2669,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vi.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vi.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2646,7 +2692,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-35">
                                 <small><strong>Content:</strong> (j) (3) (vii.) Full and Broad Offering. The offeror must present a total solution with a full and broad offering of services and/or products.</small>
@@ -2670,7 +2716,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2698,7 +2744,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (vii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2721,7 +2767,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (viii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (viii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-36">
                                 <small><strong>Content:</strong> (j) (3) (viii.) Remanufactured Items. Remanufactured items are only allowable under specific MAS SINs and must be identified per clause 552.238-78...</small>
@@ -2745,7 +2791,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (viii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (viii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2773,7 +2819,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (viii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (viii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2796,7 +2842,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ix.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ix.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-37">
                                 <small><strong>Content:</strong> (j) (3) (ix.) Fair and Reasonable Pricing. All offers must demonstrate fair and reasonable pricing. This requirement is applicable to ALL offers.</small>
@@ -2820,7 +2866,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ix.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ix.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2848,7 +2894,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ix.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (ix.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2884,7 +2930,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (A))</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (A))</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-38">
                                 <small><strong>Content:</strong> Could not find provision text for reference: &#34;(j) (3) (x.) (A))&#34;</small>
@@ -2908,7 +2954,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (A))</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (A))</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -2936,7 +2982,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (A))</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (A))</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -2959,7 +3005,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (B)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (B)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-39">
                                 <small><strong>Content:</strong> (j) (3) (x.) (B) Training Course Descriptions. For offers containing training SINs, the offeror must provide detailed training course descriptions.</small>
@@ -2981,7 +3027,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (B)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (B)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -3009,7 +3055,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (B)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (B)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -3032,7 +3078,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (C)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (C)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-40">
                                 <small><strong>Content:</strong> (j) (3) (x.) (C) Fixed Price Services Descriptions. For offers containing fixed price solutions, the offeror must provide descriptions that...</small>
@@ -3056,7 +3102,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (C)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (C)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -3084,7 +3130,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (C)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (C)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -3107,7 +3153,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (D)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (D)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-41">
                                 <small><strong>Content:</strong> (j) (3) (x.) (D) Ancillary Supplies and Services/ODCs Descriptions. If applicable, the offeror must provide descriptions of ancillary supplies and...</small>
@@ -3129,7 +3175,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (D)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (D)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -3157,7 +3203,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (D)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (D)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -3180,7 +3226,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (E)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (E)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-42">
                                 <small><strong>Content:</strong> (j) (3) (x.) (E) Fully Burdened Rates. All proposed prices must be inclusive of all cost factors and represent fully burdened rates.</small>
@@ -3202,7 +3248,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (E)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (E)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -3230,7 +3276,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (E)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (x.) (E)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -3254,7 +3300,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xi.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xi.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-43">
                                 <small><strong>Content:</strong> (j) (3) (xi.) Professional Compensation Plan. For professional services offers, the offeror must provide a Professional Compensation Plan in...</small>
@@ -3279,7 +3325,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xi.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xi.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -3307,7 +3353,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xi.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xi.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -3330,7 +3376,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xii.)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xii.)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-44">
                                 <small><strong>Content:</strong> (j) (3) (xii.) Policy on Uncompensated Overtime. For services offers, the offeror must provide a policy on uncompensated overtime that clearly...</small>
@@ -3354,7 +3400,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xii.)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xii.)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -3382,7 +3428,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xii.)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xii.)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -3405,7 +3451,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (B)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (B)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-45">
                                 <small><strong>Content:</strong> (j) (3) (xiii.) (B) Service Contract Labor Standards (SCLS) Wage Determination. For applicable services offers, the offeror must comply with...</small>
@@ -3427,7 +3473,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (B)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (B)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -3455,7 +3501,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (B)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (B)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -3478,7 +3524,7 @@
                         
                         
                         <div class="checklist-card-footer">
-                            <small>Reference: Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (C)</small>
+                            <small>Reference: Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (C)</small>
                             
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-46">
                                 <small><strong>Content:</strong> (j) (3) (xiii.) (C) Service Contract Labor Standards (SCLS)/SCA Matrix. For all offers that include services, the offeror must submit a matrix...</small>
@@ -3500,7 +3546,7 @@
                             
                             
                                 
-                                <p><strong>Reference:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (C)</p>
+                                <p><strong>Reference:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (C)</p>
                                 
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -3528,7 +3574,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> Provision <a href="../../static/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (C)</p>
+                                    <p><strong>Source:</strong> Provision <a href="/static/projects/gsa_mas_checklist/files/SCP-FSS-001.pdf" target="_blank" class="pdf-link">SCP-FSS-001</a> (j) (3) (xiii.) (C)</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
@@ -3546,6 +3592,87 @@
         </div>
     </div>
 
+    <!-- SINs Selection Modal -->
+    <div id="sins-modal" class="modal sins-modal">
+        <div class="modal-content sins-modal-content">
+            <div class="modal-header">
+                <h3>Select Special Item Numbers (SINs)</h3>
+                <span class="close-button">&times;</span>
+            </div>
+            <div class="sins-modal-body">
+                <div class="sins-search-container">
+                    <input type="text" id="sins-search" placeholder="Search SINs by number or description..." class="sins-search">
+                    <div class="sins-filters-grid">
+                        <div class="sins-filter-container">
+                            <label for="sins-category-filter">Category:</label>
+                            <select id="sins-category-filter" class="sins-filter-select">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <label for="sins-commodity-filter">Commodity Type:</label>
+                            <select id="sins-commodity-filter" class="sins-filter-select">
+                                <option value="">All Types</option>
+                                <option value="B">Both Products & Services</option>
+                                <option value="S">Services Only</option>
+                                <option value="P">Products Only</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <label for="sins-state-local-filter">State/Local:</label>
+                            <select id="sins-state-local-filter" class="sins-filter-select">
+                                <option value="">Any</option>
+                                <option value="Y">Available</option>
+                                <option value="N">Not Available</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <label for="sins-set-aside-filter">Set Aside:</label>
+                            <select id="sins-set-aside-filter" class="sins-filter-select">
+                                <option value="">Any</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <label for="sins-tdr-filter">TDR Available:</label>
+                            <select id="sins-tdr-filter" class="sins-filter-select">
+                                <option value="">Any</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <label for="sins-olm-filter">OLM Available:</label>
+                            <select id="sins-olm-filter" class="sins-filter-select">
+                                <option value="">Any</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </div>
+                        <div class="sins-filter-container">
+                            <button type="button" id="clear-all-filters-btn" class="btn btn-secondary">Clear All Filters</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="selected-sins-container">
+                    <h4>Selected SINs <span id="selected-count">(0)</span></h4>
+                    <div id="selected-sins" class="selected-sins"></div>
+                </div>
+                <div class="sins-list-container">
+                    <div id="sins-list" class="sins-list">
+                        <div class="loading-message">Loading SINs data...</div>
+                    </div>
+                </div>
+                <div class="sins-modal-footer">
+                    <button type="button" class="btn btn-secondary" id="clear-selection-btn">Clear Selection</button>
+                    <button type="button" class="btn btn-primary" id="add-selected-sins-btn">Add Selected SINs</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div> <!-- Close main-content-area -->
+
 
         </main>
 
@@ -3558,6 +3685,9 @@
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script src="../../static/projects/gsa_mas_checklist.js"></script>
 
+        
+        <!-- File input for import functionality (only on GSA MAS checklist page) -->
+        
     </div>
 </body>
 </html>

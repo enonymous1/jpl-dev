@@ -1,8 +1,48 @@
 {% extends "base.html" %}
 {% block title %}Projects{% endblock %}
+
+{% block header_title %}
+    <h1 class="page-title">My Projects</h1>
+{% endblock %}
+
 {% block content %}
-    <h1>My Projects</h1>
-    <ul>
-        <li><a href="{{ url_for('gsa_mas_checklist') }}">Interactive GSA MAS Checklist</a></li>
-    </ul>
+    <div class="projects-grid">
+        <div class="project-card">
+            <div class="project-card-header">
+                <h3>Interactive GSA MAS Checklist</h3>
+                <div class="project-status active">Active</div>
+            </div>
+            <div class="project-card-content">
+                <p>A comprehensive interactive checklist for GSA Multiple Award Schedule (MAS) offer preparation. Features include:</p>
+                <ul class="project-features">
+                    <li>Step-by-step checklist validation</li>
+                    <li>SINs selection with advanced filtering</li>
+                    <li>Notes management with rich text editor</li>
+                    <li>Data export/import capabilities</li>
+                    <li>Dark/light theme support</li>
+                </ul>
+            </div>
+            <div class="project-card-footer">
+                <a href="{{ url_for('gsa_mas_checklist.gsa_mas_checklist') }}" class="project-link">Open Project</a>
+                <div class="project-tech-stack">
+                    <span class="tech-tag">Flask</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">Quill</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Placeholder for future projects -->
+        <div class="project-card placeholder">
+            <div class="project-card-content">
+                <div class="placeholder-content">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h3>Coming Soon</h3>
+                    <p>More projects will be added here</p>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -1,0 +1,19 @@
+/* Projects grid and card styles */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+.project-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 4px 6px var(--shadow-color); transition: all 0.3s ease; overflow: hidden; display: flex; flex-direction: column; }
+.project-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px var(--shadow-color); }
+.project-card-header { padding: 20px 20px 0 20px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.project-card-header h3 { margin: 0; font-size: 1.25rem; font-weight: 600; color: var(--text-color); flex: 1; }
+.project-status { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+.project-status.active { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+[data-theme="dark"] .project-status.active { background: #1e3a28; color: #75b798; border: 1px solid #2d5a3d; }
+.project-card-content { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.project-card-content p { margin: 0 0 16px 0; color: var(--text-secondary); line-height: 1.5; }
+.project-features { list-style: none; padding: 0; margin: 0; }
+.project-features li { padding: 6px 0; color: var(--text-secondary); position: relative; padding-left: 20px; }
+.project-features li::before { content: "✓"; position: absolute; left: 0; color: var(--primary-color); font-weight: bold; }
+.project-card-footer { padding: 0 20px 20px 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: auto; }
+.project-link { background: var(--primary-color); color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 500; transition: background-color 0.2s ease; display: inline-flex; align-items: center; gap: 8px; }
+.project-link:hover { background: var(--primary-hover-color); }
+.project-tech-stack { display: flex; gap: 6px; flex-wrap: wrap; }
+.tech-tag { background: var(--button-bg); color: var(--text-secondary); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 500; }
