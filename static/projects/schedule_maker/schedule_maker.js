@@ -65,6 +65,15 @@ class ScheduleMaker {
             this.exportSchedule();
         });
         
+        document.getElementById('import-schedule-btn').addEventListener('click', () => {
+            this.importSchedule();
+        });
+        
+        const importFileInput = document.getElementById('import-schedule-file');
+        if (importFileInput) {
+            importFileInput.addEventListener('change', (event) => this.loadScheduleFromFile(event));
+        }
+        
         // Event panel
         document.getElementById('close-event-panel').addEventListener('click', () => {
             this.hideEventPanel();
@@ -410,7 +419,70 @@ class ScheduleMaker {
         
         this.showNotification('Schedule exported successfully!');
     }
-    
+
+    importSchedule() {
+        const importFileInput = document.getElementById('import-schedule-file');
+        if (importFileInput) {
+            importFileInput.value = '';
+            importFileInput.click();
+        }
+    }
+
+    loadScheduleFromFile(event) {
+        const file = event.target.files ? event.target.files[0] : null;
+        if (!file) {
+            return;
+        }
+
+        if (!file.type.includes('json') && !file.name.endsWith('.json')) {
+            this.showNotification('Please select a valid JSON schedule file.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                this.applyImportedSchedule(importedData);
+            } catch (error) {
+                console.error('Import error:', error);
+                this.showNotification('Failed to import schedule. Please use a valid JSON file.');
+            }
+        };
+        reader.onerror = () => {
+            this.showNotification('Unable to read the selected file.');
+        };
+        reader.readAsText(file, 'utf-8');
+    }
+
+    applyImportedSchedule(data) {
+        if (!data || typeof data !== 'object') {
+            this.showNotification('Imported schedule data is invalid.');
+            return;
+        }
+
+        const importedEvents = Array.isArray(data.events) ? data.events : [];
+        const scheduleName = data.name || 'My Schedule';
+        const scheduleDescription = data.description || '';
+
+        const scheduleData = {
+            name: scheduleName,
+            description: scheduleDescription,
+            events: importedEvents,
+            imported_at: new Date().toISOString()
+        };
+
+        const scheduleNameInput = document.getElementById('schedule-name');
+        const scheduleDescriptionInput = document.getElementById('schedule-description');
+        if (scheduleNameInput) scheduleNameInput.value = scheduleName;
+        if (scheduleDescriptionInput) scheduleDescriptionInput.value = scheduleDescription;
+
+        this.events = importedEvents;
+        localStorage.setItem('schedule_maker_data', JSON.stringify(scheduleData));
+        this.renderSchedule();
+        this.showNotification('Schedule imported successfully!');
+    }
+
     // Helper methods
     navigateDate(direction) {
         if (this.currentView === 'week') {

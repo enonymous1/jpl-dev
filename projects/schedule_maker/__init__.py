@@ -15,8 +15,7 @@ schedule_maker_bp = Blueprint(
     'schedule_maker',
     __name__,
     url_prefix='/projects/schedule-maker',
-    template_folder='templates',
-    static_folder='../../static/projects/schedule_maker'
+    template_folder='templates'
 )
 
 # Import routes after blueprint creation to avoid circular imports

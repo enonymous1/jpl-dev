@@ -6,6 +6,7 @@
     --text-secondary: #666;
     --border-color: #ddd;
     --primary-color: #007bff;
+    --primary-color-rgb: 0, 123, 255;
     --primary-hover-color: #0056b3;
     --card-bg: #ffffff;
     --modal-bg: #ffffff;
@@ -27,6 +28,7 @@
     --text-secondary: #b0b0b0;
     --border-color: #404040;
     --primary-color: #4dabf7;
+    --primary-color-rgb: 77, 171, 247;
     --primary-hover-color: #74c0fc;
     --card-bg: #2d2d2d;
     --modal-bg: #2d2d2d;

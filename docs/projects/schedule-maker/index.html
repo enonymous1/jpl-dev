@@ -1,8 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Schedule Maker - JPL-DEV</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- GridStack.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="../../static/css/variables.css">
+    <link rel="stylesheet" href="../../static/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="../../static/css/widgets.css">
     <link rel="stylesheet" href="../../static/css/base.css">
     <link rel="stylesheet" href="../../static/css/layout.css">
     <link rel="stylesheet" href="../../static/css/components.css">
@@ -10,7 +23,24 @@
     <link rel="stylesheet" href="../../static/css/checklist.css">
     <link rel="stylesheet" href="../../static/css/theme-toggle.css">
     <link rel="stylesheet" href="../../static/css/projects.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../static/css/widget-system.css">
+
+    <script>
+        (function() {
+            try {
+                const storageKey = 'jpl_dev_global_theme';
+                const savedTheme = window.localStorage.getItem(storageKey);
+                const defaultTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+                    ? 'dark'
+                    : 'light';
+                const theme = savedTheme || defaultTheme;
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                console.warn('Theme initialization failed:', e);
+            }
+        })();
+    </script>
+    
     
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -76,59 +106,74 @@
 
 </head>
 <body>
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="../../index.html">Home</a>
-        <a href="../index.html">Projects</a>
+    <!-- Bootstrap Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="main-navbar">
+        <div class="container-fluid">
+            <!-- Mobile menu toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Brand/Logo -->
+            <a class="navbar-brand fw-bold" href="../../index.html">
+                <i class="bi bi-code-square me-2"></i>JPL-DEV
+            </a>
+            
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="../../index.html">
+                            <i class="bi bi-house-door me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="../index.html">
+                            <i class="bi bi-collection me-1"></i>Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="../../widget-demo/index.html">
+                            <i class="bi bi-grid-3x3-gap me-1"></i>Widget Demo
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- Header Actions -->
+                <div class="d-flex align-items-center gap-2">
+                    
+                        
+    <div class="btn-group" role="group">
+        <button id="new-schedule-btn" class="btn btn-outline-light btn-sm" title="Create new schedule">
+            <i class="bi bi-file-earmark-plus"></i>
+        </button>
+        <button id="save-schedule-btn" class="btn btn-outline-light btn-sm" title="Save schedule">
+            <i class="bi bi-save"></i>
+        </button>
+        <button id="export-schedule-btn" class="btn btn-outline-light btn-sm" title="Export schedule">
+            <i class="bi bi-box-arrow-up-right"></i>
+        </button>
+        <button id="import-schedule-btn" class="btn btn-outline-light btn-sm" title="Import schedule">
+            <i class="bi bi-box-arrow-in-up"></i>
+        </button>
     </div>
+    <input type="file" id="import-schedule-file" accept=".json,application/json" style="display:none;" />
 
-    <div id="content-wrapper">
-        <header id="header">
-            <div class="header-left">
-                <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
-                
-    <h1 class="page-title">Schedule Maker</h1>
-
+                    
+                    
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" type="button" class="btn btn-outline-light btn-sm" title="Toggle theme" aria-label="Toggle theme" aria-pressed="false">
+                        <i class="bi bi-sun theme-icon-light"></i>
+                        <i class="bi bi-moon theme-icon-dark d-none"></i>
+                    </button>
+                </div>
             </div>
-            
-            
-                
-    <!-- Custom header actions for Schedule Maker -->
-    <div class="header-actions">
-        <!-- Export button removed per request -->
-    </div>
+        </div>
+    </nav>
 
-            
-                
-            <div class="header-right">
-                <button id="theme-toggle" class="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle dark mode">
-                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                            <circle cx="12" cy="12" r="5" fill="#FFD600" stroke="#FFA000" stroke-width="2"/>
-                            <g stroke="#FFA000" stroke-width="2">
-                                <line x1="12" y1="2" x2="12" y2="5"/>
-                                <line x1="12" y1="19" x2="12" y2="22"/>
-                                <line x1="2" y1="12" x2="5" y2="12"/>
-                                <line x1="19" y1="12" x2="22" y2="12"/>
-                                <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
-                                <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
-                                <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
-                                <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
-                            </g>
-                        </g>
-                    </svg>
-                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                            <circle cx="12" cy="12" r="9" fill="#B0BEC5"/>
-                            <path d="M16 12.5A4.5 4.5 0 0 1 11.5 8c0-2.485 2.015-4.5 4.5-4.5a7 7 0 1 0 0 14c-2.485 0-4.5-2.015-4.5-4.5z" fill="#FFFDE7"/>
-                        </g>
-                    </svg>
-                </button>
-            </div>
-        </header>
-
-        <main id="main">
-            
+    <!-- Main Content Container -->
+    <main class="container-fluid">
+        
     <div id="app-container" class="relative min-h-screen flex flex-col bg-slate-100 text-slate-800">
         <!-- Overlays -->
         <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
@@ -328,17 +373,29 @@
         <main class="flex-1 p-4 sm:p-6 lg:p-8">
             <!-- Shared Header for Both Views -->
             <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm mb-6">
-                <div id="page-header" class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 border-b pb-4">
-                    <div class="flex items-center space-x-2">
-                        <h2 class="text-xl font-bold text-slate-700">Schedule</h2>
-                        <div class="text-sm font-medium text-center text-slate-500 border-b border-slate-200">
-                            <div class="flex flex-wrap -mb-px">
-                                <button id="weekly-view-btn" class="view-toggle-btn inline-block p-2 border-b-2 border-sky-600 rounded-t-lg text-sky-600">Weekly</button>
-                                <button id="monthly-view-btn" class="view-toggle-btn inline-block p-2 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">Monthly</button>
+                <div id="page-header" class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 border-b pb-4 gap-4">
+                    <div class="flex flex-col gap-3 w-full lg:w-[65%]">
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-xl font-bold text-slate-700">Schedule</h2>
+                            <div class="text-sm font-medium text-center text-slate-500 border-b border-slate-200">
+                                <div class="flex flex-wrap -mb-px">
+                                    <button id="weekly-view-btn" class="view-toggle-btn inline-block p-2 border-b-2 border-sky-600 rounded-t-lg text-sky-600">Weekly</button>
+                                    <button id="monthly-view-btn" class="view-toggle-btn inline-block p-2 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">Monthly</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid gap-3 sm:grid-cols-2">
+                            <div>
+                                <label for="schedule-name" class="block text-sm font-medium text-slate-700 mb-1">Schedule Name</label>
+                                <input id="schedule-name" type="text" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="My Schedule" />
+                            </div>
+                            <div>
+                                <label for="schedule-description" class="block text-sm font-medium text-slate-700 mb-1">Schedule Description</label>
+                                <input id="schedule-description" type="text" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="Optional description" />
                             </div>
                         </div>
                     </div>
-                    <button id="date-range-button" class="text-slate-500 hover:text-sky-700 hover:bg-slate-100 p-2 rounded-md transition-all mt-4 sm:mt-0">
+                    <button id="date-range-button" class="text-slate-500 hover:text-sky-700 hover:bg-slate-100 p-2 rounded-md transition-all mt-2 sm:mt-0">
                         <!-- Date range will be inserted here -->
                     </button>
                 </div>
@@ -489,19 +546,24 @@
         }
     </script>
 
-        </main>
-
-        <footer>
-            <p>&copy; 2025 Justin Lyons</p>
-        </footer>
-        
-        <!-- Global Scripts -->
-        <script src="../../static/script.js"></script>
-        <script src="../../static/global-theme.js"></script>
-        
-        
-        <!-- File input for import functionality (only on GSA MAS checklist page) -->
-        
+    </main>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- GridStack.js -->
+    <script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"></script>
+    
+    <!-- Global Scripts -->
+    <script src="../../static/js/theme-manager.js"></script>
+    <script src="../../static/js/widget-manager.js"></script>
+    <script src="../../static/js/widget-utils.js"></script>
+    <script src="../../static/script.js"></script>
+    <script src="../../static/global-theme.js"></script>
+    
+    
+    <!-- File input for import functionality (only on GSA MAS checklist page) -->
+    
 </body>
 </html>

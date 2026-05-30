@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Widget Demo - JPL-DEV</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- GridStack.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../static/css/variables.css">
+    <link rel="stylesheet" href="../static/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="../static/css/widgets.css">
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/layout.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/profile-card.css">
+    <link rel="stylesheet" href="../static/css/checklist.css">
+    <link rel="stylesheet" href="../static/css/theme-toggle.css">
+    <link rel="stylesheet" href="../static/css/projects.css">
+    <link rel="stylesheet" href="../static/css/widget-system.css">
+
+    <script>
+        (function() {
+            try {
+                const storageKey = 'jpl_dev_global_theme';
+                const savedTheme = window.localStorage.getItem(storageKey);
+                const defaultTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+                    ? 'dark'
+                    : 'light';
+                const theme = savedTheme || defaultTheme;
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                console.warn('Theme initialization failed:', e);
+            }
+        })();
+    </script>
+    
+    
+</head>
+<body>
+    <!-- Bootstrap Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="main-navbar">
+        <div class="container-fluid">
+            <!-- Mobile menu toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Brand/Logo -->
+            <a class="navbar-brand fw-bold" href="../index.html">
+                <i class="bi bi-code-square me-2"></i>JPL-DEV
+            </a>
+            
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="../index.html">
+                            <i class="bi bi-house-door me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="../projects/index.html">
+                            <i class="bi bi-collection me-1"></i>Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <i class="bi bi-grid-3x3-gap me-1"></i>Widget Demo
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- Header Actions -->
+                <div class="d-flex align-items-center gap-2">
+                    
+                    
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" type="button" class="btn btn-outline-light btn-sm" title="Toggle theme" aria-label="Toggle theme" aria-pressed="false">
+                        <i class="bi bi-sun theme-icon-light"></i>
+                        <i class="bi bi-moon theme-icon-dark d-none"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="container-fluid">
+        
+<!-- Page Header -->
+<div class="container-fluid bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-5 fw-bold mb-3">Widget System Demo</h1>
+                <p class="lead">Showcase of reusable Bootstrap and GridStack widgets</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Widget Controls -->
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Widget Controls</h5>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-primary" onclick="showDemoToast()">
+                            <i class="bi bi-bell me-2"></i>Show Toast
+                        </button>
+                        <button class="btn btn-info" onclick="showDemoModal()">
+                            <i class="bi bi-window me-2"></i>Show Modal
+                        </button>
+                        <button class="btn btn-success" onclick="addRandomWidget()">
+                            <i class="bi bi-plus-circle me-2"></i>Add Random Widget
+                        </button>
+                        <button class="btn btn-warning" onclick="animateAllWidgets()">
+                            <i class="bi bi-play-circle me-2"></i>Animate Widgets
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetWidgets()">
+                            <i class="bi bi-arrow-clockwise me-2"></i>Reset Layout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- GridStack Demo Container -->
+<div class="container-fluid">
+    <div class="container">
+        <div id="widget-demo-grid" class="grid-stack">
+            <!-- Stats Widget -->
+            <div class="grid-stack-item" gs-w="3" gs-h="3" gs-x="0" gs-y="0">
+                <div class="grid-stack-item-content card border-0 shadow-sm">
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-2">
+                        <h6 class="card-title mb-0 fw-semibold">
+                            <i class="bi bi-bar-chart me-2"></i>Demo Stats
+                        </h6>
+                        <button class="btn btn-sm text-white border-0 opacity-75" style="cursor: move;" title="Drag to move">
+                            <i class="bi bi-arrows-move"></i>
+                        </button>
+                    </div>
+                    <div class="card-body py-2">
+                        <div class="row text-center">
+                            <div class="col-6 mb-2">
+                                <div class="h5 text-primary mb-1 fw-bold stat-value" data-target="42">0</div>
+                                <small class="text-secondary">Widgets</small>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <div class="h5 text-success mb-1 fw-bold stat-value" data-target="17">0</div>
+                                <small class="text-secondary">Components</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Widget -->
+            <div class="grid-stack-item" gs-w="3" gs-h="4" gs-x="3" gs-y="0">
+                <div class="grid-stack-item-content card border-0 shadow-sm">
+                    <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center py-2">
+                        <h6 class="card-title mb-0 fw-semibold">
+                            <i class="bi bi-code-slash me-2"></i>Demo Skills
+                        </h6>
+                        <button class="btn btn-sm text-white border-0 opacity-75" style="cursor: move;" title="Drag to move">
+                            <i class="bi bi-arrows-move"></i>
+                        </button>
+                    </div>
+                    <div class="card-body py-2">
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <small class="fw-semibold text-dark">Bootstrap</small>
+                                <small class="text-secondary">95%</small>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <small class="fw-semibold text-dark">GridStack</small>
+                                <small class="text-secondary">88%</small>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <small class="fw-semibold text-dark">CSS</small>
+                                <small class="text-secondary">92%</small>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 92%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Social Widget -->
+            <div class="grid-stack-item" gs-w="3" gs-h="3" gs-x="6" gs-y="0">
+                <div class="grid-stack-item-content card border-0 shadow-sm">
+                    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center py-2">
+                        <h6 class="card-title mb-0 fw-semibold">
+                            <i class="bi bi-share me-2"></i>Demo Links
+                        </h6>
+                        <button class="btn btn-sm text-white border-0 opacity-75" style="cursor: move;" title="Drag to move">
+                            <i class="bi bi-arrows-move"></i>
+                        </button>
+                    </div>
+                    <div class="card-body py-2">
+                        <div class="d-grid gap-2">
+                            <a href="#" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-github me-2"></i>GitHub
+                            </a>
+                            <a href="#" class="btn btn-outline-info btn-sm">
+                                <i class="bi bi-bootstrap me-2"></i>Bootstrap
+                            </a>
+                            <a href="#" class="btn btn-outline-warning btn-sm">
+                                <i class="bi bi-grid me-2"></i>GridStack
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Widget -->
+            <div class="grid-stack-item" gs-w="3" gs-h="3" gs-x="9" gs-y="0">
+                <div class="grid-stack-item-content card border-0 shadow-sm">
+                    <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center py-2">
+                        <h6 class="card-title mb-0 fw-semibold">
+                            <i class="bi bi-bar-chart-line me-2"></i>Demo Chart
+                        </h6>
+                        <button class="btn btn-sm text-dark border-0 opacity-75" style="cursor: move;" title="Drag to move">
+                            <i class="bi bi-arrows-move"></i>
+                        </button>
+                    </div>
+                    <div class="card-body py-2 d-flex align-items-center justify-content-center">
+                        <canvas id="demoChart" width="180" height="120"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Demo Modal -->
+<div class="modal fade" id="demoModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Widget System Features</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Key Features:</h6>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>Bootstrap 5 Integration</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>GridStack.js Drag & Drop</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>Dark/Light Theme Support</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>Responsive Design</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>Reusable Components</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>Animation Support</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addRandomWidget()">Add Widget</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- GridStack.js -->
+    <script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"></script>
+    
+    <!-- Global Scripts -->
+    <script src="../static/js/theme-manager.js"></script>
+    <script src="../static/js/widget-manager.js"></script>
+    <script src="../static/js/widget-utils.js"></script>
+    <script src="../static/script.js"></script>
+    <script src="../static/global-theme.js"></script>
+    
+<script>
+// Demo-specific JavaScript
+let demoGrid;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize demo grid
+    demoGrid = GridStack.init({
+        cellHeight: 120,
+        minRow: 1,
+        float: true,
+        resizable: {
+            handles: 'se'
+        },
+        draggable: {
+            handle: '.btn[style*="cursor: move"]'
+        },
+        margin: 10,
+        animate: true
+    }, '#widget-demo-grid');
+
+    // Draw demo chart
+    drawDemoChart();
+});
+
+function showDemoToast() {
+    BootstrapUtils.showToast(
+        'Widget Demo', 
+        'This is a demonstration toast notification!', 
+        'success'
+    );
+}
+
+function showDemoModal() {
+    const modal = new bootstrap.Modal(document.getElementById('demoModal'));
+    modal.show();
+}
+
+function addRandomWidget() {
+    const widgetTypes = ['stats', 'skills', 'social', 'profile'];
+    const randomType = widgetTypes[Math.floor(Math.random() * widgetTypes.length)];
+    
+    if (window.widgetManager) {
+        // Use widget manager if available
+        const config = getRandomWidgetConfig(randomType);
+        window.widgetManager.createWidget(randomType, config);
+    } else {
+        // Create widget directly in demo grid
+        const widgetHTML = createDemoWidget(randomType);
+        const gridOptions = {
+            w: 3,
+            h: 3,
+            content: `<div class="grid-stack-item-content card border-0 shadow-sm">${widgetHTML}</div>`
+        };
+        demoGrid.addWidget(gridOptions);
+    }
+    
+    showDemoToast('Widget Added', `New ${randomType} widget added to grid!`, 'info');
+}
+
+function getRandomWidgetConfig(type) {
+    const configs = {
+        stats: {
+            title: 'Random Stats',
+            stats: [
+                { label: 'Views', value: Math.floor(Math.random() * 1000) },
+                { label: 'Clicks', value: Math.floor(Math.random() * 500) }
+            ]
+        },
+        skills: {
+            title: 'Random Skills',
+            skills: [
+                { name: 'Skill A', level: Math.floor(Math.random() * 100) },
+                { name: 'Skill B', level: Math.floor(Math.random() * 100) }
+            ]
+        },
+        social: {
+            title: 'Random Links',
+            links: [
+                { name: 'Link 1', url: '#', icon: 'link' },
+                { name: 'Link 2', url: '#', icon: 'link' }
+            ]
+        },
+        profile: {
+            title: 'Random Profile',
+            name: 'Demo User',
+            description: 'A randomly generated profile widget'
+        }
+    };
+    
+    return configs[type] || {};
+}
+
+function createDemoWidget(type) {
+    const id = 'demo-widget-' + Date.now();
+    
+    switch (type) {
+        case 'stats':
+            return `
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
+                    <h6 class="card-title mb-0 fw-semibold">
+                        <i class="bi bi-bar-chart me-2"></i>Random Stats
+                    </h6>
+                    <button class="btn btn-sm text-white border-0" onclick="removeDemoWidget(this)" title="Remove widget">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+                <div class="card-body py-2">
+                    <div class="row text-center">
+                        <div class="col-6 mb-2">
+                            <div class="h5 text-primary mb-1 fw-bold">${Math.floor(Math.random() * 100)}</div>
+                            <small class="text-secondary">Random A</small>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <div class="h5 text-success mb-1 fw-bold">${Math.floor(Math.random() * 100)}</div>
+                            <small class="text-secondary">Random B</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+        case 'skills':
+            return `
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center py-2">
+                    <h6 class="card-title mb-0 fw-semibold">
+                        <i class="bi bi-code-slash me-2"></i>Random Skills
+                    </h6>
+                    <button class="btn btn-sm text-white border-0" onclick="removeDemoWidget(this)" title="Remove widget">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+                <div class="card-body py-2">
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="fw-semibold text-dark">Skill A</small>
+                            <small class="text-secondary">${Math.floor(Math.random() * 100)}%</small>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: ${Math.floor(Math.random() * 100)}%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="fw-semibold text-dark">Skill B</small>
+                            <small class="text-secondary">${Math.floor(Math.random() * 100)}%</small>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: ${Math.floor(Math.random() * 100)}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        case 'social':
+            return `
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center py-2">
+                    <h6 class="card-title mb-0 fw-semibold">
+                        <i class="bi bi-share me-2"></i>Random Links
+                    </h6>
+                    <button class="btn btn-sm text-white border-0" onclick="removeDemoWidget(this)" title="Remove widget">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+                <div class="card-body py-2">
+                    <div class="d-grid gap-2">
+                        <a href="#" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-link me-2"></i>Link 1
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-link me-2"></i>Link 2
+                        </a>
+                    </div>
+                </div>
+            `;
+        default:
+            return `
+                <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center py-2">
+                    <h6 class="card-title mb-0 fw-semibold">
+                        <i class="bi bi-widget me-2"></i>Demo Widget
+                    </h6>
+                    <button class="btn btn-sm text-white border-0" onclick="removeDemoWidget(this)" title="Remove widget">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+                <div class="card-body py-2">
+                    <p class="mb-0 text-dark">This is a demo ${type} widget!</p>
+                </div>
+            `;
+    }
+}
+
+function removeDemoWidget(button) {
+    const widget = button.closest('.grid-stack-item');
+    if (widget && demoGrid) {
+        demoGrid.removeWidget(widget);
+        showDemoToast('Widget Removed', 'Widget removed from grid!', 'warning');
+    }
+}
+
+function animateAllWidgets() {
+    // Animate stat values
+    document.querySelectorAll('.stat-value').forEach(el => {
+        const target = parseInt(el.dataset.target) || parseInt(el.textContent);
+        WidgetAnimations.countUp(el, target);
+    });
+    
+    // Animate progress bars
+    document.querySelectorAll('.widget-skills').forEach(widget => {
+        WidgetAnimations.animateProgressBars(widget);
+    });
+    
+    showDemoToast('Animation Started', 'All widgets are being animated!', 'info');
+}
+
+function resetWidgets() {
+    if (demoGrid) {
+        demoGrid.removeAll();
+        location.reload(); // Simple reset - reload the page
+    }
+}
+
+function drawDemoChart() {
+    const canvas = document.getElementById('demoChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const colors = ThemeAwareUtils.getThemeColors();
+    
+    // Simple bar chart
+    const data = [30, 50, 80, 40, 70];
+    const maxValue = Math.max(...data);
+    const barWidth = canvas.width / data.length - 10;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    data.forEach((value, index) => {
+        const barHeight = (value / maxValue) * (canvas.height - 20);
+        const x = index * (barWidth + 10) + 5;
+        const y = canvas.height - barHeight - 10;
+        
+        ctx.fillStyle = colors.primary;
+        ctx.fillRect(x, y, barWidth, barHeight);
+        
+        // Add value labels
+        ctx.fillStyle = colors.dark;
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(value, x + barWidth/2, y - 5);
+    });
+}
+
+// Redraw chart on theme change
+document.addEventListener('themeChange', function() {
+    setTimeout(drawDemoChart, 100);
+});
+</script>
+
+    
+    <!-- File input for import functionality (only on GSA MAS checklist page) -->
+    
+</body>
+</html>

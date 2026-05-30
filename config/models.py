@@ -4,27 +4,24 @@ Project Configuration Models
 
 Defines the data structures and constants used for project management
 throughout the portfolio application.
-
-Author: JPL Development
-Date: July 2025
 """
 
 from datetime import datetime
-from typing import List, Dict, Any, Optional
-from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional
+from dataclasses import dataclass, field, asdict
 
 
 class ProjectStatus:
-    """Project status constants."""
+    """Project status constants used to classify portfolio items."""
     ACTIVE = "active"
-    DEVELOPMENT = "development"  
+    DEVELOPMENT = "development"
     COMPLETED = "completed"
     ARCHIVED = "archived"
-    FEATURED = "featured"  # For highlighting special projects
+    FEATURED = "featured"
 
 
 class ProjectCategory:
-    """Project category constants."""
+    """Project category constants for consistent filtering and display."""
     WEB_APP = "web-app"
     TOOL = "tool"
     AUTOMATION = "automation"
@@ -38,22 +35,28 @@ class ProjectCategory:
 @dataclass
 class ProjectImage:
     """
-    Container for project image information.
-    
-    Supports multiple image types for different use cases.
+    Container for project image metadata.
+
+    The model supports multiple image roles so the frontend can choose the
+    appropriate asset for hero display or thumbnails.
     """
     filename: str
     alt_text: str
     caption: Optional[str] = None
-    is_hero: bool = False  # Main project image
-    is_thumbnail: bool = False  # For project cards
+    is_hero: bool = False
+    is_thumbnail: bool = False
     width: Optional[int] = None
     height: Optional[int] = None
 
 
 @dataclass
 class ProjectLinks:
-    """Container for project-related links."""
+    """
+    Container for a project's external links.
+
+    Links are optional because some static portfolio entries may only need
+    an internal route or a single destination.
+    """
     github: Optional[str] = None
     demo: Optional[str] = None
     live_site: Optional[str] = None
@@ -61,68 +64,87 @@ class ProjectLinks:
     download: Optional[str] = None
 
 
-@dataclass 
+@dataclass
 class ProjectData:
     """
     Comprehensive container for project information.
-    
-    This dataclass provides a structured way to define project data with
-    validation and easy access to project properties.
+
+    This dataclass keeps the static portfolio schema consistent and provides
+    convenience properties for derived display state.
     """
-    
-    # Core information
     id: str
     title: str
     description: str
     status: str
-    
-    # Optional descriptive content
+
     features: List[str] = field(default_factory=list)
     tech_stack: List[str] = field(default_factory=list)
     category: Optional[str] = None
     tags: List[str] = field(default_factory=list)
-    
-    # Routing and links
+
     route: Optional[str] = None
     external_url: Optional[str] = None
     links: Optional[ProjectLinks] = None
-    
-    # Media
+
     images: List[ProjectImage] = field(default_factory=list)
-    
-    # Metadata
+
     created_date: Optional[datetime] = None
     last_updated: Optional[datetime] = None
-    priority: int = 0  # For ordering (higher = more important)
-    
+    priority: int = 0
+
     def __post_init__(self):
-        """Set default dates if not provided."""
-        if self.created_date is None:
-            self.created_date = datetime.now()
-        if self.last_updated is None:
-            self.last_updated = datetime.now()
+        """
+        Normalize related date fields without introducing runtime or build-time
+        side effects.
+
+        If one date is missing, the other date is reused so that downstream
+        sorting and display logic always has a consistent datetime reference.
+        """
+        if self.created_date is None and self.last_updated is not None:
+            self.created_date = self.last_updated
+        if self.last_updated is None and self.created_date is not None:
+            self.last_updated = self.created_date
         if self.links is None:
             self.links = ProjectLinks()
-    
+
     @property
     def hero_image(self) -> Optional[ProjectImage]:
-        """Get the main hero image for the project."""
+        """
+        Return the primary hero image for the project.
+
+        This property is used by page templates that require a single prominent
+        image asset.
+        """
         for img in self.images:
             if img.is_hero:
                 return img
         return self.images[0] if self.images else None
-    
+
     @property
     def thumbnail_image(self) -> Optional[ProjectImage]:
-        """Get the thumbnail image for project cards."""
+        """
+        Return a thumbnail image for project cards.
+
+        If no explicit thumbnail exists, fallback to the hero image to ensure
+        the UI still displays a representative asset.
+        """
         for img in self.images:
             if img.is_thumbnail:
                 return img
         return self.hero_image
-    
+
     @property
     def primary_link(self) -> Optional[str]:
-        """Get the primary link for the project (route > live_site > demo > github)."""
+        """
+        Return the most appropriate project link for navigation.
+
+        The precedence is:
+        1. internal route
+        2. external URL
+        3. live site
+        4. demo
+        5. GitHub repository
+        """
         if self.route:
             return f"route:{self.route}"
         if self.external_url:
@@ -134,26 +156,16 @@ class ProjectData:
         if self.links.github:
             return self.links.github
         return None
-    
+
     def to_dict(self) -> Dict[str, Any]:
-        """Convert project data to dictionary for template rendering."""
-        return {
-            'id': self.id,
-            'title': self.title,
-            'description': self.description,
-            'features': self.features,
-            'tech_stack': self.tech_stack,
-            'status': self.status,
-            'category': self.category,
-            'tags': self.tags,
-            'route': self.route,
-            'external_url': self.external_url,
-            'links': self.links,
-            'images': self.images,
-            'hero_image': self.hero_image,
-            'thumbnail_image': self.thumbnail_image,
-            'primary_link': self.primary_link,
-            'created_date': self.created_date,
-            'last_updated': self.last_updated,
-            'priority': self.priority,
-        }
+        """
+        Convert project metadata into a plain dictionary for template rendering.
+
+        The returned dictionary includes computed properties so templates can
+        consume a uniform data shape without needing object access.
+        """
+        data = asdict(self)
+        data["hero_image"] = self.hero_image
+        data["thumbnail_image"] = self.thumbnail_image
+        data["primary_link"] = self.primary_link
+        return data

@@ -5,9 +5,10 @@ This module contains all the logic specific to the GSA MAS Checklist project,
 including route handlers, data processing, and provision text mappings.
 """
 
-from flask import render_template, url_for, Blueprint
+from flask import render_template, url_for, Blueprint, current_app
 import json
 import os
+from functools import lru_cache
 
 # Create a blueprint for the GSA MAS Checklist project
 gsa_mas_checklist_bp = Blueprint('gsa_mas_checklist', __name__)
@@ -135,10 +136,11 @@ def create_pdf_link(reference_text, pdf_filename):
     
     return {'link': pdf_link, 'content': pdf_content}
 
+@lru_cache(maxsize=1)
 def load_checklist_data():
     """Load the checklist data from the project-specific JSON file"""
-    data_path = os.path.join('static', 'projects', 'gsa_mas_checklist', 'data', 'checklist_data.json')
-    with open(data_path) as f:
+    data_path = os.path.join(current_app.root_path, 'static', 'projects', 'gsa_mas_checklist', 'data', 'checklist_data.json')
+    with open(data_path, encoding='utf-8') as f:
         return json.load(f)
 
 @gsa_mas_checklist_bp.route('/projects/gsa-mas-checklist/')

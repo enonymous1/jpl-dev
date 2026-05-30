@@ -1,8 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home - JPL-DEV</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- GridStack.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="static/css/variables.css">
+    <link rel="stylesheet" href="static/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="static/css/widgets.css">
     <link rel="stylesheet" href="static/css/base.css">
     <link rel="stylesheet" href="static/css/layout.css">
     <link rel="stylesheet" href="static/css/components.css">
@@ -10,100 +23,599 @@
     <link rel="stylesheet" href="static/css/checklist.css">
     <link rel="stylesheet" href="static/css/theme-toggle.css">
     <link rel="stylesheet" href="static/css/projects.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/css/widget-system.css">
+
+    <script>
+        (function() {
+            try {
+                const storageKey = 'jpl_dev_global_theme';
+                const savedTheme = window.localStorage.getItem(storageKey);
+                const defaultTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+                    ? 'dark'
+                    : 'light';
+                const theme = savedTheme || defaultTheme;
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                console.warn('Theme initialization failed:', e);
+            }
+        })();
+    </script>
+    
     
 </head>
 <body>
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="index.html">Home</a>
-        <a href="projects/index.html">Projects</a>
-    </div>
-
-    <div id="content-wrapper">
-        <header id="header">
-            <div class="header-left">
-                <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+    <!-- Bootstrap Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="main-navbar">
+        <div class="container-fluid">
+            <!-- Mobile menu toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Brand/Logo -->
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="bi bi-code-square me-2"></i>JPL-DEV
+            </a>
+            
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <i class="bi bi-house-door me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="projects/index.html">
+                            <i class="bi bi-collection me-1"></i>Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="widget-demo/index.html">
+                            <i class="bi bi-grid-3x3-gap me-1"></i>Widget Demo
+                        </a>
+                    </li>
+                </ul>
                 
-            </div>
-            
-            
-                
-            <div class="header-right">
-                <button id="theme-toggle" class="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle dark mode">
-                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                            <circle cx="12" cy="12" r="5" fill="#FFD600" stroke="#FFA000" stroke-width="2"/>
-                            <g stroke="#FFA000" stroke-width="2">
-                                <line x1="12" y1="2" x2="12" y2="5"/>
-                                <line x1="12" y1="19" x2="12" y2="22"/>
-                                <line x1="2" y1="12" x2="5" y2="12"/>
-                                <line x1="19" y1="12" x2="22" y2="12"/>
-                                <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
-                                <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
-                                <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
-                                <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
-                            </g>
-                        </g>
-                    </svg>
-                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                            <circle cx="12" cy="12" r="9" fill="#B0BEC5"/>
-                            <path d="M16 12.5A4.5 4.5 0 0 1 11.5 8c0-2.485 2.015-4.5 4.5-4.5a7 7 0 1 0 0 14c-2.485 0-4.5-2.015-4.5-4.5z" fill="#FFFDE7"/>
-                        </g>
-                    </svg>
-                </button>
-            </div>
-        </header>
-
-        <main id="main">
-            
-    <div class="profile-card">
-        <div class="profile-image-container">
-            <img src="https://scontent.fric1-2.fna.fbcdn.net/v/t1.6435-9/68443022_2587837081262741_7141790014857281536_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=ETMGz1yxkAYQ7kNvwGjwzKC&_nc_oc=Adnj4gnUSqyS9Xu6M6riY9DYUT9sqb_uaXUvwG-Bzdjo_HywW8E0hBIDQ8k0R9fUUNyBtUYJRpSdVzRaqHvDN44G&_nc_zt=23&_nc_ht=scontent.fric1-2.fna&_nc_gid=gkIRQjqfpYsU-PK2gSJ-7w&oh=00_AfQvTM4mgCBphWzWiP__KkXy0UVxeGCdt3Qo4dW5scAMwg&oe=6898B13F" 
-                 alt="Justin Lyons" 
-                 class="profile-image"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="profile-image-fallback" style="display: none;">
-                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
-                </svg>
+                <!-- Header Actions -->
+                <div class="d-flex align-items-center gap-2">
+                    
+                    
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" type="button" class="btn btn-outline-light btn-sm" title="Toggle theme" aria-label="Toggle theme" aria-pressed="false">
+                        <i class="bi bi-sun theme-icon-light"></i>
+                        <i class="bi bi-moon theme-icon-dark d-none"></i>
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="profile-content">
-            <h1 class="profile-name">Justin Lyons</h1>
-            <p class="profile-title">Digital Innovation Strategist & Developer</p>
-            <p class="profile-description">
-                Passionate about bridging technology and human experience. I specialize in creating digital solutions 
-                that solve real-world problems while keeping user experience at the forefront.
-            </p>
-            <div class="profile-links">
-                <a href="https://www.linkedin.com/in/justinplyons/" target="_blank" class="profile-link linkedin">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                    LinkedIn
-                </a>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="container-fluid">
+        
+<!-- Widget Dashboard -->
+<div class="container-fluid py-4">
+    <div class="container">
+        <!-- Dashboard Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="h2 mb-1">Dashboard</h1>
+                        <p class="text-muted mb-0">Interactive widget layout - drag to rearrange</p>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-plus-circle me-2"></i>Add Widget
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="addWidget('profile')">
+                                <i class="bi bi-person me-2"></i>Profile Widget
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="addWidget('stats')">
+                                <i class="bi bi-bar-chart me-2"></i>Stats Widget
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="addWidget('projects')">
+                                <i class="bi bi-collection me-2"></i>Projects Widget
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="addWidget('skills')">
+                                <i class="bi bi-code-slash me-2"></i>Skills Widget
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="addWidget('social')">
+                                <i class="bi bi-share me-2"></i>Social Widget
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- GridStack Container -->
+        <div id="grid-stack-container" class="grid-stack">
+            <!-- Profile Widget -->
+            <div class="grid-stack-item" gs-w="6" gs-h="3" gs-x="0" gs-y="0">
+                <div class="grid-stack-item-content">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
+                            <h6 class="card-title mb-0 fw-semibold">
+                                <i class="bi bi-person-circle me-2"></i>About Me
+                            </h6>
+                            <button class="btn btn-sm text-white border-0 opacity-75" style="cursor: move;" title="Drag to move">
+                                <i class="bi bi-arrows-move"></i>
+                            </button>
+                        </div>
+                        <div class="card-body py-2">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <img src="https://scontent.fric1-2.fna.fbcdn.net/v/t1.6435-9/68443022_2587837081262741_7141790014857281536_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=ETMGz1yxkAYQ7kNvwGjwzKC&_nc_oc=Adnj4gnUSqyS9Xu6M6riY9DYUT9sqb_uaXUvwG-Bzdjo_HywW8E0hBIDQ8k0R9fUUNyBtUYJRpSdVzRaqHvDN44G&_nc_zt=23&_nc_ht=scontent.fric1-2.fna&_nc_gid=gkIRQjqfpYsU-PK2gSJ-7w&oh=00_AfQvTM4mgCBphWzWiP__KkXy0UVxeGCdt3Qo4dW5scAMwg&oe=6898B13F" 
+                                         alt="Profile" 
+                                         class="rounded-circle"
+                                         style="width: 60px; height: 60px; object-fit: cover;"
+                                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiM2OTc5ODciLz4KPHN2ZyB4PSIxNSIgeT0iMTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDE2IDE2IiBmaWxsPSJub25lIj4KPHA6aD0iTTggOGE0IDQgMCAxIDAgMC04IDQgNCAwIDAgMCAwIDh6bTAgMWMtMi42NyAwLTggMS4zNC04IDR2M2gxNnYtM2MwLTIuNjYtNS4zMy00LTgtNHoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K';">
+                                </div>
+                                <div class="col">
+                                    <h6 class="mb-1 fw-bold text-dark">Justin P. Lyons</h6>
+                                    <p class="text-secondary small mb-2">IT Manager & Software Developer</p>
+                                    <div class="mb-2">
+                                        <span class="badge bg-primary me-1">Bachelor's CS</span>
+                                        <span class="badge bg-secondary">Mobile Dev</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-2">
+                            <p class="small mb-0 text-dark">
+                                Results-driven IT Manager with expertise in software development and team leadership.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Widget -->
+            <div class="grid-stack-item" gs-w="6" gs-h="3" gs-x="6" gs-y="0">
+                <div class="grid-stack-item-content">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-2">
+                            <h6 class="card-title mb-0 fw-semibold">
+                                <i class="bi bi-bar-chart me-2"></i>Quick Stats
+                            </h6>
+                            <button class="btn btn-sm text-white border-0 opacity-75" style="cursor: move;" title="Drag to move">
+                                <i class="bi bi-arrows-move"></i>
+                            </button>
+                        </div>
+                        <div class="card-body py-2">
+                            <div class="row text-center">
+                                <div class="col-6 mb-2">
+                                    <div class="h5 text-primary mb-1 fw-bold" data-bs-toggle="tooltip" title="Completed Projects">12+</div>
+                                    <small class="text-secondary">Projects</small>
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <div class="h5 text-success mb-1 fw-bold" data-bs-toggle="tooltip" title="Years of Experience">5+</div>
+                                    <small class="text-secondary">Years Exp</small>
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <div class="h5 text-info mb-1 fw-bold" data-bs-toggle="tooltip" title="Technologies Mastered">15+</div>
+                                    <small class="text-secondary">Technologies</small>
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <div class="h5 text-warning mb-1 fw-bold" data-bs-toggle="tooltip" title="GitHub Commits">100+</div>
+                                    <small class="text-secondary">Commits</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Widget -->
+            <div class="grid-stack-item" gs-w="8" gs-h="4" gs-x="0" gs-y="3">
+                <div class="grid-stack-item-content">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center py-2">
+                            <h6 class="card-title mb-0 fw-semibold">
+                                <i class="bi bi-collection me-2"></i>Featured Projects
+                            </h6>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <input type="radio" class="btn-check" name="projectView" id="recentBtn" checked>
+                                    <label class="btn btn-outline-light btn-sm" for="recentBtn" onclick="toggleProjectsView('recent')">Recent</label>
+                                    
+                                    <input type="radio" class="btn-check" name="projectView" id="featuredBtn">
+                                    <label class="btn btn-outline-light btn-sm" for="featuredBtn" onclick="toggleProjectsView('featured')">Featured</label>
+                                </div>
+                                <button class="btn btn-sm text-white border-0 opacity-75" style="cursor: move;" title="Drag to move">
+                                    <i class="bi bi-arrows-move"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body py-2 overflow-auto">
+                            <div id="recent-projects" class="projects-content">
+                                <div class="card mb-2 border-start border-primary border-3">
+                                    <div class="card-body p-2">
+                                        <div class="d-flex justify-content-between align-items-start mb-1">
+                                            <h6 class="card-title mb-0 fw-semibold text-dark">Schedule Maker</h6>
+                                            <span class="badge bg-warning text-dark">Development</span>
+                                        </div>
+                                        <p class="card-text small text-secondary mb-2">
+                                            Interactive scheduling tool with drag-and-drop functionality.
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <span class="badge badge-theme me-1">JavaScript</span>
+                                                <span class="badge badge-theme">Flask</span>
+                                            </div>
+                                            <a href="/projects/schedule-maker/" class="btn btn-sm btn-outline-primary">
+                                                View <i class="bi bi-arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-2 border-start border-success border-3">
+                                    <div class="card-body p-2">
+                                        <div class="d-flex justify-content-between align-items-start mb-1">
+                                            <h6 class="card-title mb-0 fw-semibold text-dark">GSA Checklist</h6>
+                                            <span class="badge bg-success">Active</span>
+                                        </div>
+                                        <p class="card-text small text-secondary mb-2">
+                                            Comprehensive GSA MAS offer preparation checklist.
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <span class="badge badge-theme me-1">Flask</span>
+                                                <span class="badge badge-theme">JavaScript</span>
+                                            </div>
+                                            <a href="/projects/gsa-mas-checklist/" class="btn btn-sm btn-outline-primary">
+                                                View <i class="bi bi-arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="featured-projects" class="projects-content d-none">
+                                <div class="card mb-2 border-start border-info border-3">
+                                    <div class="card-body p-2">
+                                        <div class="d-flex justify-content-between align-items-start mb-1">
+                                            <h6 class="card-title mb-0 fw-semibold text-dark">GSA Checklist</h6>
+                                            <span class="badge bg-info">Featured</span>
+                                        </div>
+                                        <p class="card-text small text-secondary mb-2">
+                                            My most comprehensive federal contracting tool.
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <span class="badge badge-theme me-1">Flask</span>
+                                                <span class="badge badge-theme">JavaScript</span>
+                                            </div>
+                                            <a href="/projects/gsa-mas-checklist/" class="btn btn-sm btn-outline-primary">
+                                                View <i class="bi bi-arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-2 border-start border-info border-3">
+                                    <div class="card-body p-2">
+                                        <div class="d-flex justify-content-between align-items-start mb-1">
+                                            <h6 class="card-title mb-0 fw-semibold text-dark">Portfolio Site</h6>
+                                            <span class="badge bg-info">Featured</span>
+                                        </div>
+                                        <p class="card-text small text-secondary mb-2">
+                                            Modern Flask portfolio with modular architecture.
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <span class="badge badge-theme me-1">Flask</span>
+                                                <span class="badge badge-theme">CSS</span>
+                                            </div>
+                                            <a href="/projects/" class="btn btn-sm btn-outline-primary">
+                                                View All <i class="bi bi-arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Widget -->
+            <div class="grid-stack-item" gs-w="4" gs-h="4" gs-x="8" gs-y="3">
+                <div class="grid-stack-item-content">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center py-2">
+                            <h6 class="card-title mb-0 fw-semibold">
+                                <i class="bi bi-code-slash me-2"></i>Core Skills
+                            </h6>
+                            <button class="btn btn-sm text-white border-0 opacity-75" style="cursor: move;" title="Drag to move">
+                                <i class="bi bi-arrows-move"></i>
+                            </button>
+                        </div>
+                        <div class="card-body py-2">
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="fw-semibold text-dark">JavaScript</small>
+                                    <small class="text-secondary">90%</small>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="fw-semibold text-dark">Python</small>
+                                    <small class="text-secondary">85%</small>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="fw-semibold text-dark">React</small>
+                                    <small class="text-secondary">80%</small>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="fw-semibold text-dark">Flask</small>
+                                    <small class="text-secondary">88%</small>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 88%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="fw-semibold text-dark">CSS</small>
+                                    <small class="text-secondary">92%</small>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 92%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
-    
+</div>
 
-        </main>
-
-        <footer>
-            <p>&copy; 2025 Justin Lyons</p>
-        </footer>
-        
-        <!-- Global Scripts -->
-        <script src="static/script.js"></script>
-        <script src="static/global-theme.js"></script>
-        
-        
-        <!-- File input for import functionality (only on GSA MAS checklist page) -->
-        
+<!-- Contact Section -->
+<div class="container-fluid bg-theme-surface py-4" id="contact">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h3 class="h4 mb-3">
+                    <i class="bi bi-envelope me-2 text-primary"></i>Let's Connect
+                </h3>
+                <p class="mb-4 text-secondary">
+                    Interested in working together or have a question? I'd love to hear from you.
+                </p>
+                <div class="row justify-content-center g-3">
+                    <div class="col-md-4">
+                        <a href="https://github.com/enonymous1" class="text-decoration-none" target="_blank">
+                            <div class="card h-100 border-0 shadow-sm hover-card">
+                                <div class="card-body text-center py-3">
+                                    <i class="bi bi-github display-6 text-dark mb-2"></i>
+                                    <h6 class="card-title mb-1 fw-semibold text-dark">GitHub</h6>
+                                    <small class="text-secondary">View my code</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="https://linkedin.com/in/justinplyons" class="text-decoration-none" target="_blank">
+                            <div class="card h-100 border-0 shadow-sm hover-card">
+                                <div class="card-body text-center py-3">
+                                    <i class="bi bi-linkedin display-6 text-primary mb-2"></i>
+                                    <h6 class="card-title mb-1 fw-semibold text-dark">LinkedIn</h6>
+                                    <small class="text-secondary">Professional network</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="mailto:justin@jpl-dev.com" class="text-decoration-none">
+                            <div class="card h-100 border-0 shadow-sm hover-card">
+                                <div class="card-body text-center py-3">
+                                    <i class="bi bi-envelope display-6 text-success mb-2"></i>
+                                    <h6 class="card-title mb-1 fw-semibold text-dark">Email</h6>
+                                    <small class="text-secondary">Direct contact</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+
+    </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- GridStack.js -->
+    <script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"></script>
+    
+    <!-- Global Scripts -->
+    <script src="static/js/theme-manager.js"></script>
+    <script src="static/js/widget-manager.js"></script>
+    <script src="static/js/widget-utils.js"></script>
+    <script src="static/script.js"></script>
+    <script src="static/global-theme.js"></script>
+    
+<script>
+// Widget management functions
+function addWidget(type) {
+    if (window.widgetManager) {
+        const config = getWidgetConfig(type);
+        window.widgetManager.createWidget(type, config);
+    }
+}
+
+function getWidgetConfig(type) {
+    const configs = {
+        profile: {
+            title: 'Profile',
+            name: 'Justin P. Lyons',
+            role: 'IT Manager & Software Developer',
+            description: 'Results-driven IT Manager with expertise in software development.',
+            image: 'https://scontent.fric1-2.fna.fbcdn.net/v/t1.6435-9/68443022_2587837081262741_7141790014857281536_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=ETMGz1yxkAYQ7kNvwGjwzKC&_nc_oc=Adnj4gnUSqyS9Xu6M6riY9DYUT9sqb_uaXUvwG-Bzdjo_HywW8E0hBIDQ8k0R9fUUNyBtUYJRpSdVzRaqHvDN44G&_nc_zt=23&_nc_ht=scontent.fric1-2.fna&_nc_gid=gkIRQjqfpYsU-PK2gSJ-7w&oh=00_AfQvTM4mgCBphWzWiP__KkXy0UVxeGCdt3Qo4dW5scAMwg&oe=6898B13F'
+        },
+        stats: {
+            title: 'Quick Stats',
+            stats: [
+                { label: 'Projects', value: '12+' },
+                { label: 'Years Exp', value: '5+' },
+                { label: 'Technologies', value: '15+' },
+                { label: 'Commits', value: '100+' }
+            ]
+        },
+        projects: {
+            title: 'Featured Projects',
+            projects: [
+                {
+                    name: 'Schedule Maker',
+                    status: 'development',
+                    description: 'Interactive scheduling tool with drag-and-drop functionality.',
+                    tech: ['JavaScript', 'Flask']
+                },
+                {
+                    name: 'GSA Checklist',
+                    status: 'active',
+                    description: 'Comprehensive GSA MAS offer preparation checklist.',
+                    tech: ['Flask', 'JavaScript']
+                }
+            ]
+        },
+        skills: {
+            title: 'Core Skills',
+            skills: [
+                { name: 'JavaScript', level: 90 },
+                { name: 'Python', level: 85 },
+                { name: 'React', level: 80 },
+                { name: 'Flask', level: 88 },
+                { name: 'CSS', level: 92 }
+            ]
+        },
+        social: {
+            title: 'Connect',
+            links: [
+                { name: 'GitHub', url: 'https://github.com/enonymous1', icon: 'github' },
+                { name: 'LinkedIn', url: 'https://linkedin.com/in/justinplyons', icon: 'linkedin' },
+                { name: 'Email', url: 'mailto:justin@jpl-dev.com', icon: 'envelope' }
+            ]
+        }
+    };
+    
+    return configs[type] || {};
+}
+
+// Project toggle functionality
+function toggleProjectsView(view) {
+    const recentContent = document.getElementById('recent-projects');
+    const featuredContent = document.getElementById('featured-projects');
+    
+    if (view === 'recent') {
+        recentContent.classList.remove('d-none');
+        featuredContent.classList.add('d-none');
+    } else {
+        recentContent.classList.add('d-none');
+        featuredContent.classList.remove('d-none');
+    }
+}
+
+// Initialize page functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Bootstrap tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Initialize GridStack with Bootstrap-friendly settings
+    const grid = GridStack.init({
+        cellHeight: 120,
+        minRow: 1,
+        float: true,
+        resizable: {
+            handles: 'se'
+        },
+        draggable: {
+            handle: '.btn[style*="cursor: move"]'
+        },
+        margin: 15,
+        animate: true
+    }, '#grid-stack-container');
+    
+    // Store grid reference globally
+    window.dashboardGrid = grid;
+    
+    // Animate progress bars when they come into view
+    const observeProgressBars = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const progressBars = entry.target.querySelectorAll('.progress-bar');
+                progressBars.forEach((bar, index) => {
+                    setTimeout(() => {
+                        bar.style.transition = 'width 1.5s ease-out';
+                        const width = bar.style.width;
+                        bar.style.width = '0%';
+                        setTimeout(() => {
+                            bar.style.width = width;
+                        }, 100);
+                    }, index * 300);
+                });
+                observeProgressBars.unobserve(entry.target);
+            }
+        });
+    });
+    
+    // Observe skills section for animation
+    const skillsCard = document.querySelector('.card:has(.progress-bar)');
+    if (skillsCard) {
+        observeProgressBars.observe(skillsCard);
+    }
+    
+    // Animate stat numbers
+    const observeStats = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const statValues = entry.target.querySelectorAll('.h5');
+                statValues.forEach((stat, index) => {
+                    setTimeout(() => {
+                        stat.style.transform = 'scale(1.1)';
+                        stat.style.transition = 'transform 0.3s ease';
+                        setTimeout(() => {
+                            stat.style.transform = 'scale(1)';
+                        }, 300);
+                    }, index * 100);
+                });
+                observeStats.unobserve(entry.target);
+            }
+        });
+    });
+    
+    const statsCard = document.querySelector('.card:has(.h5[data-bs-toggle="tooltip"])');
+    if (statsCard) {
+        observeStats.observe(statsCard);
+    }
+});
+</script>
+
+    
+    <!-- File input for import functionality (only on GSA MAS checklist page) -->
+    
 </body>
 </html>

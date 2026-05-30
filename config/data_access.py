@@ -2,150 +2,152 @@
 """
 Project Data Access Layer
 
-Provides utility functions for accessing and filtering project data.
-This module serves as the interface between the data layer and the application.
-
-Author: JPL Development
-Date: July 2025
+Utilities for accessing and filtering static project metadata during build
+and static runtime. This module operates on the in-memory project repository
+and is intended for use in a static portfolio generation pipeline.
 """
 
-from typing import List, Dict, Optional
-from config.models import ProjectData, ProjectStatus, ProjectCategory
+from collections import Counter
+from functools import lru_cache
+from typing import Dict, List, Optional
+
+from config.models import ProjectData, ProjectStatus
 from config.projects import PROJECTS_SORTED
 
 
-def get_all_projects() -> List[ProjectData]:
+@lru_cache(maxsize=None)
+def get_all_projects() -> tuple[ProjectData, ...]:
     """
-    Get all projects sorted by priority and last updated date.
-    
-    Returns:
-        List[ProjectData]: List of all project data objects, sorted
+    Return a fixed, immutable tuple of all projects.
+
+    Returning a tuple prevents callers from mutating the canonical project
+    collection that is cached for repeated lookups.
     """
-    return PROJECTS_SORTED
+    return tuple(PROJECTS_SORTED)
 
 
+@lru_cache(maxsize=None)
 def get_active_projects() -> List[ProjectData]:
     """
-    Get only active projects.
-    
-    Returns:
-        List[ProjectData]: List of active project data objects
+    Return all projects whose status is ProjectStatus.ACTIVE.
+
+    This slice is commonly used in the UI and is cached because the underlying
+    portfolio data is static during site generation.
     """
     return [project for project in PROJECTS_SORTED if project.status == ProjectStatus.ACTIVE]
 
 
+@lru_cache(maxsize=None)
 def get_featured_projects() -> List[ProjectData]:
     """
-    Get featured projects (status = featured or priority >= 8).
-    
-    Returns:
-        List[ProjectData]: List of featured project data objects
+    Return projects that should be highlighted as featured.
+
+    Featured projects are those explicitly marked FEATURED or those with a
+    priority of 8 or higher, which supports both explicit and implicit
+    promotion rules.
     """
     return [
-        project for project in PROJECTS_SORTED 
+        project for project in PROJECTS_SORTED
         if project.status == ProjectStatus.FEATURED or project.priority >= 8
     ]
 
 
+_PROJECTS_BY_ID = {project.id: project for project in PROJECTS_SORTED}
+
+
+@lru_cache(maxsize=None)
 def get_project_by_id(project_id: str) -> Optional[ProjectData]:
     """
-    Get a specific project by its ID.
-    
+    Return a project by its unique identifier.
+
     Args:
-        project_id (str): The unique identifier for the project
-        
+        project_id: The unique project ID to look up.
+
     Returns:
-        Optional[ProjectData]: Project data object or None if not found
+        The matching ProjectData, or None if no project matches.
     """
-    for project in PROJECTS_SORTED:
-        if project.id == project_id:
-            return project
-    return None
+    return _PROJECTS_BY_ID.get(project_id)
 
 
+@lru_cache(maxsize=None)
 def get_projects_by_category(category: str) -> List[ProjectData]:
     """
-    Get projects by category.
-    
+    Return projects that belong to a specific category.
+
     Args:
-        category (str): The category to filter by
-        
+        category: The category identifier to filter by.
+
     Returns:
-        List[ProjectData]: List of projects in the specified category
+        A list of matching projects.
     """
+    normalized_category = category.strip().lower()
     return [
-        project for project in PROJECTS_SORTED 
-        if project.category == category
+        project for project in PROJECTS_SORTED
+        if project.category and project.category.lower() == normalized_category
     ]
 
 
+@lru_cache(maxsize=None)
 def get_projects_by_tech(technology: str) -> List[ProjectData]:
     """
-    Get projects that use a specific technology.
-    
-    Args:
-        technology (str): The technology to filter by
-        
-    Returns:
-        List[ProjectData]: List of projects using the specified technology
+    Return projects that use a given technology.
+
+    The match is case-insensitive, allowing UI filters to be tolerant of
+    capitalization differences in metadata.
     """
+    normalized_query = technology.strip().lower()
     return [
-        project for project in PROJECTS_SORTED 
-        if technology.lower() in [tech.lower() for tech in project.tech_stack]
+        project for project in PROJECTS_SORTED
+        if normalized_query in {tech.strip().lower() for tech in project.tech_stack}
     ]
 
 
+@lru_cache(maxsize=None)
 def get_projects_by_tag(tag: str) -> List[ProjectData]:
     """
-    Get projects that have a specific tag.
-    
+    Return projects that include the specified tag.
+
     Args:
-        tag (str): The tag to filter by
-        
+        tag: The search tag to filter project tags.
+
     Returns:
-        List[ProjectData]: List of projects with the specified tag
+        A list of matching projects.
     """
+    normalized_tag = tag.lower()
     return [
-        project for project in PROJECTS_SORTED 
-        if tag.lower() in [t.lower() for t in project.tags]
+        project for project in PROJECTS_SORTED
+        if normalized_tag in [t.lower() for t in project.tags]
     ]
 
 
+@lru_cache(maxsize=None)
 def get_project_stats() -> Dict[str, int]:
     """
-    Get statistics about the project portfolio.
-    
-    Returns:
-        Dict[str, int]: Statistics including counts by status, category, etc.
+    Return aggregated portfolio statistics.
+
+    This includes totals, active and featured counts, and breakdowns by
+    project status and category.
     """
     stats = {
         'total_projects': len(PROJECTS_SORTED),
         'active_projects': len(get_active_projects()),
         'featured_projects': len(get_featured_projects()),
     }
-    
-    # Count by status
-    status_counts = {}
-    for project in PROJECTS_SORTED:
-        status_counts[project.status] = status_counts.get(project.status, 0) + 1
+
+    status_counts = Counter(project.status for project in PROJECTS_SORTED)
+    category_counts = Counter(project.category for project in PROJECTS_SORTED if project.category)
+
     stats.update({f'status_{k}': v for k, v in status_counts.items()})
-    
-    # Count by category  
-    category_counts = {}
-    for project in PROJECTS_SORTED:
-        if project.category:
-            category_counts[project.category] = category_counts.get(project.category, 0) + 1
     stats.update({f'category_{k}': v for k, v in category_counts.items()})
-    
     return stats
 
 
+@lru_cache(maxsize=None)
 def get_all_technologies() -> List[str]:
     """
-    Get a list of all technologies used across projects.
-    
-    Returns:
-        List[str]: Sorted list of unique technologies
+    Return a sorted list of all unique technologies used by projects.
+
+    Sorting keeps the output deterministic for UI rendering.
     """
     technologies = set()
     for project in PROJECTS_SORTED:
@@ -153,12 +155,12 @@ def get_all_technologies() -> List[str]:
     return sorted(list(technologies))
 
 
+@lru_cache(maxsize=None)
 def get_all_tags() -> List[str]:
     """
-    Get a list of all tags used across projects.
-    
-    Returns:
-        List[str]: Sorted list of unique tags
+    Return a sorted list of all unique tags used by projects.
+
+    The resulting list is suitable for tag filter controls and navigation.
     """
     tags = set()
     for project in PROJECTS_SORTED:

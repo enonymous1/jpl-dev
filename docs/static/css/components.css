@@ -10,6 +10,17 @@
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.bg-theme-surface {
+    background: var(--bg-secondary) !important;
+}
+
+.badge-theme {
+    background: var(--bg-secondary);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    box-shadow: inset 0 0 0 1px var(--border-color);
+}
+
 .card.full-width {
     width: 100%;
     max-width: none;
@@ -758,6 +769,37 @@
     transform: none;
 }
 
+.info-icon.tooltip-left::after,
+.info-icon.tooltip-left::before {
+    left: 0 !important;
+    right: auto !important;
+    transform: none !important;
+}
+
+.info-icon.tooltip-right::after,
+.info-icon.tooltip-right::before {
+    left: auto !important;
+    right: 0 !important;
+    transform: none !important;
+}
+
+.info-icon.tooltip-bottom::after {
+    top: 125% !important;
+    bottom: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+.info-icon.tooltip-bottom::before {
+    top: 115% !important;
+    bottom: auto !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) rotate(180deg) !important;
+    border-top-color: transparent !important;
+    border-bottom-color: var(--tooltip-bg) !important;
+}
+
 .info-icon::before {
     content: '';
     position: absolute;
@@ -788,7 +830,9 @@
 }
 
 .info-icon:hover::after,
-.info-icon:hover::before {
+.info-icon:hover::before,
+.info-icon:focus-visible::after,
+.info-icon:focus-visible::before {
     opacity: 1;
     visibility: visible;
 }

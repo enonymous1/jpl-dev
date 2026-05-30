@@ -1,8 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Interactive GSA MAS Checklist - JPL-DEV</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- GridStack.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="../../static/css/variables.css">
+    <link rel="stylesheet" href="../../static/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="../../static/css/widgets.css">
     <link rel="stylesheet" href="../../static/css/base.css">
     <link rel="stylesheet" href="../../static/css/layout.css">
     <link rel="stylesheet" href="../../static/css/components.css">
@@ -10,89 +23,95 @@
     <link rel="stylesheet" href="../../static/css/checklist.css">
     <link rel="stylesheet" href="../../static/css/theme-toggle.css">
     <link rel="stylesheet" href="../../static/css/projects.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../static/css/widget-system.css">
+
+    <script>
+        (function() {
+            try {
+                const storageKey = 'jpl_dev_global_theme';
+                const savedTheme = window.localStorage.getItem(storageKey);
+                const defaultTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+                    ? 'dark'
+                    : 'light';
+                const theme = savedTheme || defaultTheme;
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                console.warn('Theme initialization failed:', e);
+            }
+        })();
+    </script>
+    
     
 <!-- Quill 2.0 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 
 </head>
 <body>
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="../../index.html">Home</a>
-        <a href="../index.html">Projects</a>
-    </div>
-
-    <div id="content-wrapper">
-        <header id="header">
-            <div class="header-left">
-                <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+    <!-- Bootstrap Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="main-navbar">
+        <div class="container-fluid">
+            <!-- Mobile menu toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Brand/Logo -->
+            <a class="navbar-brand fw-bold" href="../../index.html">
+                <i class="bi bi-code-square me-2"></i>JPL-DEV
+            </a>
+            
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="../../index.html">
+                            <i class="bi bi-house-door me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="../index.html">
+                            <i class="bi bi-collection me-1"></i>Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="../../widget-demo/index.html">
+                            <i class="bi bi-grid-3x3-gap me-1"></i>Widget Demo
+                        </a>
+                    </li>
+                </ul>
                 
-            </div>
-            
-            
-                <div class="header-actions">
-                    <button id="save-btn" class="header-action-btn" title="Save current data" aria-label="Save data">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                    <button id="export-btn" class="header-action-btn" title="Export data to file" aria-label="Export data">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <polyline points="7,10 12,15 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                    <button id="import-btn" class="header-action-btn" title="Import data from file" aria-label="Import data">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <polyline points="17,8 12,3 7,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <line x1="12" y1="3" x2="12" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                    <button id="clear-btn" class="header-action-btn danger" title="Clear all data" aria-label="Clear all data">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <line x1="10" y1="11" x2="10" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="14" y1="11" x2="14" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
+                <!-- Header Actions -->
+                <div class="d-flex align-items-center gap-2">
+                    
+                        <div class="btn-group" role="group">
+                            <button id="save-btn" class="btn btn-outline-light btn-sm" title="Save current data">
+                                <i class="bi bi-floppy"></i>
+                            </button>
+                            <button id="export-btn" class="btn btn-outline-light btn-sm" title="Export data">
+                                <i class="bi bi-download"></i>
+                            </button>
+                            <button id="import-btn" class="btn btn-outline-light btn-sm" title="Import data">
+                                <i class="bi bi-upload"></i>
+                            </button>
+                            <button id="clear-btn" class="btn btn-outline-danger btn-sm" title="Clear all data">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    
+                    
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" type="button" class="btn btn-outline-light btn-sm" title="Toggle theme" aria-label="Toggle theme" aria-pressed="false">
+                        <i class="bi bi-sun theme-icon-light"></i>
+                        <i class="bi bi-moon theme-icon-dark d-none"></i>
                     </button>
                 </div>
-            
-                
-            <div class="header-right">
-                <button id="theme-toggle" class="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle dark mode">
-                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                            <circle cx="12" cy="12" r="5" fill="#FFD600" stroke="#FFA000" stroke-width="2"/>
-                            <g stroke="#FFA000" stroke-width="2">
-                                <line x1="12" y1="2" x2="12" y2="5"/>
-                                <line x1="12" y1="19" x2="12" y2="22"/>
-                                <line x1="2" y1="12" x2="5" y2="12"/>
-                                <line x1="19" y1="12" x2="22" y2="12"/>
-                                <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
-                                <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
-                                <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
-                                <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
-                            </g>
-                        </g>
-                    </svg>
-                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                            <circle cx="12" cy="12" r="9" fill="#B0BEC5"/>
-                            <path d="M16 12.5A4.5 4.5 0 0 1 11.5 8c0-2.485 2.015-4.5 4.5-4.5a7 7 0 1 0 0 14c-2.485 0-4.5-2.015-4.5-4.5z" fill="#FFFDE7"/>
-                        </g>
-                    </svg>
-                </button>
             </div>
-        </header>
+        </div>
+    </nav>
 
-        <main id="main">
-            
+    <!-- Main Content Container -->
+    <main class="container-fluid">
+        
     <div class="project-header full-width">
         <div class="header-content">
             <div class="header-text">
@@ -3768,25 +3787,30 @@
 </div> <!-- Close main-content-area -->
 
 
-        </main>
+    </main>
+    </div>
 
-        <footer>
-            <p>&copy; 2025 Justin Lyons</p>
-        </footer>
-        
-        <!-- Global Scripts -->
-        <script src="../../static/script.js"></script>
-        <script src="../../static/global-theme.js"></script>
-        
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- GridStack.js -->
+    <script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"></script>
+    
+    <!-- Global Scripts -->
+    <script src="../../static/js/theme-manager.js"></script>
+    <script src="../../static/js/widget-manager.js"></script>
+    <script src="../../static/js/widget-utils.js"></script>
+    <script src="../../static/script.js"></script>
+    <script src="../../static/global-theme.js"></script>
+    
 <!-- Quill 2.0 JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script src="../../static/projects/gsa_mas_checklist.js"></script>
 
-        
-        <!-- File input for import functionality (only on GSA MAS checklist page) -->
-        
-            <input type="file" id="import-file" accept=".json" style="display: none;">
-        
-    </div>
+    
+    <!-- File input for import functionality (only on GSA MAS checklist page) -->
+    
+        <input type="file" id="import-file" accept=".json" style="display: none;">
+    
 </body>
 </html>

@@ -129,8 +129,9 @@ static/projects/schedule_maker/
 - **Manual save**: Use the save button for explicit saving
 - **Load data**: Previous schedules are automatically loaded on page refresh
 
-#### Export Options
+#### Export / Import Options
 - **JSON Export**: Download complete schedule data for backup
+- **JSON Import**: Load a previously exported schedule file back into the app
 - **Calendar Export**: Import into other calendar applications (planned)
 
 ## 🔧 Development
@@ -156,12 +157,9 @@ class ScheduleMaker {
 3. **View Controls**: Buttons for switching between day/week/month views
 4. **Date Navigation**: Controls for moving between time periods
 
-### API Endpoints
+### Persistence Model
 
-```
-POST /projects/schedule-maker/api/save-schedule
-GET  /projects/schedule-maker/api/load-schedule/<id>
-```
+This project is intentionally designed for static deployment. Schedule data is persisted entirely in the browser using local storage and exported as JSON files, so no backend save/load API is required.
 
 ### Local Development
 

@@ -7,10 +7,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Theme Storage Key - shared across all pages
     const GLOBAL_THEME_STORAGE_KEY = 'jpl_dev_global_theme';
     
-    // Load saved theme or default to light
+    // Load saved theme or default to system preference
     function loadTheme() {
         const savedTheme = localStorage.getItem(GLOBAL_THEME_STORAGE_KEY);
-        return savedTheme || 'light';
+        if (savedTheme) {
+            return savedTheme;
+        }
+        
+        // Default to system preference if no saved theme
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        }
+        return 'light';
     }
     
     // Apply theme to document
@@ -22,20 +30,28 @@ document.addEventListener('DOMContentLoaded', function() {
         updateThemeToggleButton(theme);
     }
     
-    // Update the theme toggle button icons
+    // Update the theme toggle button icons and labels
     function updateThemeToggleButton(theme) {
         const themeToggle = document.getElementById('theme-toggle');
         if (!themeToggle) return;
         
-        const sunIcon = themeToggle.querySelector('.sun-icon');
-        const moonIcon = themeToggle.querySelector('.moon-icon');
+        const lightLabel = document.querySelector('.theme-label.light-label');
+        const darkLabel = document.querySelector('.theme-label.dark-label');
         
-        if (theme === 'dark') {
-            sunIcon.style.display = 'block';
-            moonIcon.style.display = 'none';
-        } else {
-            sunIcon.style.display = 'none';
-            moonIcon.style.display = 'block';
+        // Update accessible state for the toggle button
+        themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+        themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        themeToggle.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        
+        // Update label highlighting
+        if (lightLabel && darkLabel) {
+            if (theme === 'dark') {
+                lightLabel.classList.remove('active');
+                darkLabel.classList.add('active');
+            } else {
+                lightLabel.classList.add('active');
+                darkLabel.classList.remove('active');
+            }
         }
     }
     

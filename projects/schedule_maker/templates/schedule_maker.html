@@ -6,10 +6,21 @@
 {% endblock %}
 
 {% block header_actions %}
-    <!-- Custom header actions for Schedule Maker -->
-    <div class="header-actions">
-        <!-- Export button removed per request -->
+    <div class="btn-group" role="group">
+        <button id="new-schedule-btn" class="btn btn-outline-light btn-sm" title="Create new schedule">
+            <i class="bi bi-file-earmark-plus"></i>
+        </button>
+        <button id="save-schedule-btn" class="btn btn-outline-light btn-sm" title="Save schedule">
+            <i class="bi bi-save"></i>
+        </button>
+        <button id="export-schedule-btn" class="btn btn-outline-light btn-sm" title="Export schedule">
+            <i class="bi bi-box-arrow-up-right"></i>
+        </button>
+        <button id="import-schedule-btn" class="btn btn-outline-light btn-sm" title="Import schedule">
+            <i class="bi bi-box-arrow-in-up"></i>
+        </button>
     </div>
+    <input type="file" id="import-schedule-file" accept=".json,application/json" style="display:none;" />
 {% endblock %}
 
 {% block head %}
@@ -276,17 +287,29 @@
         <main class="flex-1 p-4 sm:p-6 lg:p-8">
             <!-- Shared Header for Both Views -->
             <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm mb-6">
-                <div id="page-header" class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 border-b pb-4">
-                    <div class="flex items-center space-x-2">
-                        <h2 class="text-xl font-bold text-slate-700">Schedule</h2>
-                        <div class="text-sm font-medium text-center text-slate-500 border-b border-slate-200">
-                            <div class="flex flex-wrap -mb-px">
-                                <button id="weekly-view-btn" class="view-toggle-btn inline-block p-2 border-b-2 border-sky-600 rounded-t-lg text-sky-600">Weekly</button>
-                                <button id="monthly-view-btn" class="view-toggle-btn inline-block p-2 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">Monthly</button>
+                <div id="page-header" class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 border-b pb-4 gap-4">
+                    <div class="flex flex-col gap-3 w-full lg:w-[65%]">
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-xl font-bold text-slate-700">Schedule</h2>
+                            <div class="text-sm font-medium text-center text-slate-500 border-b border-slate-200">
+                                <div class="flex flex-wrap -mb-px">
+                                    <button id="weekly-view-btn" class="view-toggle-btn inline-block p-2 border-b-2 border-sky-600 rounded-t-lg text-sky-600">Weekly</button>
+                                    <button id="monthly-view-btn" class="view-toggle-btn inline-block p-2 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300">Monthly</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid gap-3 sm:grid-cols-2">
+                            <div>
+                                <label for="schedule-name" class="block text-sm font-medium text-slate-700 mb-1">Schedule Name</label>
+                                <input id="schedule-name" type="text" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="My Schedule" />
+                            </div>
+                            <div>
+                                <label for="schedule-description" class="block text-sm font-medium text-slate-700 mb-1">Schedule Description</label>
+                                <input id="schedule-description" type="text" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="Optional description" />
                             </div>
                         </div>
                     </div>
-                    <button id="date-range-button" class="text-slate-500 hover:text-sky-700 hover:bg-slate-100 p-2 rounded-md transition-all mt-4 sm:mt-0">
+                    <button id="date-range-button" class="text-slate-500 hover:text-sky-700 hover:bg-slate-100 p-2 rounded-md transition-all mt-2 sm:mt-0">
                         <!-- Date range will be inserted here -->
                     </button>
                 </div>
