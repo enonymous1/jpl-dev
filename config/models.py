@@ -9,7 +9,7 @@ throughout the portfolio application.
 from datetime import datetime
 from enum import Enum
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 from dataclasses import dataclass, field, asdict
 
 logger = logging.getLogger(__name__)
@@ -46,11 +46,11 @@ class ProjectImage:
     """
     filename: str
     alt_text: str
-    caption: Optional[str] = None
+    caption: str | None = None
     is_hero: bool = False
     is_thumbnail: bool = False
-    width: Optional[int] = None
-    height: Optional[int] = None
+    width: int | None = None
+    height: int | None = None
 
 
 @dataclass
@@ -61,11 +61,11 @@ class ProjectLinks:
     Links are optional because some static portfolio entries may only need
     an internal route or a single destination.
     """
-    github: Optional[str] = None
-    demo: Optional[str] = None
-    live_site: Optional[str] = None
-    documentation: Optional[str] = None
-    download: Optional[str] = None
+    github: str | None = None
+    demo: str | None = None
+    live_site: str | None = None
+    documentation: str | None = None
+    download: str | None = None
 
 
 @dataclass
@@ -81,19 +81,19 @@ class ProjectData:
     description: str
     status: str
 
-    features: List[str] = field(default_factory=list)
-    tech_stack: List[str] = field(default_factory=list)
-    category: Optional[str] = None
-    tags: List[str] = field(default_factory=list)
+    features: list[str] = field(default_factory=list)
+    tech_stack: list[str] = field(default_factory=list)
+    category: str | None = None
+    tags: list[str] = field(default_factory=list)
 
-    route: Optional[str] = None
-    external_url: Optional[str] = None
-    links: Optional[ProjectLinks] = None
+    route: str | None = None
+    external_url: str | None = None
+    links: ProjectLinks | None = None
 
-    images: List[ProjectImage] = field(default_factory=list)
+    images: list[ProjectImage] = field(default_factory=list)
 
-    created_date: Optional[datetime] = None
-    last_updated: Optional[datetime] = None
+    created_date: datetime | None = None
+    last_updated: datetime | None = None
     priority: int = 0
 
     def __post_init__(self):
@@ -127,7 +127,7 @@ class ProjectData:
             ) from None
 
     @property
-    def hero_image(self) -> Optional[ProjectImage]:
+    def hero_image(self) -> ProjectImage | None:
         """
         Return the primary hero image for the project.
 
@@ -140,7 +140,7 @@ class ProjectData:
         return self.images[0] if self.images else None
 
     @property
-    def thumbnail_image(self) -> Optional[ProjectImage]:
+    def thumbnail_image(self) -> ProjectImage | None:
         """
         Return a thumbnail image for project cards.
 
@@ -153,7 +153,7 @@ class ProjectData:
         return self.hero_image
 
     @property
-    def primary_link(self) -> Optional[str]:
+    def primary_link(self) -> str | None:
         """
         Return the most appropriate project link for navigation.
 
@@ -176,7 +176,7 @@ class ProjectData:
             return self.links.github
         return None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """
         Convert project metadata into a plain dictionary for template rendering.
 
