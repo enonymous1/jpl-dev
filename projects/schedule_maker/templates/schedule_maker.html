@@ -24,9 +24,15 @@
 {% endblock %}
 
 {% block head %}
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
+    <!-- Tailwind CSS — generated at build time by Tailwind CLI v3 (tailwind.config.js).
+         Do NOT replace with the Play CDN (cdn.tailwindcss.com): it ships a ~3MB runtime
+         PostCSS compiler and has no SRI hash. Regenerate with:
+           npx tailwindcss@3 -i static/projects/schedule_maker/tailwind.input.css \
+                              -o static/projects/schedule_maker/tailwind.css --minify --config tailwind.config.js -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='projects/schedule_maker/tailwind.css') }}">
+    <!-- Google Fonts: Inter (SRI not available for dynamic Google Fonts CSS;
+         font override via body { font-family: 'Inter' !important; } is intentional
+         to isolate this blueprint's typography from the global portfolio font) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -403,36 +409,6 @@
     <div id="employee-popover" class="hidden absolute z-50 bg-white p-3 rounded-lg shadow-lg border border-slate-200 w-64 text-sm space-y-2">
         <!-- Popover content is injected here -->
     </div>
-
-    <!-- Navigation toggle functionality -->
-    <script>
-        // Navigation flyout functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const navToggle = document.querySelector('.sidenav .closebtn').parentElement.previousElementSibling.querySelector('span');
-            const navFlyout = document.getElementById('nav-flyout');
-            const navClose = document.getElementById('nav-close');
-            const overlay = document.getElementById('overlay');
-
-            // Show navigation
-            function showNav() {
-                navFlyout.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-            }
-
-            // Hide navigation
-            function hideNav() {
-                navFlyout.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-            }
-
-            // Event listeners
-            if (navToggle) {
-                navToggle.addEventListener('click', showNav);
-            }
-            navClose.addEventListener('click', hideNav);
-            overlay.addEventListener('click', hideNav);
-        });
-    </script>
 
     <!-- Include project-specific JavaScript -->
     <script src="{{ url_for('static', filename='projects/schedule_maker/script.js') }}"></script>

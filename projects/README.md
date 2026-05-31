@@ -8,12 +8,15 @@ This directory contains individual project documentation and components for the 
 projects/
 ├── README.md                     # This index file
 ├── __init__.py                   # Projects package initialization
-└── gsa_mas_checklist/           # GSA MAS Checklist Project
+├── gsa_mas_checklist/           # GSA MAS Checklist Project
+│   ├── README.md                # Detailed project documentation
+│   └── (blueprint in projects/gsa_mas_checklist.py)
+└── schedule_maker/              # Schedule Maker Project
     ├── README.md                # Detailed project documentation
-    ├── __init__.py              # Blueprint initialization
+    ├── __init__.py              # Blueprint initialization (url_prefix=/projects/schedule-maker)
     ├── routes.py                # Flask routes
-    ├── templates/               # Project-specific templates
-    └── static/                  # Project-specific assets
+    └── templates/
+        └── schedule_maker.html  # Main application template
 ```
 
 ## 🚀 Available Projects
@@ -54,12 +57,12 @@ projects/
    from . import routes
    ```
 
-3. **Register in Main App**
-   ```python
-   # app.py
-   from projects.new_project_name import new_project_bp
-   app.register_blueprint(new_project_bp)
-   ```
+3. **Auto-registration happens automatically**
+   Blueprint packages are discovered and registered via `register_project_blueprints()` in `app.py`
+   using `pkgutil.iter_modules`. No manual `app.register_blueprint()` call is needed — adding the
+   package with a valid `__init__.py` that exports a Blueprint named `bp` is sufficient.
+   > ⚠️ Do NOT manually call `app.register_blueprint()` in `app.py` — the auto-discovery will
+   > register it again, silently discarding the first registration.
 
 4. **Add to Project Data**
    ```python

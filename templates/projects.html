@@ -34,9 +34,9 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <h5 class="card-title mb-0">{{ project.title }}</h5>
                         <span class="badge 
-                            {% if project.status == 'active' %}bg-success
-                            {% elif project.status == 'development' %}bg-warning
-                            {% elif project.status == 'featured' %}bg-primary
+                            {% if project.status == ProjectStatus.ACTIVE %}bg-success
+                            {% elif project.status == ProjectStatus.DEVELOPMENT %}bg-warning
+                            {% elif project.status == ProjectStatus.FEATURED %}bg-primary
                             {% else %}bg-secondary
                             {% endif %}">
                             {{ project.status|title }}

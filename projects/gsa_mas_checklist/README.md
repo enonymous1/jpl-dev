@@ -4,7 +4,7 @@ A comprehensive interactive web application for GSA Multiple Award Schedule (MAS
 
 [![Status: Active](https://img.shields.io/badge/Status-Active-brightgreen)](https://justinlyons.dev/projects/gsa-mas-checklist)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-3.1+-red.svg)](https://flask.palletsprojects.com)
 
 ## 🎯 Project Overview
@@ -22,22 +22,20 @@ The GSA MAS Checklist is an interactive tool that helps potential federal contra
 - **🎯 SINs Selection**: Advanced filtering and search for Special Item Numbers
 - **📝 Rich Text Notes**: Integrated notes management with Quill.js editor
 - **💾 Data Persistence**: Local storage for work-in-progress with manual save/load
-- **📤 Export/Import**: Complete data portability via JSON and Excel formats
+- **📤 Export/Import**: Complete data portability via JSON download/upload
 - **🌙 Theme Support**: Dark/light theme toggle with system preference detection
 
 ### User Experience
 - **📱 Responsive Design**: Optimized for desktop and mobile devices
-- **♿ Accessibility**: WCAG compliant with keyboard navigation support
+- **♿ Accessibility**: Keyboard navigation support
 - **⚡ Performance**: Fast loading with lazy-loaded components
-- **🔄 Auto-save**: Periodic automatic saving to prevent data loss
-- **📊 Progress Tracking**: Visual indicators for completion status
 
 ## 🛠️ Technology Stack
 
 ### Backend
 - **Flask 3.1+**: Python web framework
 - **Flask-Frozen**: Static site generation for deployment
-- **Python 3.8+**: Core programming language
+- **Python 3.9+**: Core programming language
 
 ### Frontend
 - **Vanilla JavaScript**: No framework dependencies for fast loading
@@ -47,8 +45,7 @@ The GSA MAS Checklist is an interactive tool that helps potential federal contra
 
 ### Data & Storage
 - **JSON**: Configuration and data exchange format
-- **Local Storage**: Client-side data persistence
-- **Excel Export**: openpyxl library for spreadsheet generation
+- **Local Storage**: Client-side data persistence (manual save/load)
 
 ### Development & Deployment
 - **GitHub Actions**: CI/CD pipeline
@@ -74,7 +71,7 @@ projects/gsa_mas_checklist/
 ## 🚦 Getting Started
 
 ### Prerequisites
-- Python 3.8 or higher
+- Python 3.9 or higher
 - pip (Python package installer)
 - Modern web browser
 
@@ -129,14 +126,12 @@ Static files will be generated in the `docs/` directory.
 3. **Add Notes**: Use the rich text editor to document important information
 4. **Select SINs**: Choose appropriate Special Item Numbers for your offer
 5. **Track Progress**: Monitor completion status in real-time
-6. **Export Data**: Save your progress as JSON or Excel for backup/submission
+6. **Export Data**: Save your progress as JSON for backup/archiving
 
 ### Data Management
 
 #### Export Options
 - **JSON Export**: Complete data backup including notes and selections
-- **Excel Export**: Formatted spreadsheet suitable for submission
-- **Print View**: Browser-optimized printing layout
 
 #### Import Process
 - Drag and drop JSON files or use the file picker

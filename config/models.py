@@ -7,11 +7,15 @@ throughout the portfolio application.
 """
 
 from datetime import datetime
+from enum import Enum
+import logging
 from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field, asdict
 
+logger = logging.getLogger(__name__)
 
-class ProjectStatus:
+
+class ProjectStatus(str, Enum):
     """Project status constants used to classify portfolio items."""
     ACTIVE = "active"
     DEVELOPMENT = "development"
@@ -20,7 +24,7 @@ class ProjectStatus:
     FEATURED = "featured"
 
 
-class ProjectCategory:
+class ProjectCategory(str, Enum):
     """Project category constants for consistent filtering and display."""
     WEB_APP = "web-app"
     TOOL = "tool"
@@ -104,8 +108,23 @@ class ProjectData:
             self.created_date = self.last_updated
         if self.last_updated is None and self.created_date is not None:
             self.last_updated = self.created_date
+        # C3a: warn when both dates are absent so the project silently sorts last
+        if self.created_date is None and self.last_updated is None:
+            logger.warning(
+                "Project %r has no created_date or last_updated; "
+                "it will sort to the bottom of all ordered listings.",
+                self.id,
+            )
         if self.links is None:
             self.links = ProjectLinks()
+        # C1b: validate status against ProjectStatus enum at construction time
+        try:
+            self.status = ProjectStatus(self.status)
+        except ValueError:
+            valid = [s.value for s in ProjectStatus]
+            raise ValueError(
+                f"Invalid project status {self.status!r}. Must be one of: {valid}"
+            ) from None
 
     @property
     def hero_image(self) -> Optional[ProjectImage]:
@@ -165,7 +184,9 @@ class ProjectData:
         consume a uniform data shape without needing object access.
         """
         data = asdict(self)
-        data["hero_image"] = self.hero_image
-        data["thumbnail_image"] = self.thumbnail_image
+        # C1d: asdict() already converts images list to List[dict]; use asdict() for
+        # the computed properties too so the returned dict is a uniform plain-dict type.
+        data["hero_image"] = asdict(self.hero_image) if self.hero_image else None
+        data["thumbnail_image"] = asdict(self.thumbnail_image) if self.thumbnail_image else None
         data["primary_link"] = self.primary_link
         return data

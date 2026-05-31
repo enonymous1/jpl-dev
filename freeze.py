@@ -15,6 +15,11 @@ import sys
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE_DIR)
 
+# Enable strict blueprint registration: any import error raises immediately
+# instead of being swallowed, so a broken blueprint fails the build visibly
+# rather than silently dropping a route from the generated site. (B1c)
+os.environ.setdefault('FLASK_BLUEPRINT_STRICT', '1')
+
 from app import freezer
 
 logger = logging.getLogger(__name__)

@@ -16,7 +16,7 @@ from config.models import ProjectCategory, ProjectData, ProjectLinks, ProjectIma
 # ========================================================================
 # The canonical project catalog. Each ProjectData object should represent a
 # static portfolio entry that can be rendered at build time.
-PROJECTS = [
+_PROJECTS = [
     ProjectData(
         id="gsa_mas_checklist",
         title="Interactive GSA MAS New Offeror Checklist",
@@ -124,11 +124,12 @@ PROJECTS = [
 # Sort by priority descending, then by most-recent date descending. The date
 # fallback to datetime.min keeps ordering deterministic when a project has no
 # timestamp metadata.
-PROJECTS_SORTED = sorted(
-    PROJECTS,
+# Wrapped in tuple() to prevent callers from mutating the canonical collection.
+PROJECTS_SORTED = tuple(sorted(
+    _PROJECTS,
     key=lambda p: (
         p.priority,
         p.last_updated or p.created_date or datetime.min
     ),
     reverse=True,
-)
+))

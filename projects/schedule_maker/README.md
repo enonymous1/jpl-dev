@@ -17,20 +17,20 @@ The Schedule Maker is an interactive web application that simplifies schedule cr
 
 ## ✨ Features
 
-### Core Functionality
-- **📅 Multiple View Modes**: Day, week, and month views for different planning needs
-- **🎨 Drag-and-Drop Interface**: Intuitive event creation and editing
-- **🎨 Color-Coded Events**: Categorize events with custom colors
-- **⚠️ Conflict Detection**: Real-time detection of scheduling conflicts
-- **💾 Data Persistence**: Local storage for maintaining schedules between sessions
-- **📤 Export Options**: Save schedules as JSON or calendar formats
+### Implemented
+- **🗓️ Weekly Schedule Grid**: Visual week-at-a-glance grid with configurable shifts
+- **👤 Employee Roster Management**: Add, edit, and remove employees with phone/email/notes
+- **🗓️ Shift Assignment**: Assign employees to shifts via modal dialogs
+- **🔍 Employee Details Popover**: Hover over an employee pill to see contact info and availability rules
+- **📅 Date Navigation**: Move forward/backward through weeks
+- **🌙 Theme Support**: Inherits the portfolio dark/light theme system
 
-### User Experience
-- **📱 Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **⚡ Real-time Updates**: Instant feedback for all schedule changes
-- **🔄 Auto-save**: Automatic saving to prevent data loss
-- **📊 Visual Timeline**: Clear time slot visualization
-- **🎯 Quick Actions**: Fast event creation with smart defaults
+### Planned
+- **💾 Data Persistence**: Save/load schedules to local storage between sessions
+- **📤 Export/Import**: Save schedules as JSON; restore from file
+- **🎨 Drag-and-Drop**: Move shifts between time slots by dragging
+- **⚠️ Conflict Detection**: Real-time detection of scheduling conflicts
+- **🔄 Auto-save**: Periodic automatic saving to prevent data loss
 
 ## 🛠️ Technology Stack
 
@@ -42,13 +42,11 @@ The Schedule Maker is an interactive web application that simplifies schedule cr
 
 ### Backend
 - **Flask 3.1+**: Python web framework
-- **Flask Blueprints**: Modular application architecture
-- **RESTful API**: Clean API endpoints for data operations
+- **Flask Blueprints**: Modular application architecture (reference pattern for other blueprints)
 
 ### Data Management
-- **Local Storage**: Client-side persistence
-- **JSON**: Data exchange format
-- **Calendar Export**: Standard calendar format support (planned)
+- **In-memory state**: Employees, schedules, and shift info live in module-level variables
+- **No persistence yet**: Page refresh resets to seed/demo data (see Planned features)
 
 ## 📁 Project Structure
 
@@ -56,19 +54,19 @@ The Schedule Maker is an interactive web application that simplifies schedule cr
 projects/schedule_maker/
 ├── README.md                    # This documentation
 ├── __init__.py                  # Blueprint initialization
-├── routes.py                    # Flask routes and API endpoints
+├── routes.py                    # Flask route (renders template, no API endpoints)
 └── templates/
     └── schedule_maker.html      # Main application template
 
 static/projects/schedule_maker/
-├── schedule_maker.css           # Project-specific styles
-└── schedule_maker.js           # Main application logic
+├── script.js                    # ✅ ACTIVE — main application logic
+└── style.css                    # ✅ ACTIVE — project-specific styles
 ```
 
 ## 🚦 Getting Started
 
 ### Prerequisites
-- Python 3.8 or higher
+- Python 3.9 or higher
 - Modern web browser (Chrome 80+, Firefox 75+, Safari 13+, Edge 80+)
 
 ### Installation
@@ -99,67 +97,44 @@ static/projects/schedule_maker/
 
 ## 📖 Usage Guide
 
-### Creating Events
+### Creating Shifts
 
-1. **Click on a time slot** in the schedule grid to create a new event
-2. **Fill in event details** in the popup form:
-   - Event title (required)
-   - Date and time range
-   - Description (optional)
-   - Color category
-3. **Save the event** to add it to your schedule
+1. **Navigate to the schedule** via the weekly grid
+2. **Click a shift cell** to assign an employee
+3. **Select an employee** from the modal dialog
+4. **Save** to update the schedule grid
 
-### Managing Events
+### Managing Employees
 
-- **Edit events**: Click on existing events to modify details
-- **Delete events**: Use the delete option in the edit form
-- **Move events**: Drag events to different time slots (planned feature)
-- **Resize events**: Adjust event duration by dragging edges (planned feature)
+- **Add employee**: Use the employee roster panel (name, phone, email, notes, availability rules)
+- **Edit employee**: Click the edit icon next to any roster entry
+- **Remove employee**: Click the remove icon (also removes that employee from all assigned shifts)
+- **View details**: Hover over an employee pill in the schedule grid to see a contact popover
 
-### View Controls
+### Date Navigation
 
-- **Day View**: Focus on a single day with detailed hourly breakdown
-- **Week View**: See the full week with events displayed across days
-- **Month View**: Overview of the entire month (coming soon)
+- Use the **prev/next week** buttons to move through the schedule
+- Current week is highlighted in the grid header
 
 ### Data Management
 
-#### Save & Load
-- **Auto-save**: Changes are automatically saved to local storage
-- **Manual save**: Use the save button for explicit saving
-- **Load data**: Previous schedules are automatically loaded on page refresh
-
-#### Export / Import Options
-- **JSON Export**: Download complete schedule data for backup
-- **JSON Import**: Load a previously exported schedule file back into the app
-- **Calendar Export**: Import into other calendar applications (planned)
+> ⚠️ Schedule data is currently in-memory only. Refreshing the page resets to the demo seed data.
+> Save/load and export features are planned for a future release.
 
 ## 🔧 Development
 
 ### Architecture
 
-The Schedule Maker follows a modular architecture:
+The active application lives in `static/projects/schedule_maker/script.js`.
+It uses module-level state variables (`employees`, `allSchedules`, `shiftInfo`) and
+vanilla DOM manipulation — no class wrappers or build tools required.
 
-```javascript
-class ScheduleMaker {
-    constructor()     // Initialize the application
-    init()           // Set up event listeners and render initial view
-    renderSchedule() // Main rendering logic for different views
-    handleEvents()   // Event creation and management
-    saveData()       // Data persistence logic
-}
-```
-
-### Key Components
-
-1. **Schedule Grid**: Main calendar interface with time slots
-2. **Event Panel**: Modal for creating and editing events
-3. **View Controls**: Buttons for switching between day/week/month views
-4. **Date Navigation**: Controls for moving between time periods
-
-### Persistence Model
-
-This project is intentionally designed for static deployment. Schedule data is persisted entirely in the browser using local storage and exported as JSON files, so no backend save/load API is required.
+Key functions:
+- `renderSchedule()` — builds the weekly grid
+- `renderAvailableEmployees()` — populates the employee roster panel
+- `showShiftModal()` / `closeModal()` — shift assignment dialog
+- `addEmployee()` / `removeEmployee()` — roster management
+- `showEmployeePopover()` / `hideEmployeePopover()` — hover contact card
 
 ### Local Development
 
@@ -174,22 +149,9 @@ http://localhost:5000/projects/schedule-maker
 ## 🎨 Customization
 
 ### Themes
-The Schedule Maker inherits the portfolio's theme system:
+The Schedule Maker inherits the portfolio’s theme system:
 - Automatic dark/light mode detection
 - Consistent color palette with the main site
-- Customizable event colors
-
-### Configuration
-Modify default settings in `schedule_maker.js`:
-
-```javascript
-const CONFIG = {
-    defaultView: 'week',
-    timeRange: { start: 6, end: 22 },
-    colors: ['#4F46E5', '#10B981', '#F59E0B'],
-    autoSave: true
-};
-```
 
 ## 📊 Performance
 
@@ -204,8 +166,8 @@ const CONFIG = {
 - [x] Basic schedule creation and viewing
 - [x] Multiple view modes (Day, Week)
 - [x] Event creation and editing
-- [x] Local storage persistence
-- [x] Export functionality
+- [ ] Local storage persistence
+- [ ] Export functionality
 - [ ] Month view implementation
 - [ ] Advanced conflict detection
 

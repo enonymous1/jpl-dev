@@ -24,6 +24,7 @@ import pkgutil
 from flask import Flask, Blueprint, render_template
 from flask_frozen import Freezer
 from config.data_access import get_all_projects
+from config.models import ProjectStatus
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +32,12 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Configure Flask-Frozen for static site generation
-app.config['FREEZER_DESTINATION'] = os.path.join(app.root_path, 'docs')
+app.config['FREEZER_DESTINATION'] = 'docs'
 app.config['FREEZER_RELATIVE_URLS'] = True
+# Protect manually-placed files in docs/ from being deleted on local freeze runs.
+# FREEZER_REMOVE_EXTRA_FILES defaults to True — without this, `python freeze.py`
+# silently deletes docs/CNAME, breaking the custom domain until CI re-injects it.
+app.config['FREEZER_DESTINATION_IGNORE'] = ['CNAME']
 
 # Initialize the static site generator
 freezer = Freezer(app)
@@ -41,8 +46,14 @@ freezer = Freezer(app)
 # BLUEPRINT REGISTRATION
 # ============================================================================
 
-def register_project_blueprints(application):
-    """Auto-discover and register project blueprints from the projects package."""
+def register_project_blueprints(application, strict=False):
+    """Auto-discover and register project blueprints from the projects package.
+
+    Args:
+        strict: When True, re-raises import errors instead of continuing. Use
+                this in CI / freeze.py to surface broken blueprints before they
+                produce a silent gap in the generated site.
+    """
     project_package = 'projects'
     project_path = os.path.join(os.path.dirname(__file__), 'projects')
 
@@ -54,7 +65,9 @@ def register_project_blueprints(application):
         try:
             module = importlib.import_module(module_name)
         except Exception as exc:
-            logger.warning('Failed to import project module %s: %s', module_name, exc)
+            logger.error('Failed to import project module %s: %s', module_name, exc)
+            if strict:
+                raise
             continue
 
         for attr_name in dir(module):
@@ -66,7 +79,10 @@ def register_project_blueprints(application):
                 logger.info('Registered blueprint: %s from %s.%s', attr.name, module_name, attr_name)
 
 
-register_project_blueprints(app)
+# Use strict mode during freeze/CI builds (FLASK_BLUEPRINT_STRICT=1) so any
+# broken blueprint raises immediately rather than silently dropping a route. (B1c)
+_blueprint_strict = os.environ.get('FLASK_BLUEPRINT_STRICT', '0') == '1'
+register_project_blueprints(app, strict=_blueprint_strict)
 
 
 # ============================================================================
@@ -124,7 +140,7 @@ def projects():
         str: Rendered HTML template for the projects page with project data
     """
     projects_list = get_all_projects()
-    return render_template('projects.html', projects=projects_list)
+    return render_template('projects.html', projects=projects_list, ProjectStatus=ProjectStatus)
 
 
 @app.route('/widget-demo/')

@@ -1,74 +1,95 @@
 /**
  * Global Theme Management
- * Handles light/dark theme switching across all pages
+ * Handles light/dark theme switching across all pages.
+ * Writes both data-theme (custom CSS) and data-bs-theme (Bootstrap 5.3) in sync.
+ * Dispatches 'themeChange' CustomEvent for dependent components (widgets, charts).
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Theme Storage Key - shared across all pages
-    const GLOBAL_THEME_STORAGE_KEY = 'jpl_dev_global_theme';
-    
-    // Load saved theme or default to system preference
-    function loadTheme() {
-        const savedTheme = localStorage.getItem(GLOBAL_THEME_STORAGE_KEY);
-        if (savedTheme) {
-            return savedTheme;
-        }
-        
-        // Default to system preference if no saved theme
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 'dark';
-        }
-        return 'light';
+const GLOBAL_THEME_STORAGE_KEY = 'jpl_dev_global_theme';
+
+function _loadTheme() {
+    const savedTheme = localStorage.getItem(GLOBAL_THEME_STORAGE_KEY);
+    if (savedTheme) return savedTheme;
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
     }
-    
-    // Apply theme to document
-    function applyTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem(GLOBAL_THEME_STORAGE_KEY, theme);
-        
-        // Update theme toggle button appearance
-        updateThemeToggleButton(theme);
+    return 'light';
+}
+
+function _applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-bs-theme', theme);
+    localStorage.setItem(GLOBAL_THEME_STORAGE_KEY, theme);
+    _updateThemeToggleButton(theme);
+    document.dispatchEvent(new CustomEvent('themeChange', { detail: { theme } }));
+}
+
+function _updateThemeToggleButton(theme) {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle) return;
+
+    // Icon-based toggle (base.html)
+    const lightIcon = themeToggle.querySelector('.theme-icon-light');
+    const darkIcon  = themeToggle.querySelector('.theme-icon-dark');
+    if (lightIcon && darkIcon) {
+        lightIcon.classList.toggle('d-none', theme === 'dark');
+        darkIcon.classList.toggle('d-none', theme !== 'dark');
     }
-    
-    // Update the theme toggle button icons and labels
-    function updateThemeToggleButton(theme) {
-        const themeToggle = document.getElementById('theme-toggle');
-        if (!themeToggle) return;
-        
-        const lightLabel = document.querySelector('.theme-label.light-label');
-        const darkLabel = document.querySelector('.theme-label.dark-label');
-        
-        // Update accessible state for the toggle button
-        themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
-        themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-        themeToggle.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-        
-        // Update label highlighting
-        if (lightLabel && darkLabel) {
-            if (theme === 'dark') {
-                lightLabel.classList.remove('active');
-                darkLabel.classList.add('active');
-            } else {
-                lightLabel.classList.add('active');
-                darkLabel.classList.remove('active');
-            }
-        }
+
+    // Label-based toggle (legacy / schedule_maker)
+    const lightLabel = document.querySelector('.theme-label.light-label');
+    const darkLabel  = document.querySelector('.theme-label.dark-label');
+    if (lightLabel && darkLabel) {
+        lightLabel.classList.toggle('active', theme !== 'dark');
+        darkLabel.classList.toggle('active', theme === 'dark');
     }
-    
-    // Initialize theme
-    const currentTheme = loadTheme();
-    applyTheme(currentTheme);
-    
-    // Theme toggle button handler
+
+    themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    themeToggle.setAttribute('title',      theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+}
+
+// ThemeUtils — utilities for theme-aware components (widgets, charts, etc.)
+const ThemeUtils = {
+    getCurrentTheme() {
+        return document.documentElement.getAttribute('data-theme') || 'light';
+    },
+    isDarkTheme() {
+        return this.getCurrentTheme() === 'dark';
+    },
+    getThemeColor(lightColor, darkColor) {
+        return this.isDarkTheme() ? darkColor : lightColor;
+    },
+    getCSSVariable(name) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    },
+    onThemeChange(callback) {
+        document.addEventListener('themeChange', callback);
+    },
+    offThemeChange(callback) {
+        document.removeEventListener('themeChange', callback);
+    }
+};
+
+window.ThemeUtils = ThemeUtils;
+
+document.addEventListener('DOMContentLoaded', function () {
+    _applyTheme(_loadTheme());
+
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            applyTheme(newTheme);
+        themeToggle.addEventListener('click', function () {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            _applyTheme(current === 'dark' ? 'light' : 'dark');
         });
     }
-    
-    // Smooth transition for theme changes
-    document.documentElement.style.setProperty('--transition-duration', '0.3s');
+
+    // Follow OS preference changes only when the user has no saved preference
+    if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+            if (!localStorage.getItem(GLOBAL_THEME_STORAGE_KEY)) {
+                _applyTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+    }
 });

@@ -51,7 +51,7 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: rgba(var(--text-color), 0.1);
+    background: rgba(var(--text-color-rgb), 0.1);
     color: var(--text-color);
     text-decoration: none;
     transition: all 0.2s ease;
@@ -74,7 +74,7 @@
     flex-direction: column;
     gap: var(--spacing-sm);
     padding-top: var(--spacing-md);
-    border-top: 1px solid rgba(var(--text-color), 0.1);
+    border-top: 1px solid rgba(var(--text-color-rgb), 0.1);
 }
 
 .project-card-footer > :first-child {

@@ -2,6 +2,12 @@
 
 {% block title %}Home{% endblock %}
 
+{% block head %}
+<!-- GridStack CSS (homepage widget dashboard) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css"
+      integrity="sha384-mFz5n9wgd0+SC/vpgZlPLdXzBqgk5or9xi+9tNhtvaIXquRGMBR16IOo83TnOCgh" crossorigin="anonymous">
+{% endblock %}
+
 {% block content %}
 <!-- Widget Dashboard -->
 <div class="container-fluid py-4">
@@ -57,11 +63,10 @@
                         <div class="card-body py-2">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <img src="https://scontent.fric1-2.fna.fbcdn.net/v/t1.6435-9/68443022_2587837081262741_7141790014857281536_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=ETMGz1yxkAYQ7kNvwGjwzKC&_nc_oc=Adnj4gnUSqyS9Xu6M6riY9DYUT9sqb_uaXUvwG-Bzdjo_HywW8E0hBIDQ8k0R9fUUNyBtUYJRpSdVzRaqHvDN44G&_nc_zt=23&_nc_ht=scontent.fric1-2.fna&_nc_gid=gkIRQjqfpYsU-PK2gSJ-7w&oh=00_AfQvTM4mgCBphWzWiP__KkXy0UVxeGCdt3Qo4dW5scAMwg&oe=6898B13F" 
+                                    <img src="{{ url_for('static', filename='images/profile.svg') }}" 
                                          alt="Profile" 
                                          class="rounded-circle"
-                                         style="width: 60px; height: 60px; object-fit: cover;"
-                                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiM2OTc5ODciLz4KPHN2ZyB4PSIxNSIgeT0iMTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgdmlld0JveD0iMCAwIDE2IDE2IiBmaWxsPSJub25lIj4KPHA6aD0iTTggOGE0IDQgMCAxIDAgMC04IDQgNCAwIDAgMCAwIDh6bTAgMWMtMi42NyAwLTggMS4zNC04IDR2M2gxNnYtM2MwLTIuNjYtNS4zMy00LTgtNHoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K';">
+                                         style="width: 60px; height: 60px; object-fit: cover;">
                                 </div>
                                 <div class="col">
                                     <h6 class="mb-1 fw-bold text-dark">Justin P. Lyons</h6>
@@ -154,7 +159,7 @@
                                                 <span class="badge badge-theme me-1">JavaScript</span>
                                                 <span class="badge badge-theme">Flask</span>
                                             </div>
-                                            <a href="/projects/schedule-maker/" class="btn btn-sm btn-outline-primary">
+                                            <a href="{{ url_for('schedule_maker.schedule_maker') }}" class="btn btn-sm btn-outline-primary">
                                                 View <i class="bi bi-arrow-right"></i>
                                             </a>
                                         </div>
@@ -175,7 +180,7 @@
                                                 <span class="badge badge-theme me-1">Flask</span>
                                                 <span class="badge badge-theme">JavaScript</span>
                                             </div>
-                                            <a href="/projects/gsa-mas-checklist/" class="btn btn-sm btn-outline-primary">
+                                            <a href="{{ url_for('gsa_mas_checklist.gsa_mas_checklist') }}" class="btn btn-sm btn-outline-primary">
                                                 View <i class="bi bi-arrow-right"></i>
                                             </a>
                                         </div>
@@ -198,7 +203,7 @@
                                                 <span class="badge badge-theme me-1">Flask</span>
                                                 <span class="badge badge-theme">JavaScript</span>
                                             </div>
-                                            <a href="/projects/gsa-mas-checklist/" class="btn btn-sm btn-outline-primary">
+                                            <a href="{{ url_for('gsa_mas_checklist.gsa_mas_checklist') }}" class="btn btn-sm btn-outline-primary">
                                                 View <i class="bi bi-arrow-right"></i>
                                             </a>
                                         </div>
@@ -350,6 +355,9 @@
 {% endblock %}
 
 {% block scripts %}
+<!-- GridStack JS (homepage widget dashboard) -->
+<script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"
+        integrity="sha384-ftO9ShHgwOSSt8aAu6JaFXeRSA6Knixye7YeN30HH/wBPbXVoe/vHZdZZ3U2LuRr" crossorigin="anonymous"></script>
 <script>
 // Widget management functions
 function addWidget(type) {
@@ -366,7 +374,7 @@ function getWidgetConfig(type) {
             name: 'Justin P. Lyons',
             role: 'IT Manager & Software Developer',
             description: 'Results-driven IT Manager with expertise in software development.',
-            image: 'https://scontent.fric1-2.fna.fbcdn.net/v/t1.6435-9/68443022_2587837081262741_7141790014857281536_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=ETMGz1yxkAYQ7kNvwGjwzKC&_nc_oc=Adnj4gnUSqyS9Xu6M6riY9DYUT9sqb_uaXUvwG-Bzdjo_HywW8E0hBIDQ8k0R9fUUNyBtUYJRpSdVzRaqHvDN44G&_nc_zt=23&_nc_ht=scontent.fric1-2.fna&_nc_gid=gkIRQjqfpYsU-PK2gSJ-7w&oh=00_AfQvTM4mgCBphWzWiP__KkXy0UVxeGCdt3Qo4dW5scAMwg&oe=6898B13F'
+            image: '{{ url_for("static", filename="images/profile.svg") }}'
         },
         stats: {
             title: 'Quick Stats',
@@ -439,23 +447,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
     
-    // Initialize GridStack with Bootstrap-friendly settings
-    const grid = GridStack.init({
-        cellHeight: 120,
-        minRow: 1,
-        float: true,
-        resizable: {
-            handles: 'se'
-        },
-        draggable: {
-            handle: '.btn[style*="cursor: move"]'
-        },
+    // Initialize GridStack via WidgetManager with homepage-specific settings
+    window.widgetManager = new WidgetManager('grid-stack-container', {
         margin: 15,
-        animate: true
-    }, '#grid-stack-container');
-    
-    // Store grid reference globally
-    window.dashboardGrid = grid;
+        draggable: { handle: '.btn[style*="cursor: move"]' }
+    });
     
     // Animate progress bars when they come into view
     const observeProgressBars = new IntersectionObserver((entries) => {

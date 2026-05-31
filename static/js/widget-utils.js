@@ -3,6 +3,25 @@
  * Helper functions for common widget operations and Bootstrap integration
  */
 
+// Escape HTML entities — prevents XSS when values are interpolated into innerHTML. (F5b)
+function _escHtml(s) {
+    if (s == null) return '';
+    return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// Block dangerous URL schemes in href/src attributes. (F5b)
+function _safeUrl(url) {
+    if (typeof url !== 'string') return '#';
+    const t = url.trim().toLowerCase();
+    if (t.startsWith('javascript:') || t.startsWith('vbscript:') || t.startsWith('data:')) return '#';
+    return url;
+}
+
 // Widget Templates for Dynamic Creation
 const WidgetTemplates = {
     // Create a Bootstrap card widget
@@ -16,7 +35,7 @@ const WidgetTemplates = {
             <div class="${cardClass}">
                 ${title ? `
                 <div class="${headerClass}">
-                    <h5 class="card-title mb-0">${title}</h5>
+                    <h5 class="card-title mb-0">${_escHtml(title)}</h5>
                     ${options.actions ? `<div class="card-actions">${options.actions}</div>` : ''}
                 </div>
                 ` : ''}
@@ -36,8 +55,8 @@ const WidgetTemplates = {
     createStatWidget: function(stats, title = 'Statistics') {
         const statsHTML = stats.map(stat => `
             <div class="text-center">
-                <div class="display-6 fw-bold text-primary">${stat.value}</div>
-                <div class="text-muted small">${stat.label}</div>
+                <div class="display-6 fw-bold text-primary">${_escHtml(stat.value)}</div>
+                <div class="text-muted small">${_escHtml(stat.label)}</div>
             </div>
         `).join('');
 
@@ -46,8 +65,8 @@ const WidgetTemplates = {
                 ${stats.map(stat => `
                     <div class="col-${12 / Math.min(stats.length, 4)}">
                         <div class="text-center">
-                            <div class="display-6 fw-bold text-primary">${stat.value}</div>
-                            <div class="text-muted small">${stat.label}</div>
+                            <div class="display-6 fw-bold text-primary">${_escHtml(stat.value)}</div>
+                            <div class="text-muted small">${_escHtml(stat.label)}</div>
                         </div>
                     </div>
                 `).join('')}
@@ -60,13 +79,13 @@ const WidgetTemplates = {
         const progressHTML = items.map(item => `
             <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-medium">${item.label}</span>
-                    <span class="text-muted small">${item.value}%</span>
+                    <span class="fw-medium">${_escHtml(item.label)}</span>
+                    <span class="text-muted small">${_escHtml(item.value)}%</span>
                 </div>
                 <div class="progress" style="height: 8px;">
                     <div class="progress-bar bg-gradient" role="progressbar" 
-                         style="width: ${item.value}%" 
-                         aria-valuenow="${item.value}" 
+                         style="width: ${_escHtml(item.value)}%" 
+                         aria-valuenow="${_escHtml(item.value)}" 
                          aria-valuemin="0" 
                          aria-valuemax="100">
                     </div>
@@ -98,10 +117,10 @@ const WidgetTemplates = {
     // Create a social links widget
     createSocialWidget: function(links, title = 'Connect') {
         const linksHTML = links.map(link => `
-            <a href="${link.url}" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2 mb-2" 
+            <a href="${_escHtml(_safeUrl(link.url))}" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2 mb-2" 
                target="_blank" rel="noopener">
-                <i class="bi bi-${link.icon}"></i>
-                ${link.label}
+                <i class="bi bi-${_escHtml(link.icon)}"></i>
+                ${_escHtml(link.label)}
             </a>
         `).join('');
 
@@ -185,12 +204,13 @@ const BootstrapUtils = {
         const size = options.size ? `modal-${options.size}` : '';
         const centered = options.centered ? 'modal-dialog-centered' : '';
         
+        const safeId = _escHtml(id);
         return `
-            <div class="modal fade" id="${id}" tabindex="-1" aria-labelledby="${id}Label" aria-hidden="true">
+            <div class="modal fade" id="${safeId}" tabindex="-1" aria-labelledby="${safeId}Label" aria-hidden="true">
                 <div class="modal-dialog ${size} ${centered}">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="${id}Label">${title}</h5>
+                            <h5 class="modal-title" id="${safeId}Label">${_escHtml(title)}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -217,11 +237,11 @@ const BootstrapUtils = {
         }[type] || 'bg-primary';
 
         return `
-            <div class="toast align-items-center text-white ${bgClass} border-0" id="${id}" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast align-items-center text-white ${bgClass} border-0" id="${_escHtml(id)}" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
-                        <strong>${title}</strong><br>
-                        ${message}
+                        <strong>${_escHtml(title)}</strong><br>
+                        ${_escHtml(message)}
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
@@ -268,7 +288,7 @@ const BootstrapUtils = {
         
         return `
             <div class="${alertClass} ${dismissible ? 'alert-dismissible' : ''}" role="alert">
-                ${message}
+                ${_escHtml(message)}
                 ${dismissButton}
             </div>
         `;

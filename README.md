@@ -38,6 +38,10 @@ As the platform grows, the next evolution depends on persistence and runtime req
 
 ## 🛠️ Development
 
+### Prerequisites
+- Python 3.9 or higher (uses PEP 585 built-in generic types — `tuple[...]`, `list[...]`)
+- pip (Python package installer)
+
 ### Local Development
 ```bash
 # Install dependencies

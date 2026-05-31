@@ -2,6 +2,12 @@
 
 {% block title %}Widget Demo{% endblock %}
 
+{% block head %}
+<!-- GridStack CSS (widget demo page) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css"
+      integrity="sha384-mFz5n9wgd0+SC/vpgZlPLdXzBqgk5or9xi+9tNhtvaIXquRGMBR16IOo83TnOCgh" crossorigin="anonymous">
+{% endblock %}
+
 {% block content %}
 <!-- Page Header -->
 <div class="container-fluid bg-primary text-white py-5">
@@ -23,7 +29,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Widget Controls</h5>
                     <div class="d-flex gap-2 flex-wrap">
-                        <button class="btn btn-primary" onclick="showDemoToast()">
+                        <button class="btn btn-primary" onclick="showDemoToast('Widget Demo', 'This is a demonstration toast notification!', 'success')">
                             <i class="bi bi-bell me-2"></i>Show Toast
                         </button>
                         <button class="btn btn-info" onclick="showDemoModal()">
@@ -195,6 +201,9 @@
 {% endblock %}
 
 {% block scripts %}
+<!-- GridStack JS (widget demo page) -->
+<script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"
+        integrity="sha384-ftO9ShHgwOSSt8aAu6JaFXeRSA6Knixye7YeN30HH/wBPbXVoe/vHZdZZ3U2LuRr" crossorigin="anonymous"></script>
 <script>
 // Demo-specific JavaScript
 let demoGrid;
@@ -219,11 +228,11 @@ document.addEventListener('DOMContentLoaded', function() {
     drawDemoChart();
 });
 
-function showDemoToast() {
+function showDemoToast(title, message, type) {
     BootstrapUtils.showToast(
-        'Widget Demo', 
-        'This is a demonstration toast notification!', 
-        'success'
+        title  || 'Widget Demo', 
+        message || 'This is a demonstration toast notification!', 
+        type   || 'success'
     );
 }
 
