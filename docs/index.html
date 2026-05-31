@@ -1,21 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+﻿﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home - JPL-DEV</title>
-    
-    <!-- Bootstrap CSS (SRI hashes computed from cdn.jsdelivr.net for these exact versions) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- Bootstrap Icons (kept independently of Bootstrap CSS) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet"
           integrity="sha384-DeN988K4Vg0cDrUgVHjrVM0+ogMrXsv0AZYIH40/9VGpjC7zi8TFGdnPwL1EkU/T" crossorigin="anonymous">
-    <!-- GridStack CSS is loaded per-page (index.html, widget_demo.html) via the head block -->
-    
-    <!-- Custom CSS -->
+
+    <!-- Tailwind CSS (built via CLI; see tailwind.config.js + static/css/tailwind.input.css) -->
+    <link rel="stylesheet" href="/static/css/tailwind.css">
+
+    <!-- Custom CSS (theme variables, typography, project-specific) -->
     <link rel="stylesheet" href="/static/css/variables.css">
-    <link rel="stylesheet" href="/static/css/bootstrap-theme.css">
-    <link rel="stylesheet" href="/static/css/widgets.css">
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/layout.css">
     <link rel="stylesheet" href="/static/css/components.css">
@@ -23,723 +21,434 @@
     <link rel="stylesheet" href="/static/css/checklist.css">
     <link rel="stylesheet" href="/static/css/theme-toggle.css">
     <link rel="stylesheet" href="/static/css/projects.css">
-    <link rel="stylesheet" href="/static/css/widget-system.css">
 
+    <!-- Flash the correct theme before first paint to prevent flicker -->
     <script>
         (function() {
             try {
-                const storageKey = 'jpl_dev_global_theme';
-                const savedTheme = window.localStorage.getItem(storageKey);
-                const defaultTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
-                    ? 'dark'
-                    : 'light';
-                const theme = savedTheme || defaultTheme;
+                const saved = window.localStorage.getItem('jpl_dev_global_theme');
+                const sys = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+                const theme = saved || sys;
                 document.documentElement.setAttribute('data-theme', theme);
-                document.documentElement.setAttribute('data-bs-theme', theme);
-            } catch (e) {
-                console.warn('Theme initialization failed:', e);
-            }
+            } catch (e) {}
         })();
     </script>
-    
-    
-<!-- GridStack CSS (homepage widget dashboard) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css"
-      integrity="sha384-mFz5n9wgd0+SC/vpgZlPLdXzBqgk5or9xi+9tNhtvaIXquRGMBR16IOo83TnOCgh" crossorigin="anonymous">
 
+    
 </head>
 <body>
-    <!-- Bootstrap Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="main-navbar">
-        <div class="container-fluid">
-            <!-- Mobile menu toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <!-- Brand/Logo -->
-            <a class="navbar-brand fw-bold" href="/">
-                <i class="bi bi-code-square me-2"></i>JPL-DEV
-            </a>
-            
-            <!-- Navigation Links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">
-                            <i class="bi bi-house-door me-1"></i>Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="/projects/">
-                            <i class="bi bi-collection me-1"></i>Projects
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="/widget-demo/">
-                            <i class="bi bi-grid-3x3-gap me-1"></i>Widget Demo
-                        </a>
-                    </li>
-                </ul>
-                
-                <!-- Header Actions -->
-                <div class="d-flex align-items-center gap-2">
+    <!-- ── Navigation ─────────────────────────────────────────────────────── -->
+    <nav class="sticky top-0 z-50 bg-gray-900 text-white shadow-md" id="main-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14">
+
+                <!-- Brand + mobile hamburger -->
+                <div class="flex items-center gap-3">
+                    <button id="nav-toggle"
+                            class="lg:hidden p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
+                            aria-label="Toggle navigation">
+                        <i class="bi bi-list text-xl"></i>
+                    </button>
+                    <a class="text-white font-bold text-lg flex items-center gap-2 hover:text-gray-200 transition-colors no-underline"
+                       href="/">
+                        <i class="bi bi-code-square"></i>JPL-DEV
+                    </a>
+                </div>
+
+                <!-- Desktop nav links -->
+                <div class="hidden lg:flex items-center gap-1">
+                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                              bg-gray-700 text-white"
+                       href="/">
+                        <i class="bi bi-house-door mr-1"></i>Home
+                    </a>
+                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                              text-gray-300 hover:text-white hover:bg-gray-700"
+                       href="/projects/">
+                        <i class="bi bi-collection mr-1"></i>Projects
+                    </a>
+                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                              text-gray-300 hover:text-white hover:bg-gray-700"
+                       href="/widget-demo/">
+                        <i class="bi bi-grid-3x3-gap mr-1"></i>Components
+                    </a>
+                </div>
+
+                <!-- Right: page-specific actions + theme toggle -->
+                <div class="flex items-center gap-1">
                     
-                    
-                    <!-- Theme Toggle -->
-                    <button id="theme-toggle" type="button" class="btn btn-outline-light btn-sm" title="Toggle theme" aria-label="Toggle theme" aria-pressed="false">
+
+                    <!-- Theme toggle -->
+                    <button id="theme-toggle" type="button"
+                            class="p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
+                            title="Toggle theme" aria-label="Toggle theme" aria-pressed="false">
                         <i class="bi bi-sun theme-icon-light"></i>
-                        <i class="bi bi-moon theme-icon-dark d-none"></i>
+                        <i class="bi bi-moon theme-icon-dark hidden"></i>
                     </button>
                 </div>
             </div>
         </div>
+
+        <!-- Mobile nav menu (collapsed by default) -->
+        <div id="nav-menu" class="hidden lg:hidden border-t border-gray-700">
+            <div class="px-4 py-2 space-y-0.5">
+                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                          bg-gray-700 text-white"
+                   href="/">
+                    <i class="bi bi-house-door"></i>Home
+                </a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                          text-gray-300 hover:text-white hover:bg-gray-700"
+                   href="/projects/">
+                    <i class="bi bi-collection"></i>Projects
+                </a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                          text-gray-300 hover:text-white hover:bg-gray-700"
+                   href="/widget-demo/">
+                    <i class="bi bi-grid-3x3-gap"></i>Components
+                </a>
+            </div>
+        </div>
     </nav>
 
-    <!-- Main Content Container -->
-    <main class="container-fluid">
+    <!-- ── Main content ────────────────────────────────────────────────────── -->
+    <main>
         
-<!-- Widget Dashboard -->
-<div class="container-fluid py-4">
-    <div class="container">
-        <!-- Dashboard Header -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h1 class="h2 mb-1">Dashboard</h1>
-                        <p class="text-muted mb-0">Interactive widget layout - drag to rearrange</p>
-                    </div>
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-plus-circle me-2"></i>Add Widget
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="addWidget('profile')">
-                                <i class="bi bi-person me-2"></i>Profile Widget
-                            </a></li>
-                            <li><a class="dropdown-item" href="#" onclick="addWidget('stats')">
-                                <i class="bi bi-bar-chart me-2"></i>Stats Widget
-                            </a></li>
-                            <li><a class="dropdown-item" href="#" onclick="addWidget('projects')">
-                                <i class="bi bi-collection me-2"></i>Projects Widget
-                            </a></li>
-                            <li><a class="dropdown-item" href="#" onclick="addWidget('skills')">
-                                <i class="bi bi-code-slash me-2"></i>Skills Widget
-                            </a></li>
-                            <li><a class="dropdown-item" href="#" onclick="addWidget('social')">
-                                <i class="bi bi-share me-2"></i>Social Widget
-                            </a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- GridStack Container -->
-        <div id="grid-stack-container" class="grid-stack">
-            <!-- Profile Widget -->
-            <div class="grid-stack-item" gs-w="6" gs-h="5" gs-x="0" gs-y="0">
-                <div class="grid-stack-item-content">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
-                            <h6 class="card-title mb-0 fw-semibold">
-                                <i class="bi bi-person-circle me-2"></i>About Me
-                            </h6>
-                            <span class="widget-handle text-white" title="Drag to move">
-                                <i class="bi bi-arrows-move"></i>
-                            </span>
-                        </div>
-                        <div class="card-body py-2">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <img src="/static/images/profile.svg" 
-                                         alt="Profile" 
-                                         class="rounded-circle"
-                                         style="width: 60px; height: 60px; object-fit: cover;">
-                                </div>
-                                <div class="col">
-                                    <h6 class="mb-1 fw-bold text-body">Justin P. Lyons</h6>
-                                    <p class="text-secondary small mb-2">IT Manager | Mobile Application Development</p>
-                                    <div class="mb-2">
-                                        
-                                        <span class="badge bg-primary me-1">AS &amp; BS in CS</span>
-                                        
-                                        <span class="badge bg-secondary me-1">Mobile Dev</span>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <hr class="my-2">
-                            <p class="small mb-2 text-body">
-                                IT Manager with AS &amp; BS in Computer Science, specializing in Mobile Application Development. Blending hands-on technical expertise with leadership to deliver innovative solutions and drive technology forward.
-                            </p>
-                            
-                            <ul class="list-unstyled small mb-0">
-                                
-                                <li class="text-secondary mb-1"><i class="bi bi-check2 text-primary me-1"></i>IT Manager passionate about technology and people</li>
-                                
-                                <li class="text-secondary mb-1"><i class="bi bi-check2 text-primary me-1"></i>AS &amp; BS in Computer Science, Mobile Application Development focus</li>
-                                
-                                <li class="text-secondary mb-1"><i class="bi bi-check2 text-primary me-1"></i>Enthusiastic about creating impactful mobile experiences</li>
-                                
-                                <li class="text-secondary mb-1"><i class="bi bi-check2 text-primary me-1"></i>Always learning and exploring new tech frontiers</li>
-                                
-                            </ul>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-            <!-- Stats Widget -->
-            <div class="grid-stack-item" gs-w="6" gs-h="3" gs-x="6" gs-y="0">
-                <div class="grid-stack-item-content">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-2">
-                            <h6 class="card-title mb-0 fw-semibold">
-                                <i class="bi bi-bar-chart me-2"></i>Quick Stats
-                            </h6>
-                            <span class="widget-handle text-white" title="Drag to move">
-                                <i class="bi bi-arrows-move"></i>
-                            </span>
-                        </div>
-                        <div class="card-body py-2">
-                            <div class="row text-center">
-                                <div class="col-6 mb-2">
-                                    <div class="h5 text-primary mb-1 fw-bold" data-bs-toggle="tooltip" title="Completed Projects">12+</div>
-                                    <small class="text-secondary">Projects</small>
-                                </div>
-                                <div class="col-6 mb-2">
-                                    <div class="h5 text-success mb-1 fw-bold" data-bs-toggle="tooltip" title="Years of Experience">5+</div>
-                                    <small class="text-secondary">Years Exp</small>
-                                </div>
-                                <div class="col-6 mb-2">
-                                    <div class="h5 text-info mb-1 fw-bold" data-bs-toggle="tooltip" title="Technologies Mastered">15+</div>
-                                    <small class="text-secondary">Technologies</small>
-                                </div>
-                                <div class="col-6 mb-2">
-                                    <div class="h5 text-warning mb-1 fw-bold" data-bs-toggle="tooltip" title="GitHub Commits">100+</div>
-                                    <small class="text-secondary">Commits</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tools & Tech Widget -->
-            <div class="grid-stack-item" gs-w="6" gs-h="2" gs-x="6" gs-y="3">
-                <div class="grid-stack-item-content">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center py-2">
-                            <h6 class="card-title mb-0 fw-semibold">
-                                <i class="bi bi-tools me-2"></i>Tools &amp; Tech
-                            </h6>
-                            <span class="widget-handle text-white" title="Drag to move">
-                                <i class="bi bi-arrows-move"></i>
-                            </span>
-                        </div>
-                        <div class="card-body py-2 overflow-auto">
-                            
-                            <div class="mb-1">
-                                <small class="text-secondary fw-semibold me-1">
-                                    <i class="bi bi-file-code me-1"></i>Languages:
-                                </small>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Java</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Kotlin</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Swift</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Objective-C</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Python</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">JavaScript</span>
-                                
-                            </div>
-                            
-                            <div class="mb-1">
-                                <small class="text-secondary fw-semibold me-1">
-                                    <i class="bi bi-phone me-1"></i>Mobile:
-                                </small>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Android</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">iOS</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Flutter</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">React Native</span>
-                                
-                            </div>
-                            
-                            <div class="mb-1">
-                                <small class="text-secondary fw-semibold me-1">
-                                    <i class="bi bi-people me-1"></i>Leadership:
-                                </small>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Team Building</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Agile</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Project Management</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Mentorship</span>
-                                
-                            </div>
-                            
-                            <div class="mb-1">
-                                <small class="text-secondary fw-semibold me-1">
-                                    <i class="bi bi-tools me-1"></i>Tools:
-                                </small>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Git</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">GitHub</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Jira</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">AWS</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Docker</span>
-                                
-                                <span class="badge badge-theme me-1 mb-1">Firebase</span>
-                                
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Projects Widget -->
-            <div class="grid-stack-item" gs-w="8" gs-h="4" gs-x="0" gs-y="5">
-                <div class="grid-stack-item-content">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center py-2">
-                            <h6 class="card-title mb-0 fw-semibold">
-                                <i class="bi bi-collection me-2"></i>Featured Projects
-                            </h6>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <input type="radio" class="btn-check" name="projectView" id="recentBtn" checked>
-                                    <label class="btn btn-outline-light btn-sm" for="recentBtn" onclick="toggleProjectsView('recent')">Recent</label>
-                                    
-                                    <input type="radio" class="btn-check" name="projectView" id="featuredBtn">
-                                    <label class="btn btn-outline-light btn-sm" for="featuredBtn" onclick="toggleProjectsView('featured')">Featured</label>
-                                </div>
-                                <span class="widget-handle text-white" title="Drag to move">
-                                    <i class="bi bi-arrows-move"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="card-body py-2 overflow-auto">
-                            <div id="recent-projects" class="projects-content">
-                                <div class="card mb-2 border-start border-primary border-3">
-                                    <div class="card-body p-2">
-                                        <div class="d-flex justify-content-between align-items-start mb-1">
-                                            <h6 class="card-title mb-0 fw-semibold text-body">Schedule Maker</h6>
-                                            <span class="badge bg-warning text-dark">Development</span>
-                                        </div>
-                                        <p class="card-text small text-secondary mb-2">
-                                            Interactive scheduling tool with drag-and-drop functionality.
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <span class="badge badge-theme me-1">JavaScript</span>
-                                                <span class="badge badge-theme">Flask</span>
-                                            </div>
-                                            <a href="/projects/schedule-maker/" class="btn btn-sm btn-outline-primary">
-                                                View <i class="bi bi-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card mb-2 border-start border-success border-3">
-                                    <div class="card-body p-2">
-                                        <div class="d-flex justify-content-between align-items-start mb-1">
-                                            <h6 class="card-title mb-0 fw-semibold text-body">GSA Checklist</h6>
-                                            <span class="badge bg-success">Active</span>
-                                        </div>
-                                        <p class="card-text small text-secondary mb-2">
-                                            Comprehensive GSA MAS offer preparation checklist.
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <span class="badge badge-theme me-1">Flask</span>
-                                                <span class="badge badge-theme">JavaScript</span>
-                                            </div>
-                                            <a href="/projects/gsa-mas-checklist/" class="btn btn-sm btn-outline-primary">
-                                                View <i class="bi bi-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="featured-projects" class="projects-content d-none">
-                                <div class="card mb-2 border-start border-info border-3">
-                                    <div class="card-body p-2">
-                                        <div class="d-flex justify-content-between align-items-start mb-1">
-                                            <h6 class="card-title mb-0 fw-semibold text-body">GSA Checklist</h6>
-                                            <span class="badge bg-info">Featured</span>
-                                        </div>
-                                        <p class="card-text small text-secondary mb-2">
-                                            My most comprehensive federal contracting tool.
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <span class="badge badge-theme me-1">Flask</span>
-                                                <span class="badge badge-theme">JavaScript</span>
-                                            </div>
-                                            <a href="/projects/gsa-mas-checklist/" class="btn btn-sm btn-outline-primary">
-                                                View <i class="bi bi-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card mb-2 border-start border-info border-3">
-                                    <div class="card-body p-2">
-                                        <div class="d-flex justify-content-between align-items-start mb-1">
-                                            <h6 class="card-title mb-0 fw-semibold text-body">Portfolio Site</h6>
-                                            <span class="badge bg-info">Featured</span>
-                                        </div>
-                                        <p class="card-text small text-secondary mb-2">
-                                            Modern Flask portfolio with modular architecture.
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <span class="badge badge-theme me-1">Flask</span>
-                                                <span class="badge badge-theme">CSS</span>
-                                            </div>
-                                            <a href="/projects/" class="btn btn-sm btn-outline-primary">
-                                                View All <i class="bi bi-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Skills Widget -->
-            <div class="grid-stack-item" gs-w="4" gs-h="4" gs-x="8" gs-y="5">
-                <div class="grid-stack-item-content">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center py-2">
-                            <h6 class="card-title mb-0 fw-semibold">
-                                <i class="bi bi-code-slash me-2"></i>Core Skills
-                            </h6>
-                            <span class="widget-handle text-white" title="Drag to move">
-                                <i class="bi bi-arrows-move"></i>
-                            </span>
-                        </div>
-                        <div class="card-body py-2">
-                            
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <small class="fw-semibold text-body">Python</small>
-                                    <small class="text-secondary">90%</small>
-                                </div>
-                                <div class="progress" style="height: 6px;">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 90%"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <small class="fw-semibold text-body">JavaScript</small>
-                                    <small class="text-secondary">88%</small>
-                                </div>
-                                <div class="progress" style="height: 6px;">
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 88%"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <small class="fw-semibold text-body">Java</small>
-                                    <small class="text-secondary">85%</small>
-                                </div>
-                                <div class="progress" style="height: 6px;">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 85%"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <small class="fw-semibold text-body">Kotlin</small>
-                                    <small class="text-secondary">80%</small>
-                                </div>
-                                <div class="progress" style="height: 6px;">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 80%"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <small class="fw-semibold text-body">Swift</small>
-                                    <small class="text-secondary">75%</small>
-                                </div>
-                                <div class="progress" style="height: 6px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 75%"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <small class="fw-semibold text-body">Flask</small>
-                                    <small class="text-secondary">88%</small>
-                                </div>
-                                <div class="progress" style="height: 6px;">
-                                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 88%"></div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Dashboard header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold mb-0.5">Dashboard</h1>
+            <p class="text-sm text-gray-500">My personal widget dashboard</p>
         </div>
     </div>
-</div>
 
-<!-- Contact Section -->
-<div class="container-fluid bg-theme-surface py-4" id="contact">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <h3 class="h4 mb-3">
-                    <i class="bi bi-envelope me-2 text-primary"></i>Let's Connect
-                </h3>
-                <p class="mb-4 text-secondary">
-                    Interested in working together or have a question? I'd love to hear from you.
-                </p>
-                <div class="row justify-content-center g-3">
-                    <div class="col-md-4">
-                        <a href="https://github.com/enonymous1" class="text-decoration-none" target="_blank">
-                            <div class="card h-100 border-0 shadow-sm hover-card">
-                                <div class="card-body text-center py-3">
-                                    <i class="bi bi-github display-6 text-body mb-2"></i>
-                                    <h6 class="card-title mb-1 fw-semibold text-body">GitHub</h6>
-                                    <small class="text-secondary">View my code</small>
-                                </div>
+    <!-- Dashboard grid: 2 columns on lg+; About Me spans both rows on the left -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+        <!-- About Me (left column, spans 2 rows) -->
+        <div class="lg:row-span-2">
+            <div class="widget-card h-full">
+                <div class="widget-header bg-blue-600">
+                    <h6 class="font-semibold text-sm flex items-center gap-2 mb-0">
+                        <i class="bi bi-person-circle"></i>About Me
+                    </h6>
+                </div>
+                <div class="widget-body">
+                    <div class="flex items-center gap-3 mb-3">
+                        <img src="/static/images/profile.svg"
+                             alt="Profile"
+                             class="rounded-full object-cover flex-shrink-0"
+                             style="width:60px;height:60px;">
+                        <div>
+                            <h6 class="font-bold mb-1">Justin P. Lyons</h6>
+                            <p class="text-sm mb-2" style="color:var(--text-secondary)">IT Manager | Mobile Application Development</p>
+                            <div class="flex flex-wrap gap-1">
+                                
+                                <span class="badge-theme badge-primary">AS &amp; BS in CS</span>
+                                
+                                <span class="badge-theme ">Mobile Dev</span>
+                                
                             </div>
-                        </a>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <a href="https://linkedin.com/in/justinplyons" class="text-decoration-none" target="_blank">
-                            <div class="card h-100 border-0 shadow-sm hover-card">
-                                <div class="card-body text-center py-3">
-                                    <i class="bi bi-linkedin display-6 text-primary mb-2"></i>
-                                    <h6 class="card-title mb-1 fw-semibold text-body">LinkedIn</h6>
-                                    <small class="text-secondary">Professional network</small>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-4">
-                        <a href="mailto:justin@jpl-dev.com" class="text-decoration-none">
-                            <div class="card h-100 border-0 shadow-sm hover-card">
-                                <div class="card-body text-center py-3">
-                                    <i class="bi bi-envelope display-6 text-success mb-2"></i>
-                                    <h6 class="card-title mb-1 fw-semibold text-body">Email</h6>
-                                    <small class="text-secondary">Direct contact</small>
-                                </div>
-                            </div>
-                        </a>
+                    <hr class="my-3" style="border-color:var(--border-color)">
+                    <p class="text-sm mb-3">IT Manager with AS &amp; BS in Computer Science, specializing in Mobile Application Development. Blending hands-on technical expertise with leadership to deliver innovative solutions and drive technology forward.</p>
+                    
+                    <ul class="space-y-1 list-none p-0 m-0">
+                        
+                        <li class="text-sm flex items-start gap-1.5" style="color:var(--text-secondary)">
+                            <i class="bi bi-check2 text-blue-500 flex-shrink-0 mt-0.5"></i>IT Manager passionate about technology and people
+                        </li>
+                        
+                        <li class="text-sm flex items-start gap-1.5" style="color:var(--text-secondary)">
+                            <i class="bi bi-check2 text-blue-500 flex-shrink-0 mt-0.5"></i>AS &amp; BS in Computer Science, Mobile Application Development focus
+                        </li>
+                        
+                        <li class="text-sm flex items-start gap-1.5" style="color:var(--text-secondary)">
+                            <i class="bi bi-check2 text-blue-500 flex-shrink-0 mt-0.5"></i>Enthusiastic about creating impactful mobile experiences
+                        </li>
+                        
+                        <li class="text-sm flex items-start gap-1.5" style="color:var(--text-secondary)">
+                            <i class="bi bi-check2 text-blue-500 flex-shrink-0 mt-0.5"></i>Always learning and exploring new tech frontiers
+                        </li>
+                        
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats (right column, row 1) -->
+        <div>
+            <div class="widget-card">
+                <div class="widget-header bg-green-600">
+                    <h6 class="font-semibold text-sm flex items-center gap-2 mb-0">
+                        <i class="bi bi-bar-chart"></i>Quick Stats
+                    </h6>
+                </div>
+                <div class="widget-body">
+                    <div class="grid grid-cols-4 text-center">
+                        <div>
+                            <div class="text-xl font-bold text-blue-500 mb-0.5">12+</div>
+                            <small class="text-xs" style="color:var(--text-secondary)">Projects</small>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold text-green-500 mb-0.5">5+</div>
+                            <small class="text-xs" style="color:var(--text-secondary)">Years Exp</small>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold text-cyan-500 mb-0.5">15+</div>
+                            <small class="text-xs" style="color:var(--text-secondary)">Technologies</small>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold text-amber-500 mb-0.5">100+</div>
+                            <small class="text-xs" style="color:var(--text-secondary)">Commits</small>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Tools & Tech (right column, row 2) -->
+        <div>
+            <div class="widget-card">
+                <div class="widget-header bg-gray-600">
+                    <h6 class="font-semibold text-sm flex items-center gap-2 mb-0">
+                        <i class="bi bi-tools"></i>Tools &amp; Tech
+                    </h6>
+                </div>
+                <div class="widget-body">
+                    
+                    <div class="mb-2 leading-relaxed">
+                        <small class="font-semibold mr-1" style="font-size:0.7rem;color:var(--text-secondary)">
+                            <i class="bi bi-file-code mr-1"></i>Languages:
+                        </small>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Java</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Kotlin</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Swift</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Objective-C</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Python</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">JavaScript</span>
+                        
+                    </div>
+                    
+                    <div class="mb-2 leading-relaxed">
+                        <small class="font-semibold mr-1" style="font-size:0.7rem;color:var(--text-secondary)">
+                            <i class="bi bi-phone mr-1"></i>Mobile:
+                        </small>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Android</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">iOS</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Flutter</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">React Native</span>
+                        
+                    </div>
+                    
+                    <div class="mb-2 leading-relaxed">
+                        <small class="font-semibold mr-1" style="font-size:0.7rem;color:var(--text-secondary)">
+                            <i class="bi bi-people mr-1"></i>Leadership:
+                        </small>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Team Building</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Agile</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Project Management</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Mentorship</span>
+                        
+                    </div>
+                    
+                    <div class="mb-2 leading-relaxed">
+                        <small class="font-semibold mr-1" style="font-size:0.7rem;color:var(--text-secondary)">
+                            <i class="bi bi-tools mr-1"></i>Tools:
+                        </small>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Git</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">GitHub</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Jira</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">AWS</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Docker</span>
+                        
+                        <span class="badge-theme mr-1" style="font-size:0.65rem;">Firebase</span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Projects (full width, row 3) -->
+        <div class="lg:col-span-2">
+            <div class="widget-card">
+                <div class="widget-header bg-cyan-600">
+                    <h6 class="font-semibold text-sm flex items-center gap-2 mb-0">
+                        <i class="bi bi-collection"></i>Featured Projects
+                    </h6>
+                    <div class="flex items-center gap-2">
+                        <div class="flex">
+                            <button id="recentBtn"   class="project-tab-btn active" onclick="toggleProjectsView('recent')">Recent</button>
+                            <button id="featuredBtn" class="project-tab-btn"        onclick="toggleProjectsView('featured')">Featured</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-body">
+                    <div id="recent-projects" class="projects-content">
+                        <div class="text-center py-6 text-sm" style="color:var(--text-secondary)">
+                            <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
+                        </div>
+                    </div>
+                    <div id="featured-projects" class="projects-content hidden">
+                        <div class="text-center py-6 text-sm" style="color:var(--text-secondary)">
+                            <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
     </main>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <!-- GridStack JS is loaded per-page (index.html, widget_demo.html) via the scripts block -->
+    
+<!-- Contact footer (sticky) -->
+<div class="border-t py-2 sticky bottom-0 z-10" style="background:var(--bg-color);border-color:var(--border-color);" id="contact">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex flex-wrap justify-between items-center gap-2">
+            <span class="text-sm" style="color:var(--text-secondary)">
+                <i class="bi bi-envelope mr-1 text-blue-500"></i><strong style="color:var(--text-color)">Let's Connect</strong>
+            </span>
+            <div class="flex gap-4">
+                <a href="https://github.com/enonymous1"
+                   class="no-underline flex items-center gap-1 text-sm transition-colors"
+                   style="color:var(--text-secondary)"
+                   target="_blank" rel="noopener noreferrer">
+                    <i class="bi bi-github"></i> GitHub
+                </a>
+                <a href="https://linkedin.com/in/justinplyons"
+                   class="no-underline flex items-center gap-1 text-sm transition-colors"
+                   style="color:var(--text-secondary)"
+                   target="_blank" rel="noopener noreferrer">
+                    <i class="bi bi-linkedin text-blue-500"></i> LinkedIn
+                </a>
+                <a href="mailto:justin@jpl-dev.com"
+                   class="no-underline flex items-center gap-1 text-sm transition-colors"
+                   style="color:var(--text-secondary)">
+                    <i class="bi bi-envelope text-green-500"></i> justin@jpl-dev.com
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <!-- Global Scripts -->
-    <script src="/static/js/widget-manager.js"></script>
-    <script src="/static/js/widget-utils.js"></script>
+
+    <!-- Global scripts -->
     <script src="/static/script.js"></script>
     <script src="/static/global-theme.js"></script>
     
-<!-- GridStack JS (homepage widget dashboard) -->
-<script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"
-        integrity="sha384-ftO9ShHgwOSSt8aAu6JaFXeRSA6Knixye7YeN30HH/wBPbXVoe/vHZdZZ3U2LuRr" crossorigin="anonymous"></script>
 <script>
-// Widget management functions
-function addWidget(type) {
-    if (window.widgetManager) {
-        const config = getWidgetConfig(type);
-        window.widgetManager.createWidget(type, config);
+// ── GitHub Projects loader ────────────────────────────────────────────────────
+function escHtml(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+const ACCENT_COLORS = {
+    primary: 'var(--primary-color)',
+    info:    '#0ea5e9',
+    success: '#22c55e',
+    warning: '#f59e0b',
+};
+
+function renderRepoCard(repo, accentKey) {
+    const INTERNAL = { 'jpl-dev': '/projects/' };
+    const name       = escHtml(repo.name.replace(/[-_]/g,' ').replace(/\b\w/g, c => c.toUpperCase()));
+    const desc       = escHtml(repo.description || 'No description provided.');
+    const lang       = escHtml(repo.language || '');
+    const stars      = repo.stargazers_count || 0;
+    const forks      = repo.forks_count || 0;
+    const topics     = (repo.topics || []).slice(0,3).map(escHtml);
+    const internalUrl = INTERNAL[repo.name];
+    const githubUrl  = escHtml(repo.html_url);
+    const accent     = ACCENT_COLORS[accentKey] || ACCENT_COLORS.primary;
+
+    const isFeatured  = topics.includes('featured');
+    const statusBadge = isFeatured
+        ? `<span class="badge-theme" style="background:#f59e0b;color:#000;border-color:#f59e0b">Featured</span>`
+        : (lang ? `<span class="badge-theme">${lang}</span>` : '');
+
+    const techTags  = [lang, ...topics].filter(Boolean).slice(0,4)
+        .map(t => `<span class="badge-theme mr-1">${t}</span>`).join('');
+    const statsHtml = (stars + forks) > 0
+        ? `<small style="color:var(--text-secondary);font-size:0.7rem;margin-left:0.25rem;">${stars > 0 ? `<i class="bi bi-star"></i>&nbsp;${stars}` : ''}${forks > 0 ? `&nbsp;<i class="bi bi-diagram-2"></i>&nbsp;${forks}` : ''}</small>`
+        : '';
+    const btnGithub   = `<a href="${githubUrl}" class="repo-btn" target="_blank" rel="noopener noreferrer"><i class="bi bi-github"></i></a>`;
+    const btnInternal = internalUrl ? `<a href="${internalUrl}" class="repo-btn repo-btn-primary" style="margin-left:0.25rem">View <i class="bi bi-arrow-right"></i></a>` : '';
+
+    return `<div class="repo-card" style="border-left-color:${accent}"><div class="repo-card-body"><div class="repo-card-title"><span class="font-semibold text-sm">${name}${statsHtml}</span>${statusBadge}</div><p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:0.375rem">${desc}</p><div class="repo-card-footer"><div>${techTags}</div><div>${btnGithub}${btnInternal}</div></div></div></div>`;
+}
+
+async function loadGithubProjects() {
+    const recentEl   = document.getElementById('recent-projects');
+    const featuredEl = document.getElementById('featured-projects');
+    try {
+        const resp = await fetch('https://api.github.com/users/enonymous1/repos?sort=updated&per_page=30&type=public');
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const repos  = await resp.json();
+        const active = repos.filter(r => !r.fork && !r.archived);
+        const byStars = [...active].sort((a, b) => b.stargazers_count - a.stargazers_count);
+        recentEl.innerHTML   = active.slice(0,6).map(r => renderRepoCard(r,'primary')).join('') || `<p style="text-align:center;padding:1rem;color:var(--text-secondary);font-size:0.875rem">No recent repositories found.</p>`;
+        featuredEl.innerHTML = byStars.slice(0,6).map(r => renderRepoCard(r,'info')).join('')   || `<p style="text-align:center;padding:1rem;color:var(--text-secondary);font-size:0.875rem">No featured repositories found.</p>`;
+    } catch {
+        const errMsg = `<p style="text-align:center;padding:1rem;color:var(--text-secondary);font-size:0.875rem"><i class="bi bi-exclamation-circle" style="margin-right:0.25rem"></i>Could not load GitHub repositories.</p>`;
+        recentEl.innerHTML   = errMsg;
+        featuredEl.innerHTML = errMsg;
     }
 }
 
-function getWidgetConfig(type) {
-    const configs = {
-        profile: {
-            title: 'Profile',
-            name: 'Justin P. Lyons',
-            role: 'IT Manager & Software Developer',
-            description: 'Results-driven IT Manager with expertise in software development.',
-            image: '/static/images/profile.svg'
-        },
-        stats: {
-            title: 'Quick Stats',
-            stats: [
-                { label: 'Projects', value: '12+' },
-                { label: 'Years Exp', value: '5+' },
-                { label: 'Technologies', value: '15+' },
-                { label: 'Commits', value: '100+' }
-            ]
-        },
-        projects: {
-            title: 'Featured Projects',
-            projects: [
-                {
-                    name: 'Schedule Maker',
-                    status: 'development',
-                    description: 'Interactive scheduling tool with drag-and-drop functionality.',
-                    tech: ['JavaScript', 'Flask']
-                },
-                {
-                    name: 'GSA Checklist',
-                    status: 'active',
-                    description: 'Comprehensive GSA MAS offer preparation checklist.',
-                    tech: ['Flask', 'JavaScript']
-                }
-            ]
-        },
-        skills: {
-            title: 'Core Skills',
-            skills: [
-                { name: 'JavaScript', level: 90 },
-                { name: 'Python', level: 85 },
-                { name: 'React', level: 80 },
-                { name: 'Flask', level: 88 },
-                { name: 'CSS', level: 92 }
-            ]
-        },
-        social: {
-            title: 'Connect',
-            links: [
-                { name: 'GitHub', url: 'https://github.com/enonymous1', icon: 'github' },
-                { name: 'LinkedIn', url: 'https://linkedin.com/in/justinplyons', icon: 'linkedin' },
-                { name: 'Email', url: 'mailto:justin@jpl-dev.com', icon: 'envelope' }
-            ]
-        }
-    };
-    
-    return configs[type] || {};
-}
-
-// Project toggle functionality
 function toggleProjectsView(view) {
-    const recentContent = document.getElementById('recent-projects');
-    const featuredContent = document.getElementById('featured-projects');
-    
+    const recentEl   = document.getElementById('recent-projects');
+    const featuredEl = document.getElementById('featured-projects');
+    const recentBtn  = document.getElementById('recentBtn');
+    const featuredBtn= document.getElementById('featuredBtn');
     if (view === 'recent') {
-        recentContent.classList.remove('d-none');
-        featuredContent.classList.add('d-none');
+        recentEl.classList.remove('hidden');   featuredEl.classList.add('hidden');
+        recentBtn.classList.add('active');     featuredBtn.classList.remove('active');
     } else {
-        recentContent.classList.add('d-none');
-        featuredContent.classList.remove('d-none');
+        recentEl.classList.add('hidden');      featuredEl.classList.remove('hidden');
+        recentBtn.classList.remove('active');  featuredBtn.classList.add('active');
     }
 }
 
-// Initialize page functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Bootstrap tooltips
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-    
-    // Initialize GridStack directly on the pre-existing static HTML items.
-    // WidgetManager.createWidget() is for dynamically-added widgets; it calls
-    // grid.addWidget() which expects items NOT already in the DOM. The static
-    // cards are already rendered as .grid-stack-item elements, so GridStack.init()
-    // picks them up automatically via their gs-w/gs-h/gs-x/gs-y attributes.
-    window.grid = GridStack.init({
-        cellHeight: 120,
-        minRow: 1,
-        float: true,
-        animate: true,
-        margin: 15,
-        resizable: { handles: 'se' },
-        draggable: { handle: '.widget-handle' }
-    }, document.getElementById('grid-stack-container'));
-
-    // Wire the "Add Widget" dropdown to WidgetManager for dynamic widgets
-    window.widgetManager = new WidgetManager('grid-stack-container', { margin: 15 });
-    
-    // Animate progress bars when they come into view
-    const observeProgressBars = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const progressBars = entry.target.querySelectorAll('.progress-bar');
-                progressBars.forEach((bar, index) => {
-                    setTimeout(() => {
-                        bar.style.transition = 'width 1.5s ease-out';
-                        const width = bar.style.width;
-                        bar.style.width = '0%';
-                        setTimeout(() => {
-                            bar.style.width = width;
-                        }, 100);
-                    }, index * 300);
-                });
-                observeProgressBars.unobserve(entry.target);
-            }
-        });
-    });
-    
-    // Observe skills section for animation
-    const skillsCard = document.querySelector('.card:has(.progress-bar)');
-    if (skillsCard) {
-        observeProgressBars.observe(skillsCard);
-    }
-    
-    // Animate stat numbers
-    const observeStats = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const statValues = entry.target.querySelectorAll('.h5');
-                statValues.forEach((stat, index) => {
-                    setTimeout(() => {
-                        stat.style.transform = 'scale(1.1)';
-                        stat.style.transition = 'transform 0.3s ease';
-                        setTimeout(() => {
-                            stat.style.transform = 'scale(1)';
-                        }, 300);
-                    }, index * 100);
-                });
-                observeStats.unobserve(entry.target);
-            }
-        });
-    });
-    
-    const statsCard = document.querySelector('.card:has(.h5[data-bs-toggle="tooltip"])');
-    if (statsCard) {
-        observeStats.observe(statsCard);
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    loadGithubProjects();
 });
 </script>
 
-    
-    <!-- File input for import functionality (only on GSA MAS checklist page) -->
+
+    <!-- Mobile nav toggle (vanilla JS, no framework required) -->
+    <script>
+        document.getElementById('nav-toggle')?.addEventListener('click', function () {
+            document.getElementById('nav-menu').classList.toggle('hidden');
+        });
+    </script>
+
     
 </body>
 </html>

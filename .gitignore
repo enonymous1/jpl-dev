@@ -2,6 +2,7 @@
 build/
 deployment/
 .venv/
+.flask.pid
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -18,7 +18,6 @@ function _loadTheme() {
 
 function _applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    document.documentElement.setAttribute('data-bs-theme', theme);
     localStorage.setItem(GLOBAL_THEME_STORAGE_KEY, theme);
     _updateThemeToggleButton(theme);
     document.dispatchEvent(new CustomEvent('themeChange', { detail: { theme } }));
@@ -32,8 +31,8 @@ function _updateThemeToggleButton(theme) {
     const lightIcon = themeToggle.querySelector('.theme-icon-light');
     const darkIcon  = themeToggle.querySelector('.theme-icon-dark');
     if (lightIcon && darkIcon) {
-        lightIcon.classList.toggle('d-none', theme === 'dark');
-        darkIcon.classList.toggle('d-none', theme !== 'dark');
+        lightIcon.classList.toggle('hidden', theme === 'dark');
+        darkIcon.classList.toggle('hidden', theme !== 'dark');
     }
 
     // Label-based toggle (legacy / schedule_maker)

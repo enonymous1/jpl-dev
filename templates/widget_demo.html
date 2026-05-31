@@ -1,460 +1,152 @@
-{% extends "base.html" %}
-
-{% block title %}Widget Demo{% endblock %}
-
-{% block head %}
-<!-- GridStack CSS (widget demo page) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css"
-      integrity="sha384-mFz5n9wgd0+SC/vpgZlPLdXzBqgk5or9xi+9tNhtvaIXquRGMBR16IOo83TnOCgh" crossorigin="anonymous">
-{% endblock %}
+﻿{% extends "base.html" %}
+{% block title %}Components{% endblock %}
 
 {% block content %}
-<!-- Page Header -->
-<div class="container-fluid bg-primary text-white py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h1 class="display-5 fw-bold mb-3">Widget System Demo</h1>
-                <p class="lead">Showcase of reusable Bootstrap and GridStack widgets</p>
-            </div>
-        </div>
+<!-- Page header -->
+<div class="py-12" style="background:var(--bg-secondary)">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl font-bold mb-3">Component Library</h1>
+        <p class="text-lg" style="color:var(--text-secondary)">Reusable UI components powering the portfolio</p>
     </div>
 </div>
 
-<!-- Widget Controls -->
-<div class="container py-4">
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Widget Controls</h5>
-                    <div class="d-flex gap-2 flex-wrap">
-                        <button class="btn btn-primary" onclick="showDemoToast('Widget Demo', 'This is a demonstration toast notification!', 'success')">
-                            <i class="bi bi-bell me-2"></i>Show Toast
-                        </button>
-                        <button class="btn btn-info" onclick="showDemoModal()">
-                            <i class="bi bi-window me-2"></i>Show Modal
-                        </button>
-                        <button class="btn btn-success" onclick="addRandomWidget()">
-                            <i class="bi bi-plus-circle me-2"></i>Add Random Widget
-                        </button>
-                        <button class="btn btn-warning" onclick="animateAllWidgets()">
-                            <i class="bi bi-play-circle me-2"></i>Animate Widgets
-                        </button>
-                        <button class="btn btn-secondary" onclick="resetWidgets()">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Reset Layout
-                        </button>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+
+    <!-- ── Widget Cards ─────────────────────────────────────────────────────── -->
+    <section>
+        <h2 class="text-xl font-bold mb-4">Widget Cards</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+            <div class="widget-card">
+                <div class="widget-header bg-blue-600">
+                    <h6 class="font-semibold text-sm mb-0 flex items-center gap-2">
+                        <i class="bi bi-person-circle"></i>Profile Card
+                    </h6>
+                </div>
+                <div class="widget-body">
+                    <p class="text-sm" style="color:var(--text-secondary)">
+                        Themed card component with a coloured header band and a flex body.
+                        Works with any header colour utility.
+                    </p>
+                </div>
+            </div>
+
+            <div class="widget-card">
+                <div class="widget-header bg-green-600">
+                    <h6 class="font-semibold text-sm mb-0 flex items-center gap-2">
+                        <i class="bi bi-bar-chart"></i>Stats Card
+                    </h6>
+                </div>
+                <div class="widget-body">
+                    <div class="grid grid-cols-3 text-center gap-2">
+                        <div>
+                            <div class="text-xl font-bold text-blue-500">12+</div>
+                            <small class="text-xs" style="color:var(--text-secondary)">Projects</small>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold text-green-500">5+</div>
+                            <small class="text-xs" style="color:var(--text-secondary)">Years</small>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold text-amber-500">100+</div>
+                            <small class="text-xs" style="color:var(--text-secondary)">Commits</small>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="widget-card">
+                <div class="widget-header bg-cyan-600">
+                    <h6 class="font-semibold text-sm mb-0 flex items-center gap-2">
+                        <i class="bi bi-collection"></i>Info Card
+                    </h6>
+                </div>
+                <div class="widget-body">
+                    <p class="text-sm" style="color:var(--text-secondary)">
+                        Cards use CSS custom properties for background and border,
+                        so they automatically adapt to light &amp; dark themes.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ── Badges ───────────────────────────────────────────────────────────── -->
+    <section>
+        <h2 class="text-xl font-bold mb-4">Badges</h2>
+        <div class="widget-card">
+            <div class="widget-body flex flex-wrap gap-2">
+                <span class="badge-theme">Default</span>
+                <span class="badge-theme badge-primary">Primary</span>
+                <span class="badge-theme" style="background:#22c55e;color:#fff;border-color:#22c55e">Active</span>
+                <span class="badge-theme" style="background:#f59e0b;color:#000;border-color:#f59e0b">Featured</span>
+                <span class="badge-theme" style="background:#0ea5e9;color:#fff;border-color:#0ea5e9">Info</span>
+                <span class="badge-theme">Python</span>
+                <span class="badge-theme">JavaScript</span>
+                <span class="badge-theme">Flask</span>
+                <span class="badge-theme">Tailwind</span>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 
-<!-- GridStack Demo Container -->
-<div class="container-fluid">
-    <div class="container">
-        <div id="widget-demo-grid" class="grid-stack">
-            <!-- Stats Widget -->
-            <div class="grid-stack-item" gs-w="3" gs-h="3" gs-x="0" gs-y="0">
-                <div class="grid-stack-item-content card border-0 shadow-sm">
-                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-2">
-                        <h6 class="card-title mb-0 fw-semibold">
-                            <i class="bi bi-bar-chart me-2"></i>Demo Stats
-                        </h6>
-                        <button class="btn btn-sm text-white border-0 opacity-75" style="cursor: move;" title="Drag to move">
-                            <i class="bi bi-arrows-move"></i>
-                        </button>
-                    </div>
-                    <div class="card-body py-2">
-                        <div class="row text-center">
-                            <div class="col-6 mb-2">
-                                <div class="h5 text-primary mb-1 fw-bold stat-value" data-target="42">0</div>
-                                <small class="text-secondary">Widgets</small>
-                            </div>
-                            <div class="col-6 mb-2">
-                                <div class="h5 text-success mb-1 fw-bold stat-value" data-target="17">0</div>
-                                <small class="text-secondary">Components</small>
-                            </div>
-                        </div>
-                    </div>
+    <!-- ── Buttons ──────────────────────────────────────────────────────────── -->
+    <section>
+        <h2 class="text-xl font-bold mb-4">Buttons</h2>
+        <div class="widget-card">
+            <div class="widget-body flex flex-wrap gap-2">
+                <a href="#" class="repo-btn repo-btn-primary"><i class="bi bi-play-fill"></i>Primary</a>
+                <a href="#" class="repo-btn"><i class="bi bi-github"></i>Default</a>
+                <a href="#" class="repo-btn"><i class="bi bi-file-text"></i>Docs</a>
+                <a href="#" class="repo-btn"><i class="bi bi-arrow-right"></i>View</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Colour swatches ──────────────────────────────────────────────────── -->
+    <section>
+        <h2 class="text-xl font-bold mb-4">Header Colour Palette</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            {% for color, label in [('bg-blue-600','Blue'), ('bg-green-600','Green'), ('bg-cyan-600','Cyan'), ('bg-gray-600','Gray'), ('bg-amber-500','Amber'), ('bg-red-600','Red')] %}
+            <div class="widget-card">
+                <div class="widget-header {{ color }}">
+                    <span class="text-xs font-semibold">{{ label }}</span>
+                </div>
+                <div class="widget-body">
+                    <code class="text-xs" style="color:var(--text-secondary)">{{ color }}</code>
                 </div>
             </div>
+            {% endfor %}
+        </div>
+    </section>
 
-            <!-- Skills Widget -->
-            <div class="grid-stack-item" gs-w="3" gs-h="4" gs-x="3" gs-y="0">
-                <div class="grid-stack-item-content card border-0 shadow-sm">
-                    <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center py-2">
-                        <h6 class="card-title mb-0 fw-semibold">
-                            <i class="bi bi-code-slash me-2"></i>Demo Skills
-                        </h6>
-                        <button class="btn btn-sm text-white border-0 opacity-75" style="cursor: move;" title="Drag to move">
-                            <i class="bi bi-arrows-move"></i>
-                        </button>
+    <!-- ── Repo card example ────────────────────────────────────────────────── -->
+    <section>
+        <h2 class="text-xl font-bold mb-4">Repository Card</h2>
+        <div class="max-w-md">
+            <div class="repo-card" style="border-left-color:var(--primary-color)">
+                <div class="repo-card-body">
+                    <div class="repo-card-title">
+                        <span class="font-semibold text-sm">JPL Dev Portfolio</span>
+                        <span class="badge-theme">Python</span>
                     </div>
-                    <div class="card-body py-2">
-                        <div class="mb-2">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <small class="fw-semibold text-dark">Bootstrap</small>
-                                <small class="text-secondary">95%</small>
-                            </div>
-                            <div class="progress" style="height: 6px;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 95%"></div>
-                            </div>
+                    <p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:0.375rem">
+                        Personal portfolio site built with Flask, Tailwind CSS, and GitHub Pages.
+                    </p>
+                    <div class="repo-card-footer">
+                        <div>
+                            <span class="badge-theme mr-1">Flask</span>
+                            <span class="badge-theme mr-1">Tailwind</span>
                         </div>
-                        <div class="mb-2">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <small class="fw-semibold text-dark">GridStack</small>
-                                <small class="text-secondary">88%</small>
-                            </div>
-                            <div class="progress" style="height: 6px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 88%"></div>
-                            </div>
+                        <div>
+                            <a href="https://github.com/enonymous1/jpl-dev" class="repo-btn" target="_blank" rel="noopener"><i class="bi bi-github"></i></a>
+                            <a href="/projects/" class="repo-btn repo-btn-primary" style="margin-left:0.25rem">View <i class="bi bi-arrow-right"></i></a>
                         </div>
-                        <div class="mb-2">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <small class="fw-semibold text-dark">CSS</small>
-                                <small class="text-secondary">92%</small>
-                            </div>
-                            <div class="progress" style="height: 6px;">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: 92%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </div>
-
-            <!-- Social Widget -->
-            <div class="grid-stack-item" gs-w="3" gs-h="3" gs-x="6" gs-y="0">
-                <div class="grid-stack-item-content card border-0 shadow-sm">
-                    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center py-2">
-                        <h6 class="card-title mb-0 fw-semibold">
-                            <i class="bi bi-share me-2"></i>Demo Links
-                        </h6>
-                        <button class="btn btn-sm text-white border-0 opacity-75" style="cursor: move;" title="Drag to move">
-                            <i class="bi bi-arrows-move"></i>
-                        </button>
-                    </div>
-                    <div class="card-body py-2">
-                        <div class="d-grid gap-2">
-                            <a href="#" class="btn btn-outline-primary btn-sm">
-                                <i class="bi bi-github me-2"></i>GitHub
-                            </a>
-                            <a href="#" class="btn btn-outline-info btn-sm">
-                                <i class="bi bi-bootstrap me-2"></i>Bootstrap
-                            </a>
-                            <a href="#" class="btn btn-outline-warning btn-sm">
-                                <i class="bi bi-grid me-2"></i>GridStack
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Chart Widget -->
-            <div class="grid-stack-item" gs-w="3" gs-h="3" gs-x="9" gs-y="0">
-                <div class="grid-stack-item-content card border-0 shadow-sm">
-                    <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center py-2">
-                        <h6 class="card-title mb-0 fw-semibold">
-                            <i class="bi bi-bar-chart-line me-2"></i>Demo Chart
-                        </h6>
-                        <button class="btn btn-sm text-dark border-0 opacity-75" style="cursor: move;" title="Drag to move">
-                            <i class="bi bi-arrows-move"></i>
-                        </button>
-                    </div>
-                    <div class="card-body py-2 d-flex align-items-center justify-content-center">
-                        <canvas id="demoChart" width="180" height="120"></canvas>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
 </div>
-
-<!-- Demo Modal -->
-<div class="modal fade" id="demoModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Widget System Features</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <h6>Key Features:</h6>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>Bootstrap 5 Integration</li>
-                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>GridStack.js Drag & Drop</li>
-                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>Dark/Light Theme Support</li>
-                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>Responsive Design</li>
-                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>Reusable Components</li>
-                    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i>Animation Support</li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addRandomWidget()">Add Widget</button>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-{% block scripts %}
-<!-- GridStack JS (widget demo page) -->
-<script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"
-        integrity="sha384-ftO9ShHgwOSSt8aAu6JaFXeRSA6Knixye7YeN30HH/wBPbXVoe/vHZdZZ3U2LuRr" crossorigin="anonymous"></script>
-<script>
-// Demo-specific JavaScript
-let demoGrid;
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize demo grid
-    demoGrid = GridStack.init({
-        cellHeight: 120,
-        minRow: 1,
-        float: true,
-        resizable: {
-            handles: 'se'
-        },
-        draggable: {
-            handle: '.btn[style*="cursor: move"]'
-        },
-        margin: 10,
-        animate: true
-    }, '#widget-demo-grid');
-
-    // Draw demo chart
-    drawDemoChart();
-});
-
-function showDemoToast(title, message, type) {
-    BootstrapUtils.showToast(
-        title  || 'Widget Demo', 
-        message || 'This is a demonstration toast notification!', 
-        type   || 'success'
-    );
-}
-
-function showDemoModal() {
-    const modal = new bootstrap.Modal(document.getElementById('demoModal'));
-    modal.show();
-}
-
-function addRandomWidget() {
-    const widgetTypes = ['stats', 'skills', 'social', 'profile'];
-    const randomType = widgetTypes[Math.floor(Math.random() * widgetTypes.length)];
-    
-    if (window.widgetManager) {
-        // Use widget manager if available
-        const config = getRandomWidgetConfig(randomType);
-        window.widgetManager.createWidget(randomType, config);
-    } else {
-        // Create widget directly in demo grid
-        const widgetHTML = createDemoWidget(randomType);
-        const gridOptions = {
-            w: 3,
-            h: 3,
-            content: `<div class="grid-stack-item-content card border-0 shadow-sm">${widgetHTML}</div>`
-        };
-        demoGrid.addWidget(gridOptions);
-    }
-    
-    showDemoToast('Widget Added', `New ${randomType} widget added to grid!`, 'info');
-}
-
-function getRandomWidgetConfig(type) {
-    const configs = {
-        stats: {
-            title: 'Random Stats',
-            stats: [
-                { label: 'Views', value: Math.floor(Math.random() * 1000) },
-                { label: 'Clicks', value: Math.floor(Math.random() * 500) }
-            ]
-        },
-        skills: {
-            title: 'Random Skills',
-            skills: [
-                { name: 'Skill A', level: Math.floor(Math.random() * 100) },
-                { name: 'Skill B', level: Math.floor(Math.random() * 100) }
-            ]
-        },
-        social: {
-            title: 'Random Links',
-            links: [
-                { name: 'Link 1', url: '#', icon: 'link' },
-                { name: 'Link 2', url: '#', icon: 'link' }
-            ]
-        },
-        profile: {
-            title: 'Random Profile',
-            name: 'Demo User',
-            description: 'A randomly generated profile widget'
-        }
-    };
-    
-    return configs[type] || {};
-}
-
-function createDemoWidget(type) {
-    const id = 'demo-widget-' + Date.now();
-    
-    switch (type) {
-        case 'stats':
-            return `
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
-                    <h6 class="card-title mb-0 fw-semibold">
-                        <i class="bi bi-bar-chart me-2"></i>Random Stats
-                    </h6>
-                    <button class="btn btn-sm text-white border-0" onclick="removeDemoWidget(this)" title="Remove widget">
-                        <i class="bi bi-x"></i>
-                    </button>
-                </div>
-                <div class="card-body py-2">
-                    <div class="row text-center">
-                        <div class="col-6 mb-2">
-                            <div class="h5 text-primary mb-1 fw-bold">${Math.floor(Math.random() * 100)}</div>
-                            <small class="text-secondary">Random A</small>
-                        </div>
-                        <div class="col-6 mb-2">
-                            <div class="h5 text-success mb-1 fw-bold">${Math.floor(Math.random() * 100)}</div>
-                            <small class="text-secondary">Random B</small>
-                        </div>
-                    </div>
-                </div>
-            `;
-        case 'skills':
-            return `
-                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center py-2">
-                    <h6 class="card-title mb-0 fw-semibold">
-                        <i class="bi bi-code-slash me-2"></i>Random Skills
-                    </h6>
-                    <button class="btn btn-sm text-white border-0" onclick="removeDemoWidget(this)" title="Remove widget">
-                        <i class="bi bi-x"></i>
-                    </button>
-                </div>
-                <div class="card-body py-2">
-                    <div class="mb-2">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <small class="fw-semibold text-dark">Skill A</small>
-                            <small class="text-secondary">${Math.floor(Math.random() * 100)}%</small>
-                        </div>
-                        <div class="progress" style="height: 6px;">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: ${Math.floor(Math.random() * 100)}%"></div>
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <small class="fw-semibold text-dark">Skill B</small>
-                            <small class="text-secondary">${Math.floor(Math.random() * 100)}%</small>
-                        </div>
-                        <div class="progress" style="height: 6px;">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: ${Math.floor(Math.random() * 100)}%"></div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        case 'social':
-            return `
-                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center py-2">
-                    <h6 class="card-title mb-0 fw-semibold">
-                        <i class="bi bi-share me-2"></i>Random Links
-                    </h6>
-                    <button class="btn btn-sm text-white border-0" onclick="removeDemoWidget(this)" title="Remove widget">
-                        <i class="bi bi-x"></i>
-                    </button>
-                </div>
-                <div class="card-body py-2">
-                    <div class="d-grid gap-2">
-                        <a href="#" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-link me-2"></i>Link 1
-                        </a>
-                        <a href="#" class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-link me-2"></i>Link 2
-                        </a>
-                    </div>
-                </div>
-            `;
-        default:
-            return `
-                <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center py-2">
-                    <h6 class="card-title mb-0 fw-semibold">
-                        <i class="bi bi-widget me-2"></i>Demo Widget
-                    </h6>
-                    <button class="btn btn-sm text-white border-0" onclick="removeDemoWidget(this)" title="Remove widget">
-                        <i class="bi bi-x"></i>
-                    </button>
-                </div>
-                <div class="card-body py-2">
-                    <p class="mb-0 text-dark">This is a demo ${type} widget!</p>
-                </div>
-            `;
-    }
-}
-
-function removeDemoWidget(button) {
-    const widget = button.closest('.grid-stack-item');
-    if (widget && demoGrid) {
-        demoGrid.removeWidget(widget);
-        showDemoToast('Widget Removed', 'Widget removed from grid!', 'warning');
-    }
-}
-
-function animateAllWidgets() {
-    // Animate stat values
-    document.querySelectorAll('.stat-value').forEach(el => {
-        const target = parseInt(el.dataset.target) || parseInt(el.textContent);
-        WidgetAnimations.countUp(el, target);
-    });
-    
-    // Animate progress bars
-    document.querySelectorAll('.widget-skills').forEach(widget => {
-        WidgetAnimations.animateProgressBars(widget);
-    });
-    
-    showDemoToast('Animation Started', 'All widgets are being animated!', 'info');
-}
-
-function resetWidgets() {
-    if (demoGrid) {
-        demoGrid.removeAll();
-        location.reload(); // Simple reset - reload the page
-    }
-}
-
-function drawDemoChart() {
-    const canvas = document.getElementById('demoChart');
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    const colors = ThemeAwareUtils.getThemeColors();
-    
-    // Simple bar chart
-    const data = [30, 50, 80, 40, 70];
-    const maxValue = Math.max(...data);
-    const barWidth = canvas.width / data.length - 10;
-    
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    data.forEach((value, index) => {
-        const barHeight = (value / maxValue) * (canvas.height - 20);
-        const x = index * (barWidth + 10) + 5;
-        const y = canvas.height - barHeight - 10;
-        
-        ctx.fillStyle = colors.primary;
-        ctx.fillRect(x, y, barWidth, barHeight);
-        
-        // Add value labels
-        ctx.fillStyle = colors.dark;
-        ctx.font = '12px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText(value, x + barWidth/2, y - 5);
-    });
-}
-
-// Redraw chart on theme change
-document.addEventListener('themeChange', function() {
-    setTimeout(drawDemoChart, 100);
-});
-</script>
 {% endblock %}

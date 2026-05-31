@@ -6,21 +6,21 @@
 {% endblock %}
 
 {% block header_actions %}
-    <div class="btn-group" role="group">
-        <button id="new-schedule-btn" class="btn btn-outline-light btn-sm" title="Create new schedule">
+    <div class="flex items-center gap-0.5">
+        <button id="new-schedule-btn" class="p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors" title="Create new schedule">
             <i class="bi bi-file-earmark-plus"></i>
         </button>
-        <button id="save-schedule-btn" class="btn btn-outline-light btn-sm" title="Save schedule">
+        <button id="save-schedule-btn" class="p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors" title="Save schedule">
             <i class="bi bi-save"></i>
         </button>
-        <button id="export-schedule-btn" class="btn btn-outline-light btn-sm" title="Export schedule">
+        <button id="export-schedule-btn" class="p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors" title="Export schedule">
             <i class="bi bi-box-arrow-up-right"></i>
         </button>
-        <button id="import-schedule-btn" class="btn btn-outline-light btn-sm" title="Import schedule">
+        <button id="import-schedule-btn" class="p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors" title="Import schedule">
             <i class="bi bi-box-arrow-in-up"></i>
         </button>
     </div>
-    <input type="file" id="import-schedule-file" accept=".json,application/json" style="display:none;" />
+    <input type="file" id="import-schedule-file" accept=".json,application/json" class="hidden" />
 {% endblock %}
 
 {% block head %}

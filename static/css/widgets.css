@@ -12,7 +12,6 @@
 
 .grid-stack-item {
     border-radius: 0.75rem;
-    overflow: hidden;
 }
 
 .grid-stack-item-content {
@@ -21,15 +20,65 @@
     border-radius: 0.75rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     transition: all 0.3s ease;
-    height: 100%;
+    height: calc(100% - 30px);
     overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 
-.grid-stack-item-content:hover {
+/* Override GridStack's injected style that sets overflow-y: auto on .grid-stack-item-content,
+   which would otherwise break the rounded-corner clipping. */
+.grid-stack > .grid-stack-item > .grid-stack-item-content {
+    overflow: hidden !important;
+}
+
+/* Clip card children (e.g. colored card-header backgrounds) to the card's own border-radius.
+   padding/margin reset overrides the global .card rule in components.css which adds 2rem
+   padding and margin, inflating widget cards and causing content to be clipped. */
+.grid-stack-item-content .card {
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+body.edit-mode .grid-stack-item-content:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Drag handle invisible in view mode (but still takes up space to prevent header resize),
+   visible in edit mode */
+.card-header .widget-handle {
+    visibility: hidden;
+    pointer-events: none;
+}
+body.edit-mode .card-header .widget-handle {
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Edit mode: subtle snap grid dot visualization — rendered over widgets, pointer-events off */
+body.edit-mode #grid-stack-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Dot at every column × row intersection — matches GridStack's 12-col / 120px-row snap grid */
+    background-image: radial-gradient(
+        circle,
+        rgba(var(--primary-color-rgb), 0.25) 1.5px,
+        transparent 1.5px
+    );
+    background-size: calc(100% / var(--gs-cols, 12)) var(--gs-cell-height, 120px);
+    background-position: 0 0;
+    pointer-events: none;
+    z-index: 100;
+    border-radius: inherit;
+    animation: gsGridFadeIn 0.3s ease forwards;
+}
+
+@keyframes gsGridFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 /* .widget and .widget-header removed — now authoritative in widget-system.css (G1c) */
@@ -266,14 +315,7 @@
     text-decoration: underline;
 }
 
-/* Project Content Visibility */
-.projects-content {
-    display: none;
-}
-
-.projects-content.active {
-    display: block;
-}
+/* Project Content Visibility: toggled via Bootstrap d-none class */
 
 /* Skills Widget */
 .widget-skills .skills-grid {

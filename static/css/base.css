@@ -13,5 +13,4 @@ body {
     display: flex;
     flex-direction: column;
 }
-main { flex: 1; overflow-y: auto; display: block; }
-.container { padding: 2rem; }
+main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding-bottom: 42px; }

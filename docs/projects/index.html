@@ -1,21 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+﻿﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Projects - JPL-DEV</title>
-    
-    <!-- Bootstrap CSS (SRI hashes computed from cdn.jsdelivr.net for these exact versions) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- Bootstrap Icons (kept independently of Bootstrap CSS) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet"
           integrity="sha384-DeN988K4Vg0cDrUgVHjrVM0+ogMrXsv0AZYIH40/9VGpjC7zi8TFGdnPwL1EkU/T" crossorigin="anonymous">
-    <!-- GridStack CSS is loaded per-page (index.html, widget_demo.html) via the head block -->
-    
-    <!-- Custom CSS -->
+
+    <!-- Tailwind CSS (built via CLI; see tailwind.config.js + static/css/tailwind.input.css) -->
+    <link rel="stylesheet" href="/static/css/tailwind.css">
+
+    <!-- Custom CSS (theme variables, typography, project-specific) -->
     <link rel="stylesheet" href="/static/css/variables.css">
-    <link rel="stylesheet" href="/static/css/bootstrap-theme.css">
-    <link rel="stylesheet" href="/static/css/widgets.css">
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/layout.css">
     <link rel="stylesheet" href="/static/css/components.css">
@@ -23,364 +21,359 @@
     <link rel="stylesheet" href="/static/css/checklist.css">
     <link rel="stylesheet" href="/static/css/theme-toggle.css">
     <link rel="stylesheet" href="/static/css/projects.css">
-    <link rel="stylesheet" href="/static/css/widget-system.css">
 
+    <!-- Flash the correct theme before first paint to prevent flicker -->
     <script>
         (function() {
             try {
-                const storageKey = 'jpl_dev_global_theme';
-                const savedTheme = window.localStorage.getItem(storageKey);
-                const defaultTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
-                    ? 'dark'
-                    : 'light';
-                const theme = savedTheme || defaultTheme;
+                const saved = window.localStorage.getItem('jpl_dev_global_theme');
+                const sys = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+                const theme = saved || sys;
                 document.documentElement.setAttribute('data-theme', theme);
-                document.documentElement.setAttribute('data-bs-theme', theme);
-            } catch (e) {
-                console.warn('Theme initialization failed:', e);
-            }
+            } catch (e) {}
         })();
     </script>
-    
+
     
 </head>
 <body>
-    <!-- Bootstrap Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="main-navbar">
-        <div class="container-fluid">
-            <!-- Mobile menu toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <!-- Brand/Logo -->
-            <a class="navbar-brand fw-bold" href="/">
-                <i class="bi bi-code-square me-2"></i>JPL-DEV
-            </a>
-            
-            <!-- Navigation Links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link " href="/">
-                            <i class="bi bi-house-door me-1"></i>Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/projects/">
-                            <i class="bi bi-collection me-1"></i>Projects
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="/widget-demo/">
-                            <i class="bi bi-grid-3x3-gap me-1"></i>Widget Demo
-                        </a>
-                    </li>
-                </ul>
-                
-                <!-- Header Actions -->
-                <div class="d-flex align-items-center gap-2">
+    <!-- ── Navigation ─────────────────────────────────────────────────────── -->
+    <nav class="sticky top-0 z-50 bg-gray-900 text-white shadow-md" id="main-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14">
+
+                <!-- Brand + mobile hamburger -->
+                <div class="flex items-center gap-3">
+                    <button id="nav-toggle"
+                            class="lg:hidden p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
+                            aria-label="Toggle navigation">
+                        <i class="bi bi-list text-xl"></i>
+                    </button>
+                    <a class="text-white font-bold text-lg flex items-center gap-2 hover:text-gray-200 transition-colors no-underline"
+                       href="/">
+                        <i class="bi bi-code-square"></i>JPL-DEV
+                    </a>
+                </div>
+
+                <!-- Desktop nav links -->
+                <div class="hidden lg:flex items-center gap-1">
+                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                              text-gray-300 hover:text-white hover:bg-gray-700"
+                       href="/">
+                        <i class="bi bi-house-door mr-1"></i>Home
+                    </a>
+                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                              bg-gray-700 text-white"
+                       href="/projects/">
+                        <i class="bi bi-collection mr-1"></i>Projects
+                    </a>
+                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                              text-gray-300 hover:text-white hover:bg-gray-700"
+                       href="/widget-demo/">
+                        <i class="bi bi-grid-3x3-gap mr-1"></i>Components
+                    </a>
+                </div>
+
+                <!-- Right: page-specific actions + theme toggle -->
+                <div class="flex items-center gap-1">
                     
-                    
-                    <!-- Theme Toggle -->
-                    <button id="theme-toggle" type="button" class="btn btn-outline-light btn-sm" title="Toggle theme" aria-label="Toggle theme" aria-pressed="false">
+
+                    <!-- Theme toggle -->
+                    <button id="theme-toggle" type="button"
+                            class="p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
+                            title="Toggle theme" aria-label="Toggle theme" aria-pressed="false">
                         <i class="bi bi-sun theme-icon-light"></i>
-                        <i class="bi bi-moon theme-icon-dark d-none"></i>
+                        <i class="bi bi-moon theme-icon-dark hidden"></i>
                     </button>
                 </div>
             </div>
         </div>
-    </nav>
 
-    <!-- Main Content Container -->
-    <main class="container-fluid">
-        
-<!-- Page Header -->
-<div class="container-fluid bg-theme-surface py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h1 class="display-5 fw-bold mb-3">My Projects</h1>
-                <p class="lead text-muted">A showcase of my development work and technical skills</p>
+        <!-- Mobile nav menu (collapsed by default) -->
+        <div id="nav-menu" class="hidden lg:hidden border-t border-gray-700">
+            <div class="px-4 py-2 space-y-0.5">
+                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                          text-gray-300 hover:text-white hover:bg-gray-700"
+                   href="/">
+                    <i class="bi bi-house-door"></i>Home
+                </a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                          bg-gray-700 text-white"
+                   href="/projects/">
+                    <i class="bi bi-collection"></i>Projects
+                </a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline
+                          text-gray-300 hover:text-white hover:bg-gray-700"
+                   href="/widget-demo/">
+                    <i class="bi bi-grid-3x3-gap"></i>Components
+                </a>
             </div>
         </div>
+    </nav>
+
+    <!-- ── Main content ────────────────────────────────────────────────────── -->
+    <main>
+        
+<!-- Page header -->
+<div class="py-12" style="background:var(--bg-secondary)">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl font-bold mb-3">My Projects</h1>
+        <p class="text-lg" style="color:var(--text-secondary)">A showcase of my development work and technical skills</p>
     </div>
 </div>
 
-<!-- Projects Grid -->
-<div class="container py-5">
-    <div class="row g-4">
+<!-- Projects grid -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
         
-        <div class="col-lg-4 col-md-6">
-            <div class="card h-100 border-0 shadow-sm">
+        <div class="widget-card flex flex-col">
+
+            
+            <div class="overflow-hidden">
+                <img src="/static/images/projects/gsa_checklist_hero.svg"
+                     alt="GSA MAS Checklist main interface showing checklist items and progress"
+                     class="w-full object-cover transition-transform duration-300 hover:scale-105"
+                     style="height:200px;"
+                     loading="lazy">
+            </div>
+            
+
+            <!-- Card title row -->
+            <div class="flex items-start justify-between px-4 pt-4 pb-1 gap-2">
+                <h5 class="font-semibold text-base mb-0">Interactive GSA MAS New Offeror Checklist</h5>
+                <span class="flex-shrink-0 inline-block px-2 py-0.5 rounded text-xs font-medium
+                    bg-green-600 text-white
+                    ">
+                    Active
+                </span>
+            </div>
+
+            <!-- Card body -->
+            <div class="widget-body flex-1 flex flex-col">
+                <p class="text-sm mb-3" style="color:var(--text-secondary)">A comprehensive interactive checklist for GSA Multiple Award Schedule (MAS) offer preparation. Streamlines the complex federal contracting process with an intuitive, step-by-step interface.</p>
+
                 
-                <div class="card-img-top overflow-hidden">
-                    <img src="/static/images/projects/gsa_checklist_hero.svg" 
-                         alt="GSA MAS Checklist main interface showing checklist items and progress"
-                         class="img-fluid w-100"
-                         style="height: 200px; object-fit: cover; transition: transform 0.3s ease;"
-                         loading="lazy">
-                </div>
-                
-                
-                <div class="card-header border-0 bg-transparent">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <h5 class="card-title mb-0">Interactive GSA MAS New Offeror Checklist</h5>
-                        <span class="badge 
-                            bg-success
-                            ">
-                            Active
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-body">
-                    <p class="card-text text-muted">A comprehensive interactive checklist for GSA Multiple Award Schedule (MAS) offer preparation. Streamlines the complex federal contracting process with an intuitive, step-by-step interface.</p>
-                    
-                    
-                    <div class="mb-3">
-                        <h6 class="fw-semibold mb-2">Features:</h6>
-                        <ul class="list-unstyled">
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Step-by-step checklist validation with progress tracking</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>SINs selection with advanced filtering and search</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Rich text notes management with Quill editor</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Complete data export/import capabilities (JSON/Excel)</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Dark/light theme support with system preference detection</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Local storage persistence for work-in-progress</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Responsive design for desktop and mobile use</small>
-                            </li>
-                            
-                        </ul>
-                    </div>
-                    
-                    
-                    
-                    <div class="mb-3">
-                        <h6 class="fw-semibold mb-2">Technologies:</h6>
-                        <div class="d-flex flex-wrap gap-1">
-                            
-                            <span class="badge badge-theme border">Flask</span>
-                            
-                            <span class="badge badge-theme border">JavaScript</span>
-                            
-                            <span class="badge badge-theme border">Quill.js</span>
-                            
-                            <span class="badge badge-theme border">CSS Grid</span>
-                            
-                            <span class="badge badge-theme border">Local Storage</span>
-                            
-                            <span class="badge badge-theme border">JSON</span>
-                            
-                            <span class="badge badge-theme border">Excel Export</span>
-                            
-                        </div>
-                    </div>
-                    
-                </div>
-                
-                <div class="card-footer border-0 bg-transparent">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group" role="group">
-                            
-                                <a href="/projects/gsa-mas-checklist/" class="btn btn-primary btn-sm">
-                                    <i class="bi bi-play-fill me-1"></i>Open Project
-                                </a>
-                            
-                        </div>
+                <div class="mb-3">
+                    <h6 class="font-semibold text-sm mb-2">Features:</h6>
+                    <ul class="space-y-1 list-none p-0 m-0">
                         
-                        <div class="d-flex gap-2">
-                            
-                            <a href="https://github.com/enonymous1/jpl-dev" class="btn btn-outline-dark btn-sm" target="_blank" rel="noopener" title="View on GitHub">
-                                <i class="bi bi-github"></i>
-                            </a>
-                            
-                            
-                            
-                            <a href="https://github.com/enonymous1/jpl-dev/blob/main/projects/gsa_mas_checklist/README.md" class="btn btn-outline-secondary btn-sm" target="_blank" rel="noopener" title="Documentation">
-                                <i class="bi bi-file-text"></i>
-                            </a>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-4 col-md-6">
-            <div class="card h-100 border-0 shadow-sm">
-                
-                <div class="card-img-top overflow-hidden">
-                    <img src="/static/images/projects/schedule_maker_hero.svg" 
-                         alt="Schedule Maker main interface with weekly view and event creation"
-                         class="img-fluid w-100"
-                         style="height: 200px; object-fit: cover; transition: transform 0.3s ease;"
-                         loading="lazy">
-                </div>
-                
-                
-                <div class="card-header border-0 bg-transparent">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <h5 class="card-title mb-0">Interactive Schedule Maker</h5>
-                        <span class="badge 
-                            bg-warning
-                            ">
-                            Development
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-body">
-                    <p class="card-text text-muted">A comprehensive schedule creation and management tool with drag-and-drop functionality, multiple view modes, and export capabilities.</p>
-                    
-                    
-                    <div class="mb-3">
-                        <h6 class="fw-semibold mb-2">Features:</h6>
-                        <ul class="list-unstyled">
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Multiple view modes (Day, Week, Month)</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Drag-and-drop event creation and editing</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Color-coded event categorization</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Real-time schedule conflict detection</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Export to JSON and calendar formats</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Local storage for data persistence</small>
-                            </li>
-                            
-                            <li class="mb-1">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                <small>Responsive design for all devices</small>
-                            </li>
-                            
-                        </ul>
-                    </div>
-                    
-                    
-                    
-                    <div class="mb-3">
-                        <h6 class="fw-semibold mb-2">Technologies:</h6>
-                        <div class="d-flex flex-wrap gap-1">
-                            
-                            <span class="badge badge-theme border">Flask</span>
-                            
-                            <span class="badge badge-theme border">JavaScript ES6+</span>
-                            
-                            <span class="badge badge-theme border">CSS Grid</span>
-                            
-                            <span class="badge badge-theme border">Local Storage</span>
-                            
-                            <span class="badge badge-theme border">Canvas API</span>
-                            
-                        </div>
-                    </div>
-                    
-                </div>
-                
-                <div class="card-footer border-0 bg-transparent">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group" role="group">
-                            
-                                <a href="/projects/schedule-maker/" class="btn btn-primary btn-sm">
-                                    <i class="bi bi-play-fill me-1"></i>Open Project
-                                </a>
-                            
-                        </div>
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Step-by-step checklist validation with progress tracking
+                        </li>
                         
-                        <div class="d-flex gap-2">
-                            
-                            <a href="https://github.com/enonymous1/jpl-dev" class="btn btn-outline-dark btn-sm" target="_blank" rel="noopener" title="View on GitHub">
-                                <i class="bi bi-github"></i>
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>SINs selection with advanced filtering and search
+                        </li>
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Rich text notes management with Quill editor
+                        </li>
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Complete data export/import capabilities (JSON/Excel)
+                        </li>
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Dark/light theme support with system preference detection
+                        </li>
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Local storage persistence for work-in-progress
+                        </li>
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Responsive design for desktop and mobile use
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+
+                
+                <div class="mb-3">
+                    <h6 class="font-semibold text-sm mb-2">Technologies:</h6>
+                    <div class="flex flex-wrap gap-1">
+                        
+                        <span class="badge-theme">Flask</span>
+                        
+                        <span class="badge-theme">JavaScript</span>
+                        
+                        <span class="badge-theme">Quill.js</span>
+                        
+                        <span class="badge-theme">CSS Grid</span>
+                        
+                        <span class="badge-theme">Local Storage</span>
+                        
+                        <span class="badge-theme">JSON</span>
+                        
+                        <span class="badge-theme">Excel Export</span>
+                        
+                    </div>
+                </div>
+                
+
+                <!-- Push footer to bottom of card -->
+                <div class="mt-auto pt-3 flex items-center justify-between"
+                     style="border-top:1px solid var(--border-color)">
+                    <div>
+                        
+                            <a href="/projects/gsa-mas-checklist/" class="repo-btn repo-btn-primary">
+                                <i class="bi bi-play-fill"></i>Open Project
                             </a>
-                            
-                            
-                            
-                            <a href="https://github.com/enonymous1/jpl-dev/blob/main/projects/schedule_maker/README.md" class="btn btn-outline-secondary btn-sm" target="_blank" rel="noopener" title="Documentation">
-                                <i class="bi bi-file-text"></i>
-                            </a>
-                            
-                        </div>
+                        
+                    </div>
+                    <div class="flex gap-1">
+                        
+                        <a href="https://github.com/enonymous1/jpl-dev" class="repo-btn" target="_blank" rel="noopener" title="GitHub">
+                            <i class="bi bi-github"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/enonymous1/jpl-dev/blob/main/projects/gsa_mas_checklist/README.md" class="repo-btn" target="_blank" rel="noopener" title="Documentation">
+                            <i class="bi bi-file-text"></i>
+                        </a>
+                        
                     </div>
                 </div>
             </div>
         </div>
         
-        
-        <!-- Coming Soon Card -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card h-100 border-2 border-dashed">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center py-5">
-                    <i class="bi bi-plus-circle display-1 text-muted mb-3"></i>
-                    <h5 class="text-muted">More Projects Coming Soon</h5>
-                    <p class="text-muted small">Stay tuned for additional projects and tools</p>
+        <div class="widget-card flex flex-col">
+
+            
+            <div class="overflow-hidden">
+                <img src="/static/images/projects/schedule_maker_hero.svg"
+                     alt="Schedule Maker main interface with weekly view and event creation"
+                     class="w-full object-cover transition-transform duration-300 hover:scale-105"
+                     style="height:200px;"
+                     loading="lazy">
+            </div>
+            
+
+            <!-- Card title row -->
+            <div class="flex items-start justify-between px-4 pt-4 pb-1 gap-2">
+                <h5 class="font-semibold text-base mb-0">Interactive Schedule Maker</h5>
+                <span class="flex-shrink-0 inline-block px-2 py-0.5 rounded text-xs font-medium
+                    bg-amber-500 text-white
+                    ">
+                    Development
+                </span>
+            </div>
+
+            <!-- Card body -->
+            <div class="widget-body flex-1 flex flex-col">
+                <p class="text-sm mb-3" style="color:var(--text-secondary)">A comprehensive schedule creation and management tool with drag-and-drop functionality, multiple view modes, and export capabilities.</p>
+
+                
+                <div class="mb-3">
+                    <h6 class="font-semibold text-sm mb-2">Features:</h6>
+                    <ul class="space-y-1 list-none p-0 m-0">
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Multiple view modes (Day, Week, Month)
+                        </li>
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Drag-and-drop event creation and editing
+                        </li>
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Color-coded event categorization
+                        </li>
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Real-time schedule conflict detection
+                        </li>
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Export to JSON and calendar formats
+                        </li>
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Local storage for data persistence
+                        </li>
+                        
+                        <li class="flex items-start gap-1.5 text-sm">
+                            <i class="bi bi-check-circle-fill text-green-500 flex-shrink-0 mt-0.5"></i>Responsive design for all devices
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+
+                
+                <div class="mb-3">
+                    <h6 class="font-semibold text-sm mb-2">Technologies:</h6>
+                    <div class="flex flex-wrap gap-1">
+                        
+                        <span class="badge-theme">Flask</span>
+                        
+                        <span class="badge-theme">JavaScript ES6+</span>
+                        
+                        <span class="badge-theme">CSS Grid</span>
+                        
+                        <span class="badge-theme">Local Storage</span>
+                        
+                        <span class="badge-theme">Canvas API</span>
+                        
+                    </div>
+                </div>
+                
+
+                <!-- Push footer to bottom of card -->
+                <div class="mt-auto pt-3 flex items-center justify-between"
+                     style="border-top:1px solid var(--border-color)">
+                    <div>
+                        
+                            <a href="/projects/schedule-maker/" class="repo-btn repo-btn-primary">
+                                <i class="bi bi-play-fill"></i>Open Project
+                            </a>
+                        
+                    </div>
+                    <div class="flex gap-1">
+                        
+                        <a href="https://github.com/enonymous1/jpl-dev" class="repo-btn" target="_blank" rel="noopener" title="GitHub">
+                            <i class="bi bi-github"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/enonymous1/jpl-dev/blob/main/projects/schedule_maker/README.md" class="repo-btn" target="_blank" rel="noopener" title="Documentation">
+                            <i class="bi bi-file-text"></i>
+                        </a>
+                        
+                    </div>
                 </div>
             </div>
         </div>
+        
+
+        <!-- Coming soon card -->
+        <div class="widget-card flex flex-col items-center justify-center text-center py-16">
+            <i class="bi bi-plus-circle text-5xl mb-3" style="color:var(--text-secondary)"></i>
+            <h5 class="font-medium mb-1" style="color:var(--text-secondary)">More Projects Coming Soon</h5>
+            <p class="text-sm" style="color:var(--text-secondary)">Stay tuned for additional projects and tools</p>
+        </div>
+
     </div>
 </div>
 
     </main>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <!-- GridStack JS is loaded per-page (index.html, widget_demo.html) via the scripts block -->
+    
 
-    <!-- Global Scripts -->
-    <script src="/static/js/widget-manager.js"></script>
-    <script src="/static/js/widget-utils.js"></script>
+    <!-- Global scripts -->
     <script src="/static/script.js"></script>
     <script src="/static/global-theme.js"></script>
     
-    
-    <!-- File input for import functionality (only on GSA MAS checklist page) -->
+
+    <!-- Mobile nav toggle (vanilla JS, no framework required) -->
+    <script>
+        document.getElementById('nav-toggle')?.addEventListener('click', function () {
+            document.getElementById('nav-menu').classList.toggle('hidden');
+        });
+    </script>
+
     
 </body>
 </html>

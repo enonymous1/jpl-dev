@@ -246,7 +246,7 @@
 }
 
 .card-header {
-    border-radius: 0.5rem 0.5rem 0 0 !important;
+    border-radius: 0.5rem !important;
     border-bottom: none !important;
     font-weight: 600;
 }
