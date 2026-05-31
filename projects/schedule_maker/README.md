@@ -55,12 +55,15 @@ projects/schedule_maker/
 ├── README.md                    # This documentation
 ├── __init__.py                  # Blueprint initialization
 ├── routes.py                    # Flask route (renders template, no API endpoints)
+├── tailwind.config.js           # Tailwind CLI config (content paths, safelist, preflight off)
+├── tailwind.input.css           # Tailwind source (@tailwind base/components/utilities)
 └── templates/
     └── schedule_maker.html      # Main application template
 
 static/projects/schedule_maker/
 ├── script.js                    # ✅ ACTIVE — main application logic
-└── style.css                    # ✅ ACTIVE — project-specific styles
+├── style.css                    # ✅ ACTIVE — project-specific styles
+└── tailwind.css                 # Generated — do not edit; rebuild with CLI (see below)
 ```
 
 ## 🚦 Getting Started
@@ -145,6 +148,21 @@ python app.py
 # Access the application
 http://localhost:5000/projects/schedule-maker
 ```
+
+### Rebuilding Tailwind CSS
+
+The Schedule Maker uses the [Tailwind CLI](https://tailwindcss.com/docs/installation) (not the Play CDN).
+Run this from the repo root after modifying `schedule_maker.html` or `script.js`:
+
+```bash
+npx tailwindcss@3 \
+  -c projects/schedule_maker/tailwind.config.js \
+  -i projects/schedule_maker/tailwind.input.css \
+  -o static/projects/schedule_maker/tailwind.css \
+  --minify
+```
+
+CI (`deploy.yml`) runs this automatically on every push.
 
 ## 🎨 Customization
 

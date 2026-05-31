@@ -45,9 +45,10 @@ jobs:
     - name: Generate Tailwind CSS
       run: |
         npx --yes tailwindcss@3 \
-          -i static/projects/schedule_maker/tailwind.input.css \
+          -c projects/schedule_maker/tailwind.config.js \
+          -i projects/schedule_maker/tailwind.input.css \
           -o static/projects/schedule_maker/tailwind.css \
-          --minify --config tailwind.config.js
+          --minify
 
     - name: Generate static site
       run: |
