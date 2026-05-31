@@ -8,7 +8,7 @@ order, so the site can render without any runtime backend dependencies.
 """
 
 from datetime import datetime
-from config.models import AboutMe, ProjectCategory, ProjectData, ProjectLinks, ProjectImage, ProjectStatus
+from config.models import AboutMe, Skill, ProjectCategory, ProjectData, ProjectLinks, ProjectImage, ProjectStatus
 
 
 # ========================================================================
@@ -140,8 +140,26 @@ PROJECTS_SORTED = tuple(sorted(
 # ========================================================================
 ABOUT_ME = AboutMe(
     name="Justin P. Lyons",
-    title="IT Manager & Software Developer",
-    bio="Results-driven IT Manager with expertise in software development and team leadership.",
+    title="IT Manager | Mobile Application Development",
+    bio=(
+        "IT Manager with AS & BS in Computer Science, specializing in Mobile Application "
+        "Development. Blending hands-on technical expertise with leadership to deliver "
+        "innovative solutions and drive technology forward."
+    ),
     profile_image="images/profile.svg",
-    badges=["Bachelor's CS", "Mobile Dev"],
+    badges=["AS & BS in CS", "Mobile Dev"],
+    highlights=[
+        "IT Manager passionate about technology and people",
+        "AS & BS in Computer Science, Mobile Application Development focus",
+        "Enthusiastic about creating impactful mobile experiences",
+        "Always learning and exploring new tech frontiers",
+    ],
+    skills=[
+        Skill("Python",     90, "info"),
+        Skill("JavaScript", 88, "warning"),
+        Skill("Java",       85, "danger"),
+        Skill("Kotlin",     80, "success"),
+        Skill("Swift",      75, "primary"),
+        Skill("Flask",      88, "secondary"),
+    ],
 )

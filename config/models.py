@@ -193,6 +193,14 @@ class ProjectData:
 
 
 @dataclass
+class Skill:
+    """A single skill entry for display in the Core Skills widget."""
+    name: str
+    level: int  # 0–100
+    color: str = "primary"  # Bootstrap color name for the progress bar
+
+
+@dataclass
 class AboutMe:
     """Static profile data rendered on the homepage About Me widget."""
     name: str
@@ -200,3 +208,5 @@ class AboutMe:
     bio: str
     profile_image: str  # filename relative to static/images/
     badges: list[str] = field(default_factory=list)
+    highlights: list[str] = field(default_factory=list)
+    skills: list[Skill] = field(default_factory=list)
