@@ -75,6 +75,12 @@
     opacity: 1;
 }
 
+/* Handles embedded directly in card headers are always visible */
+.card-header .widget-handle {
+    display: inline-flex;
+    opacity: 0.75;
+}
+
 .edit-mode .widget:hover {
     border-color: var(--accent-color);
     box-shadow: 0 0 0 2px var(--accent-color-alpha);
