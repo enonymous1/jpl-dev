@@ -1,20 +1,21 @@
 """
-GSA MAS Checklist Project Module
+GSA MAS Checklist Blueprint
 
-This module contains all the logic specific to the GSA MAS Checklist project,
-including route handlers, data processing, and provision text mappings.
+Flask blueprint for the Interactive GSA MAS New Offeror Checklist project,
+including route handlers, data loading helpers, and provision text lookups.
 """
 
-from flask import render_template, url_for, Blueprint, current_app, g
+from flask import Blueprint, current_app, g, url_for
 import json
 import os
 from functools import lru_cache
 
-# Create a blueprint for the GSA MAS Checklist project
-# url_prefix owns the path; @bp.route('/') avoids latent double-prefix if a
-# parent prefix is ever applied during blueprint registration (mirrors
-# schedule_maker pattern — see projects/schedule_maker/__init__.py).
-gsa_mas_checklist_bp = Blueprint('gsa_mas_checklist', __name__, url_prefix='/projects/gsa-mas-checklist')
+gsa_mas_checklist_bp = Blueprint(
+    'gsa_mas_checklist',
+    __name__,
+    url_prefix='/projects/gsa-mas-checklist',
+    template_folder='templates',
+)
 
 # ---------------------------------------------------------------------------
 # D2a: PROVISION_TEXT_MAP externalized to provision_text.json.
@@ -59,28 +60,17 @@ def create_pdf_link(reference_text, pdf_filename):
     pdf_content = get_provision_text(reference_text)
     return {'link': pdf_link, 'content': pdf_content}
 
+
 @lru_cache(maxsize=1)
 def load_checklist_data():
-    """Load the checklist data from the project-specific JSON file"""
-    data_path = os.path.join(current_app.root_path, 'static', 'projects', 'gsa_mas_checklist', 'data', 'checklist_data.json')
+    """Load the checklist data from the project-specific JSON file. Cached once per process."""
+    data_path = os.path.join(
+        current_app.root_path,
+        'static', 'projects', 'gsa_mas_checklist', 'data', 'checklist_data.json'
+    )
     with open(data_path, encoding='utf-8') as f:
         return json.load(f)
 
-@gsa_mas_checklist_bp.route('/')
-def gsa_mas_checklist():
-    """Main route handler for the GSA MAS Checklist project"""
-    data = load_checklist_data()
 
-    # Group items by section while preserving order
-    ordered_sections = []
-    section_map = {}
-    for item in data:
-        section_name = item['Section']
-        if section_name not in section_map:
-            section_map[section_name] = []
-            ordered_sections.append({'name': section_name, 'item_list': section_map[section_name]})
-        section_map[section_name].append(item)
-
-    return render_template('projects/gsa_mas_checklist.html', 
-                         sections=ordered_sections, 
-                         create_pdf_link=create_pdf_link)
+# Import routes after blueprint creation to avoid circular imports
+from . import routes
