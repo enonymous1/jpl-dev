@@ -63,23 +63,24 @@
                         <div class="card-body py-2">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <img src="{{ url_for('static', filename='images/profile.svg') }}" 
+                                    <img src="{{ url_for('static', filename=about.profile_image) }}" 
                                          alt="Profile" 
                                          class="rounded-circle"
                                          style="width: 60px; height: 60px; object-fit: cover;">
                                 </div>
                                 <div class="col">
-                                    <h6 class="mb-1 fw-bold text-body">Justin P. Lyons</h6>
-                                    <p class="text-secondary small mb-2">IT Manager & Software Developer</p>
+                                    <h6 class="mb-1 fw-bold text-body">{{ about.name }}</h6>
+                                    <p class="text-secondary small mb-2">{{ about.title }}</p>
                                     <div class="mb-2">
-                                        <span class="badge bg-primary me-1">Bachelor's CS</span>
-                                        <span class="badge bg-secondary">Mobile Dev</span>
+                                        {% for badge in about.badges %}
+                                        <span class="badge bg-{{ 'primary' if loop.first else 'secondary' }} me-1">{{ badge }}</span>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
                             <hr class="my-2">
                             <p class="small mb-0 text-body">
-                                Results-driven IT Manager with expertise in software development and team leadership.
+                                {{ about.bio }}
                             </p>
                         </div>
                     </div>

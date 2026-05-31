@@ -25,6 +25,7 @@ from flask import Flask, Blueprint, render_template
 from flask_frozen import Freezer
 from config.data_access import get_all_projects
 from config.models import ProjectStatus
+from config.projects import ABOUT_ME
 
 logger = logging.getLogger(__name__)
 
@@ -125,7 +126,7 @@ def index():
     Returns:
         str: Rendered HTML template for the homepage
     """
-    return render_template('index.html')
+    return render_template('index.html', about=ABOUT_ME)
 
 
 @app.route('/projects/')
