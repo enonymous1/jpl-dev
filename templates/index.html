@@ -447,10 +447,23 @@ document.addEventListener('DOMContentLoaded', function() {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
     
-    // Initialize GridStack via WidgetManager with homepage-specific settings
-    window.widgetManager = new WidgetManager('grid-stack-container', {
-        margin: 15
-    });
+    // Initialize GridStack directly on the pre-existing static HTML items.
+    // WidgetManager.createWidget() is for dynamically-added widgets; it calls
+    // grid.addWidget() which expects items NOT already in the DOM. The static
+    // cards are already rendered as .grid-stack-item elements, so GridStack.init()
+    // picks them up automatically via their gs-w/gs-h/gs-x/gs-y attributes.
+    window.grid = GridStack.init({
+        cellHeight: 120,
+        minRow: 1,
+        float: true,
+        animate: true,
+        margin: 15,
+        resizable: { handles: 'se' },
+        draggable: { handle: '.widget-handle' }
+    }, document.getElementById('grid-stack-container'));
+
+    // Wire the "Add Widget" dropdown to WidgetManager for dynamic widgets
+    window.widgetManager = new WidgetManager('grid-stack-container', { margin: 15 });
     
     // Animate progress bars when they come into view
     const observeProgressBars = new IntersectionObserver((entries) => {
