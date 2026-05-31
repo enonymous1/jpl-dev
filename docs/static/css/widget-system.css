@@ -1,20 +1,35 @@
 /* Widget System CSS */
 
-/* Widget Base Styles */
+/* Widget Base Styles — consolidated from widgets.css (G1c) */
 .widget {
     position: relative;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px; /* == 0.75rem */
     overflow: hidden;
     will-change: transform;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     contain: layout style paint;
 }
 
-/* Widget Header */
+.widget:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 20px rgba(var(--primary-color-rgb), 0.15);
+}
+
+/* Widget Header — consolidated from widgets.css (G1c) */
 .widget-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 1rem 1.25rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    color: var(--text-color);
     margin-bottom: 0.75rem;
 }
 

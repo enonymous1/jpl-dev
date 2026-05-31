@@ -72,7 +72,7 @@
 
 /* Dark mode styles */
 [data-theme="dark"] .theme-toggle-switch {
-    background: var(--bg-primary);
+    background: var(--bg-color);
 }
 
 [data-theme="dark"] .toggle-slider {

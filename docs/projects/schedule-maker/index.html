@@ -5,25 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Schedule Maker - JPL-DEV</title>
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
-    
-    <!-- GridStack.js CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css">
+    <!-- Bootstrap CSS (SRI hashes computed from cdn.jsdelivr.net for these exact versions) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet"
+          integrity="sha384-DeN988K4Vg0cDrUgVHjrVM0+ogMrXsv0AZYIH40/9VGpjC7zi8TFGdnPwL1EkU/T" crossorigin="anonymous">
+    <!-- GridStack CSS is loaded per-page (index.html, widget_demo.html) via the head block -->
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../../static/css/variables.css">
-    <link rel="stylesheet" href="../../static/css/bootstrap-theme.css">
-    <link rel="stylesheet" href="../../static/css/widgets.css">
-    <link rel="stylesheet" href="../../static/css/base.css">
-    <link rel="stylesheet" href="../../static/css/layout.css">
-    <link rel="stylesheet" href="../../static/css/components.css">
-    <link rel="stylesheet" href="../../static/css/profile-card.css">
-    <link rel="stylesheet" href="../../static/css/checklist.css">
-    <link rel="stylesheet" href="../../static/css/theme-toggle.css">
-    <link rel="stylesheet" href="../../static/css/projects.css">
-    <link rel="stylesheet" href="../../static/css/widget-system.css">
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/static/css/widgets.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/layout.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/profile-card.css">
+    <link rel="stylesheet" href="/static/css/checklist.css">
+    <link rel="stylesheet" href="/static/css/theme-toggle.css">
+    <link rel="stylesheet" href="/static/css/projects.css">
+    <link rel="stylesheet" href="/static/css/widget-system.css">
 
     <script>
         (function() {
@@ -35,6 +35,7 @@
                     : 'light';
                 const theme = savedTheme || defaultTheme;
                 document.documentElement.setAttribute('data-theme', theme);
+                document.documentElement.setAttribute('data-bs-theme', theme);
             } catch (e) {
                 console.warn('Theme initialization failed:', e);
             }
@@ -42,14 +43,20 @@
     </script>
     
     
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
+    <!-- Tailwind CSS — generated at build time by Tailwind CLI v3 (tailwind.config.js).
+         Do NOT replace with the Play CDN (cdn.tailwindcss.com): it ships a ~3MB runtime
+         PostCSS compiler and has no SRI hash. Regenerate with:
+           npx tailwindcss@3 -i static/projects/schedule_maker/tailwind.input.css \
+                              -o static/projects/schedule_maker/tailwind.css --minify --config tailwind.config.js -->
+    <link rel="stylesheet" href="/static/projects/schedule_maker/tailwind.css">
+    <!-- Google Fonts: Inter (SRI not available for dynamic Google Fonts CSS;
+         font override via body { font-family: 'Inter' !important; } is intentional
+         to isolate this blueprint's typography from the global portfolio font) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Project-specific styles -->
-    <link rel="stylesheet" href="../../static/projects/schedule_maker/style.css">
+    <link rel="stylesheet" href="/static/projects/schedule_maker/style.css">
     
     <style>
         /* Override portfolio font with Inter for this project */
@@ -110,12 +117,13 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="main-navbar">
         <div class="container-fluid">
             <!-- Mobile menu toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
             <!-- Brand/Logo -->
-            <a class="navbar-brand fw-bold" href="../../index.html">
+            <a class="navbar-brand fw-bold" href="/">
                 <i class="bi bi-code-square me-2"></i>JPL-DEV
             </a>
             
@@ -123,17 +131,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link " href="../../index.html">
+                        <a class="nav-link " href="/">
                             <i class="bi bi-house-door me-1"></i>Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="../index.html">
+                        <a class="nav-link " href="/projects/">
                             <i class="bi bi-collection me-1"></i>Projects
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="../../widget-demo/index.html">
+                        <a class="nav-link " href="/widget-demo/">
                             <i class="bi bi-grid-3x3-gap me-1"></i>Widget Demo
                         </a>
                     </li>
@@ -335,7 +343,7 @@
             <nav class="p-4">
                 <ul class="space-y-2">
                     <li>
-                        <a href="../../index.html" class="flex items-center p-2 rounded-md hover:bg-slate-100">
+                        <a href="/" class="flex items-center p-2 rounded-md hover:bg-slate-100">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
                                 <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
@@ -355,7 +363,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../index.html" class="flex items-center p-2 rounded-md hover:bg-slate-100">
+                        <a href="/projects/" class="flex items-center p-2 rounded-md hover:bg-slate-100">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="9" cy="7" r="4"></circle>
@@ -490,38 +498,8 @@
         <!-- Popover content is injected here -->
     </div>
 
-    <!-- Navigation toggle functionality -->
-    <script>
-        // Navigation flyout functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const navToggle = document.querySelector('.sidenav .closebtn').parentElement.previousElementSibling.querySelector('span');
-            const navFlyout = document.getElementById('nav-flyout');
-            const navClose = document.getElementById('nav-close');
-            const overlay = document.getElementById('overlay');
-
-            // Show navigation
-            function showNav() {
-                navFlyout.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-            }
-
-            // Hide navigation
-            function hideNav() {
-                navFlyout.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-            }
-
-            // Event listeners
-            if (navToggle) {
-                navToggle.addEventListener('click', showNav);
-            }
-            navClose.addEventListener('click', hideNav);
-            overlay.addEventListener('click', hideNav);
-        });
-    </script>
-
     <!-- Include project-specific JavaScript -->
-    <script src="../../static/projects/schedule_maker/script.js"></script>
+    <script src="/static/projects/schedule_maker/script.js"></script>
     
     <!-- Force initialization after everything loads -->
     <script>
@@ -547,20 +525,17 @@
     </script>
 
     </main>
-    </div>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- GridStack.js -->
-    <script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- GridStack JS is loaded per-page (index.html, widget_demo.html) via the scripts block -->
+
     <!-- Global Scripts -->
-    <script src="../../static/js/theme-manager.js"></script>
-    <script src="../../static/js/widget-manager.js"></script>
-    <script src="../../static/js/widget-utils.js"></script>
-    <script src="../../static/script.js"></script>
-    <script src="../../static/global-theme.js"></script>
+    <script src="/static/js/widget-manager.js"></script>
+    <script src="/static/js/widget-utils.js"></script>
+    <script src="/static/script.js"></script>
+    <script src="/static/global-theme.js"></script>
     
     
     <!-- File input for import functionality (only on GSA MAS checklist page) -->

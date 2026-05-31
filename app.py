@@ -33,7 +33,7 @@ app = Flask(__name__)
 
 # Configure Flask-Frozen for static site generation
 app.config['FREEZER_DESTINATION'] = 'docs'
-app.config['FREEZER_RELATIVE_URLS'] = True
+app.config['FREEZER_RELATIVE_URLS'] = False
 # Protect manually-placed files in docs/ from being deleted on local freeze runs.
 # FREEZER_REMOVE_EXTRA_FILES defaults to True — without this, `python freeze.py`
 # silently deletes docs/CNAME, breaking the custom domain until CI re-injects it.

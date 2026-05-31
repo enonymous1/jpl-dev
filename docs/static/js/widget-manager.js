@@ -3,18 +3,36 @@
  * Handles widget layout, drag-and-drop, and state management
  */
 
+// Escape HTML entities — prevents XSS when config values are interpolated into innerHTML. (F5a)
+function _escHtml(s) {
+    if (s == null) return '';
+    return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// Block dangerous URL schemes (javascript:, vbscript:, data:) in href/src. (F5a)
+function _safeUrl(url) {
+    if (typeof url !== 'string') return '#';
+    const t = url.trim().toLowerCase();
+    if (t.startsWith('javascript:') || t.startsWith('vbscript:') || t.startsWith('data:')) return '#';
+    return url;
+}
+
 class WidgetManager {
-    constructor(containerId = 'grid-stack-container') {
+    constructor(containerId = 'grid-stack-container', options = {}) {
         this.containerId = containerId;
         this.grid = null;
         this.widgets = new Map();
-        this.storageKey = 'jpl-dev-widget-layout';
+        this.options = options;
         this.init();
     }
 
     init() {
         this.setupGridStack();
-        this.loadWidgetLayout();
         this.setupEventListeners();
     }
 
@@ -26,7 +44,7 @@ class WidgetManager {
         }
 
         // Initialize GridStack
-        this.grid = GridStack.init({
+        this.grid = GridStack.init(Object.assign({
             cellHeight: 120,
             minRow: 1,
             float: true,
@@ -38,11 +56,10 @@ class WidgetManager {
             },
             margin: 10,
             animate: true
-        }, container);
+        }, this.options), container);
 
         // Listen for changes
         this.grid.on('change', (event, items) => {
-            this.saveWidgetLayout();
         });
 
         this.grid.on('resizestop', (event, element) => {
@@ -70,7 +87,9 @@ class WidgetManager {
 
     // Widget Creation and Management
     createWidget(type, config = {}) {
-        const widgetId = config.id || `widget-${Date.now()}`;
+        // F5c: Strip non-alphanumeric chars from caller-supplied IDs before use in HTML attribute context.
+        const rawId = config.id || `widget-${Date.now()}`;
+        const widgetId = rawId.replace(/[^a-zA-Z0-9_-]/g, '');
         const widget = this.generateWidgetHTML(type, widgetId, config);
         
         // Add to GridStack
@@ -115,7 +134,7 @@ class WidgetManager {
         return `
             <div class="widget widget-profile" data-widget-id="${id}">
                 <div class="widget-header">
-                    <h3 class="widget-title">${config.title || 'Profile'}</h3>
+                    <h3 class="widget-title">${_escHtml(config.title || 'Profile')}</h3>
                     <div class="widget-actions">
                         <button class="widget-action-btn widget-handle" title="Drag to move">
                             <i class="bi bi-grip-vertical"></i>
@@ -126,10 +145,10 @@ class WidgetManager {
                     </div>
                 </div>
                 <div class="widget-content">
-                    <img src="${config.image || 'https://via.placeholder.com/80'}" alt="Profile" class="profile-image">
-                    <h4 class="profile-name">${config.name || 'John Doe'}</h4>
-                    <p class="profile-title">${config.title || 'Developer'}</p>
-                    <p class="text-muted">${config.description || 'Software developer and technology enthusiast.'}</p>
+                    <img src="${_escHtml(_safeUrl(config.image || 'https://via.placeholder.com/80'))}" alt="Profile" class="profile-image">
+                    <h4 class="profile-name">${_escHtml(config.name || 'John Doe')}</h4>
+                    <p class="profile-title">${_escHtml(config.title || 'Developer')}</p>
+                    <p class="text-muted">${_escHtml(config.description || 'Software developer and technology enthusiast.')}</p>
                 </div>
             </div>
         `;
@@ -144,15 +163,15 @@ class WidgetManager {
 
         const statsHTML = stats.map(stat => `
             <div class="stat-item">
-                <h3 class="stat-value">${stat.value}</h3>
-                <p class="stat-label">${stat.label}</p>
+                <h3 class="stat-value">${_escHtml(stat.value)}</h3>
+                <p class="stat-label">${_escHtml(stat.label)}</p>
             </div>
         `).join('');
 
         return `
             <div class="widget widget-stats" data-widget-id="${id}">
                 <div class="widget-header">
-                    <h3 class="widget-title">${config.title || 'Quick Stats'}</h3>
+                    <h3 class="widget-title">${_escHtml(config.title || 'Quick Stats')}</h3>
                     <div class="widget-actions">
                         <button class="widget-action-btn widget-handle" title="Drag to move">
                             <i class="bi bi-grip-vertical"></i>
@@ -180,12 +199,12 @@ class WidgetManager {
         const projectsHTML = projects.map(project => `
             <div class="project-card-compact">
                 <div class="project-header-compact">
-                    <h5 class="project-title-compact">${project.name}</h5>
-                    <span class="project-status-badge ${project.status}">${project.status}</span>
+                    <h5 class="project-title-compact">${_escHtml(project.name)}</h5>
+                    <span class="project-status-badge ${_escHtml(project.status)}">${_escHtml(project.status)}</span>
                 </div>
-                <p class="project-description-compact">${project.description}</p>
+                <p class="project-description-compact">${_escHtml(project.description)}</p>
                 <div class="project-tech-tags">
-                    ${project.tech.map(tech => `<span class="tech-tag-compact">${tech}</span>`).join('')}
+                    ${project.tech.map(tech => `<span class="tech-tag-compact">${_escHtml(tech)}</span>`).join('')}
                 </div>
                 <a href="#" class="project-link-compact">View Project <i class="bi bi-arrow-right"></i></a>
             </div>
@@ -194,7 +213,7 @@ class WidgetManager {
         return `
             <div class="widget widget-projects" data-widget-id="${id}">
                 <div class="widget-header">
-                    <h3 class="widget-title">${config.title || 'Featured Projects'}</h3>
+                    <h3 class="widget-title">${_escHtml(config.title || 'Featured Projects')}</h3>
                     <div class="widget-actions">
                         <button class="widget-action-btn widget-handle" title="Drag to move">
                             <i class="bi bi-grip-vertical"></i>
@@ -221,18 +240,18 @@ class WidgetManager {
 
         const skillsHTML = skills.map(skill => `
             <div class="skill-item">
-                <span class="skill-name">${skill.name}</span>
+                <span class="skill-name">${_escHtml(skill.name)}</span>
                 <div class="skill-bar">
-                    <div class="skill-progress" style="width: ${skill.level}%"></div>
+                    <div class="skill-progress" style="width: ${_escHtml(skill.level)}%"></div>
                 </div>
-                <span class="skill-percentage">${skill.level}%</span>
+                <span class="skill-percentage">${_escHtml(skill.level)}%</span>
             </div>
         `).join('');
 
         return `
             <div class="widget widget-skills" data-widget-id="${id}">
                 <div class="widget-header">
-                    <h3 class="widget-title">${config.title || 'Skills'}</h3>
+                    <h3 class="widget-title">${_escHtml(config.title || 'Skills')}</h3>
                     <div class="widget-actions">
                         <button class="widget-action-btn widget-handle" title="Drag to move">
                             <i class="bi bi-grip-vertical"></i>
@@ -259,16 +278,16 @@ class WidgetManager {
         ];
 
         const linksHTML = links.map(link => `
-            <a href="${link.url}" class="social-link" target="_blank" rel="noopener">
-                <i class="bi bi-${link.icon} social-icon"></i>
-                <span class="social-label">${link.name}</span>
+            <a href="${_escHtml(_safeUrl(link.url))}" class="social-link" target="_blank" rel="noopener">
+                <i class="bi bi-${_escHtml(link.icon)} social-icon"></i>
+                <span class="social-label">${_escHtml(link.name)}</span>
             </a>
         `).join('');
 
         return `
             <div class="widget widget-social" data-widget-id="${id}">
                 <div class="widget-header">
-                    <h3 class="widget-title">${config.title || 'Connect'}</h3>
+                    <h3 class="widget-title">${_escHtml(config.title || 'Connect')}</h3>
                     <div class="widget-actions">
                         <button class="widget-action-btn widget-handle" title="Drag to move">
                             <i class="bi bi-grip-vertical"></i>
@@ -291,7 +310,7 @@ class WidgetManager {
         return `
             <div class="widget widget-calendar" data-widget-id="${id}">
                 <div class="widget-header">
-                    <h3 class="widget-title">${config.title || 'Calendar'}</h3>
+                    <h3 class="widget-title">${_escHtml(config.title || 'Calendar')}</h3>
                     <div class="widget-actions">
                         <button class="widget-action-btn widget-handle" title="Drag to move">
                             <i class="bi bi-grip-vertical"></i>
@@ -324,7 +343,7 @@ class WidgetManager {
         return `
             <div class="widget widget-chart" data-widget-id="${id}">
                 <div class="widget-header">
-                    <h3 class="widget-title">${config.title || 'Analytics'}</h3>
+                    <h3 class="widget-title">${_escHtml(config.title || 'Analytics')}</h3>
                     <div class="widget-actions">
                         <button class="widget-action-btn widget-handle" title="Drag to move">
                             <i class="bi bi-grip-vertical"></i>
@@ -387,7 +406,6 @@ class WidgetManager {
         if (widget) {
             this.grid.removeWidget(widget.element);
             this.widgets.delete(id);
-            this.saveWidgetLayout();
         }
     }
 
@@ -395,7 +413,6 @@ class WidgetManager {
         const widgetId = element.querySelector('[data-widget-id]')?.getAttribute('data-widget-id');
         if (widgetId) {
             // Handle any resize-specific logic
-            this.saveWidgetLayout();
         }
     }
 
@@ -403,7 +420,6 @@ class WidgetManager {
         const widgetId = element.querySelector('[data-widget-id]')?.getAttribute('data-widget-id');
         if (widgetId) {
             // Handle any move-specific logic
-            this.saveWidgetLayout();
         }
     }
 
@@ -417,43 +433,6 @@ class WidgetManager {
                 element.classList.remove('dark-theme');
             }
         });
-    }
-
-    // Layout Persistence
-    saveWidgetLayout() {
-        if (!this.grid) return;
-
-        const layout = this.grid.engine.nodes.map(node => ({
-            id: node.id,
-            x: node.x,
-            y: node.y,
-            w: node.w,
-            h: node.h,
-            type: this.widgets.get(node.id)?.type
-        }));
-
-        localStorage.setItem(this.storageKey, JSON.stringify(layout));
-    }
-
-    loadWidgetLayout() {
-        const savedLayout = localStorage.getItem(this.storageKey);
-        if (savedLayout) {
-            try {
-                const layout = JSON.parse(savedLayout);
-                // Note: This would typically restore widgets from saved layout
-                // Implementation depends on specific requirements
-            } catch (e) {
-                console.warn('Failed to load widget layout:', e);
-            }
-        }
-    }
-
-    clearWidgetLayout() {
-        localStorage.removeItem(this.storageKey);
-        this.widgets.clear();
-        if (this.grid) {
-            this.grid.removeAll();
-        }
     }
 
     // Utility Methods
@@ -476,13 +455,8 @@ class WidgetManager {
     }
 }
 
-// Initialize widget manager when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    // Only initialize if GridStack container exists
-    if (document.getElementById('grid-stack-container')) {
-        window.widgetManager = new WidgetManager();
-    }
-});
+// WidgetManager is instantiated explicitly by pages that use it (e.g. index.html).
+// No auto-init here — each page passes its own GridStack options via the constructor.
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {

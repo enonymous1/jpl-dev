@@ -1,28 +1,28 @@
 // --- DATA & STATE ---
-let weekStartDate = new Date('2025-07-07T12:00:00Z');
-let monthlyViewDate = new Date('2025-07-01T12:00:00Z');
+// Compute the Monday of the current week at UTC noon.
+function currentWeekMonday() {
+    const now = new Date();
+    const utc = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 12));
+    const day = utc.getUTCDay(); // 0=Sun
+    utc.setUTCDate(utc.getUTCDate() - (day === 0 ? 6 : day - 1));
+    return utc;
+}
+
+let weekStartDate = currentWeekMonday();
+let monthlyViewDate = (() => {
+    const m = currentWeekMonday();
+    return new Date(Date.UTC(m.getUTCFullYear(), m.getUTCMonth(), 1, 12));
+})();
 let visibleMonthCount = 3;
 let currentView = 'weekly';
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const daysOfWeekShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-let employees = { 
-    1: { name: 'Liam P.', color: 'bg-blue-100 text-blue-800', phone: '555-0101', email: 'liam.p@example.com', notes: 'Prefers morning shifts.', rules: { 'Monday-s1': true, 'Monday-s2': true, 'Monday-s3': true } }, 
-    2: { name: 'Olivia C.', color: 'bg-green-100 text-green-800', phone: '555-0102', email: 'olivia.c@example.com', notes: '', rules: {} }, 
-    3: { name: 'Noah B.', color: 'bg-yellow-100 text-yellow-800', phone: '555-0103', email: 'noah.b@example.com', notes: '', rules: { 'Friday-s3': true, 'Saturday-s3': true } }, 
-    4: { name: 'Emma G.', color: 'bg-purple-100 text-purple-800', phone: '555-0104', email: 'emma.g@example.com', notes: 'Unavailable on Wednesdays.', rules: { 'Wednesday-s1': true, 'Wednesday-s2': true, 'Wednesday-s3': true } }, 
-    5: { name: 'James W.', color: 'bg-pink-100 text-pink-800', phone: '555-0105', email: 'james.w@example.com', notes: '', rules: {} }, 
-    6: { name: 'Ava M.', color: 'bg-indigo-100 text-indigo-800', phone: '555-0106', email: 'ava.m@example.com', notes: '', rules: {} }, 
-    7: { name: 'William R.', color: 'bg-red-100 text-red-800', phone: '555-0107', email: 'william.r@example.com', notes: '', rules: {} }, 
-    8: { name: 'Sophia L.', color: 'bg-teal-100 text-teal-800', phone: '555-0108', email: 'sophia.l@example.com', notes: 'Can cover extra shifts.', rules: {} }, 
-    9: { name: 'Mason H.', color: 'bg-orange-100 text-orange-800', phone: '555-0109', email: 'mason.h@example.com', notes: '', rules: {} }, 
-    10: { name: 'Isabella K.', color: 'bg-cyan-100 text-cyan-800', phone: '555-0110', email: 'isabella.k@example.com', notes: '', rules: {} }, 
-};
-
-let allSchedules = {
-    '2025-07-07': { 's1': [1, 4], 's2': [7, 8], 's3': [5] }, '2025-07-08': { 's1': [2, 5], 's2': [6, 9], 's3': [1] }, '2025-07-09': { 's1': [3, 6], 's2': [5, 10], 's3': [2] }, '2025-07-10': { 's1': [1, 7], 's2': [4, 8], 's3': [9] }, '2025-07-11': { 's1': [2, 8], 's2': [3, 7], 's3': [10] }, '2025-07-12': { 's1': [9, 10], 's2': [1, 2, 3] }, '2025-07-13': { 's2': [9, 10], 's3': [4, 5] }, '2025-07-14': { 's1': [2, 4], 's2': [6, 8], 's3': [1] }, '2025-07-21': { 's1': [1, 3], 's2': [5, 7], 's3': [9] }, '2025-08-01': { 's1': [10, 8], 's2': [2, 4] },
-};
+// Default to empty — no seed data on first run.
+// Use loadSeedData() (wired to the empty-state prompt) to populate demo data.
+let employees = {};
+let allSchedules = {};
 
 let shiftInfo = { 
     's1': { title: 'Morning', subtitle: '(8am - 4pm)', color: 'bg-sky-400', order: 1, hours: 8 }, 
@@ -30,6 +30,132 @@ let shiftInfo = {
     's3': { title: 'Night', subtitle: '(12am - 8am)', color: 'bg-indigo-500', order: 3, hours: 8 } 
 };
 
+
+// --- PERSISTENCE ---
+const STORAGE_KEY = 'schedule_maker_data';
+
+function saveState() {
+    const state = {
+        employees,
+        allSchedules,
+        shiftInfo,
+        weekStartDate: weekStartDate.toISOString(),
+        monthlyViewDate: monthlyViewDate.toISOString(),
+        visibleMonthCount,
+        currentView,
+    };
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {
+        alert('Save failed: ' + e.message);
+    }
+}
+
+function loadState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return false;
+    try {
+        const state = JSON.parse(saved);
+        const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+        if (!isObj(state)) return false;
+        if (isObj(state.employees)) employees = state.employees;
+        if (isObj(state.allSchedules)) allSchedules = state.allSchedules;
+        if (isObj(state.shiftInfo)) shiftInfo = state.shiftInfo;
+        if (state.weekStartDate) weekStartDate = new Date(state.weekStartDate);
+        if (state.monthlyViewDate) monthlyViewDate = new Date(state.monthlyViewDate);
+        if (typeof state.visibleMonthCount === 'number') visibleMonthCount = state.visibleMonthCount;
+        if (state.currentView) currentView = state.currentView;
+        return true;
+    } catch (e) {
+        console.warn('Failed to load saved schedule:', e);
+        return false;
+    }
+}
+
+function exportState() {
+    const state = {
+        employees,
+        allSchedules,
+        shiftInfo,
+        weekStartDate: weekStartDate.toISOString(),
+        monthlyViewDate: monthlyViewDate.toISOString(),
+        visibleMonthCount,
+        currentView,
+    };
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `schedule_${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 100);
+}
+
+function importState(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const state = JSON.parse(e.target.result);
+            const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+            if (!isObj(state) || !isObj(state.employees) || !isObj(state.allSchedules)) {
+                alert('Import failed: file does not match expected schedule backup format.\nRequired keys: employees, allSchedules (each must be an object).');
+                return;
+            }
+            employees = state.employees;
+            allSchedules = state.allSchedules;
+            if (isObj(state.shiftInfo)) shiftInfo = state.shiftInfo;
+            if (state.weekStartDate) weekStartDate = new Date(state.weekStartDate);
+            if (state.monthlyViewDate) monthlyViewDate = new Date(state.monthlyViewDate);
+            if (typeof state.visibleMonthCount === 'number') visibleMonthCount = state.visibleMonthCount;
+            switchView(state.currentView || currentView);
+            renderAvailableEmployees();
+        } catch (err) {
+            alert('Import failed: ' + err.message);
+        }
+    };
+    reader.readAsText(file);
+}
+
+// Populate demo employees and schedules relative to the current week.
+// Intended for first-run preview only — not production data.
+function loadSeedData() {
+    const monday = currentWeekMonday();
+    const d = (offset) => {
+        const dt = new Date(monday);
+        dt.setUTCDate(dt.getUTCDate() + offset);
+        return dt.toISOString().split('T')[0];
+    };
+    employees = {
+        1:  { name: 'Liam P.',     color: 'bg-blue-100 text-blue-800',   phone: '555-0101', email: 'liam.p@example.com',     notes: 'Prefers morning shifts.', rules: { 'Monday-s1': true, 'Monday-s2': true, 'Monday-s3': true } },
+        2:  { name: 'Olivia C.',   color: 'bg-green-100 text-green-800',  phone: '555-0102', email: 'olivia.c@example.com',   notes: '', rules: {} },
+        3:  { name: 'Noah B.',     color: 'bg-yellow-100 text-yellow-800',phone: '555-0103', email: 'noah.b@example.com',     notes: '', rules: { 'Friday-s3': true, 'Saturday-s3': true } },
+        4:  { name: 'Emma G.',     color: 'bg-purple-100 text-purple-800',phone: '555-0104', email: 'emma.g@example.com',     notes: 'Unavailable on Wednesdays.', rules: { 'Wednesday-s1': true, 'Wednesday-s2': true, 'Wednesday-s3': true } },
+        5:  { name: 'James W.',    color: 'bg-pink-100 text-pink-800',    phone: '555-0105', email: 'james.w@example.com',    notes: '', rules: {} },
+        6:  { name: 'Ava M.',      color: 'bg-indigo-100 text-indigo-800',phone: '555-0106', email: 'ava.m@example.com',      notes: '', rules: {} },
+        7:  { name: 'William R.',  color: 'bg-red-100 text-red-800',      phone: '555-0107', email: 'william.r@example.com',  notes: '', rules: {} },
+        8:  { name: 'Sophia L.',   color: 'bg-teal-100 text-teal-800',    phone: '555-0108', email: 'sophia.l@example.com',   notes: 'Can cover extra shifts.', rules: {} },
+        9:  { name: 'Mason H.',    color: 'bg-orange-100 text-orange-800',phone: '555-0109', email: 'mason.h@example.com',    notes: '', rules: {} },
+        10: { name: 'Isabella K.', color: 'bg-cyan-100 text-cyan-800',    phone: '555-0110', email: 'isabella.k@example.com', notes: '', rules: {} },
+    };
+    allSchedules = {
+        [d(0)]:  { 's1': [1, 4],      's2': [7, 8],    's3': [5]    },
+        [d(1)]:  { 's1': [2, 5],      's2': [6, 9],    's3': [1]    },
+        [d(2)]:  { 's1': [3, 6],      's2': [5, 10],   's3': [2]    },
+        [d(3)]:  { 's1': [1, 7],      's2': [4, 8],    's3': [9]    },
+        [d(4)]:  { 's1': [2, 8],      's2': [3, 7],    's3': [10]   },
+        [d(5)]:  { 's1': [9, 10],     's2': [1, 2, 3]              },
+        [d(6)]:  {                     's2': [9, 10],   's3': [4, 5] },
+        [d(7)]:  { 's1': [2, 4],      's2': [6, 8],    's3': [1]    },
+        [d(14)]: { 's1': [1, 3],      's2': [5, 7],    's3': [9]    },
+        [d(25)]: { 's1': [10, 8],     's2': [2, 4]                  },
+    };
+    weekStartDate = new Date(monday);
+    monthlyViewDate = new Date(Date.UTC(monday.getUTCFullYear(), monday.getUTCMonth(), 1, 12));
+    saveState();
+    switchView(currentView);
+    renderAvailableEmployees();
+    updateDateDisplay();
+}
 
 // --- DOM Elements ---
 const weeklyViewContainer = document.getElementById('weekly-view');
@@ -120,7 +246,21 @@ function renderSchedule() {
 function renderAvailableEmployees() {
     const container = document.getElementById('available-employees-container');
     container.innerHTML = '';
-    Object.keys(employees).forEach(id => {
+    const ids = Object.keys(employees);
+    if (ids.length === 0) {
+        const msg = document.createElement('span');
+        msg.className = 'text-slate-400 text-sm';
+        msg.textContent = 'No employees yet — add one below, or ';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'text-sky-600 underline hover:text-sky-800 text-sm';
+        btn.textContent = 'load sample data';
+        btn.addEventListener('click', loadSeedData);
+        container.appendChild(msg);
+        container.appendChild(btn);
+        return;
+    }
+    ids.forEach(id => {
         container.appendChild(createEmployeePill(id));
     });
     addDragAndDropListeners();
@@ -343,6 +483,31 @@ function setupControls() {
         });
     });
     document.querySelector(`.month-qty-btn[data-qty="${visibleMonthCount}"]`).classList.add('btn-active');
+
+    // E3a/E3b: header action buttons — save, export, import, new
+    document.getElementById('save-schedule-btn').addEventListener('click', () => {
+        saveState();
+        const btn = document.getElementById('save-schedule-btn');
+        const icon = btn.querySelector('i');
+        icon.classList.replace('bi-save', 'bi-check-lg');
+        setTimeout(() => icon.classList.replace('bi-check-lg', 'bi-save'), 1000);
+    });
+    document.getElementById('export-schedule-btn').addEventListener('click', exportState);
+    document.getElementById('import-schedule-btn').addEventListener('click', () => {
+        document.getElementById('import-schedule-file').click();
+    });
+    document.getElementById('import-schedule-file').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            importState(file);
+            e.target.value = ''; // allow re-importing the same file
+        }
+    });
+    document.getElementById('new-schedule-btn').addEventListener('click', () => {
+        if (!confirm('Create a new schedule? This will clear all saved data.')) return;
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+    });
 }
 
 function openModal(modalElement) {
@@ -490,7 +655,8 @@ function setupModalsAndFlyouts() {
     const overlay = document.getElementById('overlay');
     const openNav = () => { navFlyout.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); };
     const closeNav = () => { navFlyout.classList.add('-translate-x-full'); overlay.classList.add('hidden'); };
-    document.getElementById('nav-toggle').addEventListener('click', openNav);
+    const navToggle = document.getElementById('nav-toggle');
+    if (navToggle) navToggle.addEventListener('click', openNav);
     document.getElementById('nav-close').addEventListener('click', closeNav);
     overlay.addEventListener('click', closeNav);
 }
@@ -582,18 +748,57 @@ function showEmployeePopover(event, employeeId) {
     const unavailableDays = Object.keys(employee.rules).filter(key => employee.rules[key]).map(key => key.replace(/-(s\d)/, ` (${shiftInfo[key.split('-')[1]].title})`));
     const rulesText = unavailableDays.length > 0 ? unavailableDays.join(', ') : 'N/A';
 
-    popover.innerHTML = `
-        <p class="font-bold text-base">${employee.name}</p>
-        <div class="border-t my-2"></div>
-        <p><span class="font-semibold text-slate-500">Phone:</span> ${employee.phone}</p>
-        <p><span class="font-semibold text-slate-500">Email:</span> ${employee.email}</p>
-        <div class="border-t my-2"></div>
-        <p class="font-semibold text-slate-500">Notes:</p>
-        <p class="text-xs bg-slate-50 p-1 rounded">${employee.notes || 'N/A'}</p>
-         <div class="border-t my-2"></div>
-        <p class="font-semibold text-slate-500">Unavailable:</p>
-        <p class="text-xs">${rulesText}</p>
-    `;
+    popover.innerHTML = '';
+
+    function makeP(cls) {
+        const p = document.createElement('p');
+        if (cls) p.className = cls;
+        return p;
+    }
+    function makeDivider() {
+        const d = document.createElement('div');
+        d.className = 'border-t my-2';
+        return d;
+    }
+
+    const nameEl = makeP('font-bold text-base');
+    nameEl.textContent = employee.name;
+    popover.appendChild(nameEl);
+    popover.appendChild(makeDivider());
+
+    const phoneEl = makeP();
+    const phoneLbl = document.createElement('span');
+    phoneLbl.className = 'font-semibold text-slate-500';
+    phoneLbl.textContent = 'Phone: ';
+    phoneEl.appendChild(phoneLbl);
+    phoneEl.appendChild(document.createTextNode(employee.phone));
+    popover.appendChild(phoneEl);
+
+    const emailEl = makeP();
+    const emailLbl = document.createElement('span');
+    emailLbl.className = 'font-semibold text-slate-500';
+    emailLbl.textContent = 'Email: ';
+    emailEl.appendChild(emailLbl);
+    emailEl.appendChild(document.createTextNode(employee.email));
+    popover.appendChild(emailEl);
+
+    popover.appendChild(makeDivider());
+
+    const notesLbl = makeP('font-semibold text-slate-500');
+    notesLbl.textContent = 'Notes:';
+    popover.appendChild(notesLbl);
+    const notesVal = makeP('text-xs bg-slate-50 p-1 rounded');
+    notesVal.textContent = employee.notes || 'N/A';
+    popover.appendChild(notesVal);
+
+    popover.appendChild(makeDivider());
+
+    const unavailLbl = makeP('font-semibold text-slate-500');
+    unavailLbl.textContent = 'Unavailable:';
+    popover.appendChild(unavailLbl);
+    const unavailVal = makeP('text-xs');
+    unavailVal.textContent = rulesText;
+    popover.appendChild(unavailVal);
 
     const rect = event.currentTarget.getBoundingClientRect();
     popover.style.left = `${rect.left + rect.width / 2}px`;
@@ -617,9 +822,10 @@ function addShiftEditListeners() {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
+    loadState(); // restore from localStorage if available
     setupControls();
     setupModalsAndFlyouts();
-    switchView('weekly');
+    switchView(currentView);
     renderAvailableEmployees();
     weeklyViewBtn.classList.add('btn-active');
 });

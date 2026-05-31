@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        setTimeout(() => URL.revokeObjectURL(url), 100);
     }
     
     function importData(event) {
@@ -144,6 +144,16 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.onload = function(e) {
                 try {
                     const importedData = JSON.parse(e.target.result);
+                    // D4b: Validate schema before writing to localStorage.
+                    // All three top-level keys must be present and be plain objects.
+                    const isPlainObject = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+                    const requiredKeys = ['formData', 'checkboxes', 'notes'];
+                    if (!isPlainObject(importedData) ||
+                            !requiredKeys.every(k => k in importedData && isPlainObject(importedData[k]))) {
+                        alert('Error importing data: File does not match the expected backup format.\n' +
+                              'Required keys: formData, checkboxes, notes (each must be an object).');
+                        return;
+                    }
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(importedData));
                     location.reload(); // Reload to apply imported data
                 } catch (error) {
@@ -452,7 +462,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load SINs data
     async function loadSinsData() {
         try {
-            const response = await fetch('/static/projects/gsa_mas_checklist/data/sins_data.json');
+            // D4e: URL injected via data-sins-url on #sins-modal (set in template via url_for).
+            // Avoids hardcoded path that breaks on subdirectory deployments.
+            const sinsUrl = document.getElementById('sins-modal').dataset.sinsUrl;
+            const response = await fetch(sinsUrl);
             if (!response.ok) {
                 throw new Error('Failed to load SINs data');
             }
@@ -493,7 +506,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return sinsData.filter(sin => {
             const sinNumber = sin._primary_sin || sin.SIN || '';
             const sinTitle = sin['SIN Title'] || '';
-            const sinDescription = sin['SIN Descripion'] || '';
+            const sinDescription = sin['SIN Description'] || '';
             const subcategory = sin.Subcategory || '';
             const keywords = sin._generated_keywords || [];
             const naics = String(sin['List of NAICS'] || '');
@@ -559,9 +572,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Extract data from the Excel columns
             const sinNumber = sin.SIN || sin._primary_sin || 'N/A';
             const sinTitle = sin['SIN Title'] || 'No title available';
-            const sinDescription = sin['SIN Descripion'] || sin['SIN Description'] || 'No description available';
+            const sinDescription = sin['SIN Description'] || 'No description available';
             const largeCategory = sin['Large Category'] || '';
-            const largeCategoryCode = sin['Large Category Code '] || sin['Large Category Code'] || '';
+            const largeCategoryCode = sin['Large Category Code'] || '';
             const subcategory = sin.Subcategory || '';
             const subcategoryCode = sin['Subcategory Code'] || '';
             const naicsList = sin['List of NAICS'] || 'Not specified';
@@ -583,60 +596,83 @@ document.addEventListener('DOMContentLoaded', function() {
             // Create category display with codes
             const categoryDisplay = `${largeCategory} (${largeCategoryCode.trim()})` + 
                                   (subcategory ? ` > ${subcategory} (${subcategoryCode})` : '');
-            
+
+            // Commodity code display text (pre-computed; set via textContent, not innerHTML)
+            const commodityDisplay = commodityCode === 'B' ? 'Both Products & Services'
+                                   : commodityCode === 'S' ? 'Services'
+                                   : commodityCode === 'P' ? 'Products'
+                                   : commodityCode;
+
+            // D4f: Static HTML skeleton — no user-data interpolation (XSS prevention).
+            // All dynamic values are set via textContent after DOM construction.
             sinItem.innerHTML = `
                 <div class="sin-item-header">
-                    <input type="checkbox" class="sin-checkbox" ${selectedSins.has(sin._primary_sin) ? 'checked' : ''}>
+                    <input type="checkbox" class="sin-checkbox">
                     <div class="sin-main-info">
-                        <div class="sin-number">${sinNumber}</div>
-                        <div class="sin-category-display"><strong>${categoryDisplay}</strong></div>
+                        <div class="sin-number"></div>
+                        <div class="sin-category-display"><strong></strong></div>
                     </div>
                 </div>
                 <div class="sin-metadata">
                     <div class="sin-metadata-item sin-metadata-full-width">
                         <div class="sin-metadata-label">SIN Title:</div>
-                        <div class="sin-metadata-value">${sinTitle}</div>
+                        <div class="sin-metadata-value" data-field="title"></div>
                     </div>
                     <div class="sin-metadata-item sin-metadata-full-width">
                         <div class="sin-metadata-label">SIN Description:</div>
-                        <div class="sin-metadata-value">${sinDescription}</div>
+                        <div class="sin-metadata-value" data-field="description"></div>
                     </div>
-                    <div class="sin-metadata-section-title">Codes & Classification</div>
+                    <div class="sin-metadata-section-title">Codes &amp; Classification</div>
                     <div class="sin-metadata-item">
                         <div class="sin-metadata-label">NAICS Code(s):</div>
-                        <div class="sin-metadata-value">${naicsList}</div>
+                        <div class="sin-metadata-value" data-field="naics"></div>
                     </div>
                     <div class="sin-metadata-item">
                         <div class="sin-metadata-label">Product Service Code (PSC):</div>
-                        <div class="sin-metadata-value">${pscCode}</div>
+                        <div class="sin-metadata-value" data-field="psc"></div>
                     </div>
                     <div class="sin-metadata-item">
                         <div class="sin-metadata-label">Commodity Code:</div>
-                        <div class="sin-metadata-value">${commodityCode === 'B' ? 'Both Products & Services' : commodityCode === 'S' ? 'Services' : commodityCode === 'P' ? 'Products' : commodityCode}</div>
+                        <div class="sin-metadata-value" data-field="commodity"></div>
                     </div>
                     <div class="sin-metadata-item">
                         <div class="sin-metadata-label">Maximum Order Limit:</div>
-                        <div class="sin-metadata-value sin-order-limit">${formattedOrderLimit}</div>
+                        <div class="sin-metadata-value sin-order-limit" data-field="limit"></div>
                     </div>
                     <div class="sin-metadata-section-title">Contract Options</div>
                     <div class="sin-metadata-item">
                         <div class="sin-metadata-label">State/Local Available:</div>
-                        <div class="sin-metadata-value">${stateLocal}</div>
+                        <div class="sin-metadata-value" data-field="state-local"></div>
                     </div>
                     <div class="sin-metadata-item">
                         <div class="sin-metadata-label">Set Aside:</div>
-                        <div class="sin-metadata-value">${setAside}</div>
+                        <div class="sin-metadata-value" data-field="set-aside"></div>
                     </div>
                     <div class="sin-metadata-item">
                         <div class="sin-metadata-label">Trade Discounts/Rebates (TDR):</div>
-                        <div class="sin-metadata-value">${tdr}</div>
+                        <div class="sin-metadata-value" data-field="tdr"></div>
                     </div>
                     <div class="sin-metadata-item">
                         <div class="sin-metadata-label">Order Level Materials (OLM):</div>
-                        <div class="sin-metadata-value">${olm}</div>
+                        <div class="sin-metadata-value" data-field="olm"></div>
                     </div>
                 </div>
             `;
+
+            // Assign user-supplied values via textContent (never interpolated as HTML)
+            sinItem.querySelector('.sin-number').textContent = sinNumber;
+            sinItem.querySelector('.sin-category-display strong').textContent = categoryDisplay;
+            sinItem.querySelector('[data-field="title"]').textContent = sinTitle;
+            sinItem.querySelector('[data-field="description"]').textContent = sinDescription;
+            sinItem.querySelector('[data-field="naics"]').textContent = naicsList;
+            sinItem.querySelector('[data-field="psc"]').textContent = pscCode;
+            sinItem.querySelector('[data-field="commodity"]').textContent = commodityDisplay;
+            sinItem.querySelector('[data-field="limit"]').textContent = formattedOrderLimit;
+            sinItem.querySelector('[data-field="state-local"]').textContent = stateLocal;
+            sinItem.querySelector('[data-field="set-aside"]').textContent = setAside;
+            sinItem.querySelector('[data-field="tdr"]').textContent = tdr;
+            sinItem.querySelector('[data-field="olm"]').textContent = olm;
+            sinItem.querySelector('.sin-checkbox').checked = selectedSins.has(sin._primary_sin);
             
             sinItem.addEventListener('click', function(e) {
                 // Don't trigger selection if clicking on the checkbox directly
