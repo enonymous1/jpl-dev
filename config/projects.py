@@ -8,7 +8,7 @@ order, so the site can render without any runtime backend dependencies.
 """
 
 from datetime import datetime
-from config.models import AboutMe, Skill, ProjectCategory, ProjectData, ProjectLinks, ProjectImage, ProjectStatus
+from config.models import AboutMe, Skill, ToolGroup, ProjectCategory, ProjectData, ProjectLinks, ProjectImage, ProjectStatus
 
 
 # ========================================================================
@@ -161,5 +161,11 @@ ABOUT_ME = AboutMe(
         Skill("Kotlin",     80, "success"),
         Skill("Swift",      75, "primary"),
         Skill("Flask",      88, "secondary"),
+    ],
+    tool_groups=[
+        ToolGroup("Languages",   "bi-file-code",   ["Java", "Kotlin", "Swift", "Objective-C", "Python", "JavaScript"]),
+        ToolGroup("Mobile",      "bi-phone",        ["Android", "iOS", "Flutter", "React Native"]),
+        ToolGroup("Leadership",  "bi-people",       ["Team Building", "Agile", "Project Management", "Mentorship"]),
+        ToolGroup("Tools",       "bi-tools",        ["Git", "GitHub", "Jira", "AWS", "Docker", "Firebase"]),
     ],
 )

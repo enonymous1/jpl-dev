@@ -130,8 +130,36 @@
                 </div>
             </div>
 
+            <!-- Tools & Tech Widget -->
+            <div class="grid-stack-item" gs-w="6" gs-h="2" gs-x="6" gs-y="3">
+                <div class="grid-stack-item-content">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center py-2">
+                            <h6 class="card-title mb-0 fw-semibold">
+                                <i class="bi bi-tools me-2"></i>Tools &amp; Tech
+                            </h6>
+                            <span class="widget-handle text-white" title="Drag to move">
+                                <i class="bi bi-arrows-move"></i>
+                            </span>
+                        </div>
+                        <div class="card-body py-2 overflow-auto">
+                            {% for group in about.tool_groups %}
+                            <div class="mb-1">
+                                <small class="text-secondary fw-semibold me-1">
+                                    <i class="bi {{ group.icon }} me-1"></i>{{ group.label }}:
+                                </small>
+                                {% for tool in group.tools %}
+                                <span class="badge badge-theme me-1 mb-1">{{ tool }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Projects Widget -->
-            <div class="grid-stack-item" gs-w="8" gs-h="4" gs-x="0" gs-y="3">
+            <div class="grid-stack-item" gs-w="8" gs-h="4" gs-x="0" gs-y="5">
                 <div class="grid-stack-item-content">
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-header bg-info text-white d-flex justify-content-between align-items-center py-2">
@@ -245,7 +273,7 @@
             </div>
 
             <!-- Skills Widget -->
-            <div class="grid-stack-item" gs-w="4" gs-h="4" gs-x="8" gs-y="3">
+            <div class="grid-stack-item" gs-w="4" gs-h="4" gs-x="8" gs-y="5">
                 <div class="grid-stack-item-content">
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center py-2">

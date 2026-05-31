@@ -201,6 +201,14 @@ class Skill:
 
 
 @dataclass
+class ToolGroup:
+    """A labelled group of tool/technology tags for the Tools & Tech widget."""
+    label: str
+    icon: str   # Bootstrap icon class, e.g. "bi-phone"
+    tools: list[str]
+
+
+@dataclass
 class AboutMe:
     """Static profile data rendered on the homepage About Me widget."""
     name: str
@@ -210,3 +218,4 @@ class AboutMe:
     badges: list[str] = field(default_factory=list)
     highlights: list[str] = field(default_factory=list)
     skills: list[Skill] = field(default_factory=list)
+    tool_groups: list[ToolGroup] = field(default_factory=list)
