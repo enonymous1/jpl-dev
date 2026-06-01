@@ -124,13 +124,13 @@
                     </div>
                 </div>
                 <div class="widget-body">
-                    <div id="recent-projects" class="projects-content">
-                        <div class="text-center py-6 text-sm" style="color:var(--text-secondary)">
+                    <div id="recent-projects" class="projects-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
                             <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
                         </div>
                     </div>
-                    <div id="featured-projects" class="projects-content hidden">
-                        <div class="text-center py-6 text-sm" style="color:var(--text-secondary)">
+                    <div id="featured-projects" class="projects-content hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
                             <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
                         </div>
                     </div>
@@ -206,14 +206,14 @@ function renderRepoCard(repo, accentKey) {
         : (lang ? `<span class="badge-theme">${lang}</span>` : '');
 
     const techTags  = [lang, ...topics].filter(Boolean).slice(0,4)
-        .map(t => `<span class="badge-theme mr-1">${t}</span>`).join('');
+        .map(t => `<span class="badge-theme">${t}</span>`).join('');
     const statsHtml = (stars + forks) > 0
         ? `<small style="color:var(--text-secondary);font-size:0.7rem;margin-left:0.25rem;">${stars > 0 ? `<i class="bi bi-star"></i>&nbsp;${stars}` : ''}${forks > 0 ? `&nbsp;<i class="bi bi-diagram-2"></i>&nbsp;${forks}` : ''}</small>`
         : '';
     const btnGithub   = `<a href="${githubUrl}" class="repo-btn" target="_blank" rel="noopener noreferrer"><i class="bi bi-github"></i></a>`;
     const btnInternal = internalUrl ? `<a href="${internalUrl}" class="repo-btn repo-btn-primary" style="margin-left:0.25rem">View <i class="bi bi-arrow-right"></i></a>` : '';
 
-    return `<div class="repo-card" style="border-left-color:${accent}"><div class="repo-card-body"><div class="repo-card-title"><span class="font-semibold text-sm">${name}${statsHtml}</span>${statusBadge}</div><p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:0.375rem">${desc}</p><div class="repo-card-footer"><div>${techTags}</div><div>${btnGithub}${btnInternal}</div></div></div></div>`;
+    return `<div class="repo-card" style="border-top-color:${accent}"><div class="repo-card-body"><div class="repo-card-title"><span class="font-semibold text-sm">${name}${statsHtml}</span>${statusBadge}</div><p class="repo-card-desc">${desc}</p><div class="repo-card-footer"><div class="flex flex-wrap gap-1">${techTags}</div><div class="flex gap-1">${btnGithub}${btnInternal}</div></div></div></div>`;
 }
 
 async function loadGithubProjects() {
