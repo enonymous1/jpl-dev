@@ -53,6 +53,14 @@ jobs:
           -o static/projects/schedule_maker/tailwind.css \
           --minify
 
+    # Snapshot public repo metadata to static/data/repos.json so the frozen site
+    # ships the data as a static file (no client-side API call needed, no rate limits).
+    # GITHUB_TOKEN is automatically available in Actions with contents:read scope.
+    - name: Cache GitHub repo metadata
+      run: python fetch_repos.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Generate static site
       run: |
         python freeze.py
