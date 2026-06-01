@@ -257,7 +257,7 @@ async function loadGithubProjects() {
         }
     }
 
-    const HIDDEN   = new Set(['jpl-dev']);
+    const HIDDEN   = new Set(['jpl-dev', 'enonymous1']);
     const active   = repos.filter(r => !r.fork && !r.archived && !HIDDEN.has(r.name));
     // "Recent" = sorted by last push; "Featured" = repos tagged with 'featured' topic, then by stars
     const recent   = [...active].slice(0, 6);
