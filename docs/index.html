@@ -378,7 +378,7 @@ const ACCENT_COLORS = {
 
 function renderRepoCard(repo, accentKey) {
     const INTERNAL = { 'jpl-dev': '/projects/' };
-    const name       = escHtml(repo.name.replace(/[-_]/g,' ').replace(/\b\w/g, c => c.toUpperCase()));
+    const name       = escHtml(repo.name);
     const desc       = escHtml(repo.description || 'No description provided.');
     const lang       = escHtml(repo.language || '');
     const stars      = repo.stargazers_count || 0;
