@@ -1,7 +1,7 @@
 /**
  * Global Theme Management
  * Handles light/dark theme switching across all pages.
- * Writes both data-theme (custom CSS) and data-bs-theme (Bootstrap 5.3) in sync.
+ * Writes data-theme (custom CSS) and dispatches a themeChange event.
  * Dispatches 'themeChange' CustomEvent for dependent components (widgets, charts).
  */
 

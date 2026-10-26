@@ -6,34 +6,36 @@ Defines the data structures and constants used for project management
 throughout the portfolio application.
 """
 
+import logging
+from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from enum import Enum
-import logging
 from typing import Any
-from dataclasses import dataclass, field, asdict
 
 logger = logging.getLogger(__name__)
 
 
 class ProjectStatus(str, Enum):
     """Project status constants used to classify portfolio items."""
-    ACTIVE = "active"
-    DEVELOPMENT = "development"
-    COMPLETED = "completed"
-    ARCHIVED = "archived"
-    FEATURED = "featured"
+
+    ACTIVE = 'active'
+    DEVELOPMENT = 'development'
+    COMPLETED = 'completed'
+    ARCHIVED = 'archived'
+    FEATURED = 'featured'
 
 
 class ProjectCategory(str, Enum):
     """Project category constants for consistent filtering and display."""
-    WEB_APP = "web-app"
-    TOOL = "tool"
-    AUTOMATION = "automation"
-    API = "api"
-    LIBRARY = "library"
-    GAME = "game"
-    MOBILE = "mobile"
-    DESKTOP = "desktop"
+
+    WEB_APP = 'web-app'
+    TOOL = 'tool'
+    AUTOMATION = 'automation'
+    API = 'api'
+    LIBRARY = 'library'
+    GAME = 'game'
+    MOBILE = 'mobile'
+    DESKTOP = 'desktop'
 
 
 @dataclass
@@ -44,6 +46,7 @@ class ProjectImage:
     The model supports multiple image roles so the frontend can choose the
     appropriate asset for hero display or thumbnails.
     """
+
     filename: str
     alt_text: str
     caption: str | None = None
@@ -61,6 +64,7 @@ class ProjectLinks:
     Links are optional because some static portfolio entries may only need
     an internal route or a single destination.
     """
+
     github: str | None = None
     demo: str | None = None
     live_site: str | None = None
@@ -76,6 +80,7 @@ class ProjectData:
     This dataclass keeps the static portfolio schema consistent and provides
     convenience properties for derived display state.
     """
+
     id: str
     title: str
     description: str
@@ -111,8 +116,8 @@ class ProjectData:
         # C3a: warn when both dates are absent so the project silently sorts last
         if self.created_date is None and self.last_updated is None:
             logger.warning(
-                "Project %r has no created_date or last_updated; "
-                "it will sort to the bottom of all ordered listings.",
+                'Project %r has no created_date or last_updated; '
+                'it will sort to the bottom of all ordered listings.',
                 self.id,
             )
         if self.links is None:
@@ -123,7 +128,7 @@ class ProjectData:
         except ValueError:
             valid = [s.value for s in ProjectStatus]
             raise ValueError(
-                f"Invalid project status {self.status!r}. Must be one of: {valid}"
+                f'Invalid project status {self.status!r}. Must be one of: {valid}'
             ) from None
 
     @property
@@ -165,7 +170,7 @@ class ProjectData:
         5. GitHub repository
         """
         if self.route:
-            return f"route:{self.route}"
+            return f'route:{self.route}'
         if self.external_url:
             return self.external_url
         if self.links.live_site:
@@ -186,31 +191,34 @@ class ProjectData:
         data = asdict(self)
         # C1d: asdict() already converts images list to List[dict]; use asdict() for
         # the computed properties too so the returned dict is a uniform plain-dict type.
-        data["hero_image"] = asdict(self.hero_image) if self.hero_image else None
-        data["thumbnail_image"] = asdict(self.thumbnail_image) if self.thumbnail_image else None
-        data["primary_link"] = self.primary_link
+        data['hero_image'] = asdict(self.hero_image) if self.hero_image else None
+        data['thumbnail_image'] = asdict(self.thumbnail_image) if self.thumbnail_image else None
+        data['primary_link'] = self.primary_link
         return data
 
 
 @dataclass
 class Skill:
     """A single skill entry for display in the Core Skills widget."""
+
     name: str
     level: int  # 0–100
-    color: str = "primary"  # Bootstrap color name for the progress bar
+    color: str = 'primary'  # Theme color name for the progress bar
 
 
 @dataclass
 class ToolGroup:
     """A labelled group of tool/technology tags for the Tools & Tech widget."""
+
     label: str
-    icon: str   # Bootstrap icon class, e.g. "bi-phone"
+    icon: str  # Bootstrap Icons class, e.g. "bi-phone"
     tools: list[str]
 
 
 @dataclass
 class AboutMe:
     """Static profile data rendered on the homepage About Me widget."""
+
     name: str
     title: str
     bio: str

@@ -180,7 +180,7 @@
                         {% if item['Solicitation Reference'] %}
                         {% set ref_data = create_pdf_link(item['Solicitation Reference'], 'SCP-FSS-001.pdf') %}
                         <div class="checklist-card-footer">
-                            <small>Reference: {{ ref_data.link | replace('/static/files/SCP-FSS-001.pdf', url_for('static', filename='files/SCP-FSS-001.pdf')) | safe }}</small>
+                            <small>Reference: {{ ref_data.link | safe }}</small>
                             {% if ref_data.content %}
                             <div class="reference-content clickable-content" data-content-modal="#content-modal-{{ item['LINE Number'] }}">
                                 <small><strong>Content:</strong> {{ ref_data.content | truncate(150) }}</small>
@@ -204,7 +204,7 @@
                             {% endif %}
                             {% if item['Solicitation Reference'] %}
                                 {% set ref_data = create_pdf_link(item['Solicitation Reference'], 'SCP-FSS-001.pdf') %}
-                                <p><strong>Reference:</strong> {{ ref_data.link | replace('/static/files/SCP-FSS-001.pdf', url_for('static', filename='files/SCP-FSS-001.pdf')) | safe }}</p>
+                                <p><strong>Reference:</strong> {{ ref_data.link | safe }}</p>
                                 {% if ref_data.content %}
                                 <div class="reference-content-modal">
                                     <p><strong>Reference Content:</strong></p>
@@ -232,7 +232,7 @@
                             </div>
                             <div class="content-modal-body">
                                 <div class="source-reference">
-                                    <p><strong>Source:</strong> {{ ref_data.link | replace('/static/files/SCP-FSS-001.pdf', url_for('static', filename='files/SCP-FSS-001.pdf')) | safe }}</p>
+                                    <p><strong>Source:</strong> {{ ref_data.link | safe }}</p>
                                 </div>
                                 <div class="regulation-text">
                                     <h4>Full Text:</h4>
