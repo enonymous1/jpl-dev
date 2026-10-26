@@ -122,6 +122,16 @@ def create_app():
         """
         return render_template('index.html', about=ABOUT_ME)
 
+    @application.route('/retro/')
+    def retro():
+        """Render the optional retro mode: a MySpace-style skin over the
+        same About and Projects data as the clean homepage. The clean site
+        stays the default; this page is reached only via its link, and it
+        links back. It is frozen like any other route, so it works on the
+        static GitHub Pages site with no live Python runtime."""
+        projects_list = get_all_projects()
+        return render_template('retro.html', about=ABOUT_ME, projects=projects_list)
+
     @application.route('/projects/')
     def projects():
         """

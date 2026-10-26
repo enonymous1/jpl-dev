@@ -1,0 +1,207 @@
+/* Retro mode: a MySpace-style skin over the same portfolio data.
+   Deliberately modern under the hood: real text sizes (no 11px body copy),
+   readable contrast, a responsive grid that stacks on mobile, and no
+   autoplay music, flashing, glitter, marquee, or custom cursor. The clean
+   site is the default; this stylesheet only applies to /retro/. */
+
+.retro-body {
+    margin: 0;
+    background: #dbe9f6;
+    color: #1a1a1a;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.retro-body a {
+    color: #004080;
+}
+
+.retro-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-left: 2px solid #6699cc;
+    border-right: 2px solid #6699cc;
+}
+
+.retro-header {
+    background: #003399;
+    color: #ffffff;
+    padding: 20px 16px;
+}
+
+.retro-header h1 {
+    margin: 0 0 4px;
+    font-size: 32px;
+}
+
+.retro-header p {
+    margin: 4px 0;
+}
+
+.retro-eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.retro-note {
+    font-size: 13px;
+    color: #dbe9f6;
+}
+
+.retro-nav {
+    background: #6698cb;
+    padding: 8px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.retro-nav a {
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.retro-nav a:hover {
+    text-decoration: underline;
+}
+
+.retro-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 16px;
+    padding: 16px;
+    align-items: start;
+}
+
+.retro-box {
+    border: 1px solid #6699cc;
+    margin-bottom: 16px;
+    background: #ffffff;
+}
+
+.retro-box h2 {
+    background: #6698cb;
+    color: #ffffff;
+    margin: 0;
+    padding: 6px 10px;
+    font-size: 16px;
+}
+
+.retro-box-body {
+    padding: 10px;
+}
+
+.retro-box-body ul {
+    margin: 8px 0;
+    padding-left: 20px;
+}
+
+.retro-profile-img {
+    display: block;
+    width: 120px;
+    height: 120px;
+    border: 1px solid #6699cc;
+    margin-bottom: 10px;
+}
+
+.retro-badge {
+    display: inline-block;
+    background: #e5f0fa;
+    border: 1px solid #6699cc;
+    padding: 2px 8px;
+    margin: 0 4px 4px 0;
+    font-size: 13px;
+}
+
+.retro-interest h3 {
+    margin: 12px 0 2px;
+    font-size: 14px;
+}
+
+.retro-interest p {
+    margin: 0 0 8px;
+}
+
+.retro-project {
+    border-bottom: 1px dotted #6699cc;
+    padding: 10px 0;
+}
+
+.retro-project:first-child {
+    padding-top: 0;
+}
+
+.retro-project h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+}
+
+.retro-project p {
+    margin: 4px 0;
+}
+
+.retro-project-meta {
+    font-size: 13px;
+    color: #555555;
+}
+
+.retro-top8 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.retro-top8-item {
+    text-align: center;
+    border: 1px solid #6699cc;
+    padding: 10px 6px;
+}
+
+.retro-top8-avatar {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 8px;
+    background: #e5f0fa;
+    border: 1px solid #6699cc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #003399;
+}
+
+.retro-top8-item p {
+    margin: 2px 0;
+    font-size: 13px;
+}
+
+.retro-small {
+    font-size: 13px;
+    color: #555555;
+}
+
+.retro-footer {
+    border-top: 2px solid #6699cc;
+    padding: 12px 16px;
+    text-align: center;
+    font-size: 13px;
+}
+
+@media (max-width: 700px) {
+    .retro-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .retro-top8 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .retro-header h1 {
+        font-size: 26px;
+    }
+}

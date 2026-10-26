@@ -15,6 +15,7 @@ def client():
 
 ROUTES = [
     '/',
+    '/retro/',
     '/projects/',
     '/widget-demo/',
     '/projects/gsa-mas-checklist/',
@@ -65,6 +66,26 @@ def test_projects_page_lists_shipped_tools(client):
     for title in (b'repo-sync', b'gas-auditor', b'photo-stitcher', b'sms-toolkit'):
         assert title in resp.data
     assert b'More Projects Coming Soon' not in resp.data
+
+
+def test_homepage_links_to_retro_mode(client):
+    resp = client.get('/')
+    assert b'/retro/' in resp.data
+    assert b'Retro mode' in resp.data
+
+
+def test_retro_page_is_a_skin_not_a_second_portfolio(client):
+    resp = client.get('/retro/')
+    assert resp.status_code == 200
+    assert b'Back to the clean site' in resp.data
+    assert b'Justin P. Lyons' in resp.data
+    assert b'repo-sync' in resp.data
+    # Guardrails agreed for retro mode: no autoplay audio element. The page
+    # says "no autoplay" in prose, so test for the attribute/element, not
+    # the word, or the note itself trips the test.
+    assert b'autoplay=' not in resp.data
+    assert b'<audio' not in resp.data
+    assert b'Top 8 here means the 8 most recently updated public repos' in resp.data
 
 
 def test_all_blueprint_routes_registered():

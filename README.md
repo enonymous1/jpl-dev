@@ -40,6 +40,7 @@ As the platform grows, the next evolution depends on persistence and runtime req
 - **Interactive GSA MAS Checklist** — Tool for GSA proposal preparation using JSON datasets and browser persistence
 - **Schedule Maker** — Client-side schedule tool, saved in browser storage and exported as JSON
 - **Component Library** — `/widget-demo/` showcases the cards, badges and repo cards used across the site
+- **Retro Mode** — `/retro/` is an optional MySpace-style skin over the same About, Projects, and repo data as the clean homepage. The clean site is the default; retro mode is reached from the homepage hero and links back. No autoplay music, no fake friends, and it freezes like any other route.
 - **Responsive Design** — Modern CSS layouts scaling across device sizes
 - **Smart Tooltips** — Positioning algorithms to prevent off-screen clipping
 
