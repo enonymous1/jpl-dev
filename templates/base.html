@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile-card.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/checklist.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme-toggle.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/projects.css') }}">
 
     <!-- Flash the correct theme before first paint to prevent flicker -->
@@ -43,18 +42,23 @@
 </head>
 <body>
     <!-- ── Navigation ─────────────────────────────────────────────────────── -->
-    <nav class="sticky top-0 z-50 text-white shadow-md" style="background:#0a0a0a" id="main-navbar">
+    <!-- Nav colors come from --nav-* variables so light and dark themes
+         share one header. The public nav is Home, Projects, GitHub; the
+         internal demo route still exists but is no longer linked here. -->
+    <nav class="sticky top-0 z-50 shadow-md" style="background:var(--nav-bg);color:var(--nav-text-active)" id="main-navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-14">
 
                 <!-- Brand + mobile hamburger -->
                 <div class="flex items-center gap-3">
                     <button id="nav-toggle"
-                            class="lg:hidden p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
-                            aria-label="Toggle navigation">
+                            class="lg:hidden p-1.5 rounded transition-colors"
+                            style="color:var(--nav-text)"
+                            aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
                         <i class="bi bi-list text-xl"></i>
                     </button>
-                    <a class="text-white font-bold text-lg flex items-center gap-2 hover:text-gray-200 transition-colors no-underline"
+                    <a class="font-bold text-lg flex items-center gap-2 transition-colors no-underline"
+                       style="color:var(--nav-text-active)"
                        href="{{ url_for('index') }}">
                         <i class="bi bi-code-square"></i>JPL-DEV
                     </a>
@@ -62,20 +66,20 @@
 
                 <!-- Desktop nav links -->
                 <div class="hidden lg:flex items-center gap-1">
-                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline
-                              {% if request.endpoint == 'index' %}bg-gray-700 text-white{% else %}text-gray-300 hover:text-white hover:bg-gray-700{% endif %}"
+                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
+                       style="{% if request.endpoint == 'index' %}background:var(--nav-active-bg);color:var(--nav-text-active){% else %}color:var(--nav-text){% endif %}"
                        href="{{ url_for('index') }}">
                         <i class="bi bi-house-door mr-1"></i>Home
                     </a>
-                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline
-                              {% if request.endpoint == 'projects' %}bg-gray-700 text-white{% else %}text-gray-300 hover:text-white hover:bg-gray-700{% endif %}"
+                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
+                       style="{% if request.endpoint == 'projects' %}background:var(--nav-active-bg);color:var(--nav-text-active){% else %}color:var(--nav-text){% endif %}"
                        href="{{ url_for('projects') }}">
                         <i class="bi bi-collection mr-1"></i>Projects
                     </a>
-                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline
-                              {% if request.endpoint == 'widget_demo' %}bg-gray-700 text-white{% else %}text-gray-300 hover:text-white hover:bg-gray-700{% endif %}"
-                       href="{{ url_for('widget_demo') }}">
-                        <i class="bi bi-grid-3x3-gap mr-1"></i>Components
+                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
+                       style="color:var(--nav-text)"
+                       href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-github mr-1"></i>GitHub
                     </a>
                 </div>
 
@@ -83,10 +87,10 @@
                 <div class="flex items-center gap-1">
                     {% if request.endpoint == 'gsa_mas_checklist.gsa_mas_checklist' %}
                         <div class="flex items-center gap-0.5">
-                            <button id="save-btn"   class="p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors" title="Save"><i class="bi bi-floppy"></i></button>
-                            <button id="export-btn" class="p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors" title="Export"><i class="bi bi-download"></i></button>
-                            <button id="import-btn" class="p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors" title="Import"><i class="bi bi-upload"></i></button>
-                            <button id="clear-btn"  class="p-1.5 rounded text-red-400 hover:text-red-300 hover:bg-gray-700 transition-colors" title="Clear all"><i class="bi bi-trash"></i></button>
+                            <button id="save-btn"   class="p-1.5 rounded transition-colors" style="color:var(--nav-text)" title="Save"><i class="bi bi-floppy"></i></button>
+                            <button id="export-btn" class="p-1.5 rounded transition-colors" style="color:var(--nav-text)" title="Export"><i class="bi bi-download"></i></button>
+                            <button id="import-btn" class="p-1.5 rounded transition-colors" style="color:var(--nav-text)" title="Import"><i class="bi bi-upload"></i></button>
+                            <button id="clear-btn"  class="p-1.5 rounded text-red-400 hover:text-red-300 transition-colors" title="Clear all"><i class="bi bi-trash"></i></button>
                         </div>
                     {% elif request.endpoint == 'schedule_maker.schedule_maker' %}
                         {% block header_actions %}{% endblock %}
@@ -94,7 +98,8 @@
 
                     <!-- Theme toggle -->
                     <button id="theme-toggle" type="button"
-                            class="p-1.5 rounded text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
+                            class="p-1.5 rounded transition-colors"
+                            style="color:var(--nav-text)"
                             title="Toggle theme" aria-label="Toggle theme" aria-pressed="false">
                         <i class="bi bi-sun theme-icon-light"></i>
                         <i class="bi bi-moon theme-icon-dark hidden"></i>
@@ -104,22 +109,22 @@
         </div>
 
         <!-- Mobile nav menu (collapsed by default) -->
-        <div id="nav-menu" class="hidden lg:hidden border-t border-gray-800" style="background:#0a0a0a">
+        <div id="nav-menu" class="hidden lg:hidden border-t" style="background:var(--nav-bg);border-color:var(--nav-border)">
             <div class="px-4 py-2 space-y-0.5">
-                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline
-                          {% if request.endpoint == 'index' %}bg-gray-700 text-white{% else %}text-gray-300 hover:text-white hover:bg-gray-700{% endif %}"
+                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
+                   style="{% if request.endpoint == 'index' %}background:var(--nav-active-bg);color:var(--nav-text-active){% else %}color:var(--nav-text){% endif %}"
                    href="{{ url_for('index') }}">
                     <i class="bi bi-house-door"></i>Home
                 </a>
-                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline
-                          {% if request.endpoint == 'projects' %}bg-gray-700 text-white{% else %}text-gray-300 hover:text-white hover:bg-gray-700{% endif %}"
+                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
+                   style="{% if request.endpoint == 'projects' %}background:var(--nav-active-bg);color:var(--nav-text-active){% else %}color:var(--nav-text){% endif %}"
                    href="{{ url_for('projects') }}">
                     <i class="bi bi-collection"></i>Projects
                 </a>
-                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline
-                          {% if request.endpoint == 'widget_demo' %}bg-gray-700 text-white{% else %}text-gray-300 hover:text-white hover:bg-gray-700{% endif %}"
-                   href="{{ url_for('widget_demo') }}">
-                    <i class="bi bi-grid-3x3-gap"></i>Components
+                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
+                   style="color:var(--nav-text)"
+                   href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer">
+                    <i class="bi bi-github"></i>GitHub
                 </a>
             </div>
         </div>
@@ -140,7 +145,9 @@
     <!-- Mobile nav toggle (vanilla JS, no framework required) -->
     <script>
         document.getElementById('nav-toggle')?.addEventListener('click', function () {
-            document.getElementById('nav-menu').classList.toggle('hidden');
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('hidden');
+            this.setAttribute('aria-expanded', String(!menu.classList.contains('hidden')));
         });
     </script>
 

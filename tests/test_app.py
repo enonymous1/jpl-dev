@@ -43,6 +43,30 @@ def test_nl2br_filter(client):
     assert rendered == 'a<br>' + chr(10) + 'b'
 
 
+def test_homepage_is_a_portfolio_hero_not_a_dashboard(client):
+    resp = client.get('/')
+    assert b'I build tools that automate repetitive work.' in resp.data
+    assert b'Dashboard' not in resp.data
+    assert b'Quick Stats' not in resp.data
+    # The old hardcoded stats had no source; the replacement names real work.
+    assert b'What I Build' in resp.data
+    assert b'repo-sync' in resp.data
+
+
+def test_nav_does_not_link_internal_components_demo(client):
+    for route in ('/', '/projects/'):
+        resp = client.get(route)
+        assert b'Components' not in resp.data
+        assert b'widget-demo' not in resp.data
+
+
+def test_projects_page_lists_shipped_tools(client):
+    resp = client.get('/projects/')
+    for title in (b'repo-sync', b'gas-auditor', b'photo-stitcher', b'sms-toolkit'):
+        assert title in resp.data
+    assert b'More Projects Coming Soon' not in resp.data
+
+
 def test_all_blueprint_routes_registered():
     app = create_app()
     endpoints = {rule.endpoint for rule in app.url_map.iter_rules()}

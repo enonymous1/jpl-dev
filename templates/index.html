@@ -5,15 +5,19 @@
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    <!-- Dashboard header -->
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-bold mb-0.5">Dashboard</h1>
-            <p class="text-sm text-gray-500">My personal widget dashboard</p>
+    <!-- Hero: who this is and what he builds, in one screen -->
+    <section class="mb-6">
+        <p class="text-sm font-semibold mb-1" style="color:var(--primary-color)">Justin P. Lyons — Fredericksburg, VA</p>
+        <h1 class="text-3xl font-bold mb-2">I build tools that automate repetitive work.</h1>
+        <p class="text-base mb-4" style="color:var(--text-secondary)">IT manager with AS &amp; BS in Computer Science. Pricing and vendor data, message and photo archives, video and market-data pipelines — shipped as tested, documented tools, not demos.</p>
+        <div class="flex flex-wrap gap-2">
+            <a href="{{ url_for('projects') }}" class="repo-btn repo-btn-primary">View Projects</a>
+            <a href="https://github.com/enonymous1" class="repo-btn" target="_blank" rel="noopener noreferrer"><i class="bi bi-github"></i>&nbsp;GitHub</a>
+            <a href="https://linkedin.com/in/justinplyons" class="repo-btn" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin"></i>&nbsp;LinkedIn</a>
         </div>
-    </div>
+    </section>
 
-    <!-- Dashboard grid: 2 columns on lg+; About Me spans both rows on the left -->
+    <!-- Homepage grid: 2 columns on lg+; About Me spans both rows on the left -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
         <!-- About Me (left column, spans 2 rows) -->
@@ -55,33 +59,21 @@
             </div>
         </div>
 
-        <!-- Quick Stats (right column, row 1) -->
+        <!-- What I build (right column, row 1) -->
         <div>
             <div class="widget-card">
                 <div class="widget-header bg-green-600">
                     <h6 class="font-semibold text-sm flex items-center gap-2 mb-0">
-                        <i class="bi bi-bar-chart"></i>Quick Stats
+                        <i class="bi bi-gear"></i>What I Build
                     </h6>
                 </div>
                 <div class="widget-body">
-                    <div class="grid grid-cols-4 text-center">
-                        <div>
-                            <div class="text-xl font-bold text-blue-500 mb-0.5">12+</div>
-                            <small class="text-xs" style="color:var(--text-secondary)">Projects</small>
-                        </div>
-                        <div>
-                            <div class="text-xl font-bold text-green-500 mb-0.5">5+</div>
-                            <small class="text-xs" style="color:var(--text-secondary)">Years Exp</small>
-                        </div>
-                        <div>
-                            <div class="text-xl font-bold text-cyan-500 mb-0.5">15+</div>
-                            <small class="text-xs" style="color:var(--text-secondary)">Technologies</small>
-                        </div>
-                        <div>
-                            <div class="text-xl font-bold text-amber-500 mb-0.5">100+</div>
-                            <small class="text-xs" style="color:var(--text-secondary)">Commits</small>
-                        </div>
-                    </div>
+                    <ul class="space-y-2 list-none p-0 m-0 text-sm">
+                        <li><strong>Automation &amp; data:</strong> <a href="https://github.com/enonymous1/repo-sync" target="_blank" rel="noopener noreferrer">repo-sync</a>, <a href="https://github.com/enonymous1/gas-auditor" target="_blank" rel="noopener noreferrer">gas-auditor</a>, GSA pricing toolkits</li>
+                        <li><strong>Desktop tools:</strong> <a href="https://github.com/enonymous1/photo-stitcher" target="_blank" rel="noopener noreferrer">photo-stitcher</a>, <a href="https://github.com/enonymous1/sms-toolkit" target="_blank" rel="noopener noreferrer">sms-toolkit</a>, Wyze Video Joiner</li>
+                        <li><strong>Web:</strong> this site, voxel-portfolio</li>
+                        <li><strong>Data pipelines:</strong> <a href="https://github.com/enonymous1/kalshi-recorder" target="_blank" rel="noopener noreferrer">kalshi-recorder</a> (market-data capture)</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -259,12 +251,19 @@ async function loadGithubProjects() {
 
     const HIDDEN   = new Set(['jpl-dev', 'enonymous1']);
     const active   = repos.filter(r => !r.fork && !r.archived && !HIDDEN.has(r.name));
-    // "Recent" = sorted by last push; "Featured" = repos tagged with 'featured' topic, then by stars
+    // "Recent" = sorted by last push; "Featured" = repos tagged with 'featured' topic, then by stars.
+    // Fallback: no repo currently carries the 'featured' topic, so without this
+    // the tab rendered "No repositories tagged 'featured' yet" on every visit.
+    // Tagged repos win when they exist; the showcase list only fills an empty tab.
+    const SHOWCASE = ['repo-sync', 'gas-auditor', 'photo-stitcher', 'voxel-portfolio', 'sms-toolkit', 'gsa-vendor-toolkit'];
     const recent   = [...active].slice(0, 6);
-    const featured = active
+    let featured = active
         .filter(r => (r.topics || []).includes('featured'))
-        .sort((a, b) => b.stargazers_count - a.stargazers_count)
-        .slice(0, 6);
+        .sort((a, b) => b.stargazers_count - a.stargazers_count);
+    if (!featured.length) {
+        featured = SHOWCASE.map(name => active.find(r => r.name === name)).filter(Boolean);
+    }
+    featured = featured.slice(0, 6);
 
     const noRepos = (msg) => `<p class="col-span-full text-center py-4 text-sm" style="color:var(--text-secondary)">${msg}</p>`;
     recentEl.innerHTML   = recent.length   ? recent.map(r   => renderRepoCard(r, 'primary')).join('') : noRepos('No recent repositories found.');

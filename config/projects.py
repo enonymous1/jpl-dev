@@ -16,7 +16,6 @@ from config.models import (
     ProjectImage,
     ProjectLinks,
     ProjectStatus,
-    Skill,
     ToolGroup,
 )
 
@@ -117,6 +116,98 @@ _PROJECTS = [
         last_updated=datetime(2025, 7, 11),
         priority=8,
     ),
+    # Shipped tools, hosted in their own repos. No internal route: the card
+    # links out to GitHub via external_url, and the template handles a
+    # missing route. These are the projects the homepage repo cards point
+    # to, so the /projects page and the homepage now tell the same story.
+    ProjectData(
+        id='repo_sync',
+        title='repo-sync',
+        description=(
+            'You have dozens of repos on GitHub and dozens of folders on disk. '
+            'repo-sync tells you which is which: it syncs GitHub repo metadata, '
+            'reconciles it against local folders, and reports the mismatches.'
+        ),
+        status=ProjectStatus.ACTIVE,
+        category=ProjectCategory.TOOL,
+        features=[
+            'GitHub REST sync of repo metadata',
+            'Local scanner and remote-vs-local reconciliation',
+            'Metadata reports and a .py-to-Markdown exporter',
+        ],
+        tech_stack=['Python', 'GitHub API', 'CSV', 'Markdown'],
+        tags=['automation', 'github', 'cli', 'developer-tools'],
+        external_url='https://github.com/enonymous1/repo-sync',
+        links=ProjectLinks(github='https://github.com/enonymous1/repo-sync'),
+        last_updated=datetime(2026, 10, 24),
+        priority=9,
+    ),
+    ProjectData(
+        id='gas_auditor',
+        title='gas-auditor',
+        description=(
+            'Google hides some of your scripts from Drive. This finds them anyway: '
+            'an inventory and audit tool for every Google Apps Script project '
+            'across Drive, the Script API, and Apps Script-native dashboards.'
+        ),
+        status=ProjectStatus.ACTIVE,
+        category=ProjectCategory.TOOL,
+        features=[
+            'Discovers scripts Drive search misses',
+            'CLI plus a Flask dashboard plus bulk source export',
+            'Anonymized sample output, no real account data in the repo',
+        ],
+        tech_stack=['Python', 'Flask', 'Google APIs', 'OAuth'],
+        tags=['automation', 'audit', 'google-workspace', 'cli'],
+        external_url='https://github.com/enonymous1/gas-auditor',
+        links=ProjectLinks(github='https://github.com/enonymous1/gas-auditor'),
+        last_updated=datetime(2026, 10, 24),
+        priority=7,
+    ),
+    ProjectData(
+        id='photo_stitcher',
+        title='photo-stitcher',
+        description=(
+            'A review and stitch wizard for FastFoto-style scans: pick the best '
+            'front, stitch the back, rotate losslessly, and organize finished '
+            'groups — with pause and resume so a large archive survives interruptions.'
+        ),
+        status=ProjectStatus.ACTIVE,
+        category=ProjectCategory.DESKTOP,
+        features=[
+            'Best-front pick and directional back-stitching',
+            'Lossless rotation and pause/resume state',
+            'Single-scan and reviewed-original organizing',
+        ],
+        tech_stack=['Python', 'PyQt6', 'Pillow'],
+        tags=['desktop', 'image-processing', 'photo-scanning'],
+        external_url='https://github.com/enonymous1/photo-stitcher',
+        links=ProjectLinks(github='https://github.com/enonymous1/photo-stitcher'),
+        last_updated=datetime(2026, 10, 24),
+        priority=6,
+    ),
+    ProjectData(
+        id='sms_toolkit',
+        title='sms-toolkit',
+        description=(
+            'Your backup app copies everything, every day. This keeps only '
+            "what's new: it deduplicates SMS and MMS backups into a clean, "
+            'queryable archive.'
+        ),
+        status=ProjectStatus.ACTIVE,
+        category=ProjectCategory.TOOL,
+        features=[
+            'Incremental backup: only new messages are kept',
+            'Deduplication across repeated full backups',
+            'Flask viewer over the cleaned archive',
+        ],
+        tech_stack=['Python', 'Flask', 'SQLite', 'OCR'],
+        tags=['automation', 'data-cleaning', 'messaging', 'cli'],
+        external_url='https://github.com/enonymous1/sms-toolkit',
+        links=ProjectLinks(github='https://github.com/enonymous1/sms-toolkit'),
+        last_updated=datetime(2026, 10, 24),
+        priority=5,
+    ),
     # Template entries are intentionally left commented out as a reference for
     # future additions. They should not affect build-time behavior.
 ]
@@ -142,40 +233,47 @@ PROJECTS_SORTED = tuple(
 # ========================================================================
 ABOUT_ME = AboutMe(
     name='Justin P. Lyons',
-    title='IT Manager | Mobile Application Development',
+    title='IT Manager | Automation & Full-Stack Builder',
     bio=(
-        'IT Manager with AS & BS in Computer Science, specializing in Mobile Application '
-        'Development. Blending hands-on technical expertise with leadership to deliver '
-        'innovative solutions and drive technology forward.'
+        'IT Manager with AS & BS in Computer Science. I build tools that automate '
+        'repetitive work — pricing and vendor data, message and photo archives, '
+        'video and market-data pipelines — and the dashboards and infrastructure '
+        'that run them. Mobile development is where I started; automation and '
+        'full-stack tools are where most of my recent work lives.'
     ),
     profile_image='images/profile.svg',
-    badges=['AS & BS in CS', 'Mobile Dev'],
+    badges=['AS & BS in CS', 'Automation', 'Full-Stack'],
     highlights=[
-        'IT Manager passionate about technology and people',
-        'AS & BS in Computer Science, Mobile Application Development focus',
-        'Enthusiastic about creating impactful mobile experiences',
-        'Always learning and exploring new tech frontiers',
+        'Builds automation for real operations: store, contracting, and personal archives',
+        'Ships tested, documented tools with CI — not just demos',
+        'Runs a homelab stack (Unraid, Docker) for media, backups, and automation',
+        'Background in mobile development (Android, iOS) and full-stack web',
     ],
-    skills=[
-        Skill('Python', 90, 'info'),
-        Skill('JavaScript', 88, 'warning'),
-        Skill('Java', 85, 'danger'),
-        Skill('Kotlin', 80, 'success'),
-        Skill('Swift', 75, 'primary'),
-        Skill('Flask', 88, 'secondary'),
-    ],
+    # No percentage skill bars: they were never rendered, and a self-assigned
+    # 90 vs 88 proves nothing. The tool groups and the shipped projects below
+    # are the evidence instead.
     tool_groups=[
         ToolGroup(
             'Languages',
             'bi-file-code',
-            ['Java', 'Kotlin', 'Swift', 'Objective-C', 'Python', 'JavaScript'],
+            ['Python', 'JavaScript', 'TypeScript', 'Java', 'Kotlin', 'Swift'],
+        ),
+        ToolGroup(
+            'Automation & Data',
+            'bi-gear',
+            ['Flask', 'GitHub Actions', 'Playwright', 'Pandas', 'SQLite', 'Parquet'],
         ),
         ToolGroup('Mobile', 'bi-phone', ['Android', 'iOS', 'Flutter', 'React Native']),
+        ToolGroup(
+            'Infrastructure',
+            'bi-hdd-stack',
+            ['Docker', 'Unraid', 'AWS', 'Firebase'],
+        ),
         ToolGroup(
             'Leadership',
             'bi-people',
             ['Team Building', 'Agile', 'Project Management', 'Mentorship'],
         ),
-        ToolGroup('Tools', 'bi-tools', ['Git', 'GitHub', 'Jira', 'AWS', 'Docker', 'Firebase']),
+        ToolGroup('Tools', 'bi-tools', ['Git', 'GitHub', 'Jira']),
     ],
 )

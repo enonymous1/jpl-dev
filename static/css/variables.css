@@ -27,6 +27,14 @@
     --tooltip-bg: #333;
     --tooltip-text: #fff;
     --shadow-color: rgba(0, 0, 0, 0.1);
+    /* Nav: a dark header on both themes, with its own active-link color so
+       the active state is visible in light mode too (bg-gray-700 on a
+       near-black bar was not). */
+    --nav-bg: #1f2937;
+    --nav-text: #d1d5db;
+    --nav-text-active: #ffffff;
+    --nav-active-bg: #374151;
+    --nav-border: #374151;
 }
 
 [data-theme="dark"] {
@@ -57,4 +65,9 @@
     --tooltip-bg: #e0e0e0;
     --tooltip-text: #1a1a1a;
     --shadow-color: rgba(0, 0, 0, 0.3);
+    --nav-bg: #111111;
+    --nav-text: #d1d5db;
+    --nav-text-active: #ffffff;
+    --nav-active-bg: #2d2d2d;
+    --nav-border: #2d2d2d;
 }
