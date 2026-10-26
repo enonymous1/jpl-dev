@@ -124,6 +124,27 @@ def test_homepage_vcard_tabs(client):
     assert b'data-vcard-section="projects"' in resp.data
     # The old sticky contact footer is gone: sidebar + Contact tab cover it.
     assert b"Let's Connect" not in resp.data
+    # Homepage is standalone: no global top nav, but the theme toggle
+    # moved into the sidebar so light/dark is still reachable.
+    assert b'id="main-navbar"' not in resp.data
+    assert b'id="theme-toggle"' in resp.data
+
+
+def test_other_pages_keep_global_nav(client):
+    resp = client.get('/projects/')
+    assert b'id="main-navbar"' in resp.data
+
+
+def test_vcard_layout_is_stable_across_tabs():
+    import pathlib
+
+    css = pathlib.Path('static/css/vcard.css').read_text()
+    # Tabs are anchored top-right inside the card, and the layout reserves
+    # scrollbar space + a minimum card height, so switching from a long
+    # tab (About) to a short one (Contact) does not shift the sidebar.
+    assert 'scrollbar-gutter: stable' in css
+    assert 'min-height: 560px' in css
+    assert 'position: absolute' in css
 
 
 def test_retro_theme_toggle(client):

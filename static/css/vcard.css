@@ -4,11 +4,20 @@
    light/dark toggle themes this layout automatically with no second
    palette to maintain. */
 
+/* Reserve scrollbar space always on this page: when switching tabs the
+   content height changes (About is long, Contact is short), and without
+   this the centered layout shifted sideways as the scrollbar appeared
+   and disappeared, which read as the sidebar moving. */
+html {
+    scrollbar-gutter: stable;
+}
+
 .vcard-layout {
     display: grid;
     grid-template-columns: 300px minmax(0, 1fr);
     gap: 20px;
     align-items: start;
+    width: 100%;
 }
 
 .vcard-layout > * {
@@ -21,7 +30,7 @@
     border-radius: var(--border-radius);
     padding: 20px;
     position: sticky;
-    top: 70px;
+    top: 20px;
 }
 
 .vcard-profile {
@@ -90,8 +99,14 @@
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    padding: 24px;
+    padding: 64px 24px 24px;
     min-width: 0;
+    width: 100%;
+    position: relative;
+    /* Keep the card from collapsing to a sliver on short tabs like
+       Contact: height may still grow for About, but it never drops
+       below this, so switching tabs does not yank the page around. */
+    min-height: 560px;
 }
 
 .vcard-main h2 {
@@ -103,13 +118,26 @@
     margin-top: 0;
 }
 
+/* Tabs anchored to the top-right corner of the main card, like the
+   source vCard navbar: flush with the card's top and right edges,
+   rounded only where it meets the card (top-right) and where it ends
+   (bottom-left), so it reads as part of the card instead of a separate
+   full-width bar sitting on top of it. */
 .vcard-tabs {
+    position: absolute;
+    top: 0;
+    right: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 12px;
-    margin-bottom: 20px;
+    gap: 4px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-right: none;
+    border-radius: 0 var(--border-radius) 0 var(--border-radius);
+    padding: 10px 12px;
+    margin: 0;
+    z-index: 1;
 }
 
 .vcard-tabs button {
@@ -118,14 +146,17 @@
     color: var(--text-secondary);
     font-weight: 600;
     font-size: 15px;
-    padding: 8px 14px;
+    padding: 6px 10px;
     cursor: pointer;
     border-radius: 6px;
 }
 
+.vcard-tabs button:hover {
+    color: var(--text-color);
+}
+
 .vcard-tabs button[aria-selected="true"] {
-    background: var(--primary-color);
-    color: #ffffff;
+    color: var(--primary-color);
 }
 
 @media (max-width: 800px) {
@@ -137,7 +168,17 @@
         position: static;
     }
 
+    /* On narrow screens the anchored tabs would overlap content, so
+       they become a normal bar above the sections instead. */
+    .vcard-tabs {
+        position: static;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        margin-bottom: 20px;
+    }
+
     .vcard-main {
         padding: 16px;
+        min-height: 0;
     }
 }
