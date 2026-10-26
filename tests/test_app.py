@@ -85,7 +85,30 @@ def test_retro_page_is_a_skin_not_a_second_portfolio(client):
     # the word, or the note itself trips the test.
     assert b'autoplay=' not in resp.data
     assert b'<audio' not in resp.data
-    assert b'Top 8 here means the 8 most recently updated public repos' in resp.data
+    assert b'Top 8 here means a curated showcase of 8 repos' in resp.data
+    assert b'SHOWCASE' in resp.data
+
+
+def test_retro_grid_cannot_overflow_on_long_repo_names():
+    import pathlib
+
+    css = pathlib.Path('static/css/retro.css').read_text()
+    # Grid tracks must allow shrinking below their longest unbreakable word
+    # (repo names with underscores), or the right-hand cards flow past the
+    # page container — the bug reported from the Top 8 screenshot.
+    assert 'minmax(0, 1fr)' in css
+    assert 'overflow-wrap: anywhere' in css
+
+
+def test_profile_photo_is_a_local_image_not_the_silhouette():
+    import pathlib
+
+    from config.projects import ABOUT_ME
+
+    assert ABOUT_ME.profile_image == 'images/profile.jpg'
+    photo = pathlib.Path('static') / ABOUT_ME.profile_image
+    assert photo.exists()
+    assert photo.read_bytes()[:3] == b'\xff\xd8\xff'  # JPEG magic bytes
 
 
 def test_all_blueprint_routes_registered():

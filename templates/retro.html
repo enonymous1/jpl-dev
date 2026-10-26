@@ -106,7 +106,7 @@
                     <div id="retro-top8" class="retro-top8">
                         <p>Loading from GitHub&hellip;</p>
                     </div>
-                    <p class="retro-small">Top 8 here means the 8 most recently updated public repos, not people. Names, descriptions, and languages come from the same repos.json snapshot as the clean homepage, with a live GitHub fallback if that snapshot is missing.</p>
+                    <p class="retro-small">Top 8 here means a curated showcase of 8 repos, not people. "Most recently updated" was tried first and churned with every push — it surfaced whichever old repos had just been modernized, like cs-word-histogram — so the list is now fixed to the showcase below, filled from recent repos only if a showcase repo is missing. Names and languages come from the same repos.json snapshot as the clean homepage, with a live GitHub fallback if that snapshot is missing.</p>
                 </div>
             </section>
         </main>
@@ -155,7 +155,16 @@ async function loadRetroTop8() {
     }
     const hidden = new Set(['jpl-dev', 'enonymous1']);
     const active = repos.filter(r => !r.fork && !r.archived && !hidden.has(r.name));
-    const top8 = active.slice(0, 8);
+    // Curated showcase, not "most recently updated": recency churned with
+    // every push and surfaced modernized old repos instead of the work
+    // the portfolio is meant to lead with. Fill from recent repos only
+    // if a showcase repo is missing, so the grid still reaches 8.
+    const SHOWCASE = ['repo-sync', 'gas-auditor', 'photo-stitcher', 'voxel-portfolio', 'sms-toolkit', 'gsa-vendor-toolkit', 'kalshi-recorder', 'gsa-fcp-toolkit'];
+    const top8 = SHOWCASE.map(name => active.find(r => r.name === name)).filter(Boolean);
+    for (const repo of active) {
+        if (top8.length >= 8) break;
+        if (!top8.includes(repo)) top8.push(repo);
+    }
     el.innerHTML = top8.map(r => {
         const initial = escHtml((r.name || '?').charAt(0).toUpperCase());
         const stars = r.stargazers_count ? ' &middot; &#9733; ' + r.stargazers_count : '';

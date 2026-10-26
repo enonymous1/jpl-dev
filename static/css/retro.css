@@ -71,10 +71,18 @@
 
 .retro-grid {
     display: grid;
-    grid-template-columns: 300px 1fr;
+    /* minmax(0, ...) is the overflow fix: without it, a grid track's
+       automatic minimum is its longest unbreakable word, so a repo name
+       like ss-space_marine_master_crafted pushed the whole main column
+       (and every right-hand card) past the page container. */
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
     gap: 16px;
     padding: 16px;
     align-items: start;
+}
+
+.retro-grid > * {
+    min-width: 0;
 }
 
 .retro-box {
@@ -151,7 +159,7 @@
 
 .retro-top8 {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 12px;
 }
 
@@ -159,6 +167,8 @@
     text-align: center;
     border: 1px solid #6699cc;
     padding: 10px 6px;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .retro-top8-avatar {
@@ -178,6 +188,7 @@
 .retro-top8-item p {
     margin: 2px 0;
     font-size: 13px;
+    overflow-wrap: anywhere;
 }
 
 .retro-small {

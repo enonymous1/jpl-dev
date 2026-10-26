@@ -241,7 +241,11 @@ ABOUT_ME = AboutMe(
         'that run them. Mobile development is where I started; automation and '
         'full-stack tools are where most of my recent work lives.'
     ),
-    profile_image='images/profile.svg',
+    # Local copy of the GitHub profile photo (avatars.githubusercontent.com,
+    # enonymous1), downloaded 2026-10-26 and committed so the frozen site
+    # does not hotlink an external avatar. If the GitHub avatar changes,
+    # replace this file to match.
+    profile_image='images/profile.jpg',
     badges=['AS & BS in CS', 'Automation', 'Full-Stack'],
     highlights=[
         'Builds automation for real operations: store, contracting, and personal archives',
