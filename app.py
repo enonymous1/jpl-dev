@@ -7,7 +7,7 @@ This application supports both live development and static site generation
 for deployment to GitHub Pages.
 
 Features:
-- Modular project architecture using Flask Blueprints
+- Project data comes from GitHub (repos.json / live API), not a baked-in catalog
 - Static site generation with Flask-Frozen
 - Custom template filters for enhanced rendering
 - Responsive design with modern CSS architecture
@@ -16,54 +16,12 @@ Author: JPL Development
 Date: July 2025
 """
 
-import importlib
-import logging
 import os
-import pkgutil
 
-from flask import Blueprint, Flask, render_template
+from flask import Flask, render_template
 from flask_frozen import Freezer
 
-from config.data_access import get_all_projects
-from config.models import ProjectStatus
 from config.projects import ABOUT_ME
-
-logger = logging.getLogger(__name__)
-
-
-def register_project_blueprints(application, strict=False):
-    """Auto-discover and register project blueprints from the projects package.
-
-    Args:
-        strict: When True, re-raises import errors instead of continuing. Use
-                this in CI / freeze.py to surface broken blueprints before they
-                produce a silent gap in the generated site.
-    """
-    project_package = 'projects'
-    project_path = os.path.join(os.path.dirname(__file__), 'projects')
-
-    for finder, name, ispkg in pkgutil.iter_modules([project_path]):
-        if name.startswith('_'):
-            continue
-
-        module_name = f'{project_package}.{name}'
-        try:
-            module = importlib.import_module(module_name)
-        except Exception as exc:
-            logger.error('Failed to import project module %s: %s', module_name, exc)
-            if strict:
-                raise
-            continue
-
-        for attr_name in dir(module):
-            attr = getattr(module, attr_name)
-            if isinstance(attr, Blueprint):
-                if attr.name in application.blueprints:
-                    continue
-                application.register_blueprint(attr)
-                logger.info(
-                    'Registered blueprint: %s from %s.%s', attr.name, module_name, attr_name
-                )
 
 
 def create_app():
@@ -83,11 +41,6 @@ def create_app():
     # FREEZER_REMOVE_EXTRA_FILES defaults to True — without this, `python freeze.py`
     # silently deletes docs/CNAME, breaking the custom domain until CI re-injects it.
     application.config['FREEZER_DESTINATION_IGNORE'] = ['CNAME']
-
-    # Use strict mode during freeze/CI builds (FLASK_BLUEPRINT_STRICT=1) so any
-    # broken blueprint raises immediately rather than silently dropping a route. (B1c)
-    blueprint_strict = os.environ.get('FLASK_BLUEPRINT_STRICT', '0') == '1'
-    register_project_blueprints(application, strict=blueprint_strict)
 
     @application.template_filter('nl2br')
     def nl2br_filter(text):
@@ -129,22 +82,7 @@ def create_app():
         stays the default; this page is reached only via its link, and it
         links back. It is frozen like any other route, so it works on the
         static GitHub Pages site with no live Python runtime."""
-        projects_list = get_all_projects()
-        return render_template('retro.html', about=ABOUT_ME, projects=projects_list)
-
-    @application.route('/projects/')
-    def projects():
-        """
-        Render the projects overview page.
-
-        This page displays a list of all available project demonstrations
-        and tools in the portfolio, loaded from the projects_data configuration.
-
-        Returns:
-            str: Rendered HTML template for the projects page with project data
-        """
-        projects_list = get_all_projects()
-        return render_template('projects.html', projects=projects_list, ProjectStatus=ProjectStatus)
+        return render_template('retro.html', about=ABOUT_ME)
 
     @application.route('/widget-demo/')
     def widget_demo():

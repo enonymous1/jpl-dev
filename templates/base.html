@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile-card.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/checklist.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/projects.css') }}">
 
     <!-- Flash the correct theme before first paint to prevent flicker -->
     <script>
@@ -72,11 +71,6 @@
                         <i class="bi bi-house-door mr-1"></i>Home
                     </a>
                     <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
-                       style="{% if request.endpoint == 'projects' %}background:var(--nav-active-bg);color:var(--nav-text-active){% else %}color:var(--nav-text){% endif %}"
-                       href="{{ url_for('projects') }}">
-                        <i class="bi bi-collection mr-1"></i>Projects
-                    </a>
-                    <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
                        style="color:var(--nav-text)"
                        href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer">
                         <i class="bi bi-github mr-1"></i>GitHub
@@ -85,17 +79,6 @@
 
                 <!-- Right: page-specific actions + theme toggle -->
                 <div class="flex items-center gap-1">
-                    {% if request.endpoint == 'gsa_mas_checklist.gsa_mas_checklist' %}
-                        <div class="flex items-center gap-0.5">
-                            <button id="save-btn"   class="p-1.5 rounded transition-colors" style="color:var(--nav-text)" title="Save"><i class="bi bi-floppy"></i></button>
-                            <button id="export-btn" class="p-1.5 rounded transition-colors" style="color:var(--nav-text)" title="Export"><i class="bi bi-download"></i></button>
-                            <button id="import-btn" class="p-1.5 rounded transition-colors" style="color:var(--nav-text)" title="Import"><i class="bi bi-upload"></i></button>
-                            <button id="clear-btn"  class="p-1.5 rounded text-red-400 hover:text-red-300 transition-colors" title="Clear all"><i class="bi bi-trash"></i></button>
-                        </div>
-                    {% elif request.endpoint == 'schedule_maker.schedule_maker' %}
-                        {% block header_actions %}{% endblock %}
-                    {% endif %}
-
                     <!-- Theme toggle -->
                     <button id="theme-toggle" type="button"
                             class="p-1.5 rounded transition-colors"
@@ -115,11 +98,6 @@
                    style="{% if request.endpoint == 'index' %}background:var(--nav-active-bg);color:var(--nav-text-active){% else %}color:var(--nav-text){% endif %}"
                    href="{{ url_for('index') }}">
                     <i class="bi bi-house-door"></i>Home
-                </a>
-                <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
-                   style="{% if request.endpoint == 'projects' %}background:var(--nav-active-bg);color:var(--nav-text-active){% else %}color:var(--nav-text){% endif %}"
-                   href="{{ url_for('projects') }}">
-                    <i class="bi bi-collection"></i>Projects
                 </a>
                 <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
                    style="color:var(--nav-text)"
@@ -151,8 +129,5 @@
         });
     </script>
 
-    {% if request.endpoint == 'gsa_mas_checklist.gsa_mas_checklist' %}
-        <input type="file" id="import-file" accept=".json" class="hidden">
-    {% endif %}
 </body>
 </html>

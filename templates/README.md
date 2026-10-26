@@ -13,7 +13,6 @@ on the `Blueprint(...)` constructor.
 templates/
 ├── base.html          # Master layout — all other templates extend this
 ├── index.html         # Homepage  (route: /)
-├── projects.html      # Projects listing  (route: /projects)
 ├── widget_demo.html   # Component library demo  (route: /widget-demo)
 └── 404.html           # Not-found page (also written to docs/404.html by freeze.py)
 ```
@@ -21,11 +20,7 @@ templates/
 Blueprint templates live alongside their blueprint:
 
 ```
-projects/gsa_mas_checklist/templates/
-└── gsa_mas_checklist.html   # GSA MAS Checklist  (route: /projects/gsa-mas-checklist)
 
-projects/schedule_maker/templates/
-└── schedule_maker.html      # Schedule Maker  (route: /projects/schedule-maker)
 ```
 
 ## base.html
@@ -54,7 +49,6 @@ The shared layout shell. Provides:
 | Template | Route | Rendered by | Notable context vars |
 |----------|-------|-------------|----------------------|
 | `index.html` | `/` | `app.py` | `about` |
-| `projects.html` | `/projects` | `app.py` | `projects`, `ProjectStatus` |
 | `widget_demo.html` | `/widget-demo` | `app.py` | — |
 | `404.html` | (error handler) | `app.py` | — |
 

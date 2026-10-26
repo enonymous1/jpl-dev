@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile-card.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/checklist.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/projects.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}">
     <script>
         (function() {
@@ -30,12 +29,12 @@
         })();
     </script>
 </head>
-<body>
+<body class="vcard-page">
 <!-- Homepage is standalone on purpose: no global top nav. The sidebar
      carries name, contact, projects, retro mode, and the theme toggle,
      so the top bar was pure duplication. Other pages still use base.html
      and its nav. -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="vcard-layout">
         <!-- Sidebar: always-visible profile and contact, vCard-style. -->
         <aside class="vcard-sidebar">
@@ -128,7 +127,7 @@
                         <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
                     </div>
                 </div>
-                <p class="text-sm mt-4"><a href="{{ url_for('projects') }}">See all projects &rarr;</a> including the interactive GSA checklist and Schedule Maker, which live on their own pages.</p>
+                <p class="text-sm mt-4"><a href="https://github.com/enonymous1?tab=repositories" target="_blank" rel="noopener noreferrer">See all repositories on GitHub &rarr;</a></p>
             </section>
 
             <section id="vcard-contact" data-vcard-section="contact" role="tabpanel" hidden>
@@ -159,14 +158,12 @@ const ACCENT_COLORS = {
 };
 
 function renderRepoCard(repo, accentKey) {
-    const INTERNAL = { 'jpl-dev': '/projects/' };
     const name       = escHtml(repo.name);
     const desc       = escHtml(repo.description || 'No description provided.');
     const lang       = escHtml(repo.language || '');
     const stars      = repo.stargazers_count || 0;
     const forks      = repo.forks_count || 0;
     const topics     = (repo.topics || []).slice(0,6).map(escHtml);
-    const internalUrl = INTERNAL[repo.name];
     const githubUrl  = escHtml(repo.html_url);
     const accent     = ACCENT_COLORS[accentKey] || ACCENT_COLORS.primary;
 
@@ -181,9 +178,8 @@ function renderRepoCard(repo, accentKey) {
         ? `<small style="color:var(--text-secondary);font-size:0.7rem;margin-left:0.25rem;">${stars > 0 ? `<i class="bi bi-star"></i>&nbsp;${stars}` : ''}${forks > 0 ? `&nbsp;<i class="bi bi-diagram-2"></i>&nbsp;${forks}` : ''}</small>`
         : '';
     const btnGithub   = `<a href="${githubUrl}" class="repo-btn" target="_blank" rel="noopener noreferrer"><i class="bi bi-github"></i></a>`;
-    const btnInternal = internalUrl ? `<a href="${internalUrl}" class="repo-btn repo-btn-primary" style="margin-left:0.25rem">View <i class="bi bi-arrow-right"></i></a>` : '';
 
-    return `<div class="repo-card" style="border-top-color:${accent}"><div class="repo-card-body"><div class="repo-card-title"><span class="font-semibold text-sm">${name}${statsHtml}</span>${statusBadge}</div><p class="repo-card-desc">${desc}</p><div class="repo-card-footer"><div class="flex flex-wrap gap-1">${techTags}</div><div class="flex gap-1">${btnGithub}${btnInternal}</div></div></div></div>`;
+    return `<div class="repo-card" style="border-top-color:${accent}"><div class="repo-card-body"><div class="repo-card-title"><span class="font-semibold text-sm">${name}${statsHtml}</span>${statusBadge}</div><p class="repo-card-desc">${desc}</p><div class="repo-card-footer"><div class="flex flex-wrap gap-1">${techTags}</div><div class="flex gap-1">${btnGithub}</div></div></div></div>`;
 }
 
 async function loadGithubProjects() {

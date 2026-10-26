@@ -12,6 +12,25 @@ html {
     scrollbar-gutter: stable;
 }
 
+/* The real Contact-shift fix. base.css makes <body> a flex column app
+   shell (height: 100vh, overflow: hidden, scrolling inside <main>).
+   This standalone homepage has no <main>, and its container uses
+   mx-auto: in flexbox, auto margins override stretch, so the
+   container's width became its content width, capped at 1280px.
+   About and Projects are wide enough to hit the cap; Contact is
+   not, so the whole layout shrank to fit Contact and recentered —
+   measured at 111px narrower, 55px right, in headless Chrome.
+   Making the homepage body a normal block document fixes both the
+   width (block container fills, max-width caps, mx-auto centers)
+   and the scrolling (content taller than the viewport was clipped,
+   with no <main> to scroll inside). The w-full class on the wrapper
+   is belt-and-braces for the same width point. */
+body.vcard-page {
+    display: block;
+    height: auto;
+    overflow: visible;
+}
+
 .vcard-layout {
     display: grid;
     grid-template-columns: 300px minmax(0, 1fr);

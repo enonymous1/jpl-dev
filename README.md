@@ -15,11 +15,10 @@ This portfolio intentionally rejects heavy monolithic frameworks and database ov
 - **Low infrastructure cost**: $0 hosting on GitHub Pages
 - **Security-first delivery**: no live server runtime, no SQL injection surface
 - **Performance at scale**: pre-rendered static pages and edge-friendly assets
-- **Modular engineering**: Flask Blueprints and client-side state keep projects isolated and maintainable
+- **No baked-in projects**: project listings come from GitHub (repos.json, refreshed in CI, with a live API fallback), not a catalog in the repo
 
 ### The Engineering Green Flags
 
-- **Modular Flask Blueprint Architecture**: sub-projects like the GSA MAS Checklist are built as self-contained Flask Blueprints, so the repo scales like a real Python web application rather than a flat site.
 - **Flask-Frozen compilation**: `freeze.py` crawls the Flask app at build time and produces static output in `docs/` (build output, not tracked in git), combining dynamic development ergonomics with static deployment simplicity. It also writes `404.html`, `robots.txt` and `sitemap.xml` for the static host.
 - **Thick client state management**: statically generated pages rely on browser APIs such as `localStorage` and `IndexedDB` for persistence, enabling rich client-side experiences without a dynamic server.
 
@@ -37,11 +36,10 @@ As the platform grows, the next evolution depends on persistence and runtime req
 
 - **Modular CSS Architecture** — Logical styling modules for maintainability
 - **Dark/Light Theme Toggle** — Client-side theme switching with system preference detection
-- **Interactive GSA MAS Checklist** — Tool for GSA proposal preparation using JSON datasets and browser persistence
-- **Schedule Maker** — Client-side schedule tool, saved in browser storage and exported as JSON
+- **GitHub-driven Projects** — The homepage Projects tab loads repos from GitHub (Recent/Featured), and retro's Top 8 uses the same source. The GSA MAS Checklist and Schedule Maker were removed from this repo; they may become standalone projects later, and their code remains in git history before this change.
 - **Component Library** — `/widget-demo/` showcases the cards, badges and repo cards used across the site
 - **Retro Mode** — `/retro/` is an optional MySpace-style skin over the same About, Projects, and repo data as the clean homepage. The clean site is the default; retro mode is reached from the homepage sidebar and links back. No autoplay music, no fake friends, and it freezes like any other route. Retro mode has its own light/dark toggle, saved separately from the clean site's theme.
-- **vCard Homepage** — The homepage is a sidebar + tabbed main card (About / Projects / Contact) in the style of a vCard portfolio, written for this site rather than copied from a template. It is standalone, with no global top nav: the sidebar carries contact, projects, retro mode, and the theme toggle, so the top bar was duplication. The tabs sit anchored to the top-right corner of the main card, like the source vCard navbar. Sections switch without a reload and deep-link via `#about`, `#projects`, `#contact`. No blog, testimonials, or resume sections: those would be filler without real content behind them. Layout width is stabilized with reserved scrollbar space and a minimum card height, so switching tabs does not shift the sidebar.
+- **vCard Homepage** — The homepage is a sidebar + tabbed main card (About / Projects / Contact) in the style of a vCard portfolio, written for this site rather than copied from a template. It is standalone, with no global top nav: the sidebar carries contact, projects, retro mode, and the theme toggle, so the top bar was duplication. The tabs sit anchored to the top-right corner of the main card, like the source vCard navbar. Sections switch without a reload and deep-link via `#about`, `#projects`, `#contact`. No blog, testimonials, or resume sections: those would be filler without real content behind them. Layout width is stabilized so switching tabs does not shift the sidebar: the homepage body is a normal block document (not the flex app shell in base.css, where auto margins made the container shrink to fit the narrow Contact tab), plus reserved scrollbar space and a minimum card height.
 - **Responsive Design** — Modern CSS layouts scaling across device sizes
 - **Smart Tooltips** — Positioning algorithms to prevent off-screen clipping
 
@@ -68,7 +66,7 @@ python app.py
 
 ### Build Tailwind CSS
 
-CI rebuilds both Tailwind bundles before freezing, so the committed CSS is only a local-dev convenience. Rebuild it after changing template classes:
+CI rebuilds the Tailwind bundle before freezing, so the committed CSS is only a local-dev convenience. Rebuild it after changing template classes:
 
 ```bash
 # Site root
@@ -78,12 +76,6 @@ npx --yes tailwindcss@3.4.19 \
   -o static/css/tailwind.css \
   --minify
 
-# Schedule Maker
-npx --yes tailwindcss@3.4.19 \
-  -c projects/schedule_maker/tailwind.config.js \
-  -i projects/schedule_maker/tailwind.input.css \
-  -o static/projects/schedule_maker/tailwind.css \
-  --minify
 ```
 
 ### Refresh GitHub repo data
@@ -117,7 +109,7 @@ The site deploys to GitHub Pages when changes are pushed to `main` via GitHub Ac
 The automated workflow:
 
 1. Runs lint (`ruff check`, `ruff format --check`) and tests (`pytest`) on Python 3.11 and 3.12 — deploys only if they pass
-2. Builds both Tailwind CSS bundles
+2. Builds the Tailwind CSS bundle
 3. Refreshes GitHub repo metadata with `fetch_repos.py`
 4. Runs Flask-Frozen to crawl and compile dynamic routes into flat static files in `docs/`, plus `404.html`, `robots.txt` and `sitemap.xml`
 5. Injects the `CNAME` for `justinlyons.dev` and deploys the artifact to GitHub Pages
@@ -133,10 +125,7 @@ Pull requests run the same lint/test/build steps without deploying.
 ├── templates/             # Core Jinja2 structural layouts
 ├── config/                # Data models and central data repositories
 ├── static/                # Global static assets
-│   ├── css/               # Modular styling rules (+ Tailwind input/output)
-│   ├── files/             # Downloadable resources
-│   └── projects/          # Sub-project specific stylesheets and scripts
-├── projects/              # Modular blueprint packages (sub-apps)
+│   └── css/               # Modular styling rules (+ Tailwind input/output)
 ├── tests/                 # pytest smoke + unit tests
 ├── pyproject.toml         # ruff + pytest configuration (no installable package)
 ├── requirements.txt       # Runtime dependencies

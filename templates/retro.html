@@ -35,7 +35,7 @@
 
     <nav class="retro-nav" aria-label="Retro mode navigation">
         <a href="{{ url_for('index') }}">&larr; Back to the clean site</a>
-        <a href="{{ url_for('projects') }}">Projects</a>
+        <a href="{{ url_for('index') }}#projects">Projects</a>
         <a href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a href="https://linkedin.com/in/justinplyons" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <button id="retro-theme-toggle" type="button" aria-pressed="false" title="Toggle light/dark retro theme">
@@ -93,26 +93,6 @@
                 </div>
             </section>
 
-            <section class="retro-box" aria-label="Projects">
-                <h2>Justin's Projects</h2>
-                <div class="retro-box-body">
-                    {% for project in projects %}
-                    <article class="retro-project">
-                        <h3>
-                            {% if project.route %}
-                            <a href="{{ url_for(project.route) }}">{{ project.title }}</a>
-                            {% elif project.external_url %}
-                            <a href="{{ project.external_url }}" target="_blank" rel="noopener noreferrer">{{ project.title }}</a>
-                            {% else %}
-                            {{ project.title }}
-                            {% endif %}
-                        </h3>
-                        <p>{{ project.description }}</p>
-                        <p class="retro-project-meta">{{ project.status | title }}{% if project.tech_stack %} &middot; {{ project.tech_stack | join(', ') }}{% endif %}</p>
-                    </article>
-                    {% endfor %}
-                </div>
-            </section>
 
             <section class="retro-box" aria-label="Top 8">
                 <h2>Justin's Top 8</h2>
@@ -127,7 +107,7 @@
     </div>
 
     <footer class="retro-footer">
-        <p><a href="{{ url_for('index') }}">&larr; Back to the clean site</a> &middot; Retro mode is a skin, not a second portfolio: it renders the same About, Projects, and repo data.</p>
+        <p><a href="{{ url_for('index') }}">&larr; Back to the clean site</a> &middot; Retro mode is a skin, not a second portfolio: it renders the same About and repo data.</p>
     </footer>
 </div>
 

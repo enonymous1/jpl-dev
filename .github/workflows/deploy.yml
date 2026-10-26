@@ -80,10 +80,10 @@ jobs:
       with:
         node-version: '24'
 
-    # Regenerate the purged + minified Tailwind CSS for the site root AND
-    # for Schedule Maker. The root build was previously missing from CI, so
-    # new Tailwind classes in templates would not ship unless the compiled
-    # CSS had been built locally and committed.
+    # Regenerate the purged + minified Tailwind CSS for the site root.
+    # The root build was previously missing from CI, so new Tailwind
+    # classes in templates would not ship unless the compiled CSS had
+    # been built locally and committed.
     # The Play CDN (cdn.tailwindcss.com) is NOT for production — it ships
     # a ~3MB runtime compiler with no SRI hash. CLI output is ~20KB. (E5a/E5b)
     # tailwindcss is pinned to the version that produced the committed CSS.
@@ -93,11 +93,6 @@ jobs:
           -c tailwind.config.js \
           -i static/css/tailwind.input.css \
           -o static/css/tailwind.css \
-          --minify
-        npx --yes tailwindcss@3.4.19 \
-          -c projects/schedule_maker/tailwind.config.js \
-          -i projects/schedule_maker/tailwind.input.css \
-          -o static/projects/schedule_maker/tailwind.css \
           --minify
 
     # Snapshot public repo metadata to static/data/repos.json so the frozen site

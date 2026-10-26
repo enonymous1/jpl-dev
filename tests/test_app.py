@@ -16,10 +16,7 @@ def client():
 ROUTES = [
     '/',
     '/retro/',
-    '/projects/',
     '/widget-demo/',
-    '/projects/gsa-mas-checklist/',
-    '/projects/schedule-maker/',
 ]
 
 
@@ -55,17 +52,36 @@ def test_homepage_is_a_portfolio_hero_not_a_dashboard(client):
 
 
 def test_nav_does_not_link_internal_components_demo(client):
-    for route in ('/', '/projects/'):
-        resp = client.get(route)
-        assert b'Components' not in resp.data
-        assert b'widget-demo' not in resp.data
+    # The homepage (standalone, no global nav) must not link the demo.
+    # /widget-demo/ itself is the demo page, so its own content saying
+    # "Components" is expected and not checked here.
+    resp = client.get('/')
+    assert b'Components' not in resp.data
+    assert b'widget-demo' not in resp.data
 
 
-def test_projects_page_lists_shipped_tools(client):
-    resp = client.get('/projects/')
-    for title in (b'repo-sync', b'gas-auditor', b'photo-stitcher', b'sms-toolkit'):
-        assert title in resp.data
-    assert b'More Projects Coming Soon' not in resp.data
+@pytest.mark.parametrize(
+    'route',
+    [
+        '/projects/',
+        '/projects/gsa-mas-checklist/',
+        '/projects/schedule-maker/',
+    ],
+)
+def test_removed_pages_return_404(client, route):
+    # The GSA checklist, Schedule Maker, and the /projects page were
+    # removed from this repo; project data now comes from GitHub.
+    assert client.get(route).status_code == 404
+
+
+def test_homepage_projects_come_from_github_not_a_catalog(client):
+    resp = client.get('/')
+    assert b'recent-projects' in resp.data
+    assert b'featured-projects' in resp.data
+    assert b'github.com/enonymous1?tab=repositories' in resp.data
+    # No baked-in project routes remain on the homepage.
+    assert b'gsa-mas-checklist' not in resp.data
+    assert b'schedule-maker' not in resp.data
 
 
 def test_homepage_links_to_retro_mode(client):
@@ -131,20 +147,30 @@ def test_homepage_vcard_tabs(client):
 
 
 def test_other_pages_keep_global_nav(client):
-    resp = client.get('/projects/')
+    resp = client.get('/widget-demo/')
     assert b'id="main-navbar"' in resp.data
 
 
-def test_vcard_layout_is_stable_across_tabs():
+def test_vcard_layout_is_stable_across_tabs(client):
     import pathlib
 
     css = pathlib.Path('static/css/vcard.css').read_text()
     # Tabs are anchored top-right inside the card, and the layout reserves
-    # scrollbar space + a minimum card height, so switching from a long
-    # tab (About) to a short one (Contact) does not shift the sidebar.
+    # scrollbar space + a minimum card height.
     assert 'scrollbar-gutter: stable' in css
     assert 'min-height: 560px' in css
     assert 'position: absolute' in css
+    # The actual Contact-shift cause: base.css makes <body> a flex column
+    # app shell, and a standalone homepage with mx-auto shrinks to its
+    # content width (Contact is narrow, About/Projects hit the cap).
+    # The homepage body is a normal block document instead, and the
+    # wrapper is explicitly full-width, so its width no longer depends
+    # on which tab is active.
+    assert 'body.vcard-page' in css
+    assert 'display: block' in css
+    resp = client.get('/')
+    assert b'class="vcard-page"' in resp.data
+    assert b'w-full max-w-7xl' in resp.data
 
 
 def test_retro_theme_toggle(client):
@@ -158,8 +184,11 @@ def test_retro_theme_toggle(client):
     assert '--retro-content-bg' in css
 
 
-def test_all_blueprint_routes_registered():
+def test_no_baked_in_project_routes_remain():
     app = create_app()
     endpoints = {rule.endpoint for rule in app.url_map.iter_rules()}
-    assert 'gsa_mas_checklist.gsa_mas_checklist' in endpoints
-    assert 'schedule_maker.schedule_maker' in endpoints
+    assert 'gsa_mas_checklist.gsa_mas_checklist' not in endpoints
+    assert 'schedule_maker.schedule_maker' not in endpoints
+    assert 'projects' not in endpoints
+    # What remains: homepage, retro, the unlinked component demo, 404.
+    assert {'index', 'retro', 'widget_demo'} <= endpoints
