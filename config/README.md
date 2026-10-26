@@ -95,4 +95,4 @@ def projects():
 - **No Flask imports.** This package must be importable before `app.py` runs so `freeze.py` can use it at build time without an application context.
 - **Immutable public API.** `PROJECTS_SORTED` and `get_all_projects()` both return tuples. Never expose the internal `_PROJECTS` list to callers.
 - **Validation at construction.** Bad status values raise `ValueError` immediately when a `ProjectData` is instantiated — not silently at render time.
-- **Python 3.9+.** Uses PEP 585 built-in generic type hints (`tuple[...]`, `list[...]`, `Optional[...]`).
+- **Python 3.11+.** Uses PEP 585 built-in generic type hints (`tuple[...]`, `list[...]`, `Optional[...]`).

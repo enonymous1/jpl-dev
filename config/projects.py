@@ -8,8 +8,17 @@ order, so the site can render without any runtime backend dependencies.
 """
 
 from datetime import datetime
-from config.models import AboutMe, Skill, ToolGroup, ProjectCategory, ProjectData, ProjectLinks, ProjectImage, ProjectStatus
 
+from config.models import (
+    AboutMe,
+    ProjectCategory,
+    ProjectData,
+    ProjectImage,
+    ProjectLinks,
+    ProjectStatus,
+    Skill,
+    ToolGroup,
+)
 
 # ========================================================================
 # STATIC PROJECT DEFINITIONS
@@ -18,50 +27,47 @@ from config.models import AboutMe, Skill, ToolGroup, ProjectCategory, ProjectDat
 # static portfolio entry that can be rendered at build time.
 _PROJECTS = [
     ProjectData(
-        id="gsa_mas_checklist",
-        title="Interactive GSA MAS New Offeror Checklist",
+        id='gsa_mas_checklist',
+        title='Interactive GSA MAS New Offeror Checklist',
         description=(
-            "A comprehensive interactive checklist for GSA Multiple Award "
-            "Schedule (MAS) offer preparation. Streamlines the complex federal "
-            "contracting process with an intuitive, step-by-step interface."
+            'A comprehensive interactive checklist for GSA Multiple Award '
+            'Schedule (MAS) offer preparation. Streamlines the complex federal '
+            'contracting process with an intuitive, step-by-step interface.'
         ),
         status=ProjectStatus.ACTIVE,
         category=ProjectCategory.WEB_APP,
         features=[
-            "Step-by-step checklist validation with progress tracking",
-            "SINs selection with advanced filtering and search",
-            "Rich text notes management with Quill editor",
-            "Complete data export/import capabilities (JSON/Excel)",
-            "Dark/light theme support with system preference detection",
-            "Local storage persistence for work-in-progress",
-            "Responsive design for desktop and mobile use",
+            'Step-by-step checklist validation with progress tracking',
+            'SINs selection with advanced filtering and search',
+            'Rich text notes management with Quill editor',
+            'Complete data export/import capabilities (JSON/Excel)',
+            'Dark/light theme support with system preference detection',
+            'Local storage persistence for work-in-progress',
+            'Responsive design for desktop and mobile use',
         ],
         tech_stack=[
-            "Flask",
-            "JavaScript",
-            "Quill.js",
-            "CSS Grid",
-            "Local Storage",
-            "JSON",
-            "Excel Export",
+            'Flask',
+            'JavaScript',
+            'Quill.js',
+            'CSS Grid',
+            'Local Storage',
+            'JSON',
+            'Excel Export',
         ],
-        tags=["government", "contracting", "checklist", "productivity", "flask"],
-        route="gsa_mas_checklist.gsa_mas_checklist",
+        tags=['government', 'contracting', 'checklist', 'productivity', 'flask'],
+        route='gsa_mas_checklist.gsa_mas_checklist',
         links=ProjectLinks(
-            github="https://github.com/enonymous1/jpl-dev",
+            github='https://github.com/enonymous1/jpl-dev',
             documentation=(
-                "https://github.com/enonymous1/jpl-dev/blob/main/projects/"
-                "gsa_mas_checklist/README.md"
+                'https://github.com/enonymous1/jpl-dev/blob/main/projects/'
+                'gsa_mas_checklist/README.md'
             ),
         ),
         images=[
             ProjectImage(
-                filename="gsa_checklist_hero.svg",
-                alt_text=(
-                    "GSA MAS Checklist main interface showing checklist items "
-                    "and progress"
-                ),
-                caption="Main checklist interface with progress tracking and theme toggle",
+                filename='gsa_checklist_hero.svg',
+                alt_text=('GSA MAS Checklist main interface showing checklist items and progress'),
+                caption='Main checklist interface with progress tracking and theme toggle',
                 is_hero=True,
                 is_thumbnail=True,
             )
@@ -71,41 +77,38 @@ _PROJECTS = [
         priority=10,
     ),
     ProjectData(
-        id="schedule_maker",
-        title="Interactive Schedule Maker",
+        id='schedule_maker',
+        title='Interactive Schedule Maker',
         description=(
-            "A comprehensive schedule creation and management tool with "
-            "drag-and-drop functionality, multiple view modes, and export "
-            "capabilities."
+            'A comprehensive schedule creation and management tool with '
+            'drag-and-drop functionality, multiple view modes, and export '
+            'capabilities.'
         ),
         status=ProjectStatus.DEVELOPMENT,
         category=ProjectCategory.WEB_APP,
         features=[
-            "Multiple view modes (Day, Week, Month)",
-            "Drag-and-drop event creation and editing",
-            "Color-coded event categorization",
-            "Real-time schedule conflict detection",
-            "Export to JSON and calendar formats",
-            "Local storage for data persistence",
-            "Responsive design for all devices",
+            'Multiple view modes (Day, Week, Month)',
+            'Drag-and-drop event creation and editing',
+            'Color-coded event categorization',
+            'Real-time schedule conflict detection',
+            'Export to JSON and calendar formats',
+            'Local storage for data persistence',
+            'Responsive design for all devices',
         ],
-        tech_stack=["Flask", "JavaScript ES6+", "CSS Grid", "Local Storage", "Canvas API"],
-        tags=["productivity", "scheduling", "calendar", "time-management", "flask"],
-        route="schedule_maker.schedule_maker",
+        tech_stack=['Flask', 'JavaScript ES6+', 'CSS Grid', 'Local Storage', 'Canvas API'],
+        tags=['productivity', 'scheduling', 'calendar', 'time-management', 'flask'],
+        route='schedule_maker.schedule_maker',
         links=ProjectLinks(
-            github="https://github.com/enonymous1/jpl-dev",
+            github='https://github.com/enonymous1/jpl-dev',
             documentation=(
-                "https://github.com/enonymous1/jpl-dev/blob/main/projects/"
-                "schedule_maker/README.md"
+                'https://github.com/enonymous1/jpl-dev/blob/main/projects/schedule_maker/README.md'
             ),
         ),
         images=[
             ProjectImage(
-                filename="schedule_maker_hero.svg",
-                alt_text=(
-                    "Schedule Maker main interface with weekly view and event creation"
-                ),
-                caption="Interactive schedule interface with multiple view modes",
+                filename='schedule_maker_hero.svg',
+                alt_text=('Schedule Maker main interface with weekly view and event creation'),
+                caption='Interactive schedule interface with multiple view modes',
                 is_hero=True,
                 is_thumbnail=True,
             )
@@ -125,47 +128,54 @@ _PROJECTS = [
 # fallback to datetime.min keeps ordering deterministic when a project has no
 # timestamp metadata.
 # Wrapped in tuple() to prevent callers from mutating the canonical collection.
-PROJECTS_SORTED = tuple(sorted(
-    _PROJECTS,
-    key=lambda p: (
-        p.priority,
-        p.last_updated or p.created_date or datetime.min
-    ),
-    reverse=True,
-))
+PROJECTS_SORTED = tuple(
+    sorted(
+        _PROJECTS,
+        key=lambda p: (p.priority, p.last_updated or p.created_date or datetime.min),
+        reverse=True,
+    )
+)
 
 
 # ========================================================================
 # ABOUT ME
 # ========================================================================
 ABOUT_ME = AboutMe(
-    name="Justin P. Lyons",
-    title="IT Manager | Mobile Application Development",
+    name='Justin P. Lyons',
+    title='IT Manager | Mobile Application Development',
     bio=(
-        "IT Manager with AS & BS in Computer Science, specializing in Mobile Application "
-        "Development. Blending hands-on technical expertise with leadership to deliver "
-        "innovative solutions and drive technology forward."
+        'IT Manager with AS & BS in Computer Science, specializing in Mobile Application '
+        'Development. Blending hands-on technical expertise with leadership to deliver '
+        'innovative solutions and drive technology forward.'
     ),
-    profile_image="images/profile.svg",
-    badges=["AS & BS in CS", "Mobile Dev"],
+    profile_image='images/profile.svg',
+    badges=['AS & BS in CS', 'Mobile Dev'],
     highlights=[
-        "IT Manager passionate about technology and people",
-        "AS & BS in Computer Science, Mobile Application Development focus",
-        "Enthusiastic about creating impactful mobile experiences",
-        "Always learning and exploring new tech frontiers",
+        'IT Manager passionate about technology and people',
+        'AS & BS in Computer Science, Mobile Application Development focus',
+        'Enthusiastic about creating impactful mobile experiences',
+        'Always learning and exploring new tech frontiers',
     ],
     skills=[
-        Skill("Python",     90, "info"),
-        Skill("JavaScript", 88, "warning"),
-        Skill("Java",       85, "danger"),
-        Skill("Kotlin",     80, "success"),
-        Skill("Swift",      75, "primary"),
-        Skill("Flask",      88, "secondary"),
+        Skill('Python', 90, 'info'),
+        Skill('JavaScript', 88, 'warning'),
+        Skill('Java', 85, 'danger'),
+        Skill('Kotlin', 80, 'success'),
+        Skill('Swift', 75, 'primary'),
+        Skill('Flask', 88, 'secondary'),
     ],
     tool_groups=[
-        ToolGroup("Languages",   "bi-file-code",   ["Java", "Kotlin", "Swift", "Objective-C", "Python", "JavaScript"]),
-        ToolGroup("Mobile",      "bi-phone",        ["Android", "iOS", "Flutter", "React Native"]),
-        ToolGroup("Leadership",  "bi-people",       ["Team Building", "Agile", "Project Management", "Mentorship"]),
-        ToolGroup("Tools",       "bi-tools",        ["Git", "GitHub", "Jira", "AWS", "Docker", "Firebase"]),
+        ToolGroup(
+            'Languages',
+            'bi-file-code',
+            ['Java', 'Kotlin', 'Swift', 'Objective-C', 'Python', 'JavaScript'],
+        ),
+        ToolGroup('Mobile', 'bi-phone', ['Android', 'iOS', 'Flutter', 'React Native']),
+        ToolGroup(
+            'Leadership',
+            'bi-people',
+            ['Team Building', 'Agile', 'Project Management', 'Mentorship'],
+        ),
+        ToolGroup('Tools', 'bi-tools', ['Git', 'GitHub', 'Jira', 'AWS', 'Docker', 'Firebase']),
     ],
 )

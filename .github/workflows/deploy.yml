@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: CI and Deploy to GitHub Pages
 
 on:
   push:
@@ -8,15 +8,51 @@ on:
   # Allow manual re-deploys without requiring a new commit (A2d)
   workflow_dispatch:
 
-# Add permissions for GITHUB_TOKEN
 permissions:
   contents: read
-  pages: write
-  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: pip
+        cache-dependency-path: |
+          requirements.txt
+          requirements-dev.txt
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt -r requirements-dev.txt
+
+    - name: Lint
+      run: |
+        ruff check .
+        ruff format --check .
+
+    - name: Test
+      run: pytest
+
+  build-and-deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -30,7 +66,9 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: '3.12'
+        cache: pip
+        cache-dependency-path: requirements.txt
 
     - name: Install dependencies
       run: |
@@ -42,12 +80,21 @@ jobs:
       with:
         node-version: '24'
 
-    # Regenerate the purged + minified Tailwind CSS for Schedule Maker.
+    # Regenerate the purged + minified Tailwind CSS for the site root AND
+    # for Schedule Maker. The root build was previously missing from CI, so
+    # new Tailwind classes in templates would not ship unless the compiled
+    # CSS had been built locally and committed.
     # The Play CDN (cdn.tailwindcss.com) is NOT for production — it ships
     # a ~3MB runtime compiler with no SRI hash. CLI output is ~20KB. (E5a/E5b)
+    # tailwindcss is pinned to the version that produced the committed CSS.
     - name: Generate Tailwind CSS
       run: |
-        npx --yes tailwindcss@3 \
+        npx --yes tailwindcss@3.4.19 \
+          -c tailwind.config.js \
+          -i static/css/tailwind.input.css \
+          -o static/css/tailwind.css \
+          --minify
+        npx --yes tailwindcss@3.4.19 \
           -c projects/schedule_maker/tailwind.config.js \
           -i projects/schedule_maker/tailwind.input.css \
           -o static/projects/schedule_maker/tailwind.css \
@@ -56,23 +103,26 @@ jobs:
     # Snapshot public repo metadata to static/data/repos.json so the frozen site
     # ships the data as a static file (no client-side API call needed, no rate limits).
     # GITHUB_TOKEN is automatically available in Actions with contents:read scope.
+    # On an API failure fetch_repos.py keeps the previously cached file and
+    # warns, instead of failing the whole deploy.
     - name: Cache GitHub repo metadata
       run: python fetch_repos.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Generate static site
-      run: |
-        python freeze.py
-        
+      run: python freeze.py
+
     # CNAME must be injected AFTER freeze.py runs and BEFORE the artifact is
     # uploaded. freeze.py (FREEZER_REMOVE_EXTRA_FILES=True) would delete any
     # CNAME written earlier; the deploy step consumes the artifact, not docs/
     # directly, so writing CNAME after upload would have no effect. (A2a)
     # The canonical CNAME value lives in the repo-root CNAME file. (A2b)
+    # Note: docs/ is build output and is no longer tracked in git; it is
+    # created here by freeze.py and uploaded as the Pages artifact.
     - name: Add CNAME file
       run: cp CNAME docs/CNAME
-        
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:

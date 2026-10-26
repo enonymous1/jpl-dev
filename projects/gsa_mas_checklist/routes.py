@@ -5,7 +5,8 @@ Flask routes for the GSA MAS Checklist project.
 """
 
 from flask import render_template
-from . import gsa_mas_checklist_bp, load_checklist_data, create_pdf_link
+
+from . import create_pdf_link, gsa_mas_checklist_bp, load_checklist_data
 
 
 @gsa_mas_checklist_bp.route('/')

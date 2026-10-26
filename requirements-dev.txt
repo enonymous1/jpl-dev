@@ -1,0 +1,4 @@
+# Development / CI-only dependencies (not needed to run the site)
+# Pinned to the versions verified locally, so CI never drifts from them.
+pytest==9.1.1
+ruff==0.17.2

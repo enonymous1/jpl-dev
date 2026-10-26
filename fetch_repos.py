@@ -12,6 +12,12 @@ pull fresh data into your dev environment:
 The JS in index.html loads from /static/data/repos.json first and falls back
 to the live GitHub API if the file is absent or empty — so local dev still
 works without running this script first.
+
+Resilience notes: the API is paginated (100 per page), forks and archived
+repos are filtered out (the homepage already hides the profile and jpl-dev
+repos itself, so those are kept in the file), and on an API failure the
+previously cached file is kept instead of failing the whole build — unless
+there is no usable cache, in which case the build fails loudly.
 """
 
 import json
@@ -20,53 +26,100 @@ import sys
 import urllib.error
 import urllib.request
 
-GITHUB_USER = 'enonymous1'
-PER_PAGE    = 30
+GITHUB_USER = os.environ.get('GITHUB_USER', 'enonymous1')
+PER_PAGE = 100
+MAX_PAGES = 10
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), 'static', 'data', 'repos.json')
 
-API_URL = (
-    f'https://api.github.com/users/{GITHUB_USER}/repos'
-    f'?sort=updated&per_page={PER_PAGE}&type=public'
-)
+API_BASE = f'https://api.github.com/users/{GITHUB_USER}/repos'
 
 
-def fetch_repos() -> list:
-    req = urllib.request.Request(
-        API_URL,
-        headers={
-            'User-Agent':  'jpl-dev-build/1.0',
-            'Accept':      'application/vnd.github+json',
-            'X-GitHub-Api-Version': '2022-11-28',
-        },
-    )
+def _headers():
+    headers = {
+        'User-Agent': 'jpl-dev-build/1.0',
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+    }
     # Use GITHUB_TOKEN if available (e.g. in CI) to raise rate limit from 60→5000/hr
     token = os.environ.get('GITHUB_TOKEN') or os.environ.get('GITHUB_TOKEN_READ')
     if token:
-        req.add_header('Authorization', f'Bearer {token}')
+        headers['Authorization'] = f'Bearer {token}'
+    return headers
 
+
+def parse_next_link(link_header):
+    """Return the URL for rel="next" in a GitHub Link header, or None."""
+    if not link_header:
+        return None
+    for part in link_header.split(','):
+        part = part.strip()
+        if 'rel="next"' in part:
+            url = part.split(';')[0].strip()
+            if url.startswith('<') and url.endswith('>'):
+                return url[1:-1]
+    return None
+
+
+def filter_repos(repos):
+    """Drop forks and archived repos; keep everything else in API order."""
+    return [r for r in repos if not r.get('fork') and not r.get('archived')]
+
+
+def fetch_repos():
+    """Fetch all public repos for GITHUB_USER, following pagination."""
+    url = f'{API_BASE}?sort=updated&per_page={PER_PAGE}&type=public'
+    all_repos = []
+    for _ in range(MAX_PAGES):
+        req = urllib.request.Request(url, headers=_headers())
+        try:
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                data = json.loads(resp.read().decode())
+                next_url = parse_next_link(resp.headers.get('Link'))
+        except urllib.error.HTTPError as exc:
+            raise RuntimeError(f'GitHub API returned HTTP {exc.code}: {exc.reason}') from exc
+        except urllib.error.URLError as exc:
+            raise RuntimeError(f'Could not reach GitHub API: {exc.reason}') from exc
+        if not isinstance(data, list):
+            raise RuntimeError(f'GitHub API returned unexpected payload: {data!r}'[:200])
+        all_repos.extend(data)
+        if not next_url:
+            break
+        url = next_url
+    return filter_repos(all_repos)
+
+
+def _cached_repos():
+    """Previously cached repos, or None if the cache is missing/unusable."""
     try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            data = json.loads(resp.read().decode())
-    except urllib.error.HTTPError as exc:
-        print(f'ERROR: GitHub API returned HTTP {exc.code}: {exc.reason}', file=sys.stderr)
-        sys.exit(1)
-    except urllib.error.URLError as exc:
-        print(f'ERROR: Could not reach GitHub API: {exc.reason}', file=sys.stderr)
-        sys.exit(1)
-
-    return data
+        with open(OUTPUT_PATH, encoding='utf-8') as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return None
+    return data if isinstance(data, list) and data else None
 
 
 def main():
     print(f'Fetching repos for {GITHUB_USER}...')
-    repos = fetch_repos()
+    try:
+        repos = fetch_repos()
+    except RuntimeError as exc:
+        cached = _cached_repos()
+        if cached is not None:
+            print(
+                f'WARNING: {exc}; keeping cached {OUTPUT_PATH} ({len(cached)} repos)',
+                file=sys.stderr,
+            )
+            return 0
+        print(f'ERROR: {exc}; no usable cache at {OUTPUT_PATH}', file=sys.stderr)
+        return 1
 
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
         json.dump(repos, f, indent=2, ensure_ascii=False)
 
     print(f'Wrote {len(repos)} repos → {os.path.relpath(OUTPUT_PATH)}')
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

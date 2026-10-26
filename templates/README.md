@@ -14,7 +14,8 @@ templates/
 ├── base.html          # Master layout — all other templates extend this
 ├── index.html         # Homepage  (route: /)
 ├── projects.html      # Projects listing  (route: /projects)
-└── widget_demo.html   # Widget demo page  (route: /widget-demo)
+├── widget_demo.html   # Component library demo  (route: /widget-demo)
+└── 404.html           # Not-found page (also written to docs/404.html by freeze.py)
 ```
 
 Blueprint templates live alongside their blueprint:
@@ -31,30 +32,37 @@ projects/schedule_maker/templates/
 
 The shared layout shell. Provides:
 
-- `<head>` with Bootstrap 5.3.2 CDN (SRI), Bootstrap Icons, and all custom CSS
+- `<head>` with meta/OG description, Bootstrap Icons (icon font only — Bootstrap
+  CSS and JS were removed in the Tailwind migration), Tailwind CSS built via
+  the CLI, and all custom CSS
 - Inline theme-init script (reads `jpl_dev_global_theme` from `localStorage`
   before first paint to prevent flash of unstyled content)
-- `global-theme.js` deferred at end of `<body>`
-- Bootstrap 5 JS bundle CDN (SRI) at end of `<body>`
+- `global-theme.js` deferred at end of `<body>`, plus `script.js`
 
 ### Blocks
 
 | Block | Purpose |
 |-------|---------|
 | `title` | `<title>` text (appended with ` - JPL-DEV`) |
-| `head` | Extra `<head>` content — used by pages that load GridStack CSS/JS |
+| `head` | Extra `<head>` content for a page |
 | `content` | Main page body |
+| `footer` | Page footer, where a page defines one |
 | `scripts` | Per-page JS loaded before `</body>` |
 
 ## Page Templates
 
 | Template | Route | Rendered by | Notable context vars |
 |----------|-------|-------------|----------------------|
-| `index.html` | `/` | `app.py` | — |
+| `index.html` | `/` | `app.py` | `about` |
 | `projects.html` | `/projects` | `app.py` | `projects`, `ProjectStatus` |
 | `widget_demo.html` | `/widget-demo` | `app.py` | — |
+| `404.html` | (error handler) | `app.py` | — |
 
-## GridStack
+## Component system
 
-GridStack 9.2.0 CSS/JS is **page-scoped** — loaded only in `index.html` and
-`widget_demo.html` via `{% block head %}`. It is not in `base.html`.
+The site no longer uses Bootstrap or GridStack. Cards, badges and repo cards
+are plain Tailwind utilities plus the component classes in
+`static/css/tailwind.input.css` (`.widget-card`, `.badge-theme`, `.repo-card`).
+The orphaned Bootstrap/GridStack CSS and JS (`bootstrap-theme.css`,
+`widget-system.css`, `widgets.css`, `widget-manager.js`, `widget-utils.js`)
+were deleted — they were not loaded by any template.

@@ -9,6 +9,7 @@ Date: July 2025
 """
 
 from flask import render_template
+
 from . import schedule_maker_bp
 
 

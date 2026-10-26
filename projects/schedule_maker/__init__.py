@@ -12,11 +12,8 @@ from flask import Blueprint
 
 # Create the blueprint
 schedule_maker_bp = Blueprint(
-    'schedule_maker',
-    __name__,
-    url_prefix='/projects/schedule-maker',
-    template_folder='templates'
+    'schedule_maker', __name__, url_prefix='/projects/schedule-maker', template_folder='templates'
 )
 
-# Import routes after blueprint creation to avoid circular imports
-from . import routes
+# Import routes after blueprint creation to avoid circular imports.
+from . import routes  # noqa: E402,F401 — side effect: route registration

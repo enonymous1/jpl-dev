@@ -1,5 +1,5 @@
 # Core Flask dependencies
-# Requires Python 3.9+ (uses PEP 585 built-in generic types)
+# Requires Python 3.11+ (uses PEP 585 built-in generic types)
 Flask==3.1.1
 Frozen-Flask==1.0.2
 

@@ -10,7 +10,7 @@ projects/
 ├── __init__.py                   # Projects package initialization
 ├── gsa_mas_checklist/           # GSA MAS Checklist Project
 │   ├── README.md                # Detailed project documentation
-│   └── (blueprint in projects/gsa_mas_checklist.py)
+│   ├── __init__.py              # Blueprint package (url_prefix=/projects/gsa-mas-checklist)
 └── schedule_maker/              # Schedule Maker Project
     ├── README.md                # Detailed project documentation
     ├── __init__.py              # Blueprint initialization (url_prefix=/projects/schedule-maker)
@@ -109,10 +109,10 @@ Each project should include:
 3. Deploy to GitHub Pages via GitHub Actions
 
 ### Testing Strategy
-- **Unit tests**: Test individual project components
-- **Integration tests**: Test project integration with main app
-- **End-to-end tests**: Test complete user workflows
-- **Accessibility tests**: Ensure WCAG compliance
+- **Smoke tests** in `tests/test_app.py`: every route renders 200, 404 page works.
+- **Unit tests** in `tests/test_fetch_repos.py`: repo filtering and pagination parsing.
+- Run them with `pytest` after `pip install -r requirements-dev.txt`.
+- CI runs them on Python 3.11 and 3.12 before any deploy.
 
 ## 📊 Project Status Overview
 

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found{% endblock %}
+
+{% block content %}
+<div class="py-16 text-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-5xl font-bold mb-3">404</h1>
+        <p class="text-lg mb-6" style="color:var(--text-secondary)">That page doesn't exist here.</p>
+        <a href="{{ url_for('index') }}" class="repo-btn repo-btn-primary">Back home</a>
+        <a href="{{ url_for('projects') }}" class="repo-btn" style="margin-left:0.5rem">Browse projects</a>
+    </div>
+</div>
+{% endblock %}
