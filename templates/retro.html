@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +12,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet"
           integrity="sha384-DeN988K4Vg0cDrUgVHjrVM0+ogMrXsv0AZYIH40/9VGpjC7zi8TFGdnPwL1EkU/T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/retro.css') }}">
+    <!-- Apply the saved retro theme before first paint, like the clean
+         site does, so the toggle never flashes light on a dark visit. -->
+    <script>
+        (function() {
+            try {
+                const saved = window.localStorage.getItem('jpl_retro_theme');
+                const sys = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', saved || sys);
+            } catch (e) {}
+        })();
+    </script>
 </head>
 <body class="retro-body">
 <div class="retro-wrap">
@@ -27,6 +38,9 @@
         <a href="{{ url_for('projects') }}">Projects</a>
         <a href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a href="https://linkedin.com/in/justinplyons" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <button id="retro-theme-toggle" type="button" aria-pressed="false" title="Toggle light/dark retro theme">
+            <i class="bi bi-moon"></i> <span id="retro-theme-label">Dark mode</span>
+        </button>
     </nav>
 
     <div class="retro-grid">
@@ -175,6 +189,31 @@ async function loadRetroTop8() {
 }
 
 loadRetroTop8();
+
+// Retro light/dark toggle: independent of the clean site's theme, saved
+// under its own key so flipping retro does not change the clean site.
+function applyRetroTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const btn = document.getElementById('retro-theme-toggle');
+    const label = document.getElementById('retro-theme-label');
+    if (btn) btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    if (label) label.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+    try { window.localStorage.setItem('jpl_retro_theme', theme); } catch {}
+}
+document.getElementById('retro-theme-toggle')?.addEventListener('click', function () {
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
+    applyRetroTheme(current === 'dark' ? 'light' : 'dark');
+});
+// Sync the button with the pre-paint choice (saved value or system)
+// without saving: a first visit should keep following the system until
+// the user explicitly toggles.
+(function () {
+    const theme = document.documentElement.getAttribute('data-theme') || 'light';
+    const btn = document.getElementById('retro-theme-toggle');
+    const label = document.getElementById('retro-theme-label');
+    if (btn) btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    if (label) label.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+})();
 </script>
 </body>
 </html>

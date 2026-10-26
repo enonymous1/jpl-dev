@@ -2,171 +2,120 @@
 
 {% block title %}Home{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-    <!-- Hero: who this is and what he builds, in one screen -->
-    <section class="mb-6">
-        <p class="text-sm font-semibold mb-1" style="color:var(--primary-color)">Justin P. Lyons — Fredericksburg, VA</p>
-        <h1 class="text-3xl font-bold mb-2">I build tools that automate repetitive work.</h1>
-        <p class="text-base mb-4" style="color:var(--text-secondary)">IT manager with AS &amp; BS in Computer Science. Pricing and vendor data, message and photo archives, video and market-data pipelines — shipped as tested, documented tools, not demos.</p>
-        <div class="flex flex-wrap gap-2">
-            <a href="{{ url_for('projects') }}" class="repo-btn repo-btn-primary">View Projects</a>
-            <a href="https://github.com/enonymous1" class="repo-btn" target="_blank" rel="noopener noreferrer"><i class="bi bi-github"></i>&nbsp;GitHub</a>
-            <a href="https://linkedin.com/in/justinplyons" class="repo-btn" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin"></i>&nbsp;LinkedIn</a>
-            <a href="{{ url_for('retro') }}" class="repo-btn">Retro mode</a>
-        </div>
-        <p class="text-sm mt-2" style="color:var(--text-secondary)">Feeling nostalgic? Retro mode is the same portfolio in a MySpace-style skin. The clean site stays the default.</p>
-    </section>
-
-    <!-- Homepage grid: 2 columns on lg+; About Me spans both rows on the left -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-        <!-- About Me (left column, spans 2 rows) -->
-        <div class="lg:row-span-2">
-            <div class="widget-card h-full">
-                <div class="widget-header bg-blue-600">
-                    <h6 class="font-semibold text-sm flex items-center gap-2 mb-0">
-                        <i class="bi bi-person-circle"></i>About Me
-                    </h6>
-                </div>
-                <div class="widget-body">
-                    <div class="flex items-center gap-3 mb-3">
-                        <img src="{{ url_for('static', filename=about.profile_image) }}"
-                             alt="Profile"
-                             class="rounded-full object-cover flex-shrink-0"
-                             style="width:60px;height:60px;">
-                        <div>
-                            <h6 class="font-bold mb-1">{{ about.name }}</h6>
-                            <p class="text-sm mb-2" style="color:var(--text-secondary)">{{ about.title }}</p>
-                            <div class="flex flex-wrap gap-1">
-                                {% for badge in about.badges %}
-                                <span class="badge-theme {% if loop.first %}badge-primary{% endif %}">{{ badge }}</span>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="my-3" style="border-color:var(--border-color)">
-                    <p class="text-sm mb-3">{{ about.bio }}</p>
-                    {% if about.highlights %}
-                    <ul class="space-y-1 list-none p-0 m-0">
-                        {% for item in about.highlights %}
-                        <li class="text-sm flex items-start gap-1.5" style="color:var(--text-secondary)">
-                            <i class="bi bi-check2 text-blue-500 flex-shrink-0 mt-0.5"></i>{{ item }}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <!-- What I build (right column, row 1) -->
-        <div>
-            <div class="widget-card">
-                <div class="widget-header bg-green-600">
-                    <h6 class="font-semibold text-sm flex items-center gap-2 mb-0">
-                        <i class="bi bi-gear"></i>What I Build
-                    </h6>
-                </div>
-                <div class="widget-body">
-                    <ul class="space-y-2 list-none p-0 m-0 text-sm">
-                        <li><strong>Automation &amp; data:</strong> <a href="https://github.com/enonymous1/repo-sync" target="_blank" rel="noopener noreferrer">repo-sync</a>, <a href="https://github.com/enonymous1/gas-auditor" target="_blank" rel="noopener noreferrer">gas-auditor</a>, GSA pricing toolkits</li>
-                        <li><strong>Desktop tools:</strong> <a href="https://github.com/enonymous1/photo-stitcher" target="_blank" rel="noopener noreferrer">photo-stitcher</a>, <a href="https://github.com/enonymous1/sms-toolkit" target="_blank" rel="noopener noreferrer">sms-toolkit</a>, Wyze Video Joiner</li>
-                        <li><strong>Web:</strong> this site, voxel-portfolio</li>
-                        <li><strong>Data pipelines:</strong> <a href="https://github.com/enonymous1/kalshi-recorder" target="_blank" rel="noopener noreferrer">kalshi-recorder</a> (market-data capture)</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tools & Tech (right column, row 2) -->
-        <div>
-            <div class="widget-card">
-                <div class="widget-header bg-gray-600">
-                    <h6 class="font-semibold text-sm flex items-center gap-2 mb-0">
-                        <i class="bi bi-tools"></i>Tools &amp; Tech
-                    </h6>
-                </div>
-                <div class="widget-body">
-                    {% for group in about.tool_groups %}
-                    <div class="mb-2 leading-relaxed">
-                        <small class="font-semibold mr-1" style="font-size:0.7rem;color:var(--text-secondary)">
-                            <i class="bi {{ group.icon }} mr-1"></i>{{ group.label }}:
-                        </small>
-                        {% for tool in group.tools %}
-                        <span class="badge-theme mr-1" style="font-size:0.65rem;">{{ tool }}</span>
-                        {% endfor %}
-                    </div>
+    <div class="vcard-layout">
+        <!-- Sidebar: always-visible profile and contact, vCard-style. -->
+        <aside class="vcard-sidebar">
+            <div class="vcard-profile">
+                <img src="{{ url_for('static', filename=about.profile_image) }}"
+                     alt="Profile photo of Justin P. Lyons"
+                     class="vcard-avatar">
+                <h2>{{ about.name }}</h2>
+                <p class="vcard-title">{{ about.title }}</p>
+                <div class="vcard-badges">
+                    {% for badge in about.badges %}
+                    <span class="badge-theme {% if loop.first %}badge-primary{% endif %}">{{ badge }}</span>
                     {% endfor %}
                 </div>
             </div>
-        </div>
-
-        <!-- Featured Projects (full width, row 3) -->
-        <div class="lg:col-span-2">
-            <div class="widget-card">
-                <div class="widget-header bg-cyan-600">
-                    <h6 class="font-semibold text-sm flex items-center gap-2 mb-0">
-                        <i class="bi bi-collection"></i>Featured Projects
-                    </h6>
-                    <div class="flex items-center gap-2">
-                        <div class="flex">
-                            <button id="recentBtn"   class="project-tab-btn active" onclick="toggleProjectsView('recent')">Recent</button>
-                            <button id="featuredBtn" class="project-tab-btn"        onclick="toggleProjectsView('featured')">Featured</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="widget-body">
-                    <div id="recent-projects" class="projects-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
-                            <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
-                        </div>
-                    </div>
-                    <div id="featured-projects" class="projects-content hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
-                            <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
-                        </div>
-                    </div>
-                </div>
+            <hr class="vcard-divider">
+            <ul class="vcard-contact">
+                <li><i class="bi bi-github"></i> <a href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer">enonymous1</a></li>
+                <li><i class="bi bi-linkedin"></i> <a href="https://linkedin.com/in/justinplyons" target="_blank" rel="noopener noreferrer">justinplyons</a></li>
+                <li><i class="bi bi-envelope"></i> <a href="mailto:justin@jpl-dev.com">justin@jpl-dev.com</a></li>
+                <li><i class="bi bi-geo-alt"></i> Fredericksburg, VA</li>
+            </ul>
+            <div class="vcard-sidebar-actions">
+                <button type="button" class="repo-btn repo-btn-primary" data-vcard-tab-link="projects">View Projects</button>
+                <a href="{{ url_for('retro') }}" class="repo-btn">Retro mode</a>
             </div>
-        </div>
+            <p class="vcard-small">Retro mode is the same portfolio in a MySpace-style skin. The clean site stays the default.</p>
+        </aside>
 
+        <!-- Main card: tabbed sections, no page reload, so the frozen
+             static site needs no live runtime for section switching. -->
+        <div class="vcard-main">
+            <nav class="vcard-tabs" role="tablist" aria-label="Portfolio sections">
+                <button type="button" role="tab" aria-selected="true" data-vcard-tab="about">About</button>
+                <button type="button" role="tab" aria-selected="false" data-vcard-tab="projects">Projects</button>
+                <button type="button" role="tab" aria-selected="false" data-vcard-tab="contact">Contact</button>
+            </nav>
+
+            <section id="vcard-about" data-vcard-section="about" role="tabpanel">
+                <p class="text-sm font-semibold mb-1" style="color:var(--primary-color)">Justin P. Lyons &mdash; Fredericksburg, VA</p>
+                <h1 class="text-3xl font-bold mb-2">I build tools that automate repetitive work.</h1>
+                <p class="text-base mb-4" style="color:var(--text-secondary)">IT manager with AS &amp; BS in Computer Science. Pricing and vendor data, message and photo archives, video and market-data pipelines &mdash; shipped as tested, documented tools, not demos.</p>
+                <h2>About Me</h2>
+                <p class="text-sm mb-3">{{ about.bio }}</p>
+                {% if about.highlights %}
+                <ul class="space-y-1 list-none p-0 m-0 mb-4">
+                    {% for item in about.highlights %}
+                    <li class="text-sm flex items-start gap-1.5" style="color:var(--text-secondary)">
+                        <i class="bi bi-check2 text-blue-500 flex-shrink-0 mt-0.5"></i>{{ item }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <h2>What I Build</h2>
+                <ul class="space-y-2 list-none p-0 m-0 text-sm mb-4">
+                    <li><strong>Automation &amp; data:</strong> <a href="https://github.com/enonymous1/repo-sync" target="_blank" rel="noopener noreferrer">repo-sync</a>, <a href="https://github.com/enonymous1/gas-auditor" target="_blank" rel="noopener noreferrer">gas-auditor</a>, GSA pricing toolkits</li>
+                    <li><strong>Desktop tools:</strong> <a href="https://github.com/enonymous1/photo-stitcher" target="_blank" rel="noopener noreferrer">photo-stitcher</a>, <a href="https://github.com/enonymous1/sms-toolkit" target="_blank" rel="noopener noreferrer">sms-toolkit</a>, Wyze Video Joiner</li>
+                    <li><strong>Web:</strong> this site, voxel-portfolio</li>
+                    <li><strong>Data pipelines:</strong> <a href="https://github.com/enonymous1/kalshi-recorder" target="_blank" rel="noopener noreferrer">kalshi-recorder</a> (market-data capture)</li>
+                </ul>
+                <h2>Tools &amp; Tech</h2>
+                {% for group in about.tool_groups %}
+                <div class="mb-2 leading-relaxed">
+                    <small class="font-semibold mr-1" style="font-size:0.7rem;color:var(--text-secondary)">
+                        <i class="bi {{ group.icon }} mr-1"></i>{{ group.label }}:
+                    </small>
+                    {% for tool in group.tools %}
+                    <span class="badge-theme mr-1" style="font-size:0.65rem;">{{ tool }}</span>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </section>
+
+            <section id="vcard-projects" data-vcard-section="projects" role="tabpanel" hidden>
+                <h2>Featured Projects</h2>
+                <div class="flex mb-3">
+                    <button id="recentBtn" class="project-tab-btn active" onclick="toggleProjectsView('recent')">Recent</button>
+                    <button id="featuredBtn" class="project-tab-btn" onclick="toggleProjectsView('featured')">Featured</button>
+                </div>
+                <div id="recent-projects" class="projects-content grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
+                        <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
+                    </div>
+                </div>
+                <div id="featured-projects" class="projects-content hidden grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
+                        <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
+                    </div>
+                </div>
+                <p class="text-sm mt-4"><a href="{{ url_for('projects') }}">See all projects &rarr;</a> including the interactive GSA checklist and Schedule Maker, which live on their own pages.</p>
+            </section>
+
+            <section id="vcard-contact" data-vcard-section="contact" role="tabpanel" hidden>
+                <h2>Contact</h2>
+                <p class="text-sm mb-3" style="color:var(--text-secondary)">No contact form on purpose: on a static site a form would post nowhere. Email, GitHub, or LinkedIn are the real routes.</p>
+                <ul class="vcard-contact">
+                    <li><i class="bi bi-envelope"></i> <a href="mailto:justin@jpl-dev.com">justin@jpl-dev.com</a></li>
+                    <li><i class="bi bi-github"></i> <a href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer">github.com/enonymous1</a></li>
+                    <li><i class="bi bi-linkedin"></i> <a href="https://linkedin.com/in/justinplyons" target="_blank" rel="noopener noreferrer">linkedin.com/in/justinplyons</a></li>
+                    <li><i class="bi bi-geo-alt"></i> Fredericksburg, VA</li>
+                </ul>
+            </section>
+        </div>
     </div>
 </div>
 {% endblock %}
 
-{% block footer %}
-<!-- Contact footer (sticky) -->
-<div class="border-t py-2 sticky bottom-0 z-10" style="background:var(--bg-color);border-color:var(--border-color);" id="contact">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex flex-wrap justify-between items-center gap-2">
-            <span class="text-sm" style="color:var(--text-secondary)">
-                <i class="bi bi-envelope mr-1 text-blue-500"></i><strong style="color:var(--text-color)">Let's Connect</strong>
-            </span>
-            <div class="flex gap-4">
-                <a href="https://github.com/enonymous1"
-                   class="no-underline flex items-center gap-1 text-sm transition-colors"
-                   style="color:var(--text-secondary)"
-                   target="_blank" rel="noopener noreferrer">
-                    <i class="bi bi-github"></i> GitHub
-                </a>
-                <a href="https://linkedin.com/in/justinplyons"
-                   class="no-underline flex items-center gap-1 text-sm transition-colors"
-                   style="color:var(--text-secondary)"
-                   target="_blank" rel="noopener noreferrer">
-                    <i class="bi bi-linkedin text-blue-500"></i> LinkedIn
-                </a>
-                <a href="mailto:justin@jpl-dev.com"
-                   class="no-underline flex items-center gap-1 text-sm transition-colors"
-                   style="color:var(--text-secondary)">
-                    <i class="bi bi-envelope text-green-500"></i> justin@jpl-dev.com
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock footer %}
+
 
 {% block scripts %}
 <script>
@@ -289,5 +238,32 @@ function toggleProjectsView(view) {
 document.addEventListener('DOMContentLoaded', function () {
     loadGithubProjects();
 });
+</script>
+<script>
+// vCard section tabs: About / Projects / Contact, no reload. Deep-linkable
+// via #about, #projects, #contact so a link can open a specific section
+// on the frozen static site.
+function activateVcardTab(name) {
+    const sections = document.querySelectorAll('[data-vcard-section]');
+    const tabs = document.querySelectorAll('[data-vcard-tab]');
+    sections.forEach(s => { s.hidden = s.getAttribute('data-vcard-section') !== name; });
+    tabs.forEach(b => { b.setAttribute('aria-selected', String(b.getAttribute('data-vcard-tab') === name)); });
+    if (['about', 'projects', 'contact'].includes(name)) {
+        history.replaceState(null, '', '#' + name);
+    }
+}
+document.querySelectorAll('[data-vcard-tab]').forEach(b => {
+    b.addEventListener('click', () => activateVcardTab(b.getAttribute('data-vcard-tab')));
+});
+document.querySelectorAll('[data-vcard-tab-link]').forEach(b => {
+    b.addEventListener('click', () => {
+        activateVcardTab(b.getAttribute('data-vcard-tab-link'));
+        document.querySelector('.vcard-main')?.scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+});
+(function () {
+    const hash = (window.location.hash || '').replace('#', '');
+    if (['about', 'projects', 'contact'].includes(hash)) activateVcardTab(hash);
+})();
 </script>
 {% endblock %}

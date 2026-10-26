@@ -111,6 +111,32 @@ def test_profile_photo_is_a_local_image_not_the_silhouette():
     assert photo.read_bytes()[:3] == b'\xff\xd8\xff'  # JPEG magic bytes
 
 
+def test_homepage_vcard_tabs(client):
+    resp = client.get('/')
+    assert b'vcard-layout' in resp.data
+    assert b'vcard-sidebar' in resp.data
+    for tab in (
+        b'data-vcard-tab="about"',
+        b'data-vcard-tab="projects"',
+        b'data-vcard-tab="contact"',
+    ):
+        assert tab in resp.data
+    assert b'data-vcard-section="projects"' in resp.data
+    # The old sticky contact footer is gone: sidebar + Contact tab cover it.
+    assert b"Let's Connect" not in resp.data
+
+
+def test_retro_theme_toggle(client):
+    import pathlib
+
+    resp = client.get('/retro/')
+    assert b'id="retro-theme-toggle"' in resp.data
+    assert b'jpl_retro_theme' in resp.data
+    css = pathlib.Path('static/css/retro.css').read_text()
+    assert '[data-theme="dark"]' in css
+    assert '--retro-content-bg' in css
+
+
 def test_all_blueprint_routes_registered():
     app = create_app()
     endpoints = {rule.endpoint for rule in app.url_map.iter_rules()}

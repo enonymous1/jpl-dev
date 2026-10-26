@@ -1,33 +1,71 @@
 /* Retro mode: a MySpace-style skin over the same portfolio data.
-   Deliberately modern under the hood: real text sizes (no 11px body copy),
-   readable contrast, a responsive grid that stacks on mobile, and no
-   autoplay music, flashing, glitter, marquee, or custom cursor. The clean
-   site is the default; this stylesheet only applies to /retro/. */
+   Theme-aware via --retro-* variables: light is the classic blue/white
+   MySpace palette, dark keeps those blues but darkens every background
+   and box so the skin still reads as retro in dark mode. The toggle on
+   the page sets data-theme on <html>; without JS, light is the default.
+   Deliberately modern under the hood: real text sizes (no 11px body
+   copy), readable contrast, a responsive grid that stacks on mobile,
+   and no autoplay music, flashing, glitter, marquee, or custom cursor.
+   The clean site is the default; this stylesheet only applies to
+   /retro/. */
+
+:root,
+[data-theme="light"] {
+    --retro-page-bg: #dbe9f6;
+    --retro-content-bg: #ffffff;
+    --retro-text: #1a1a1a;
+    --retro-text-secondary: #555555;
+    --retro-link: #004080;
+    --retro-header-bg: #003399;
+    --retro-header-text: #ffffff;
+    --retro-note-text: #dbe9f6;
+    --retro-nav-bg: #6698cb;
+    --retro-nav-text: #ffffff;
+    --retro-border: #6699cc;
+    --retro-accent-bg: #e5f0fa;
+    --retro-accent-text: #003399;
+}
+
+[data-theme="dark"] {
+    --retro-page-bg: #0b1220;
+    --retro-content-bg: #1a2436;
+    --retro-text: #e0e0e0;
+    --retro-text-secondary: #b0b0b0;
+    --retro-link: #8ab4f8;
+    --retro-header-bg: #001a66;
+    --retro-header-text: #ffffff;
+    --retro-note-text: #c5d6ee;
+    --retro-nav-bg: #2a4a7a;
+    --retro-nav-text: #ffffff;
+    --retro-border: #3a5a8a;
+    --retro-accent-bg: #24344d;
+    --retro-accent-text: #9db8dd;
+}
 
 .retro-body {
     margin: 0;
-    background: #dbe9f6;
-    color: #1a1a1a;
+    background: var(--retro-page-bg);
+    color: var(--retro-text);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 15px;
     line-height: 1.5;
 }
 
 .retro-body a {
-    color: #004080;
+    color: var(--retro-link);
 }
 
 .retro-wrap {
     max-width: 960px;
     margin: 0 auto;
-    background: #ffffff;
-    border-left: 2px solid #6699cc;
-    border-right: 2px solid #6699cc;
+    background: var(--retro-content-bg);
+    border-left: 2px solid var(--retro-border);
+    border-right: 2px solid var(--retro-border);
 }
 
 .retro-header {
-    background: #003399;
-    color: #ffffff;
+    background: var(--retro-header-bg);
+    color: var(--retro-header-text);
     padding: 20px 16px;
 }
 
@@ -48,21 +86,33 @@
 
 .retro-note {
     font-size: 13px;
-    color: #dbe9f6;
+    color: var(--retro-note-text);
 }
 
 .retro-nav {
-    background: #6698cb;
+    background: var(--retro-nav-bg);
     padding: 8px 16px;
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+    align-items: center;
 }
 
-.retro-nav a {
-    color: #ffffff;
+.retro-nav a,
+.retro-nav button {
+    color: var(--retro-nav-text);
     font-weight: bold;
     text-decoration: none;
+}
+
+.retro-nav button {
+    background: none;
+    border: 1px solid var(--retro-nav-text);
+    border-radius: 4px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: auto;
 }
 
 .retro-nav a:hover {
@@ -86,14 +136,14 @@
 }
 
 .retro-box {
-    border: 1px solid #6699cc;
+    border: 1px solid var(--retro-border);
     margin-bottom: 16px;
-    background: #ffffff;
+    background: var(--retro-content-bg);
 }
 
 .retro-box h2 {
-    background: #6698cb;
-    color: #ffffff;
+    background: var(--retro-nav-bg);
+    color: var(--retro-nav-text);
     margin: 0;
     padding: 6px 10px;
     font-size: 16px;
@@ -112,14 +162,14 @@
     display: block;
     width: 120px;
     height: 120px;
-    border: 1px solid #6699cc;
+    border: 1px solid var(--retro-border);
     margin-bottom: 10px;
 }
 
 .retro-badge {
     display: inline-block;
-    background: #e5f0fa;
-    border: 1px solid #6699cc;
+    background: var(--retro-accent-bg);
+    border: 1px solid var(--retro-border);
     padding: 2px 8px;
     margin: 0 4px 4px 0;
     font-size: 13px;
@@ -135,7 +185,7 @@
 }
 
 .retro-project {
-    border-bottom: 1px dotted #6699cc;
+    border-bottom: 1px dotted var(--retro-border);
     padding: 10px 0;
 }
 
@@ -154,7 +204,7 @@
 
 .retro-project-meta {
     font-size: 13px;
-    color: #555555;
+    color: var(--retro-text-secondary);
 }
 
 .retro-top8 {
@@ -165,7 +215,7 @@
 
 .retro-top8-item {
     text-align: center;
-    border: 1px solid #6699cc;
+    border: 1px solid var(--retro-border);
     padding: 10px 6px;
     min-width: 0;
     overflow-wrap: anywhere;
@@ -175,14 +225,14 @@
     width: 64px;
     height: 64px;
     margin: 0 auto 8px;
-    background: #e5f0fa;
-    border: 1px solid #6699cc;
+    background: var(--retro-accent-bg);
+    border: 1px solid var(--retro-border);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 28px;
     font-weight: bold;
-    color: #003399;
+    color: var(--retro-accent-text);
 }
 
 .retro-top8-item p {
@@ -193,11 +243,11 @@
 
 .retro-small {
     font-size: 13px;
-    color: #555555;
+    color: var(--retro-text-secondary);
 }
 
 .retro-footer {
-    border-top: 2px solid #6699cc;
+    border-top: 2px solid var(--retro-border);
     padding: 12px 16px;
     text-align: center;
     font-size: 13px;
@@ -214,5 +264,9 @@
 
     .retro-header h1 {
         font-size: 26px;
+    }
+
+    .retro-nav button {
+        margin-left: 0;
     }
 }

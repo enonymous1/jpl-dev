@@ -1,0 +1,143 @@
+/* vCard-style homepage layout, written for this site — not a copy of the
+   codewithsadee template. Sidebar + tabbed main card, using the site's
+   existing --bg-*, --text-*, and --border-* variables, so the clean site's
+   light/dark toggle themes this layout automatically with no second
+   palette to maintain. */
+
+.vcard-layout {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.vcard-layout > * {
+    min-width: 0;
+}
+
+.vcard-sidebar {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    position: sticky;
+    top: 70px;
+}
+
+.vcard-profile {
+    text-align: center;
+}
+
+.vcard-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    margin: 0 auto 12px;
+    display: block;
+}
+
+.vcard-profile h2 {
+    margin: 0 0 4px;
+    font-size: 20px;
+}
+
+.vcard-title {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin: 0 0 10px;
+}
+
+.vcard-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+}
+
+.vcard-divider {
+    border-color: var(--border-color);
+    margin: 16px 0;
+}
+
+.vcard-contact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.vcard-contact li {
+    margin: 8px 0;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.vcard-sidebar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.vcard-small {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin: 12px 0 0;
+}
+
+.vcard-main {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 24px;
+    min-width: 0;
+}
+
+.vcard-main h2 {
+    font-size: 20px;
+    margin: 20px 0 10px;
+}
+
+.vcard-main h2:first-child {
+    margin-top: 0;
+}
+
+.vcard-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+.vcard-tabs button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 8px 14px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.vcard-tabs button[aria-selected="true"] {
+    background: var(--primary-color);
+    color: #ffffff;
+}
+
+@media (max-width: 800px) {
+    .vcard-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .vcard-sidebar {
+        position: static;
+    }
+
+    .vcard-main {
+        padding: 16px;
+    }
+}
