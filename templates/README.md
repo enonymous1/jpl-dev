@@ -13,7 +13,6 @@ on the `Blueprint(...)` constructor.
 templates/
 ├── base.html          # Master layout — all other templates extend this
 ├── index.html         # Homepage  (route: /)
-├── widget_demo.html   # Component library demo  (route: /widget-demo)
 └── 404.html           # Not-found page (also written to docs/404.html by freeze.py)
 ```
 
@@ -49,7 +48,6 @@ The shared layout shell. Provides:
 | Template | Route | Rendered by | Notable context vars |
 |----------|-------|-------------|----------------------|
 | `index.html` | `/` | `app.py` | `about` |
-| `widget_demo.html` | `/widget-demo` | `app.py` | — |
 | `404.html` | (error handler) | `app.py` | — |
 
 ## Component system

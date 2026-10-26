@@ -84,19 +84,6 @@ def create_app():
         static GitHub Pages site with no live Python runtime."""
         return render_template('retro.html', about=ABOUT_ME)
 
-    @application.route('/widget-demo/')
-    def widget_demo():
-        """
-        Render the component library demonstration page.
-
-        This page showcases the Tailwind component system (cards, badges,
-        repo cards) used across the portfolio.
-
-        Returns:
-            str: Rendered HTML template for the component demo page
-        """
-        return render_template('widget_demo.html')
-
     @application.errorhandler(404)
     def page_not_found(error):
         """Render the 404 page. ``freeze.py`` also writes it to ``docs/404.html``

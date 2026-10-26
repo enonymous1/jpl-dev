@@ -16,7 +16,6 @@ def client():
 ROUTES = [
     '/',
     '/retro/',
-    '/widget-demo/',
 ]
 
 
@@ -52,9 +51,7 @@ def test_homepage_is_a_portfolio_hero_not_a_dashboard(client):
 
 
 def test_nav_does_not_link_internal_components_demo(client):
-    # The homepage (standalone, no global nav) must not link the demo.
-    # /widget-demo/ itself is the demo page, so its own content saying
-    # "Components" is expected and not checked here.
+    # The component demo page is gone; the homepage must not link it.
     resp = client.get('/')
     assert b'Components' not in resp.data
     assert b'widget-demo' not in resp.data
@@ -147,7 +144,9 @@ def test_homepage_vcard_tabs(client):
 
 
 def test_other_pages_keep_global_nav(client):
-    resp = client.get('/widget-demo/')
+    # base.html now serves only the 404 page; it still carries the nav.
+    resp = client.get('/no-such-page/')
+    assert resp.status_code == 404
     assert b'id="main-navbar"' in resp.data
 
 
@@ -190,5 +189,6 @@ def test_no_baked_in_project_routes_remain():
     assert 'gsa_mas_checklist.gsa_mas_checklist' not in endpoints
     assert 'schedule_maker.schedule_maker' not in endpoints
     assert 'projects' not in endpoints
-    # What remains: homepage, retro, the unlinked component demo, 404.
-    assert {'index', 'retro', 'widget_demo'} <= endpoints
+    # What remains: homepage, retro, and the 404 handler (not a route).
+    assert 'widget_demo' not in endpoints
+    assert {'index', 'retro'} <= endpoints
