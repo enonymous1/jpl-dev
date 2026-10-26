@@ -17,3 +17,7 @@ select = ["E", "F", "I"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Repo root on sys.path for every pytest invocation, not just
+# "python -m pytest" (which adds cwd implicitly). Bare "pytest" —
+# what CI runs — otherwise cannot import app.py / fetch_repos.py.
+pythonpath = ["."]
