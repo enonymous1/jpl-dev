@@ -3,6 +3,10 @@
 # [project] table here).
 [tool.ruff]
 line-length = 100
+# Markdown is excluded on purpose: ruff format rewrites code blocks
+# inside docs (alignment, quote style), and docs should not fail CI
+# over formatter style. Only Python is format-checked.
+exclude = ["*.md"]
 target-version = "py311"
 
 [tool.ruff.format]
