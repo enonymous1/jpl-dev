@@ -179,6 +179,11 @@ def test_vcard_section_titles_repeat_the_active_tab(client):
     assert '50%' not in avatar_rule
 
 
+def test_vcard_css_is_cache_busted(client):
+    resp = client.get('/')
+    assert b'css/vcard.css?v=' in resp.data
+
+
 def test_homepage_vcard_tabs(client):
     resp = client.get('/')
     assert b'vcard-layout' in resp.data

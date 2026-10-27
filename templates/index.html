@@ -24,7 +24,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile-card.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/checklist.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}">
+    <!-- ?v= cache-bust: vcard.css changed under this same URL and
+         browsers/Pages served the stale copy, so the new title size
+         and filter pills did not appear. Bump the version whenever
+         vcard.css changes. -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261027">
     <script>
         (function() {
             try {
