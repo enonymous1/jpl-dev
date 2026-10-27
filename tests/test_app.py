@@ -184,6 +184,21 @@ def test_vcard_css_is_cache_busted(client):
     assert b'css/vcard.css?v=' in resp.data
 
 
+def test_repo_preview_modal_present(client):
+    resp = client.get('/')
+    assert b'id="repo-modal"' in resp.data
+    assert b'id="repo-modal-content"' in resp.data
+    assert b'data-modal-close' in resp.data
+    assert b'openRepoModal' in resp.data
+    assert b'renderMarkdown' in resp.data
+    assert b'data-repo-name' in resp.data
+    assert b'api.github.com/repos/enonymous1/' in resp.data
+    css = client.get('/static/css/vcard.css').data.decode()
+    assert '.repo-modal' in css
+    assert '.repo-modal-card' in css
+    assert '.repo-card-hint' in css
+
+
 def test_homepage_vcard_tabs(client):
     resp = client.get('/')
     assert b'vcard-layout' in resp.data

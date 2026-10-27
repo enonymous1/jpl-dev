@@ -339,3 +339,234 @@ body.vcard-page {
         min-height: 0;
     }
 }
+
+/* ── Project preview modal ───────────────────────────────────────────── */
+/* Clickable cards: the whole card previews, the GitHub button inside
+   it still navigates. The hint only appears on hover/focus, so the
+   card stays clean until someone is already pointing at it. */
+.vcard-main .repo-card[data-repo-name] {
+    cursor: pointer;
+}
+
+.vcard-main .repo-card[data-repo-name]:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.vcard-main .repo-card[data-repo-name]:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.repo-card-hint {
+    font-size: 12px;
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    align-self: center;
+    white-space: nowrap;
+}
+
+.vcard-main .repo-card:hover .repo-card-hint,
+.vcard-main .repo-card:focus-within .repo-card-hint {
+    opacity: 1;
+}
+
+body.repo-modal-open {
+    overflow: hidden;
+}
+
+.repo-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    overflow-y: auto;
+}
+
+.repo-modal[hidden] {
+    display: none;
+}
+
+.repo-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.repo-modal-card {
+    position: relative;
+    width: min(720px, 100%);
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
+    background: var(--bg-secondary);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--vcard-radius);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+    padding: 28px;
+    margin: auto;
+}
+
+.repo-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.repo-modal-close:hover {
+    color: var(--text-color);
+    border-color: var(--text-secondary);
+}
+
+.repo-modal-kicker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 44px 6px 0;
+}
+
+.repo-modal-title {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+    margin: 0 44px 8px 0;
+}
+
+.repo-modal-desc {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 14px;
+}
+
+.repo-modal-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.repo-modal-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+
+.repo-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.repo-modal-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.repo-modal-action:hover {
+    border-color: var(--text-secondary);
+}
+
+.repo-modal-action--primary {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.repo-modal-readme-heading {
+    font-size: 16px;
+    font-weight: 700;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+    margin: 0 0 12px;
+}
+
+.repo-modal-readme {
+    font-size: 14px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.repo-modal-readme h3 { font-size: 20px; margin: 20px 0 8px; }
+.repo-modal-readme h4 { font-size: 17px; margin: 18px 0 6px; }
+.repo-modal-readme h5 { font-size: 15px; margin: 16px 0 6px; }
+.repo-modal-readme p { margin: 0 0 10px; }
+.repo-modal-readme ul,
+.repo-modal-readme ol { margin: 0 0 12px; padding-left: 22px; }
+.repo-modal-readme li { margin-bottom: 4px; }
+.repo-modal-readme a { color: var(--primary-color); }
+.repo-modal-readme img { max-width: 100%; height: auto; border-radius: 8px; }
+.repo-modal-readme hr { border: none; border-top: 1px solid var(--border-color); margin: 18px 0; }
+.repo-modal-readme blockquote {
+    border-left: 3px solid var(--primary-color);
+    padding-left: 12px;
+    color: var(--text-secondary);
+    margin: 0 0 12px;
+}
+.repo-modal-readme code {
+    font-size: 0.85em;
+    background: var(--bg-color);
+    border-radius: 4px;
+    padding: 2px 5px;
+}
+.repo-modal-readme pre {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px 14px;
+    overflow-x: auto;
+    margin: 0 0 14px;
+}
+.repo-modal-readme pre code {
+    background: none;
+    padding: 0;
+    font-size: 13px;
+}
+.repo-modal-table { overflow-x: auto; margin: 0 0 14px; }
+.repo-modal-readme table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.repo-modal-readme th,
+.repo-modal-readme td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border-color); }
+.repo-modal-readme th { font-weight: 700; }
+.repo-modal-loading,
+.repo-modal-empty { color: var(--text-secondary); }
+
+@media (max-width: 640px) {
+    .repo-modal-card {
+        padding: 20px;
+        max-height: calc(100dvh - 24px);
+    }
+
+    .repo-modal {
+        padding: 12px;
+    }
+}
