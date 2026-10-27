@@ -127,9 +127,7 @@
                     <button id="featuredBtn" class="project-tab-btn" onclick="toggleProjectsView('featured')">Featured</button>
                     <button id="allBtn" class="project-tab-btn" onclick="toggleProjectsView('all')" aria-label="Show all projects">All</button>
                 </div>
-                <div id="language-filters" class="language-filters" role="group" aria-label="Filter projects by language">
-                    <button type="button" class="language-filter-btn active" data-language-filter="All" aria-pressed="true">All</button>
-                </div>
+                <div id="language-filters" class="language-filters" role="group" aria-label="Filter projects by language"></div>
                 <div id="recent-projects" class="projects-content grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
                         <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
@@ -310,12 +308,13 @@ function renderLanguageFilters(repos) {
         const dot = showDot ? `<span class="lang-dot" style="background:${langColor(lang)}" aria-hidden="true"></span>` : '';
         return `<button type="button" class="language-filter-btn${active ? ' active' : ''}" data-language-filter="${escHtml(lang)}" aria-pressed="${active}">${dot}${escHtml(lang)} <span class="lang-count">${count}</span></button>`;
     };
-    container.innerHTML = chip('All', repos.length, false) + langs.map(([lang, count]) => chip(lang, count, true)).join('');
+    container.innerHTML = langs.map(([lang, count]) => chip(lang, count, true)).join('');
     container.querySelectorAll('[data-language-filter]').forEach(btn => {
         btn.addEventListener('click', () => {
-            selectedLanguage = btn.getAttribute('data-language-filter');
+            const lang = btn.getAttribute('data-language-filter');
+            selectedLanguage = (lang === selectedLanguage) ? 'All' : lang;
             container.querySelectorAll('[data-language-filter]').forEach(b => {
-                const isActive = b === btn;
+                const isActive = b.getAttribute('data-language-filter') === selectedLanguage;
                 b.classList.toggle('active', isActive);
                 b.setAttribute('aria-pressed', String(isActive));
             });
@@ -336,14 +335,19 @@ function renderProjects() {
         const filtered = selectedLanguage === 'All'
             ? list
             : list.filter(r => (r.language || 'Other') === selectedLanguage);
-        return unlimited ? filtered : filtered.slice(0, 6);
+        // The 6-item slice applies only to the unfiltered Recent/Featured
+        // views. A selected language shows every match, and All is never
+        // sliced — otherwise filtered repos would hide behind the slice
+        // in the very view the filter is meant to surface them in.
+        if (selectedLanguage !== 'All' || unlimited) return filtered;
+        return filtered.slice(0, 6);
     };
     const recent   = matches(projectLists.recent, false);
     const featured = matches(projectLists.featured, false);
     const all      = matches(projectLists.all, true);
     const empty = (view) => selectedLanguage === 'All'
         ? `No ${view.toLowerCase()} repositories found.`
-        : `No ${escHtml(selectedLanguage)} repositories in ${view}. Try All languages, or check the other view.`;
+        : `No ${escHtml(selectedLanguage)} repositories in ${view}. Try a different language, or check the other view.`;
     recentEl.innerHTML   = recent.length   ? recent.map(r   => renderRepoCard(r, 'primary')).join('') : noRepos(empty('Recent'));
     featuredEl.innerHTML = featured.length ? featured.map(r => renderRepoCard(r, 'info')).join('')    : noRepos(empty('Featured'));
     if (allEl) {
