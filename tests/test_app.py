@@ -90,6 +90,19 @@ def test_projects_language_filters_are_derived_from_repo_data(client):
     assert '.lang-dot' in css
 
 
+def test_projects_all_view_and_no_name_repeat(client):
+    resp = client.get('/')
+    # All view: third toggle button + its own grid, alongside Recent/Featured.
+    assert b'id="allBtn"' in resp.data
+    assert b'id="all-projects"' in resp.data
+    assert b"toggleProjectsView('all')" in resp.data
+    # The About eyebrow repeated name + location; both already live in
+    # the sidebar card, so the eyebrow is gone from the main card.
+    assert b'Justin P. Lyons &mdash; Fredericksburg, VA' not in resp.data
+    assert b'Justin P. Lyons' in resp.data
+    assert b'Fredericksburg, VA' in resp.data
+
+
 def test_homepage_projects_come_from_github_not_a_catalog(client):
     resp = client.get('/')
     assert b'recent-projects' in resp.data
@@ -157,7 +170,9 @@ def test_vcard_section_titles_repeat_the_active_tab(client):
 
     css = pathlib.Path('static/css/vcard.css').read_text()
     assert '--vcard-radius: 20px' in css
+    assert 'font-size: 36px' in css
     assert 'vcard-section-title::after' in css
+    assert '.vcard-main .vcard-section-title' in css
     # Avatar is a rounded square now, not a circle. (The 50% in the
     # file belongs to .lang-dot, which is meant to be round.)
     avatar_rule = css.split('.vcard-avatar')[1].split('}')[0]

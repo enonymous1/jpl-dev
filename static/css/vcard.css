@@ -154,14 +154,21 @@ body.vcard-page {
    demo: large bold heading with a short accent bar underneath it.
    Each section's first heading carries this class; the later h2s
    (What I Build, Tools & Tech) stay at the smaller size above. */
-.vcard-section-title {
-    font-size: 30px;
+/* Scoped under .vcard-main on purpose: the plain class loses to
+   `.vcard-main h2` on specificity, which is why the title was
+   rendering at the 20px subhead size despite this rule saying 36px. */
+.vcard-main .vcard-section-title {
+    /* Clearly larger than the 30px hero line and the 20px subheads
+       below it: the card header should read as the header, not as
+       another line of body text. */
+    font-size: 36px;
+    line-height: 1.15;
     font-weight: 700;
     letter-spacing: -0.01em;
     margin: 0 0 20px;
 }
 
-.vcard-section-title::after {
+.vcard-main .vcard-section-title::after {
     content: "";
     display: block;
     width: 40px;
@@ -169,6 +176,38 @@ body.vcard-page {
     border-radius: 3px;
     background: var(--primary-color);
     margin-top: 10px;
+}
+
+/* Recent / Featured / All segmented control. The base
+   .project-tab-btn styling assumes a dark header (white text and
+   border), so on this card it was nearly invisible in light mode.
+   Theme-aware colors here, with collapsed borders so a third button
+   does not double the dividers, and soft outer corners to match. */
+.vcard-main .project-tab-btn {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+    border-radius: 0;
+    margin-left: -1px;
+}
+
+.vcard-main .project-tab-btn:first-child {
+    border-radius: 10px 0 0 10px;
+    margin-left: 0;
+}
+
+.vcard-main .project-tab-btn:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+.vcard-main .project-tab-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.vcard-main .project-tab-btn:hover:not(.active) {
+    background: var(--bg-color);
+    color: var(--text-color);
 }
 
 /* Language filter chips, GitHub-style: pill buttons with a language
