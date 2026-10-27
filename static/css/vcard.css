@@ -29,6 +29,14 @@ body.vcard-page {
     display: block;
     height: auto;
     overflow: visible;
+    /* Poppins, like the demo vCard: same family, loaded in index.html.
+       Scoped to this page only, so /retro/ and the 404 page keep the
+       site's system sans. */
+    font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    /* Softer, rounder cards like the demo (its corners are ~20px, where
+       the site default is 8px). Scoped here so the radius change does
+       not leak into the other pages that share --border-radius. */
+    --vcard-radius: 20px;
 }
 
 .vcard-layout {
@@ -46,10 +54,11 @@ body.vcard-page {
 .vcard-sidebar {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border-radius: var(--vcard-radius);
     padding: 20px;
     position: sticky;
     top: 20px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
 
 .vcard-profile {
@@ -59,7 +68,10 @@ body.vcard-page {
 .vcard-avatar {
     width: 120px;
     height: 120px;
-    border-radius: 50%;
+    /* Rounded square like the demo's avatar tile, not a circle: the
+       same soft corner as the cards, so the photo sits in the design
+       instead of floating apart from it. */
+    border-radius: var(--vcard-radius);
     object-fit: cover;
     border: 2px solid var(--border-color);
     margin: 0 auto 12px;
@@ -117,11 +129,12 @@ body.vcard-page {
 .vcard-main {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 64px 24px 24px;
+    border-radius: var(--vcard-radius);
+    padding: 64px 28px 28px;
     min-width: 0;
     width: 100%;
     position: relative;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
     /* Keep the card from collapsing to a sliver on short tabs like
        Contact: height may still grow for About, but it never drops
        below this, so switching tabs does not yank the page around. */
@@ -135,6 +148,42 @@ body.vcard-page {
 
 .vcard-main h2:first-child {
     margin-top: 0;
+}
+
+/* The active tab, repeated as the card's title on the left, like the
+   demo: large bold heading with a short accent bar underneath it.
+   Each section's first heading carries this class; the later h2s
+   (What I Build, Tools & Tech) stay at the smaller size above. */
+.vcard-section-title {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 20px;
+}
+
+.vcard-section-title::after {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--primary-color);
+    margin-top: 10px;
+}
+
+/* Inside the main card, keep the smaller pieces soft too: repo cards
+   and buttons pick up the card radius family instead of the site's
+   sharper corners, and badges go pill-shaped like the demo's. */
+.vcard-main .repo-card {
+    border-radius: 16px;
+}
+
+.vcard-layout .repo-btn {
+    border-radius: 10px;
+}
+
+.vcard-layout .badge-theme {
+    border-radius: 999px;
 }
 
 /* Tabs anchored to the top-right corner of the main card, like the
@@ -153,7 +202,7 @@ body.vcard-page {
     border: 1px solid var(--border-color);
     border-top: none;
     border-right: none;
-    border-radius: 0 var(--border-radius) 0 var(--border-radius);
+    border-radius: 0 var(--vcard-radius) 0 var(--vcard-radius);
     padding: 10px 12px;
     margin: 0;
     z-index: 1;
@@ -167,7 +216,7 @@ body.vcard-page {
     font-size: 15px;
     padding: 6px 10px;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 10px;
 }
 
 .vcard-tabs button:hover {
@@ -192,7 +241,7 @@ body.vcard-page {
     .vcard-tabs {
         position: static;
         border: 1px solid var(--border-color);
-        border-radius: var(--border-radius);
+        border-radius: var(--vcard-radius);
         margin-bottom: 20px;
     }
 

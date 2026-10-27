@@ -124,6 +124,25 @@ def test_profile_photo_is_a_local_image_not_the_silhouette():
     assert photo.read_bytes()[:3] == b'\xff\xd8\xff'  # JPEG magic bytes
 
 
+def test_vcard_section_titles_repeat_the_active_tab(client):
+    resp = client.get('/')
+    # Each section opens with a title mirroring its tab, like the demo:
+    # About -> "About Me", Projects -> "Projects", Contact -> "Contact".
+    assert b'class="vcard-section-title">About Me</h2>' in resp.data
+    assert b'class="vcard-section-title">Projects</h2>' in resp.data
+    assert b'class="vcard-section-title">Contact</h2>' in resp.data
+    assert b'Featured Projects' not in resp.data
+    # Poppins, the demo's font, loaded only on the homepage.
+    assert b'family=Poppins' in resp.data
+    import pathlib
+
+    css = pathlib.Path('static/css/vcard.css').read_text()
+    assert '--vcard-radius: 20px' in css
+    assert 'vcard-section-title::after' in css
+    # Avatar is a rounded square now, not a circle.
+    assert 'border-radius: 50%' not in css
+
+
 def test_homepage_vcard_tabs(client):
     resp = client.get('/')
     assert b'vcard-layout' in resp.data
