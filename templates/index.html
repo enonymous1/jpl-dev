@@ -123,6 +123,9 @@
                     <button id="recentBtn" class="project-tab-btn active" onclick="toggleProjectsView('recent')">Recent</button>
                     <button id="featuredBtn" class="project-tab-btn" onclick="toggleProjectsView('featured')">Featured</button>
                 </div>
+                <div id="language-filters" class="language-filters" role="group" aria-label="Filter projects by language">
+                    <button type="button" class="language-filter-btn active" data-language-filter="All" aria-pressed="true">All</button>
+                </div>
                 <div id="recent-projects" class="projects-content grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
                         <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
@@ -156,6 +159,25 @@ function escHtml(s) {
     return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// GitHub linguist colors, so each language chip and card tag carries
+// the dot GitHub shows next to a language. Only languages actually in
+// the loaded repos get chips; this map just colors them.
+const LANGUAGE_COLORS = {
+    'C': '#555555', 'C#': '#178600', 'C++': '#f34b7d', 'CSS': '#563d7c',
+    'HTML': '#e34c26', 'Java': '#b07219', 'JavaScript': '#f1e05a',
+    'Kotlin': '#a97bff', 'PowerShell': '#012456', 'Python': '#3572a5',
+    'Swift': '#f05138', 'TypeScript': '#3178c6',
+};
+
+function langColor(lang) {
+    return LANGUAGE_COLORS[lang] || '#888888';
+}
+
+// Language filter state, shared by both views: selecting a language
+// filters Recent and Featured together, and switching views keeps it.
+let selectedLanguage = 'All';
+let projectLists = { recent: [], featured: [] };
+
 const ACCENT_COLORS = {
     primary: 'var(--primary-color)',
     info:    '#0ea5e9',
@@ -178,8 +200,10 @@ function renderRepoCard(repo, accentKey) {
         ? `<span class="badge-theme" style="background:#f59e0b;color:#000;border-color:#f59e0b;flex-shrink:0">&#9733; Featured</span>`
         : (lang ? `<span class="badge-theme" style="flex-shrink:0">${lang}</span>` : '');
 
-    const techTags  = [lang, ...topics].filter(Boolean).slice(0,7)
-        .map(t => `<span class="badge-theme">${t}</span>`).join('');
+    const langTag = lang
+        ? `<span class="badge-theme"><span class="lang-dot" style="background:${langColor(repo.language)}" aria-hidden="true"></span>${lang}</span>`
+        : '';
+    const techTags  = [langTag, ...topics.map(t => `<span class="badge-theme">${t}</span>`)].filter(Boolean).slice(0,7).join('');
     const statsHtml = (stars + forks) > 0
         ? `<small style="color:var(--text-secondary);font-size:0.7rem;margin-left:0.25rem;">${stars > 0 ? `<i class="bi bi-star"></i>&nbsp;${stars}` : ''}${forks > 0 ? `&nbsp;<i class="bi bi-diagram-2"></i>&nbsp;${forks}` : ''}</small>`
         : '';
@@ -231,23 +255,72 @@ async function loadGithubProjects() {
 
     const HIDDEN   = new Set(['jpl-dev', 'enonymous1']);
     const active   = repos.filter(r => !r.fork && !r.archived && !HIDDEN.has(r.name));
-    // "Recent" = sorted by last push; "Featured" = repos tagged with 'featured' topic, then by stars.
-    // Fallback: no repo currently carries the 'featured' topic, so without this
-    // the tab rendered "No repositories tagged 'featured' yet" on every visit.
-    // Tagged repos win when they exist; the showcase list only fills an empty tab.
+    // "Recent" = API order (sorted by last push); "Featured" = repos tagged
+    // with 'featured' topic, then by stars. Fallback: no repo currently
+    // carries the 'featured' topic, so without this the tab rendered
+    // "No repositories tagged 'featured' yet" on every visit. Tagged
+    // repos win when they exist; the showcase list only fills an empty tab.
     const SHOWCASE = ['repo-sync', 'gas-auditor', 'photo-stitcher', 'voxel-portfolio', 'sms-toolkit', 'gsa-vendor-toolkit'];
-    const recent   = [...active].slice(0, 6);
     let featured = active
         .filter(r => (r.topics || []).includes('featured'))
         .sort((a, b) => b.stargazers_count - a.stargazers_count);
     if (!featured.length) {
         featured = SHOWCASE.map(name => active.find(r => r.name === name)).filter(Boolean);
     }
-    featured = featured.slice(0, 6);
+    // Keep the full lists: with no language selected, renderProjects()
+    // shows the first 6 of each (the previous behaviour); with a language
+    // selected, it shows every match, so filtering can surface repos
+    // that never made the first 6 (Java, C#, HTML in the current data).
+    projectLists = { recent: [...active], featured };
+    renderLanguageFilters(active);
+    renderProjects();
+}
 
+function renderLanguageFilters(repos) {
+    const container = document.getElementById('language-filters');
+    if (!container) return;
+    // Chips are derived from the loaded repos, never hardcoded: a new
+    // language in a future repo gets a chip automatically, and a language
+    // with no repos (PowerShell today, for example) gets none.
+    const counts = new Map();
+    repos.forEach(r => {
+        const lang = r.language || 'Other';
+        counts.set(lang, (counts.get(lang) || 0) + 1);
+    });
+    const langs = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    const chip = (lang, count, showDot) => {
+        const active = lang === selectedLanguage;
+        const dot = showDot ? `<span class="lang-dot" style="background:${langColor(lang)}" aria-hidden="true"></span>` : '';
+        return `<button type="button" class="language-filter-btn${active ? ' active' : ''}" data-language-filter="${escHtml(lang)}" aria-pressed="${active}">${dot}${escHtml(lang)} <span class="lang-count">${count}</span></button>`;
+    };
+    container.innerHTML = chip('All', repos.length, false) + langs.map(([lang, count]) => chip(lang, count, true)).join('');
+    container.querySelectorAll('[data-language-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            selectedLanguage = btn.getAttribute('data-language-filter');
+            container.querySelectorAll('[data-language-filter]').forEach(b => {
+                const isActive = b === btn;
+                b.classList.toggle('active', isActive);
+                b.setAttribute('aria-pressed', String(isActive));
+            });
+            renderProjects();
+        });
+    });
+}
+
+function renderProjects() {
+    const recentEl   = document.getElementById('recent-projects');
+    const featuredEl = document.getElementById('featured-projects');
     const noRepos = (msg) => `<p class="col-span-full text-center py-4 text-sm" style="color:var(--text-secondary)">${msg}</p>`;
-    recentEl.innerHTML   = recent.length   ? recent.map(r   => renderRepoCard(r, 'primary')).join('') : noRepos('No recent repositories found.');
-    featuredEl.innerHTML = featured.length ? featured.map(r => renderRepoCard(r, 'info')).join('')    : noRepos('No repositories tagged "featured" yet.');
+    const matches = (list) => selectedLanguage === 'All'
+        ? list.slice(0, 6)
+        : list.filter(r => (r.language || 'Other') === selectedLanguage);
+    const recent   = matches(projectLists.recent);
+    const featured = matches(projectLists.featured);
+    const empty = (view) => selectedLanguage === 'All'
+        ? `No ${view.toLowerCase()} repositories found.`
+        : `No ${escHtml(selectedLanguage)} repositories in ${view}. Try All, or check the other view.`;
+    recentEl.innerHTML   = recent.length   ? recent.map(r   => renderRepoCard(r, 'primary')).join('') : noRepos(empty('Recent'));
+    featuredEl.innerHTML = featured.length ? featured.map(r => renderRepoCard(r, 'info')).join('')    : noRepos(empty('Featured'));
 }
 
 function toggleProjectsView(view) {

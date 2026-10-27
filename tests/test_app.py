@@ -71,6 +71,25 @@ def test_removed_pages_return_404(client, route):
     assert client.get(route).status_code == 404
 
 
+def test_projects_language_filters_are_derived_from_repo_data(client):
+    resp = client.get('/')
+    # The filter group exists with only the "All" chip in the static HTML;
+    # the language chips themselves are built by JS from the loaded repos,
+    # so a language with no repos never gets a chip.
+    assert b'id="language-filters"' in resp.data
+    assert b'aria-label="Filter projects by language"' in resp.data
+    assert b'data-language-filter="All"' in resp.data
+    assert b'data-language-filter="Python"' not in resp.data
+    assert b'data-language-filter="PowerShell"' not in resp.data
+    assert b'renderLanguageFilters' in resp.data
+    assert b'LANGUAGE_COLORS' in resp.data
+    import pathlib
+
+    css = pathlib.Path('static/css/vcard.css').read_text()
+    assert '.language-filter-btn' in css
+    assert '.lang-dot' in css
+
+
 def test_homepage_projects_come_from_github_not_a_catalog(client):
     resp = client.get('/')
     assert b'recent-projects' in resp.data
@@ -139,8 +158,10 @@ def test_vcard_section_titles_repeat_the_active_tab(client):
     css = pathlib.Path('static/css/vcard.css').read_text()
     assert '--vcard-radius: 20px' in css
     assert 'vcard-section-title::after' in css
-    # Avatar is a rounded square now, not a circle.
-    assert 'border-radius: 50%' not in css
+    # Avatar is a rounded square now, not a circle. (The 50% in the
+    # file belongs to .lang-dot, which is meant to be round.)
+    avatar_rule = css.split('.vcard-avatar')[1].split('}')[0]
+    assert '50%' not in avatar_rule
 
 
 def test_homepage_vcard_tabs(client):
