@@ -129,6 +129,17 @@ def test_sidebar_has_myspace_tooltip_and_social_row(client):
     assert '.vcard-small' not in css
 
 
+def test_repo_card_footer_anchors_github_button_and_socials_centered(client):
+    resp = client.get('/')
+    assert b'repo-card-tags' in resp.data
+    assert b'repo-card-actions' in resp.data
+    css = client.get('/static/css/vcard.css').data.decode()
+    assert '.repo-card-actions' in css
+    assert 'margin-left: auto' in css
+    social_block = css.split('.vcard-social')[1].split('}')[0]
+    assert 'justify-content: center' in social_block
+
+
 def test_projects_single_grid_with_expand_control(client):
     resp = client.get('/')
     # One grid showing the full inventory, no view toggle: the first

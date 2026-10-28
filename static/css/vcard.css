@@ -315,6 +315,29 @@ body.vcard-page {
     outline-offset: 2px;
 }
 
+/* Footer anchoring: the tags area takes the free width and wraps
+   inside itself, while the GitHub button (and its Preview hint, on
+   its left) stays pinned to the bottom-right corner. Without the
+   explicit widths, the tags div stretched to the full footer width
+   and the button wrapped onto a second row at the left, 311px from
+   the card's right edge. The footer already sits at the bottom via
+   margin-top: auto in the base card styles. */
+.vcard-main .repo-card-footer {
+    flex-wrap: nowrap;
+    align-items: flex-end;
+}
+
+.vcard-main .repo-card-tags {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.vcard-main .repo-card-actions {
+    flex-shrink: 0;
+    margin-left: auto;
+    align-items: center;
+}
+
 .repo-card-hint {
     font-size: 12px;
     color: var(--text-secondary);
@@ -573,6 +596,7 @@ body.repo-modal-open {
    linked — nothing new is claimed. */
 .vcard-social {
     display: flex;
+    justify-content: center;
     gap: 8px;
     margin-top: 16px;
     padding-top: 16px;

@@ -234,7 +234,7 @@ function renderRepoCard(repo, accentKey) {
         : '';
     const btnGithub   = `<span class="repo-card-hint" aria-hidden="true">Preview &rarr;</span><a href="${githubUrl}" class="repo-btn" target="_blank" rel="noopener noreferrer" aria-label="Open ${name} on GitHub"><i class="bi bi-github"></i></a>`;
 
-    return `<div class="repo-card" data-repo-name="${name}" tabindex="0" role="button" aria-label="Preview ${name} repository" style="border-top-color:${accent}"><div class="repo-card-body"><div class="repo-card-title"><span class="font-semibold text-sm">${name}${statsHtml}</span>${statusBadge}</div><p class="repo-card-desc">${desc}</p><div class="repo-card-footer"><div class="flex flex-wrap gap-1">${techTags}</div><div class="flex gap-1">${btnGithub}</div></div></div></div>`;
+    return `<div class="repo-card" data-repo-name="${name}" tabindex="0" role="button" aria-label="Preview ${name} repository" style="border-top-color:${accent}"><div class="repo-card-body"><div class="repo-card-title"><span class="font-semibold text-sm">${name}${statsHtml}</span>${statusBadge}</div><p class="repo-card-desc">${desc}</p><div class="repo-card-footer"><div class="repo-card-tags flex flex-wrap gap-1">${techTags}</div><div class="repo-card-actions flex gap-1">${btnGithub}</div></div></div></div>`;
 }
 
 async function loadGithubProjects() {
