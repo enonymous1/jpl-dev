@@ -73,16 +73,16 @@ def test_removed_pages_return_404(client, route):
 
 def test_projects_language_filters_are_derived_from_repo_data(client):
     resp = client.get('/')
-    # The filter group is empty in the static HTML: there is no "All"
-    # chip — the All view toggle above shows the full inventory, and
-    # unfiltered means no pill is active. The language chips themselves
-    # are built by JS from the loaded repos, so a language with no repos
-    # never gets a chip.
+    # The static HTML carries only the "All" chip; the language chips
+    # themselves are built by JS from the loaded repos, so a language
+    # with no repos never gets a chip. The JS-built All pill carries
+    # the total count, matching the default unfiltered load.
     assert b'id="language-filters"' in resp.data
     assert b'aria-label="Filter projects by language"' in resp.data
-    assert b'data-language-filter="All"' not in resp.data
+    assert b'data-language-filter="All"' in resp.data
     assert b'data-language-filter="Python"' not in resp.data
     assert b'data-language-filter="PowerShell"' not in resp.data
+    assert b"chip('All', repos.length, false)" in resp.data
     assert b"selectedLanguage = (lang === selectedLanguage) ? 'All' : lang" in resp.data
     assert b'renderLanguageFilters' in resp.data
     assert b'LANGUAGE_COLORS' in resp.data

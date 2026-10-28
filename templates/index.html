@@ -127,7 +127,9 @@
 
             <section id="vcard-projects" data-vcard-section="projects" role="tabpanel" hidden>
                 <h2 class="vcard-section-title">Projects</h2>
-                <div id="language-filters" class="language-filters" role="group" aria-label="Filter projects by language"></div>
+                <div id="language-filters" class="language-filters" role="group" aria-label="Filter projects by language">
+                    <button type="button" class="language-filter-btn active" data-language-filter="All" aria-pressed="true">All</button>
+                </div>
                 <div id="projects-grid" class="projects-content grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
                         <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
@@ -301,7 +303,12 @@ function renderLanguageFilters(repos) {
         const dot = showDot ? `<span class="lang-dot" style="background:${langColor(lang)}" aria-hidden="true"></span>` : '';
         return `<button type="button" class="language-filter-btn${active ? ' active' : ''}" data-language-filter="${escHtml(lang)}" aria-pressed="${active}">${dot}${escHtml(lang)} <span class="lang-count">${count}</span></button>`;
     };
-    container.innerHTML = langs.map(([lang, count]) => chip(lang, count, true)).join('');
+    // The All pill leads the row with the total count: the default load
+    // shows every project in every language, so the default state
+    // needs a pill that says so. Clicking it clears any language
+    // filter; the existing toggle logic already makes that a no-op
+    // when All is already selected.
+    container.innerHTML = chip('All', repos.length, false) + langs.map(([lang, count]) => chip(lang, count, true)).join('');
     container.querySelectorAll('[data-language-filter]').forEach(btn => {
         btn.addEventListener('click', () => {
             const lang = btn.getAttribute('data-language-filter');
