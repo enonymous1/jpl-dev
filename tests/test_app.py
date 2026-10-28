@@ -129,12 +129,20 @@ def test_sidebar_has_myspace_tooltip_and_social_row(client):
     assert '.vcard-small' not in css
 
 
-def test_projects_all_view_and_no_name_repeat(client):
+def test_projects_single_grid_with_expand_control(client):
     resp = client.get('/')
-    # All view: third toggle button + its own grid, alongside Recent/Featured.
-    assert b'id="allBtn"' in resp.data
-    assert b'id="all-projects"' in resp.data
-    assert b"toggleProjectsView('all')" in resp.data
+    # One grid showing the full inventory, no view toggle: the first
+    # 10 show, the expand control reveals the rest.
+    assert b'id="projects-grid"' in resp.data
+    assert b'id="projects-expand-btn"' in resp.data
+    assert b'PROJECTS_INITIAL_COUNT = 10' in resp.data
+    assert b'toggleProjectsView' not in resp.data
+    assert b'id="recentBtn"' not in resp.data
+    assert b'id="featuredBtn"' not in resp.data
+    assert b'id="allBtn"' not in resp.data
+    assert b'recent-projects' not in resp.data
+    assert b'featured-projects' not in resp.data
+    assert b'all-projects' not in resp.data
     # The About eyebrow repeated name + location; both already live in
     # the sidebar card, so the eyebrow is gone from the main card.
     assert b'Justin P. Lyons &mdash; Fredericksburg, VA' not in resp.data
@@ -144,12 +152,32 @@ def test_projects_all_view_and_no_name_repeat(client):
 
 def test_homepage_projects_come_from_github_not_a_catalog(client):
     resp = client.get('/')
-    assert b'recent-projects' in resp.data
-    assert b'featured-projects' in resp.data
+    assert b'projects-grid' in resp.data
     assert b'github.com/enonymous1?tab=repositories' in resp.data
     # No baked-in project routes remain on the homepage.
     assert b'gsa-mas-checklist' not in resp.data
     assert b'schedule-maker' not in resp.data
+
+
+def test_contact_section_has_map_and_mailto_form(client):
+    resp = client.get('/')
+    # Map + form, like the demo's Contact card, instead of a second
+    # copy of the sidebar's contact list. No phone or birthday fields:
+    # those were the demo's fictional data, not Justin's.
+    assert b'id="contact-form"' in resp.data
+    assert b'buildContactMailto' in resp.data
+    assert b'Open in Maps' in resp.data
+    assert b'maps.google.com/maps?q=Fredericksburg' in resp.data
+    assert b'Send Message' in resp.data
+    assert b'No contact form on purpose' not in resp.data
+    assert b'placeholder="Full name"' in resp.data
+    assert b'placeholder="Email address"' in resp.data
+    assert b'placeholder="Your Message"' in resp.data
+    # The contact list appears once, in the sidebar only.
+    assert resp.data.count(b'class="vcard-contact"') == 1
+    css = client.get('/static/css/vcard.css').data.decode()
+    assert '.contact-map' in css
+    assert '.contact-form' in css
 
 
 def test_homepage_links_to_retro_mode(client):

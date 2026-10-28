@@ -127,39 +127,36 @@
 
             <section id="vcard-projects" data-vcard-section="projects" role="tabpanel" hidden>
                 <h2 class="vcard-section-title">Projects</h2>
-                <div class="flex mb-3">
-                    <button id="recentBtn" class="project-tab-btn active" onclick="toggleProjectsView('recent')">Recent</button>
-                    <button id="featuredBtn" class="project-tab-btn" onclick="toggleProjectsView('featured')">Featured</button>
-                    <button id="allBtn" class="project-tab-btn" onclick="toggleProjectsView('all')" aria-label="Show all projects">All</button>
-                </div>
                 <div id="language-filters" class="language-filters" role="group" aria-label="Filter projects by language"></div>
-                <div id="recent-projects" class="projects-content grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div id="projects-grid" class="projects-content grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
                         <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
                     </div>
                 </div>
-                <div id="featured-projects" class="projects-content hidden grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
-                        <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
-                    </div>
-                </div>
-                <div id="all-projects" class="projects-content hidden grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
-                        <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
-                    </div>
+                <div class="projects-expand-wrap">
+                    <button type="button" id="projects-expand-btn" class="projects-expand-btn" aria-expanded="false" hidden></button>
                 </div>
                 <p class="text-sm mt-4"><a href="https://github.com/enonymous1?tab=repositories" target="_blank" rel="noopener noreferrer">See all repositories on GitHub &rarr;</a></p>
             </section>
 
             <section id="vcard-contact" data-vcard-section="contact" role="tabpanel" hidden>
                 <h2 class="vcard-section-title">Contact</h2>
-                <p class="text-sm mb-3" style="color:var(--text-secondary)">No contact form on purpose: on a static site a form would post nowhere. Email, GitHub, or LinkedIn are the real routes.</p>
-                <ul class="vcard-contact">
-                    <li><i class="bi bi-envelope"></i> <a href="mailto:justin@jpl-dev.com">justin@jpl-dev.com</a></li>
-                    <li><i class="bi bi-github"></i> <a href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer">github.com/enonymous1</a></li>
-                    <li><i class="bi bi-linkedin"></i> <a href="https://linkedin.com/in/justinplyons" target="_blank" rel="noopener noreferrer">linkedin.com/in/justinplyons</a></li>
-                    <li><i class="bi bi-geo-alt"></i> Fredericksburg, VA</li>
-                </ul>
+                <div class="contact-map">
+                    <iframe title="Map of Fredericksburg, Virginia" src="https://maps.google.com/maps?q=Fredericksburg%2C%20VA%2C%20USA&amp;t=&amp;z=11&amp;ie=UTF8&amp;iwloc=&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <a class="contact-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Fredericksburg%2C+VA%2C+USA" target="_blank" rel="noopener noreferrer"><i class="bi bi-box-arrow-up-right"></i> Open in Maps</a>
+                </div>
+                <h3 class="contact-form-heading">Contact Form</h3>
+                <form id="contact-form" class="contact-form" onsubmit="return sendContactEmail(event)">
+                    <div class="contact-form-row">
+                        <input id="contact-name" name="name" type="text" placeholder="Full name" required autocomplete="name">
+                        <input id="contact-email" name="email" type="email" placeholder="Email address" required autocomplete="email">
+                    </div>
+                    <textarea id="contact-message" name="message" placeholder="Your Message" rows="5" required></textarea>
+                    <div class="contact-form-footer">
+                        <p class="contact-form-note">Sending opens your email app with the message addressed to <a href="mailto:justin@jpl-dev.com">justin@jpl-dev.com</a> &mdash; nothing is stored on this site.</p>
+                        <button type="submit" class="contact-submit"><i class="bi bi-send"></i> Send Message</button>
+                    </div>
+                </form>
             </section>
 
             <div id="repo-modal" class="repo-modal" hidden>
@@ -196,7 +193,13 @@ function langColor(lang) {
 // Language filter state, shared by both views: selecting a language
 // filters Recent and Featured together, and switching views keeps it.
 let selectedLanguage = 'All';
-let projectLists = { recent: [], featured: [] };
+let projectLists = { all: [] };
+
+// How many projects show before the expand control appears. The
+// threshold is a count, not a view: it applies to the full list and
+// to any language-filtered list alike.
+const PROJECTS_INITIAL_COUNT = 10;
+let projectsExpanded = false;
 
 const ACCENT_COLORS = {
     primary: 'var(--primary-color)',
@@ -233,8 +236,7 @@ function renderRepoCard(repo, accentKey) {
 }
 
 async function loadGithubProjects() {
-    const recentEl   = document.getElementById('recent-projects');
-    const featuredEl = document.getElementById('featured-projects');
+    const gridEl = document.getElementById('projects-grid');
 
     // 1. Try sessionStorage (avoid re-fetching on back-navigation within session)
     let repos = null;
@@ -267,31 +269,17 @@ async function loadGithubProjects() {
             try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(repos)); } catch {}
         } catch {
             const errMsg = `<p class="col-span-full text-center py-4 text-sm" style="color:var(--text-secondary)"><i class="bi bi-exclamation-circle mr-1"></i>Could not load GitHub repositories.</p>`;
-            recentEl.innerHTML   = errMsg;
-            featuredEl.innerHTML = errMsg;
+            gridEl.innerHTML = errMsg;
             return;
         }
     }
 
     const HIDDEN   = new Set(['jpl-dev', 'enonymous1']);
     const active   = repos.filter(r => !r.fork && !r.archived && !HIDDEN.has(r.name));
-    // "Recent" = API order (sorted by last push); "Featured" = repos tagged
-    // with 'featured' topic, then by stars. Fallback: no repo currently
-    // carries the 'featured' topic, so without this the tab rendered
-    // "No repositories tagged 'featured' yet" on every visit. Tagged
-    // repos win when they exist; the showcase list only fills an empty tab.
-    const SHOWCASE = ['repo-sync', 'gas-auditor', 'photo-stitcher', 'voxel-portfolio', 'sms-toolkit', 'gsa-vendor-toolkit'];
-    let featured = active
-        .filter(r => (r.topics || []).includes('featured'))
-        .sort((a, b) => b.stargazers_count - a.stargazers_count);
-    if (!featured.length) {
-        featured = SHOWCASE.map(name => active.find(r => r.name === name)).filter(Boolean);
-    }
-    // Keep the full lists: with no language selected, renderProjects()
-    // shows the first 6 of each (the previous behaviour); with a language
-    // selected, it shows every match, so filtering can surface repos
-    // that never made the first 6 (Java, C#, HTML in the current data).
-    projectLists = { recent: [...active], featured, all: [...active] };
+    // One list, in API order (sorted by last push). The 'featured'
+    // topic still earns a card its star badge in renderRepoCard, but
+    // there are no separate Recent/Featured views anymore.
+    projectLists = { all: [...active] };
     renderLanguageFilters(active);
     renderProjects();
 }
@@ -318,6 +306,7 @@ function renderLanguageFilters(repos) {
         btn.addEventListener('click', () => {
             const lang = btn.getAttribute('data-language-filter');
             selectedLanguage = (lang === selectedLanguage) ? 'All' : lang;
+            projectsExpanded = false;
             container.querySelectorAll('[data-language-filter]').forEach(b => {
                 const isActive = b.getAttribute('data-language-filter') === selectedLanguage;
                 b.classList.toggle('active', isActive);
@@ -329,36 +318,32 @@ function renderLanguageFilters(repos) {
 }
 
 function renderProjects() {
-    const recentEl   = document.getElementById('recent-projects');
-    const featuredEl = document.getElementById('featured-projects');
-    const allEl      = document.getElementById('all-projects');
+    const gridEl = document.getElementById('projects-grid');
+    const expandBtn = document.getElementById('projects-expand-btn');
     const noRepos = (msg) => `<p class="col-span-full text-center py-4 text-sm" style="color:var(--text-secondary)">${msg}</p>`;
-    // Recent/Featured are 6-item slices with no language selected; All
-    // is never sliced — it is the full list, which is the point of it.
-    // With a language selected, every view shows all of its matches.
-    const matches = (list, unlimited) => {
-        const filtered = selectedLanguage === 'All'
-            ? list
-            : list.filter(r => (r.language || 'Other') === selectedLanguage);
-        // The 6-item slice applies only to the unfiltered Recent/Featured
-        // views. A selected language shows every match, and All is never
-        // sliced — otherwise filtered repos would hide behind the slice
-        // in the very view the filter is meant to surface them in.
-        if (selectedLanguage !== 'All' || unlimited) return filtered;
-        return filtered.slice(0, 6);
-    };
-    const recent   = matches(projectLists.recent, false);
-    const featured = matches(projectLists.featured, false);
-    const all      = matches(projectLists.all, true);
-    const empty = (view) => selectedLanguage === 'All'
-        ? `No ${view.toLowerCase()} repositories found.`
-        : `No ${escHtml(selectedLanguage)} repositories in ${view}. Try a different language, or check the other view.`;
-    recentEl.innerHTML   = recent.length   ? recent.map(r   => renderRepoCard(r, 'primary')).join('') : noRepos(empty('Recent'));
-    featuredEl.innerHTML = featured.length ? featured.map(r => renderRepoCard(r, 'info')).join('')    : noRepos(empty('Featured'));
-    if (allEl) {
-        allEl.innerHTML = all.length ? all.map(r => renderRepoCard(r, 'primary')).join('') : noRepos(empty('All'));
+    const filtered = selectedLanguage === 'All'
+        ? [...(projectLists.all || [])]
+        : (projectLists.all || []).filter(r => (r.language || 'Other') === selectedLanguage);
+    const shown = projectsExpanded ? filtered : filtered.slice(0, PROJECTS_INITIAL_COUNT);
+    const empty = selectedLanguage === 'All'
+        ? 'No repositories found.'
+        : `No ${escHtml(selectedLanguage)} repositories. Try a different language.`;
+    gridEl.innerHTML = shown.length ? shown.map(r => renderRepoCard(r, 'primary')).join('') : noRepos(empty);
+    if (filtered.length > PROJECTS_INITIAL_COUNT) {
+        expandBtn.hidden = false;
+        expandBtn.setAttribute('aria-expanded', String(projectsExpanded));
+        expandBtn.innerHTML = projectsExpanded
+            ? 'Show fewer <i class="bi bi-chevron-up"></i>'
+            : `Show all ${filtered.length} projects <i class="bi bi-chevron-down"></i>`;
+    } else {
+        expandBtn.hidden = true;
     }
 }
+
+document.getElementById('projects-expand-btn')?.addEventListener('click', () => {
+    projectsExpanded = !projectsExpanded;
+    renderProjects();
+});
 
 
 // ── Project preview modal ────────────────────────────────────────────────────
@@ -561,7 +546,7 @@ async function loadRepoReadme(repo, branch) {
 }
 
 function openRepoModal(name) {
-    const all = [...(projectLists.all || []), ...(projectLists.recent || []), ...(projectLists.featured || [])];
+    const all = [...(projectLists.all || [])];
     const repo = all.find(r => r.name === name);
     if (!repo) return;
     repoModalReturnFocus = document.activeElement;
@@ -640,12 +625,25 @@ document.addEventListener('keydown', (e) => {
 });
 
 
-function toggleProjectsView(view) {
-    // One toggle per view; the language filter is shared and untouched.
-    ['recent', 'featured', 'all'].forEach(v => {
-        document.getElementById(v + '-projects')?.classList.toggle('hidden', v !== view);
-        document.getElementById(v + 'Btn')?.classList.toggle('active', v === view);
-    });
+// Contact form: there is no server behind this static site, so the
+// form does not pretend a message was sent. It builds a mailto link
+// with the visitor's words and opens their own email app, addressed
+// to justin@jpl-dev.com, ready to send. buildContactMailto is kept
+// separate so the encoding is testable without a mail client.
+function buildContactMailto(name, email, message) {
+    const subject = `Portfolio contact from ${name}`;
+    const body = `${message}\n\n\u2014 ${name} (${email})`;
+    return `mailto:justin@jpl-dev.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function sendContactEmail(event) {
+    event.preventDefault();
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    if (!name || !email || !message) return false;
+    window.location.href = buildContactMailto(name, email, message);
+    return false;
 }
 
 document.addEventListener('DOMContentLoaded', function () {
