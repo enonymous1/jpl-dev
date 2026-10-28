@@ -29,7 +29,7 @@
     <header class="retro-header">
         <p class="retro-eyebrow">justinlyons.dev &mdash; retro mode</p>
         <h1>{{ about.name }}</h1>
-        <p>{{ about.title }} &middot; Fredericksburg, VA</p>
+        <p>Fredericksburg, VA</p>
         <p class="retro-note">A MySpace-style skin over the same portfolio data. The clean site is the default; this is the fun version. No autoplay music, no fake friends, no flashing.</p>
     </header>
 
@@ -49,7 +49,6 @@
                 <h2>{{ about.name }}</h2>
                 <div class="retro-box-body">
                     <img src="{{ url_for('static', filename=about.profile_image) }}" alt="Profile" class="retro-profile-img">
-                    <p><strong>{{ about.title }}</strong></p>
                     <p>
                         {% for badge in about.badges %}
                         <span class="retro-badge">{{ badge }}</span>

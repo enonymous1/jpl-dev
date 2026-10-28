@@ -83,17 +83,12 @@ body.vcard-page {
     font-size: 20px;
 }
 
-.vcard-title {
-    color: var(--text-secondary);
-    font-size: 14px;
-    margin: 0 0 10px;
-}
-
 .vcard-badges {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
     justify-content: center;
+    margin-top: 10px;
 }
 
 .vcard-divider {

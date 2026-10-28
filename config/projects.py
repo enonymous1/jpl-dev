@@ -18,7 +18,6 @@ from config.models import AboutMe, ToolGroup
 # ========================================================================
 ABOUT_ME = AboutMe(
     name='Justin P. Lyons',
-    title='IT Manager | Automation & Full-Stack Builder',
     bio=(
         'IT Manager with AS & BS in Computer Science. I build tools that automate '
         'repetitive work — pricing and vendor data, message and photo archives, '
@@ -31,7 +30,7 @@ ABOUT_ME = AboutMe(
     # does not hotlink an external avatar. If the GitHub avatar changes,
     # replace this file to match.
     profile_image='images/profile.jpg',
-    badges=['AS & BS in CS', 'Automation', 'Full-Stack'],
+    badges=['IT Manager', 'Automation Engineer', 'Full-Stack Developer'],
     highlights=[
         'Builds automation for real operations: store, contracting, and personal archives',
         'Ships tested, documented tools with CI — not just demos',

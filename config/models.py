@@ -34,7 +34,6 @@ class AboutMe:
     """Static profile data rendered on the homepage About Me widget."""
 
     name: str
-    title: str
     bio: str
     profile_image: str  # filename relative to static/images/
     badges: list[str] = field(default_factory=list)

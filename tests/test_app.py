@@ -93,6 +93,25 @@ def test_projects_language_filters_are_derived_from_repo_data(client):
     assert '.lang-dot' in css
 
 
+def test_sidebar_and_retro_use_role_pills_not_a_title_line(client):
+    resp = client.get('/')
+    assert b'class="vcard-title"' not in resp.data
+    assert b'IT Manager | Automation' not in resp.data
+    # Role pills, in order, in the sidebar; the first takes the primary
+    # badge style. The degree stays in the About bio, not in a pill.
+    assert b'>IT Manager</span>' in resp.data
+    assert b'>Automation Engineer</span>' in resp.data
+    assert b'>Full-Stack Developer</span>' in resp.data
+    assert b'>AS &amp; BS in CS</span>' not in resp.data
+    retro = client.get('/retro/')
+    assert retro.status_code == 200
+    assert b'IT Manager | Automation' not in retro.data
+    assert b'>IT Manager</span>' in retro.data
+    assert b'>Automation Engineer</span>' in retro.data
+    assert b'>Full-Stack Developer</span>' in retro.data
+    assert b'<p>Fredericksburg, VA</p>' in retro.data
+
+
 def test_projects_all_view_and_no_name_repeat(client):
     resp = client.get('/')
     # All view: third toggle button + its own grid, alongside Recent/Featured.

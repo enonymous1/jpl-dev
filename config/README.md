@@ -3,7 +3,7 @@
 ## `projects.py` — About-me data
 
 Holds only `ABOUT_ME`, the profile data rendered by the homepage and retro
-mode (name, title, bio, profile photo, badges, highlights, tool groups).
+mode (name, bio, profile photo, badges, highlights, tool groups).
 
 Project data used to live here as a baked-in catalog, along with
 `data_access.py` and the `ProjectData` models. That catalog, the
