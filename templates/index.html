@@ -41,7 +41,7 @@
 </head>
 <body class="vcard-page">
 <!-- Homepage is standalone on purpose: no global top nav. The sidebar
-     carries name, contact, projects, retro mode, and the theme toggle,
+     carries name, contact, retro mode, and the theme toggle,
      so the top bar was pure duplication. Other pages still use base.html
      and its nav. -->
 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -67,13 +67,19 @@
                 <li><i class="bi bi-geo-alt"></i> Fredericksburg, VA</li>
             </ul>
             <div class="vcard-sidebar-actions">
-                <button type="button" class="repo-btn repo-btn-primary" data-vcard-tab-link="projects">View Projects</button>
-                <a href="{{ url_for('retro') }}" class="repo-btn">Retro mode</a>
+                <span class="vcard-tooltip-wrap">
+                    <a href="{{ url_for('retro') }}" class="repo-btn" aria-label="View the retro skin: the same portfolio in a MySpace-style throwback look" aria-describedby="retro-tooltip">'My' Space</a>
+                    <span class="vcard-tooltip" id="retro-tooltip" role="tooltip">Same portfolio, same information &mdash; in a MySpace-style throwback skin. The clean site stays the default.</span>
+                </span>
                 <button id="theme-toggle" type="button" class="repo-btn" title="Toggle theme" aria-label="Toggle theme" aria-pressed="false">
                     <i class="bi bi-sun theme-icon-light"></i><i class="bi bi-moon theme-icon-dark hidden"></i> Theme
                 </button>
             </div>
-            <p class="vcard-small">Retro mode is the same portfolio in a MySpace-style skin. The clean site stays the default.</p>
+            <div class="vcard-social" aria-label="Social links">
+                <a href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="bi bi-github"></i></a>
+                <a href="https://linkedin.com/in/justinplyons" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                <a href="mailto:justin@jpl-dev.com" aria-label="Email"><i class="bi bi-envelope"></i></a>
+            </div>
         </aside>
 
         <!-- Main card: tabbed sections, no page reload, so the frozen

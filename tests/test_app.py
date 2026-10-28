@@ -86,9 +86,8 @@ def test_projects_language_filters_are_derived_from_repo_data(client):
     assert b"selectedLanguage = (lang === selectedLanguage) ? 'All' : lang" in resp.data
     assert b'renderLanguageFilters' in resp.data
     assert b'LANGUAGE_COLORS' in resp.data
-    import pathlib
 
-    css = pathlib.Path('static/css/vcard.css').read_text()
+    css = client.get('/static/css/vcard.css').data.decode()
     assert '.language-filter-btn' in css
     assert '.lang-dot' in css
 
@@ -110,6 +109,24 @@ def test_sidebar_and_retro_use_role_pills_not_a_title_line(client):
     assert b'>Automation Engineer</span>' in retro.data
     assert b'>Full-Stack Developer</span>' in retro.data
     assert b'<p>Fredericksburg, VA</p>' in retro.data
+
+
+def test_sidebar_has_myspace_tooltip_and_social_row(client):
+    resp = client.get('/')
+    assert b'View Projects' not in resp.data
+    assert b"'My' Space" in resp.data
+    assert b'id="retro-tooltip"' in resp.data
+    assert b'Same portfolio, same information' in resp.data
+    assert b'Retro mode is the same portfolio' not in resp.data
+    assert b'id="theme-toggle"' in resp.data
+    assert b'class="vcard-social"' in resp.data
+    assert b'aria-label="GitHub"' in resp.data
+    assert b'aria-label="LinkedIn"' in resp.data
+    assert b'aria-label="Email"' in resp.data
+    css = client.get('/static/css/vcard.css').data.decode()
+    assert '.vcard-tooltip' in css
+    assert '.vcard-social' in css
+    assert '.vcard-small' not in css
 
 
 def test_projects_all_view_and_no_name_repeat(client):
@@ -138,7 +155,7 @@ def test_homepage_projects_come_from_github_not_a_catalog(client):
 def test_homepage_links_to_retro_mode(client):
     resp = client.get('/')
     assert b'/retro/' in resp.data
-    assert b'Retro mode' in resp.data
+    assert b"'My' Space" in resp.data
 
 
 def test_retro_page_is_a_skin_not_a_second_portfolio(client):
@@ -157,6 +174,7 @@ def test_retro_page_is_a_skin_not_a_second_portfolio(client):
 
 
 def test_retro_grid_cannot_overflow_on_long_repo_names():
+
     import pathlib
 
     css = pathlib.Path('static/css/retro.css').read_text()
@@ -168,11 +186,12 @@ def test_retro_grid_cannot_overflow_on_long_repo_names():
 
 
 def test_profile_photo_is_a_local_image_not_the_silhouette():
-    import pathlib
 
     from config.projects import ABOUT_ME
 
     assert ABOUT_ME.profile_image == 'images/profile.jpg'
+    import pathlib
+
     photo = pathlib.Path('static') / ABOUT_ME.profile_image
     assert photo.exists()
     assert photo.read_bytes()[:3] == b'\xff\xd8\xff'  # JPEG magic bytes
@@ -188,9 +207,8 @@ def test_vcard_section_titles_repeat_the_active_tab(client):
     assert b'Featured Projects' not in resp.data
     # Poppins, the demo's font, loaded only on the homepage.
     assert b'family=Poppins' in resp.data
-    import pathlib
 
-    css = pathlib.Path('static/css/vcard.css').read_text()
+    css = client.get('/static/css/vcard.css').data.decode()
     assert '--vcard-radius: 20px' in css
     assert 'font-size: 36px' in css
     assert 'vcard-section-title::after' in css
@@ -248,9 +266,8 @@ def test_other_pages_keep_global_nav(client):
 
 
 def test_vcard_layout_is_stable_across_tabs(client):
-    import pathlib
 
-    css = pathlib.Path('static/css/vcard.css').read_text()
+    css = client.get('/static/css/vcard.css').data.decode()
     # Tabs are anchored top-right inside the card, and the layout reserves
     # scrollbar space + a minimum card height.
     assert 'scrollbar-gutter: stable' in css
@@ -270,11 +287,12 @@ def test_vcard_layout_is_stable_across_tabs(client):
 
 
 def test_retro_theme_toggle(client):
-    import pathlib
 
     resp = client.get('/retro/')
     assert b'id="retro-theme-toggle"' in resp.data
     assert b'jpl_retro_theme' in resp.data
+    import pathlib
+
     css = pathlib.Path('static/css/retro.css').read_text()
     assert '[data-theme="dark"]' in css
     assert '--retro-content-bg' in css
