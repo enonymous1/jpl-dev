@@ -92,6 +92,28 @@ def test_projects_language_filters_are_derived_from_repo_data(client):
     assert '.lang-dot' in css
 
 
+def test_avatar_easter_egg_quips_homepage_only(client):
+    resp = client.get('/')
+    assert b'id="avatar-easter-egg"' in resp.data
+    assert b'id="avatar-quip"' in resp.data
+    assert b'role="status"' in resp.data
+    for line in (
+        b"Hey. That's me.",
+        b'Yep, still me.',
+        b'The projects are in the next tab over.',
+        b'Okay, you found the clicky photo.',
+        b'Alright, you win. Go poke a repo instead.',
+    ):
+        assert line in resp.data
+    css = client.get('/static/css/vcard.css').data.decode()
+    assert '@keyframes avatar-spin' in css
+    assert '.vcard-quip' in css
+    assert 'prefers-reduced-motion' in css
+    # Retro keeps its plain photo: the easter egg is homepage-only.
+    retro = client.get('/retro/')
+    assert b'avatar-easter-egg' not in retro.data
+
+
 def test_sidebar_and_retro_use_role_pills_not_a_title_line(client):
     resp = client.get('/')
     assert b'class="vcard-title"' not in resp.data

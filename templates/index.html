@@ -28,7 +28,7 @@
          browsers/Pages served the stale copy, so the new title size
          and filter pills did not appear. Bump the version whenever
          vcard.css changes. -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261027">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028">
     <script>
         (function() {
             try {
@@ -49,9 +49,12 @@
         <!-- Sidebar: always-visible profile and contact, vCard-style. -->
         <aside class="vcard-sidebar">
             <div class="vcard-profile">
-                <img src="{{ url_for('static', filename=about.profile_image) }}"
-                     alt="Profile photo of Justin P. Lyons"
-                     class="vcard-avatar">
+                <button type="button" class="vcard-avatar-btn" id="avatar-easter-egg">
+                    <img src="{{ url_for('static', filename=about.profile_image) }}"
+                         alt="Profile photo of Justin P. Lyons"
+                         class="vcard-avatar">
+                </button>
+                <p class="vcard-quip" id="avatar-quip" role="status"></p>
                 <h2>{{ about.name }}</h2>
                 <div class="vcard-badges">
                     {% for badge in about.badges %}
@@ -682,6 +685,42 @@ document.querySelectorAll('[data-vcard-tab-link]').forEach(b => {
 (function () {
     const hash = (window.location.hash || '').replace('#', '');
     if (['about', 'projects', 'contact'].includes(hash)) activateVcardTab(hash);
+})();
+</script>
+<script>
+// Avatar easter egg: clicking the photo cycles Warcraft-style quips,
+// escalating to a spin on the last one. Idle for 5s and it resets.
+(function () {
+    const btn = document.getElementById('avatar-easter-egg');
+    const quip = document.getElementById('avatar-quip');
+    if (!btn || !quip) return;
+    const lines = [
+        "Hey. That's me.",
+        "Yep, still me.",
+        "The projects are in the next tab over.",
+        "Okay, you found the clicky photo.",
+        "Alright, you win. Go poke a repo instead."
+    ];
+    let count = 0;
+    let timer = null;
+    btn.addEventListener('click', () => {
+        count = (count % lines.length) + 1;
+        quip.textContent = lines[count - 1];
+        quip.classList.add('is-visible');
+        if (count === lines.length) {
+            btn.classList.remove('is-spinning');
+            void btn.offsetWidth;
+            btn.classList.add('is-spinning');
+        }
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            count = 0;
+            quip.classList.remove('is-visible');
+        }, 5000);
+    });
+    btn.addEventListener('animationend', () => {
+        btn.classList.remove('is-spinning');
+    });
 })();
 </script>
 </body>

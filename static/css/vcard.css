@@ -83,6 +83,70 @@ body.vcard-page {
     font-size: 20px;
 }
 
+/* Avatar easter egg: the photo is a button, so the quips work from a
+   keyboard too (Enter/Space). The spin is skipped under
+   prefers-reduced-motion; the quip line still shows. */
+.vcard-avatar-btn {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 6px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    border-radius: var(--vcard-radius);
+}
+
+.vcard-avatar-btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 3px;
+}
+
+.vcard-avatar-btn .vcard-avatar {
+    margin: 0;
+}
+
+@keyframes avatar-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.vcard-avatar-btn.is-spinning .vcard-avatar {
+    animation: avatar-spin 0.6s ease;
+}
+
+/* The quip line always reserves its space, so the bubble appearing
+   never shifts the name, badges, or anything below it. */
+.vcard-quip {
+    min-height: 1.4em;
+    margin: 0 0 6px;
+    font-size: 13px;
+    line-height: 1.4;
+    font-style: italic;
+    color: var(--text-secondary);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.vcard-quip.is-visible {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vcard-avatar-btn.is-spinning .vcard-avatar {
+        animation: none;
+    }
+
+    .vcard-quip {
+        transition: none;
+    }
+}
+
 .vcard-badges {
     display: flex;
     flex-wrap: wrap;
