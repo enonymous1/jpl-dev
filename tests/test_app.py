@@ -240,6 +240,9 @@ def test_about_build_cards_and_tool_labels(client):
     assert b'bi bi-pc-display' in resp.data
     assert b'bi bi-globe' in resp.data
     assert b'bi bi-diagram-3' in resp.data
+    assert resp.data.count(b'class="build-card-header"') == 4
+    assert resp.data.count(b'badge-theme build-card-link') == 5
+    assert b'GSA pricing toolkits</span>' in resp.data
     assert b'replace repetitive manual work' in resp.data
     assert b'photos, messages, and video' in resp.data
     assert b'Minecraft-style voxel landing page' in resp.data
