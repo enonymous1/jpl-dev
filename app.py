@@ -25,6 +25,16 @@ from flask_frozen import Freezer
 
 from config.blog import load_posts
 from config.projects import ABOUT_ME, GLOSSARY
+from config.resume import (
+    RESUME_CERTIFICATIONS,
+    RESUME_EDUCATION,
+    RESUME_HEADLINE,
+    RESUME_JOBS,
+    RESUME_LANGUAGES,
+    RESUME_LOCATION,
+    RESUME_SUMMARY,
+    RESUME_TOP_SKILLS,
+)
 
 SITE_URL = os.environ.get('SITE_URL', 'https://justinlyons.dev').rstrip('/')
 
@@ -86,6 +96,14 @@ def create_app():
                 for term, entry in GLOSSARY.items()
             },
             posts=load_posts(),
+            resume_headline=RESUME_HEADLINE,
+            resume_location=RESUME_LOCATION,
+            resume_summary=RESUME_SUMMARY,
+            resume_jobs=RESUME_JOBS,
+            resume_education=RESUME_EDUCATION,
+            resume_certifications=RESUME_CERTIFICATIONS,
+            resume_languages=RESUME_LANGUAGES,
+            resume_top_skills=RESUME_TOP_SKILLS,
         )
 
     @application.route('/blog/<slug>/')

@@ -189,6 +189,40 @@ def test_avatar_quips_script_is_external_and_shared(client):
     assert b'avatar-easter-egg.js' in post.data
 
 
+def test_resume_tab_renders_profile_data(client):
+    resp = client.get('/')
+    assert resp.status_code == 200
+    assert b'data-vcard-tab="resume"' in resp.data
+    assert b'data-vcard-section="resume"' in resp.data
+    assert b'Systems Automation Specialist' in resp.data
+    assert b'Millennium Partners' in resp.data
+    assert b'July 2024' in resp.data
+    assert b'Full Sail University' in resp.data
+    assert b'Agile Foundations' in resp.data
+    assert b'IT Infrastructure Management' in resp.data
+    assert b'id="resume-print-btn"' in resp.data
+    # The blog post pages share the sidebar, not the resume tab.
+    post = client.get('/blog/interesting-links/')
+    assert b'data-vcard-section="resume"' not in post.data
+
+
+def test_resume_omits_private_contact_details(client):
+    # The LinkedIn PDF carries a mobile number and a Gmail address; the
+    # public site publishes neither.
+    resp = client.get('/')
+    assert b'322-7999' not in resp.data
+    assert b'justinplyons@gmail.com' not in resp.data
+
+
+def test_resume_data_is_complete():
+    from config.resume import RESUME_EDUCATION, RESUME_JOBS
+
+    assert RESUME_JOBS
+    assert RESUME_EDUCATION
+    for job in RESUME_JOBS:
+        assert job.title and job.employer and job.start and job.end
+
+
 def test_blog_tab_post_page_and_feed(client):
     resp = client.get('/')
     assert b'data-vcard-tab="blog"' in resp.data

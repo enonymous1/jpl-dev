@@ -1081,3 +1081,84 @@ html[data-theme="dark"] .contact-map iframe {
         grid-template-columns: 1fr;
     }
 }
+
+/* Resume tab: plain, readable, print-friendly. */
+.resume-headline {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.resume-location {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.resume-print-btn {
+    margin-bottom: 16px;
+}
+
+.resume-heading {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 20px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.resume-job {
+    margin-bottom: 16px;
+}
+
+.resume-job-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.resume-job-meta {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.resume-bullets {
+    font-size: 14px;
+    padding-left: 20px;
+    margin: 0 0 8px;
+}
+
+.resume-bullets li {
+    margin-bottom: 4px;
+}
+
+@media print {
+    .vcard-sidebar,
+    .vcard-tabs,
+    .resume-print-btn {
+        display: none !important;
+    }
+
+    body.vcard-page {
+        background: #ffffff;
+    }
+
+    .vcard-layout {
+        display: block;
+    }
+
+    .vcard-main {
+        background: #ffffff;
+        color: #111111;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        min-height: 0;
+    }
+
+    .vcard-main a {
+        color: #111111;
+        text-decoration: none;
+    }
+}

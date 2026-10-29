@@ -29,7 +29,7 @@
          and filter pills did not appear. Bump the version whenever
          vcard.css changes. -->
     <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-5">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-6">
     <script>
         (function() {
             try {
@@ -56,6 +56,7 @@
             <nav class="vcard-tabs" role="tablist" aria-label="Portfolio sections">
                 <button type="button" role="tab" aria-selected="true" data-vcard-tab="about">About</button>
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="projects">Projects</button>
+                <button type="button" role="tab" aria-selected="false" data-vcard-tab="resume">Resume</button>
                 {% if posts %}
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="blog">Blog</button>
                 {% endif %}
@@ -111,6 +112,55 @@
                     <button type="button" id="projects-expand-btn" class="projects-expand-btn" aria-expanded="false" hidden></button>
                 </div>
                 <p class="text-sm mt-4"><a href="https://github.com/enonymous1?tab=repositories" target="_blank" rel="noopener noreferrer">See all repositories on GitHub &rarr;</a></p>
+            </section>
+
+            <section id="vcard-resume" data-vcard-section="resume" role="tabpanel" hidden>
+                <h2 class="vcard-section-title">Resume</h2>
+                <p class="resume-headline">{{ resume_headline }}</p>
+                <p class="resume-location">{{ resume_location }}</p>
+                <button type="button" id="resume-print-btn" class="repo-btn resume-print-btn">Print / Save as PDF</button>
+                <h3 class="resume-heading">Summary</h3>
+                {% for paragraph in resume_summary %}
+                <p class="text-sm mb-3">{{ paragraph }}</p>
+                {% endfor %}
+                <h3 class="resume-heading">Experience</h3>
+                {% for job in resume_jobs %}
+                <div class="resume-job">
+                    <h4 class="resume-job-title">{{ job.title }}</h4>
+                    <p class="resume-job-meta">{{ job.employer }}{% if job.location %} &middot; {{ job.location }}{% endif %} &middot; {{ job.start }} &ndash; {{ job.end }}</p>
+                    {% if job.description %}
+                    <p class="text-sm mb-2">{{ job.description }}</p>
+                    {% endif %}
+                    {% if job.bullets %}
+                    <ul class="resume-bullets">
+                        {% for bullet in job.bullets %}
+                        <li>{{ bullet }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <h3 class="resume-heading">Education</h3>
+                {% for entry in resume_education %}
+                <div class="resume-job">
+                    <h4 class="resume-job-title">{{ entry.degree }}</h4>
+                    <p class="resume-job-meta">{{ entry.school }} &middot; {{ entry.date }}</p>
+                </div>
+                {% endfor %}
+                <h3 class="resume-heading">Certifications</h3>
+                <ul class="resume-bullets">
+                    {% for cert in resume_certifications %}
+                    <li>{{ cert }}</li>
+                    {% endfor %}
+                </ul>
+                <h3 class="resume-heading">Top Skills</h3>
+                <p class="mb-3">
+                    {% for skill in resume_top_skills %}
+                    <span class="badge-theme mr-1">{{ skill }}</span>
+                    {% endfor %}
+                </p>
+                <h3 class="resume-heading">Languages</h3>
+                <p class="text-sm">{{ resume_languages | join(', ') }}</p>
             </section>
 
             <section id="vcard-contact" data-vcard-section="contact" role="tabpanel" hidden>
@@ -351,6 +401,7 @@ function renderProjects() {
     }
 }
 
+document.getElementById('resume-print-btn')?.addEventListener('click', () => window.print());
 document.getElementById('projects-expand-btn')?.addEventListener('click', () => {
     projectsExpanded = !projectsExpanded;
     renderProjects();
@@ -733,7 +784,7 @@ document.querySelectorAll('[data-vcard-tab-link]').forEach(b => {
 });
 (function () {
     const hash = (window.location.hash || '').replace('#', '');
-    if (['about', 'projects', 'contact', 'blog'].includes(hash)) activateVcardTab(hash);
+    if (['about', 'projects', 'resume', 'contact', 'blog'].includes(hash)) activateVcardTab(hash);
 })();
 </script>
 <script src="{{ url_for('static', filename='avatar-easter-egg.js') }}"></script>
