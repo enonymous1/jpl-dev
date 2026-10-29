@@ -28,7 +28,7 @@
          browsers/Pages served the stale copy, so the new title size
          and filter pills did not appear. Bump the version whenever
          vcard.css changes. -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-2">
     <script>
         (function() {
             try {
@@ -667,7 +667,15 @@ document.addEventListener('DOMContentLoaded', function () {
 function activateVcardTab(name) {
     const sections = document.querySelectorAll('[data-vcard-section]');
     const tabs = document.querySelectorAll('[data-vcard-tab]');
-    sections.forEach(s => { s.hidden = s.getAttribute('data-vcard-section') !== name; });
+    sections.forEach(s => {
+        const show = s.getAttribute('data-vcard-section') === name;
+        s.hidden = !show;
+        if (show) {
+            s.classList.remove('vcard-section-enter');
+            void s.offsetWidth;
+            s.classList.add('vcard-section-enter');
+        }
+    });
     tabs.forEach(b => { b.setAttribute('aria-selected', String(b.getAttribute('data-vcard-tab') === name)); });
     if (['about', 'projects', 'contact'].includes(name)) {
         history.replaceState(null, '', '#' + name);

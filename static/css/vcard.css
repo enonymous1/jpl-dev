@@ -327,6 +327,7 @@ body.vcard-page {
     padding: 6px 10px;
     cursor: pointer;
     border-radius: 10px;
+    transition: color 0.2s ease;
 }
 
 .vcard-tabs button:hover {
@@ -335,6 +336,33 @@ body.vcard-page {
 
 .vcard-tabs button[aria-selected="true"] {
     color: var(--primary-color);
+}
+
+/* Tab transitions: the outgoing section swaps instantly (it is
+   display:none via hidden, and no transition can run across a
+   display change), so the incoming section fades in while rising
+   8px. JS re-triggers the animation on every switch. */
+@keyframes vcard-section-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.vcard-section-enter {
+    animation: vcard-section-in 0.25s ease;
+}
+
+/* After the rule above: at equal specificity the later rule wins,
+   so the reduced-motion override must sit below it to take effect. */
+@media (prefers-reduced-motion: reduce) {
+    .vcard-section-enter {
+        animation: none;
+    }
 }
 
 @media (max-width: 800px) {

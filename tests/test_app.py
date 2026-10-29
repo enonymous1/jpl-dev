@@ -92,6 +92,15 @@ def test_projects_language_filters_are_derived_from_repo_data(client):
     assert '.lang-dot' in css
 
 
+def test_vcard_tab_sections_animate_on_switch(client):
+    resp = client.get('/')
+    assert b'vcard-section-enter' in resp.data
+    assert b'void s.offsetWidth' in resp.data
+    css = client.get('/static/css/vcard.css').data.decode()
+    assert '@keyframes vcard-section-in' in css
+    assert '.vcard-section-enter' in css
+
+
 def test_avatar_easter_egg_quips_homepage_only(client):
     resp = client.get('/')
     assert b'id="avatar-easter-egg"' in resp.data
