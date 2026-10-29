@@ -29,7 +29,7 @@
          and filter pills did not appear. Bump the version whenever
          vcard.css changes. -->
     <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-6">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-7">
     <script>
         (function() {
             try {
@@ -66,7 +66,6 @@
             <section id="vcard-about" data-vcard-section="about" role="tabpanel">
                 <h2 class="vcard-section-title">About Me</h2>
                 <h1 class="text-3xl font-bold mb-2">I build tools that automate repetitive work.</h1>
-                <p class="text-base mb-4" style="color:var(--text-secondary)">IT manager with AS &amp; BS in Computer Science. Pricing and vendor data, message and photo archives, video and market-data pipelines &mdash; shipped as tested, documented tools, not demos.</p>
                 <p class="text-sm mb-3">{{ about.bio }}</p>
                 {% if about.highlights %}
                 <ul class="space-y-1 list-none p-0 m-0 mb-4">
@@ -78,17 +77,29 @@
                 </ul>
                 {% endif %}
                 <h2>What I Build</h2>
-                <ul class="space-y-2 list-none p-0 m-0 text-sm mb-4">
-                    <li><strong>Automation &amp; data:</strong> <a href="https://github.com/enonymous1/repo-sync" target="_blank" rel="noopener noreferrer">repo-sync</a>, <a href="https://github.com/enonymous1/gas-auditor" target="_blank" rel="noopener noreferrer">gas-auditor</a>, GSA pricing toolkits</li>
-                    <li><strong>Desktop tools:</strong> <a href="https://github.com/enonymous1/photo-stitcher" target="_blank" rel="noopener noreferrer">photo-stitcher</a>, <a href="https://github.com/enonymous1/sms-toolkit" target="_blank" rel="noopener noreferrer">sms-toolkit</a>, Wyze Video Joiner</li>
-                    <li><strong>Web:</strong> this site, voxel-portfolio</li>
-                    <li><strong>Data pipelines:</strong> <a href="https://github.com/enonymous1/kalshi-recorder" target="_blank" rel="noopener noreferrer">kalshi-recorder</a> (market-data capture)</li>
-                </ul>
+                <div class="build-cards">
+                    <article class="build-card">
+                        <h3 class="build-card-title">Automation &amp; data</h3>
+                        <p><a href="https://github.com/enonymous1/repo-sync" target="_blank" rel="noopener noreferrer">repo-sync</a>, <a href="https://github.com/enonymous1/gas-auditor" target="_blank" rel="noopener noreferrer">gas-auditor</a>, GSA pricing toolkits</p>
+                    </article>
+                    <article class="build-card">
+                        <h3 class="build-card-title">Desktop tools</h3>
+                        <p><a href="https://github.com/enonymous1/photo-stitcher" target="_blank" rel="noopener noreferrer">photo-stitcher</a>, <a href="https://github.com/enonymous1/sms-toolkit" target="_blank" rel="noopener noreferrer">sms-toolkit</a>, Wyze Video Joiner</p>
+                    </article>
+                    <article class="build-card">
+                        <h3 class="build-card-title">Web</h3>
+                        <p>this site, voxel-portfolio</p>
+                    </article>
+                    <article class="build-card">
+                        <h3 class="build-card-title">Data pipelines</h3>
+                        <p><a href="https://github.com/enonymous1/kalshi-recorder" target="_blank" rel="noopener noreferrer">kalshi-recorder</a> (market-data capture)</p>
+                    </article>
+                </div>
                 <h2>Tools &amp; Tech</h2>
                 <p class="glossary-hint">Tap a technology for a quick definition.</p>
                 {% for group in about.tool_groups %}
                 <div class="mb-2 leading-relaxed">
-                    <small class="font-semibold mr-1" style="font-size:0.7rem;color:var(--text-secondary)">
+                    <small class="font-semibold mr-1" style="font-size:0.85rem;color:var(--text-color)">
                         <i class="bi {{ group.icon }} mr-1"></i>{{ group.label }}:
                     </small>
                     {% for tool in group.tools %}

@@ -1162,3 +1162,37 @@ html[data-theme="dark"] .contact-map iframe {
         text-decoration: none;
     }
 }
+
+/* What I Build cards: the four list items as a 2x2 grid of cards,
+   same card background and border as the project cards. */
+.build-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.build-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 16px;
+}
+
+.build-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.build-card p {
+    font-size: 14px;
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+    .build-cards {
+        grid-template-columns: 1fr;
+    }
+}

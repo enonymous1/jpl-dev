@@ -225,6 +225,23 @@ def test_resume_data_is_complete():
         assert job.title and job.employer and job.start and job.end
 
 
+def test_about_build_cards_and_tool_labels(client):
+    resp = client.get('/')
+    assert resp.status_code == 200
+    # The repetitive intro paragraph is gone; the hero line and bio stay.
+    assert b'shipped as tested, documented tools, not demos' not in resp.data
+    assert b'I build tools that automate repetitive work.' in resp.data
+    assert b'What I Build' in resp.data
+    assert resp.data.count(b'class="build-card"') == 4
+    assert b'Automation &amp; data' in resp.data
+    assert b'Desktop tools' in resp.data
+    assert b'Data pipelines' in resp.data
+    assert b'href="https://github.com/enonymous1/repo-sync"' in resp.data
+    assert b'href="https://github.com/enonymous1/kalshi-recorder"' in resp.data
+    # Tool-group labels are larger and full-strength text color.
+    assert b'font-size:0.85rem;color:var(--text-color)' in resp.data
+
+
 def test_blog_tab_post_page_and_feed(client):
     resp = client.get('/')
     assert b'data-vcard-tab="blog"' in resp.data
