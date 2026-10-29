@@ -27,6 +27,15 @@ logger = logging.getLogger(__name__)
 SITE_URL = os.environ.get('SITE_URL', 'https://justinlyons.dev').rstrip('/')
 
 
+@freezer.register_generator
+def blog_post():
+    """Yield one frozen URL per blog post for the /blog/<slug>/ route."""
+    from config.blog import load_posts
+
+    for post in load_posts():
+        yield {'slug': post.slug}
+
+
 def _warn_about_dynamic_routes():
     """
     Inspect the Flask URL map for parameterized routes.
@@ -61,6 +70,11 @@ def _static_routes():
         if rule.endpoint == 'static' or '<' in rule.rule:
             continue
         routes.append(rule.rule)
+    # Parameterized blog routes are frozen via the generator above but
+    # skipped by the loop, so add their URLs for the sitemap.
+    from config.blog import load_posts
+
+    routes.extend(post.url_path for post in load_posts())
     return sorted(set(routes))
 
 

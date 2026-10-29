@@ -101,6 +101,85 @@ def test_vcard_tab_sections_animate_on_switch(client):
     assert '.vcard-section-enter' in css
 
 
+def test_blog_post_parsing_sorting_and_scaffold(tmp_path):
+    from datetime import date
+
+    from config.blog import build_post_source, load_posts, slugify
+
+    assert slugify('Hello, World! 2026') == 'hello-world-2026'
+    assert slugify('---') == 'post'
+    source = build_post_source('My Title', date(2026, 10, 28), 'my-title')
+    assert 'title: My Title' in source
+    assert 'slug: my-title' in source
+    assert 'date: 2026-10-28' in source
+
+    (tmp_path / 'a.md').write_text(
+        '---\ntitle: Newer\nslug: newer\ndate: 2026-01-02\nsummary: New.\n---\n\nBody **bold**.\n',
+        encoding='utf-8',
+    )
+    (tmp_path / 'b.md').write_text(
+        '---\ntitle: Pinned Older\nslug: pinned-older\ndate: 2025-12-01\n'
+        'summary: P.\npinned: true\ntags: [bookmarks, links]\n---\n\nPinned body.\n',
+        encoding='utf-8',
+    )
+    posts = load_posts(tmp_path)
+    assert [post.slug for post in posts] == ['pinned-older', 'newer']
+    assert posts[0].tags == ['bookmarks', 'links']
+    assert posts[1].date_label == 'January 2, 2026'
+    assert '<strong>bold</strong>' in posts[1].html
+    assert posts[1].url_path == '/blog/newer/'
+
+
+def test_blog_loader_rejects_bad_posts(tmp_path):
+    from config.blog import load_posts
+
+    cases = {
+        'duplicate': [
+            '---\ntitle: A\nslug: same\ndate: 2026-01-01\nsummary: A.\n---\n\nBody.\n',
+            '---\ntitle: B\nslug: same\ndate: 2026-01-02\nsummary: B.\n---\n\nBody.\n',
+        ],
+        'bad-date': ['---\ntitle: A\nslug: a\ndate: 2026-13-01\nsummary: A.\n---\n\nBody.\n'],
+        'unknown-key': [
+            '---\ntitle: A\nslug: a\ndate: 2026-01-01\nsummary: A.\nsummery: x\n---\n\nBody.\n'
+        ],
+        'empty-body': ['---\ntitle: A\nslug: a\ndate: 2026-01-01\nsummary: A.\n---\n'],
+        'missing-summary': ['---\ntitle: A\nslug: a\ndate: 2026-01-01\n---\n\nBody.\n'],
+    }
+    for name, texts in cases.items():
+        directory = tmp_path / name
+        directory.mkdir()
+        for i, text in enumerate(texts):
+            (directory / f'{i}.md').write_text(text, encoding='utf-8')
+        with pytest.raises(ValueError):
+            load_posts(directory)
+
+
+def test_blog_tab_post_page_and_feed(client):
+    resp = client.get('/')
+    assert b'data-vcard-tab="blog"' in resp.data
+    assert b'Interesting Links' in resp.data
+    assert b'Pinned' in resp.data
+    post = client.get('/blog/interesting-links/')
+    assert post.status_code == 200
+    assert b'Interesting Links' in post.data
+    assert b'A running list of links' in post.data
+    assert client.get('/blog/no-such-post/').status_code == 404
+    feed = client.get('/feed.xml')
+    assert feed.status_code == 200
+    assert feed.headers['Content-Type'].startswith('application/rss+xml')
+    assert b'<rss' in feed.data
+    assert b'https://justinlyons.dev/blog/interesting-links/' in feed.data
+    retro = client.get('/retro/')
+    assert b'data-vcard-tab="blog"' not in retro.data
+
+
+def test_blog_tab_hidden_with_no_posts(client, tmp_path, monkeypatch):
+    monkeypatch.setattr('config.blog.POSTS_DIR', tmp_path)
+    resp = client.get('/')
+    assert b'data-vcard-tab="blog"' not in resp.data
+    assert b'vcard-blog' not in resp.data
+
+
 def test_glossary_covers_every_tool_pill():
     from config.projects import ABOUT_ME, GLOSSARY
 

@@ -28,7 +28,8 @@
          browsers/Pages served the stale copy, so the new title size
          and filter pills did not appear. Bump the version whenever
          vcard.css changes. -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-3">
+    <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-4">
     <script>
         (function() {
             try {
@@ -91,6 +92,9 @@
             <nav class="vcard-tabs" role="tablist" aria-label="Portfolio sections">
                 <button type="button" role="tab" aria-selected="true" data-vcard-tab="about">About</button>
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="projects">Projects</button>
+                {% if posts %}
+                <button type="button" role="tab" aria-selected="false" data-vcard-tab="blog">Blog</button>
+                {% endif %}
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="contact">Contact</button>
             </nav>
 
@@ -164,6 +168,26 @@
                     </div>
                 </form>
             </section>
+
+            {% if posts %}
+            <section id="vcard-blog" data-vcard-section="blog" role="tabpanel" hidden>
+                <h2 class="vcard-section-title">Blog</h2>
+                <p class="blog-feed"><a href="{{ url_for('feed') }}"><i class="bi bi-rss"></i> RSS feed</a></p>
+                <ul class="blog-list">
+                    {% for post in posts %}
+                    <li class="blog-item">
+                        <a class="blog-item-title" href="{{ url_for('blog_post', slug=post.slug) }}">{{ post.title }}</a>
+                        {% if post.pinned %}<span class="blog-pinned">Pinned</span>{% endif %}
+                        <span class="blog-date">{{ post.date_label }}</span>
+                        <p class="blog-summary">{{ post.summary }}</p>
+                        {% if post.tags %}
+                        <p class="blog-tags">{% for tag in post.tags %}<span class="badge-theme">{{ tag }}</span>{% endfor %}</p>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+            {% endif %}
 
             <div id="repo-modal" class="repo-modal" hidden>
                 <div class="repo-modal-backdrop" data-modal-close></div>
@@ -715,6 +739,9 @@ document.addEventListener('DOMContentLoaded', function () {
 // via #about, #projects, #contact so a link can open a specific section
 // on the frozen static site.
 function activateVcardTab(name) {
+    // Unknown names (e.g. #blog with no posts yet, so no Blog section
+    // exists) leave the current tab alone instead of hiding everything.
+    if (!document.querySelector('[data-vcard-section="' + name + '"]')) return;
     const sections = document.querySelectorAll('[data-vcard-section]');
     const tabs = document.querySelectorAll('[data-vcard-tab]');
     sections.forEach(s => {
@@ -727,7 +754,7 @@ function activateVcardTab(name) {
         }
     });
     tabs.forEach(b => { b.setAttribute('aria-selected', String(b.getAttribute('data-vcard-tab') === name)); });
-    if (['about', 'projects', 'contact'].includes(name)) {
+    if (['about', 'projects', 'contact', 'blog'].includes(name)) {
         history.replaceState(null, '', '#' + name);
     }
 }
@@ -742,7 +769,7 @@ document.querySelectorAll('[data-vcard-tab-link]').forEach(b => {
 });
 (function () {
     const hash = (window.location.hash || '').replace('#', '');
-    if (['about', 'projects', 'contact'].includes(hash)) activateVcardTab(hash);
+    if (['about', 'projects', 'contact', 'blog'].includes(hash)) activateVcardTab(hash);
 })();
 </script>
 <script>

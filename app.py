@@ -17,11 +17,16 @@ Date: July 2025
 """
 
 import os
+from datetime import datetime, timezone
+from xml.sax.saxutils import escape as xml_escape
 
-from flask import Flask, render_template
+from flask import Flask, Response, abort, render_template
 from flask_frozen import Freezer
 
+from config.blog import load_posts
 from config.projects import ABOUT_ME, GLOSSARY
+
+SITE_URL = os.environ.get('SITE_URL', 'https://justinlyons.dev').rstrip('/')
 
 
 def create_app():
@@ -80,7 +85,43 @@ def create_app():
                 term: {'definition': entry.definition, 'url': entry.url}
                 for term, entry in GLOSSARY.items()
             },
+            posts=load_posts(),
         )
+
+    @application.route('/blog/<slug>/')
+    def blog_post(slug):
+        """Render one blog post. Unknown slugs 404 like any other route."""
+        for post in load_posts():
+            if post.slug == slug:
+                return render_template('blog_post.html', post=post)
+        abort(404)
+
+    @application.route('/feed.xml')
+    def feed():
+        """RSS feed for the blog, generated from the same post data."""
+        items = ''
+        for post in load_posts():
+            pub_date = datetime.combine(post.date, datetime.min.time(), tzinfo=timezone.utc)
+            items += (
+                '  <item>\n'
+                f'    <title>{xml_escape(post.title)}</title>\n'
+                f'    <link>{SITE_URL}{post.url_path}</link>\n'
+                f'    <guid>{SITE_URL}{post.url_path}</guid>\n'
+                f'    <pubDate>{pub_date.strftime("%a, %d %b %Y %H:%M:%S +0000")}</pubDate>\n'
+                f'    <description>{xml_escape(post.summary)}</description>\n'
+                '  </item>\n'
+            )
+        xml = (
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<rss version="2.0">\n'
+            '<channel>\n'
+            '  <title>Justin P. Lyons — Blog</title>\n'
+            f'  <link>{SITE_URL}/</link>\n'
+            '  <description>Posts by Justin P. Lyons.</description>\n'
+            f'{items}</channel>\n'
+            '</rss>\n'
+        )
+        return Response(xml, mimetype='application/rss+xml')
 
     @application.route('/retro/')
     def retro():
