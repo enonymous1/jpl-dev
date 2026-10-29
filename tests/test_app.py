@@ -225,6 +225,23 @@ def test_resume_data_is_complete():
         assert job.title and job.employer and job.start and job.end
 
 
+def test_projects_search_and_sort_controls(client):
+    resp = client.get('/')
+    assert resp.status_code == 200
+    assert b'id="projects-search"' in resp.data
+    assert b'Search projects...' in resp.data
+    assert b'id="projects-sort"' in resp.data
+    assert b'value="updated"' in resp.data
+    assert b'value="name"' in resp.data
+    assert b'value="stars"' in resp.data
+    # Retro renders its own server-side list: no client-side controls.
+    retro = client.get('/retro/')
+    assert b'id="projects-search"' not in retro.data
+    assert b'id="projects-sort"' not in retro.data
+    post = client.get('/blog/interesting-links/')
+    assert b'id="projects-search"' not in post.data
+
+
 def test_about_build_cards_and_tool_labels(client):
     resp = client.get('/')
     assert resp.status_code == 200

@@ -29,7 +29,7 @@
          and filter pills did not appear. Bump the version whenever
          vcard.css changes. -->
     <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-9">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-10">
     <script>
         (function() {
             try {
@@ -127,6 +127,20 @@
 
             <section id="vcard-projects" data-vcard-section="projects" role="tabpanel" hidden>
                 <h2 class="vcard-section-title">Projects</h2>
+                <div class="projects-controls">
+                    <label class="projects-search-wrap">
+                        <i class="bi bi-search" aria-hidden="true"></i>
+                        <input type="search" id="projects-search" placeholder="Search projects..." aria-label="Search projects">
+                    </label>
+                    <label class="projects-sort-wrap">
+                        <span aria-hidden="true">Sort</span>
+                        <select id="projects-sort" aria-label="Sort projects">
+                            <option value="updated" selected>Recently updated</option>
+                            <option value="name">Name A&ndash;Z</option>
+                            <option value="stars">Most stars</option>
+                        </select>
+                    </label>
+                </div>
                 <div id="language-filters" class="language-filters" role="group" aria-label="Filter projects by language">
                     <button type="button" class="language-filter-btn active" data-language-filter="All" aria-pressed="true">All</button>
                 </div>
@@ -266,6 +280,11 @@ function langColor(lang) {
 // Language filter state, shared by both views: selecting a language
 // filters Recent and Featured together, and switching views keeps it.
 let selectedLanguage = 'All';
+// Search text and sort key: both combine with the language filter in
+// renderProjects, and any change collapses the grid back to the
+// first PROJECTS_INITIAL_COUNT, like a language change does.
+let projectSearchQuery = '';
+let projectSortKey = 'updated';
 let projectLists = { all: [] };
 
 // How many projects show before the expand control appears. The
@@ -399,13 +418,29 @@ function renderProjects() {
     const gridEl = document.getElementById('projects-grid');
     const expandBtn = document.getElementById('projects-expand-btn');
     const noRepos = (msg) => `<p class="col-span-full text-center py-4 text-sm" style="color:var(--text-secondary)">${msg}</p>`;
-    const filtered = selectedLanguage === 'All'
+    let filtered = selectedLanguage === 'All'
         ? [...(projectLists.all || [])]
         : (projectLists.all || []).filter(r => (r.language || 'Other') === selectedLanguage);
+    const query = projectSearchQuery.trim().toLowerCase();
+    if (query) {
+        filtered = filtered.filter(r => {
+            const haystack = [r.name, r.description, ...(r.topics || [])].filter(Boolean).join(' ').toLowerCase();
+            return haystack.includes(query);
+        });
+    }
+    if (projectSortKey === 'name') {
+        filtered.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+    } else if (projectSortKey === 'stars') {
+        // Ties (most repos have 0 stars) fall back to name order so the
+        // result is stable instead of looking shuffled.
+        filtered.sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0) || a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+    }
     const shown = projectsExpanded ? filtered : filtered.slice(0, PROJECTS_INITIAL_COUNT);
-    const empty = selectedLanguage === 'All'
-        ? 'No repositories found.'
-        : `No ${escHtml(selectedLanguage)} repositories. Try a different language.`;
+    const empty = query
+        ? `No projects match &ldquo;${escHtml(projectSearchQuery.trim())}&rdquo;. Try a different search or language.`
+        : selectedLanguage === 'All'
+            ? 'No repositories found.'
+            : `No ${escHtml(selectedLanguage)} repositories. Try a different language.`;
     gridEl.innerHTML = shown.length ? shown.map(r => renderRepoCard(r, 'primary')).join('') : noRepos(empty);
     if (filtered.length > PROJECTS_INITIAL_COUNT) {
         expandBtn.hidden = false;
@@ -421,6 +456,18 @@ function renderProjects() {
 document.getElementById('resume-print-btn')?.addEventListener('click', () => window.print());
 document.getElementById('projects-expand-btn')?.addEventListener('click', () => {
     projectsExpanded = !projectsExpanded;
+    renderProjects();
+});
+
+document.getElementById('projects-search')?.addEventListener('input', (e) => {
+    projectSearchQuery = e.target.value;
+    projectsExpanded = false;
+    renderProjects();
+});
+
+document.getElementById('projects-sort')?.addEventListener('change', (e) => {
+    projectSortKey = e.target.value;
+    projectsExpanded = false;
     renderProjects();
 });
 

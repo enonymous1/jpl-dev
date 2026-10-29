@@ -1237,3 +1237,68 @@ html[data-theme="dark"] .contact-map iframe {
         grid-template-columns: 1fr;
     }
 }
+
+/* Projects search + sort controls, above the language chips. Field
+   styling matches the Contact form inputs (page background, border,
+   12px radius); the row wraps on narrow screens. */
+.projects-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.projects-search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 1 220px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-color);
+    color: var(--text-secondary);
+}
+
+.projects-search-wrap:focus-within {
+    border-color: var(--primary-color);
+}
+
+.projects-search-wrap input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: none;
+    outline: none;
+    font: inherit;
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.projects-search-wrap input::placeholder {
+    color: var(--text-secondary);
+}
+
+.projects-sort-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.projects-sort-wrap select {
+    font: inherit;
+    font-size: 14px;
+    color: var(--text-color);
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.projects-sort-wrap select:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
