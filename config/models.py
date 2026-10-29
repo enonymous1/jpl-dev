@@ -30,6 +30,14 @@ class ToolGroup:
 
 
 @dataclass
+class GlossaryEntry:
+    """A one-definition glossary entry for a Tools & Tech pill."""
+
+    definition: str
+    url: str | None = None  # Official source; None when there is none.
+
+
+@dataclass
 class AboutMe:
     """Static profile data rendered on the homepage About Me widget."""
 

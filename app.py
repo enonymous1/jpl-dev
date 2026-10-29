@@ -21,7 +21,7 @@ import os
 from flask import Flask, render_template
 from flask_frozen import Freezer
 
-from config.projects import ABOUT_ME
+from config.projects import ABOUT_ME, GLOSSARY
 
 
 def create_app():
@@ -73,7 +73,14 @@ def create_app():
         Returns:
             str: Rendered HTML template for the homepage
         """
-        return render_template('index.html', about=ABOUT_ME)
+        return render_template(
+            'index.html',
+            about=ABOUT_ME,
+            glossary_data={
+                term: {'definition': entry.definition, 'url': entry.url}
+                for term, entry in GLOSSARY.items()
+            },
+        )
 
     @application.route('/retro/')
     def retro():

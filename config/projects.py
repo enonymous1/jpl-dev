@@ -11,7 +11,7 @@ uses the same source. This module holds only the profile data both the
 clean homepage and retro render.
 """
 
-from config.models import AboutMe, ToolGroup
+from config.models import AboutMe, GlossaryEntry, ToolGroup
 
 # ========================================================================
 # ABOUT ME
@@ -64,3 +64,155 @@ ABOUT_ME = AboutMe(
         ToolGroup('Tools', 'bi-tools', ['Git', 'GitHub', 'Jira']),
     ],
 )
+
+# ========================================================================
+# GLOSSARY
+# ========================================================================
+# One definition per Tools & Tech pill, exactly as drafted and approved
+# 2026-10-28. Every pill in ABOUT_ME.tool_groups must have an entry here
+# (a test enforces it), and every URL was verified to return 200 on
+# 2026-10-28. Team Building and Mentorship have no official source, so
+# their entries carry no URL and their modals show the definition only.
+# Definitions describe the term itself; they make no claim about how
+# the term is used in any project.
+GLOSSARY: dict[str, GlossaryEntry] = {
+    'Python': GlossaryEntry(
+        'A general-purpose programming language known for readable syntax '
+        'and a large ecosystem, widely used for automation, data work, and '
+        'web backends.',
+        'https://www.python.org/',
+    ),
+    'JavaScript': GlossaryEntry(
+        'The programming language of the web browser, used to make web '
+        'pages interactive and, with Node.js, to write server-side code.',
+        'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+    ),
+    'TypeScript': GlossaryEntry(
+        'A typed superset of JavaScript that adds static type checking and '
+        'compiles down to plain JavaScript.',
+        'https://www.typescriptlang.org/',
+    ),
+    'Java': GlossaryEntry(
+        'A general-purpose, object-oriented language designed to run on many '
+        'platforms via the Java Virtual Machine; long used for enterprise '
+        'and Android development.',
+        'https://dev.java/',
+    ),
+    'Kotlin': GlossaryEntry(
+        "A modern language for the Java Virtual Machine, and Google's "
+        'preferred language for Android development, designed to be more '
+        'concise and safer than Java.',
+        'https://kotlinlang.org/',
+    ),
+    'Swift': GlossaryEntry(
+        "Apple's programming language for iOS, macOS, and other Apple "
+        'platforms, designed as a safer, faster successor to Objective-C.',
+        'https://developer.apple.com/swift/',
+    ),
+    'Flask': GlossaryEntry(
+        'A lightweight Python web framework for building web applications '
+        'and APIs, providing the core tools and leaving the rest to '
+        'extensions.',
+        'https://flask.palletsprojects.com/',
+    ),
+    'GitHub Actions': GlossaryEntry(
+        "GitHub's built-in automation service for running tests, builds, "
+        'and deployments in response to events like pushes and pull '
+        'requests.',
+        'https://github.com/features/actions',
+    ),
+    'Playwright': GlossaryEntry(
+        'A library for automating web browsers, used for end-to-end testing '
+        'and for driving pages in a real browser.',
+        'https://playwright.dev/',
+    ),
+    'Pandas': GlossaryEntry(
+        'A Python library for working with tabular data: loading, cleaning, '
+        'analyzing, and reshaping datasets.',
+        'https://pandas.pydata.org/',
+    ),
+    'SQLite': GlossaryEntry(
+        'A small, self-contained SQL database engine that stores an entire '
+        'database in a single file, with no separate server process.',
+        'https://www.sqlite.org/',
+    ),
+    'Parquet': GlossaryEntry(
+        'A columnar file format for efficiently storing large datasets, '
+        'widely used in data pipelines and analytics.',
+        'https://parquet.apache.org/',
+    ),
+    'Android': GlossaryEntry(
+        "Google's operating system for phones and tablets, with apps "
+        'typically built in Kotlin or Java using Android Studio.',
+        'https://developer.android.com/',
+    ),
+    'iOS': GlossaryEntry(
+        "Apple's operating system for iPhone and iPad, with apps typically "
+        'built in Swift using Xcode.',
+        'https://developer.apple.com/ios/',
+    ),
+    'Flutter': GlossaryEntry(
+        "Google's UI toolkit for building apps for mobile, web, and desktop "
+        'from a single Dart codebase.',
+        'https://flutter.dev/',
+    ),
+    'React Native': GlossaryEntry(
+        "Meta's framework for building native mobile apps with JavaScript "
+        'and React, sharing code between iOS and Android.',
+        'https://reactnative.dev/',
+    ),
+    'Docker': GlossaryEntry(
+        'A platform for packaging software and its dependencies into '
+        'isolated containers that run consistently across machines.',
+        'https://www.docker.com/',
+    ),
+    'Unraid': GlossaryEntry(
+        'An operating system for home servers and network-attached storage, '
+        'built around flexible drive pooling, Docker, and virtual machines.',
+        'https://unraid.net/',
+    ),
+    'AWS': GlossaryEntry(
+        "Amazon's cloud platform, providing on-demand computing, storage, "
+        'databases, and other infrastructure services over the internet.',
+        'https://aws.amazon.com/',
+    ),
+    'Firebase': GlossaryEntry(
+        "Google's platform for building web and mobile apps, providing "
+        'hosting, databases, authentication, and other backend services.',
+        'https://firebase.google.com/',
+    ),
+    'Team Building': GlossaryEntry(
+        'The practice of helping a group of people work well together, '
+        'through shared goals, trust, and clear roles.'
+    ),
+    'Agile': GlossaryEntry(
+        'An approach to software work built on short iterations, working '
+        'software, and responding to change, as set out in the Agile '
+        'Manifesto.',
+        'https://agilemanifesto.org/',
+    ),
+    'Project Management': GlossaryEntry(
+        'The planning, coordination, and tracking of work to deliver a '
+        'defined outcome on time and within scope.',
+        'https://www.pmi.org/',
+    ),
+    'Mentorship': GlossaryEntry(
+        'Guiding a less experienced person by sharing knowledge, feedback, '
+        'and perspective as they develop their skills.'
+    ),
+    'Git': GlossaryEntry(
+        'A distributed version-control system for tracking changes to files '
+        'and coordinating work across people and machines.',
+        'https://git-scm.com/',
+    ),
+    'GitHub': GlossaryEntry(
+        'A hosting platform for Git repositories, adding collaboration '
+        'tools such as pull requests, issues, and Actions automation.',
+        'https://github.com/',
+    ),
+    'Jira': GlossaryEntry(
+        "Atlassian's issue- and project-tracking tool, commonly used to "
+        'plan sprints, track work, and manage software delivery.',
+        'https://www.atlassian.com/software/jira',
+    ),
+}

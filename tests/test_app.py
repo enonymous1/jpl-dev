@@ -101,6 +101,34 @@ def test_vcard_tab_sections_animate_on_switch(client):
     assert '.vcard-section-enter' in css
 
 
+def test_glossary_covers_every_tool_pill():
+    from config.projects import ABOUT_ME, GLOSSARY
+
+    pills = [tool for group in ABOUT_ME.tool_groups for tool in group.tools]
+    assert len(pills) == 27
+    assert set(GLOSSARY) == set(pills)
+    for term, entry in GLOSSARY.items():
+        assert entry.definition.strip(), term
+        assert entry.url is None or entry.url.startswith('https://'), term
+    assert GLOSSARY['Team Building'].url is None
+    assert GLOSSARY['Mentorship'].url is None
+
+
+def test_glossary_modal_rendered_on_homepage_only(client):
+    resp = client.get('/')
+    assert b'id="glossary-modal"' in resp.data
+    assert b'data-glossary-term="Swift"' in resp.data
+    assert b'data-glossary-term="Team Building"' in resp.data
+    assert b'https://developer.apple.com/swift/' in resp.data
+    # tojson escapes the apostrophe as \u0027; match the unescaped part.
+    assert b'programming language for iOS' in resp.data
+    assert b'glossary-hint' in resp.data
+    assert b'openGlossaryModal' in resp.data
+    retro = client.get('/retro/')
+    assert b'glossary-modal' not in retro.data
+    assert b'data-glossary-term' not in retro.data
+
+
 def test_avatar_easter_egg_quips_homepage_only(client):
     resp = client.get('/')
     assert b'id="avatar-easter-egg"' in resp.data

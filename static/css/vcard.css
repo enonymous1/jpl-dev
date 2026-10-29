@@ -575,6 +575,28 @@ body.repo-modal-open {
     color: #ffffff;
 }
 
+/* Tools & Tech glossary pills: buttons that keep the badge look, with
+   a hover state so it is clear they do something. */
+.glossary-pill {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.glossary-pill:hover {
+    color: var(--primary-color);
+}
+
+.glossary-pill:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.glossary-hint {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 8px;
+}
+
 .repo-modal-readme-heading {
     font-size: 16px;
     font-weight: 700;
