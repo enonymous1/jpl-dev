@@ -154,6 +154,41 @@ def test_blog_loader_rejects_bad_posts(tmp_path):
             load_posts(directory)
 
 
+def _sidebar_block(data: bytes) -> str:
+    text = data.decode()
+    start = text.index('<aside class="vcard-sidebar">')
+    end = text.index('</aside>', start) + len('</aside>')
+    return '\n'.join(line.strip() for line in text[start:end].splitlines() if line.strip())
+
+
+def test_blog_post_uses_vcard_shell_and_shared_sidebar(client):
+    post = client.get('/blog/interesting-links/')
+    assert post.status_code == 200
+    assert b'id="main-navbar"' not in post.data
+    assert b'vcard-layout' in post.data
+    assert b'data-vcard-tab' not in post.data
+    assert b'href="/#about"' in post.data
+    assert b'href="/#projects"' in post.data
+    assert b'href="/#blog" aria-current="page"' in post.data
+    assert b'href="/#contact"' in post.data
+    assert b'<title>Interesting Links' in post.data
+    assert b'https://justinlyons.dev/blog/interesting-links/' in post.data
+    home = client.get('/')
+    assert _sidebar_block(home.data) == _sidebar_block(post.data)
+
+
+def test_avatar_quips_script_is_external_and_shared(client):
+    script = client.get('/static/avatar-easter-egg.js')
+    assert script.status_code == 200
+    assert b'is-spinning' in script.data
+    home = client.get('/')
+    assert b'avatar-easter-egg.js' in home.data
+    # The quip lines live in the JS file now, not inline in the page.
+    assert b'Okay, you found the clicky photo.' not in home.data
+    post = client.get('/blog/interesting-links/')
+    assert b'avatar-easter-egg.js' in post.data
+
+
 def test_blog_tab_post_page_and_feed(client):
     resp = client.get('/')
     assert b'data-vcard-tab="blog"' in resp.data
@@ -213,6 +248,8 @@ def test_avatar_easter_egg_quips_homepage_only(client):
     assert b'id="avatar-easter-egg"' in resp.data
     assert b'id="avatar-quip"' in resp.data
     assert b'role="status"' in resp.data
+    # The quip lines live in the shared JS file, not inline in the page.
+    script = client.get('/static/avatar-easter-egg.js')
     for line in (
         b"Hey. That's me.",
         b'Yep, still me.',
@@ -220,12 +257,13 @@ def test_avatar_easter_egg_quips_homepage_only(client):
         b'Okay, you found the clicky photo.',
         b'Alright, you win. Go poke a repo instead.',
     ):
-        assert line in resp.data
+        assert line in script.data
     css = client.get('/static/css/vcard.css').data.decode()
     assert '@keyframes avatar-spin' in css
     assert '.vcard-quip' in css
     assert 'prefers-reduced-motion' in css
-    # Retro keeps its plain photo: the easter egg is homepage-only.
+    # Retro keeps its plain photo: the easter egg is shared by the
+    # homepage and the blog post pages only.
     retro = client.get('/retro/')
     assert b'avatar-easter-egg' not in retro.data
 

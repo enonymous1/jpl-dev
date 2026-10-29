@@ -29,7 +29,7 @@
          and filter pills did not appear. Bump the version whenever
          vcard.css changes. -->
     <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-4">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-5">
     <script>
         (function() {
             try {
@@ -43,48 +43,12 @@
 <body class="vcard-page">
 <!-- Homepage is standalone on purpose: no global top nav. The sidebar
      carries name, contact, retro mode, and the theme toggle,
-     so the top bar was pure duplication. Other pages still use base.html
-     and its nav. -->
+     so the top bar was pure duplication. Only the 404 page still
+     uses base.html and its nav. -->
 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="vcard-layout">
         <!-- Sidebar: always-visible profile and contact, vCard-style. -->
-        <aside class="vcard-sidebar">
-            <div class="vcard-profile">
-                <button type="button" class="vcard-avatar-btn" id="avatar-easter-egg">
-                    <img src="{{ url_for('static', filename=about.profile_image) }}"
-                         alt="Profile photo of Justin P. Lyons"
-                         class="vcard-avatar">
-                </button>
-                <p class="vcard-quip" id="avatar-quip" role="status"></p>
-                <h2>{{ about.name }}</h2>
-                <div class="vcard-badges">
-                    {% for badge in about.badges %}
-                    <span class="badge-theme {% if loop.first %}badge-primary{% endif %}">{{ badge }}</span>
-                    {% endfor %}
-                </div>
-            </div>
-            <hr class="vcard-divider">
-            <ul class="vcard-contact">
-                <li><i class="bi bi-github"></i> <a href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer">enonymous1</a></li>
-                <li><i class="bi bi-linkedin"></i> <a href="https://linkedin.com/in/justinplyons" target="_blank" rel="noopener noreferrer">justinplyons</a></li>
-                <li><i class="bi bi-envelope"></i> <a href="mailto:justin@jpl-dev.com">justin@jpl-dev.com</a></li>
-                <li><i class="bi bi-geo-alt"></i> Fredericksburg, VA</li>
-            </ul>
-            <div class="vcard-sidebar-actions">
-                <span class="vcard-tooltip-wrap">
-                    <a href="{{ url_for('retro') }}" class="repo-btn" aria-label="View the retro skin: the same portfolio in a MySpace-style throwback look" aria-describedby="retro-tooltip">'My' Space</a>
-                    <span class="vcard-tooltip" id="retro-tooltip" role="tooltip">Same portfolio, same information &mdash; in a MySpace-style throwback skin. The clean site stays the default.</span>
-                </span>
-                <button id="theme-toggle" type="button" class="repo-btn" title="Toggle theme" aria-label="Toggle theme" aria-pressed="false">
-                    <i class="bi bi-sun theme-icon-light"></i><i class="bi bi-moon theme-icon-dark hidden"></i> Theme
-                </button>
-            </div>
-            <div class="vcard-social" aria-label="Social links">
-                <a href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="bi bi-github"></i></a>
-                <a href="https://linkedin.com/in/justinplyons" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                <a href="mailto:justin@jpl-dev.com" aria-label="Email"><i class="bi bi-envelope"></i></a>
-            </div>
-        </aside>
+        {% include "_vcard_sidebar.html" %}
 
         <!-- Main card: tabbed sections, no page reload, so the frozen
              static site needs no live runtime for section switching. -->
@@ -772,41 +736,6 @@ document.querySelectorAll('[data-vcard-tab-link]').forEach(b => {
     if (['about', 'projects', 'contact', 'blog'].includes(hash)) activateVcardTab(hash);
 })();
 </script>
-<script>
-// Avatar easter egg: clicking the photo cycles Warcraft-style quips,
-// escalating to a spin on the last one. Idle for 5s and it resets.
-(function () {
-    const btn = document.getElementById('avatar-easter-egg');
-    const quip = document.getElementById('avatar-quip');
-    if (!btn || !quip) return;
-    const lines = [
-        "Hey. That's me.",
-        "Yep, still me.",
-        "The projects are in the next tab over.",
-        "Okay, you found the clicky photo.",
-        "Alright, you win. Go poke a repo instead."
-    ];
-    let count = 0;
-    let timer = null;
-    btn.addEventListener('click', () => {
-        count = (count % lines.length) + 1;
-        quip.textContent = lines[count - 1];
-        quip.classList.add('is-visible');
-        if (count === lines.length) {
-            btn.classList.remove('is-spinning');
-            void btn.offsetWidth;
-            btn.classList.add('is-spinning');
-        }
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            count = 0;
-            quip.classList.remove('is-visible');
-        }, 5000);
-    });
-    btn.addEventListener('animationend', () => {
-        btn.classList.remove('is-spinning');
-    });
-})();
-</script>
+<script src="{{ url_for('static', filename='avatar-easter-egg.js') }}"></script>
 </body>
 </html>

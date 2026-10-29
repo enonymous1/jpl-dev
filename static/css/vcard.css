@@ -318,7 +318,8 @@ body.vcard-page {
     z-index: 1;
 }
 
-.vcard-tabs button {
+.vcard-tabs button,
+.vcard-tabs a {
     background: none;
     border: none;
     color: var(--text-secondary);
@@ -327,14 +328,17 @@ body.vcard-page {
     padding: 6px 10px;
     cursor: pointer;
     border-radius: 10px;
+    text-decoration: none;
     transition: color 0.2s ease;
 }
 
-.vcard-tabs button:hover {
+.vcard-tabs button:hover,
+.vcard-tabs a:hover {
     color: var(--text-color);
 }
 
-.vcard-tabs button[aria-selected="true"] {
+.vcard-tabs button[aria-selected="true"],
+.vcard-tabs a[aria-current="page"] {
     color: var(--primary-color);
 }
 

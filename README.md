@@ -94,7 +94,7 @@ Posts are Markdown files in `content/posts/`, each starting with a front-matter 
 python new_post.py "My Post Title"
 ```
 
-Unfinished posts belong in `content/drafts/`, which the loader never reads, so they cannot publish by accident. Bad front matter (unknown keys, duplicate slugs, bad dates, empty bodies) fails the build instead of publishing half-rendered. Each post freezes to `/blog/<slug>/`, appears in `sitemap.xml`, and is included in the RSS feed at `/feed.xml`. The Blog tab only renders when at least one post exists.
+Unfinished posts belong in `content/drafts/`, which the loader never reads, so they cannot publish by accident. Bad front matter (unknown keys, duplicate slugs, bad dates, empty bodies) fails the build instead of publishing half-rendered. Each post freezes to `/blog/<slug>/`, appears in `sitemap.xml`, and is included in the RSS feed at `/feed.xml`. The Blog tab only renders when at least one post exists. Post pages reuse the homepage's sidebar and card shell (a shared sidebar include, `templates/_vcard_sidebar.html`), with the tab bar as links back to the homepage sections, Blog marked current; the retired `base.html` header is used only by the 404 page.
 
 ### Generate Static Site
 

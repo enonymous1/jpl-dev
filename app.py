@@ -93,7 +93,9 @@ def create_app():
         """Render one blog post. Unknown slugs 404 like any other route."""
         for post in load_posts():
             if post.slug == slug:
-                return render_template('blog_post.html', post=post)
+                return render_template(
+                    'blog_post.html', post=post, about=ABOUT_ME, site_url=SITE_URL
+                )
         abort(404)
 
     @application.route('/feed.xml')
