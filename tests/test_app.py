@@ -198,6 +198,8 @@ def test_resume_tab_renders_profile_data(client):
     assert b'Millennium Partners' in resp.data
     assert b'July 2024' in resp.data
     assert b'Full Sail University' in resp.data
+    assert b'Bachelor' in resp.data
+    assert b'April 2024' in resp.data
     assert b'Agile Foundations' in resp.data
     assert b'IT Infrastructure Management' in resp.data
     assert b'id="resume-print-btn"' in resp.data

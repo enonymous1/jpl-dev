@@ -10,9 +10,9 @@ phone number and the Gmail address. The site's contact address is
 justin@jpl-dev.com (sidebar and Contact tab); add either value back
 only on the user's explicit say-so.
 
-The PDF lists only the Associate's degree. The bachelor's degree the
-user mentioned in conversation is not in the PDF, so it is not listed
-here until he supplies the school and year.
+The PDF lists only the Associate's degree. The bachelor's degree
+(Full Sail University, April 2024) was supplied by the user in
+conversation on 2026-10-28 and is listed alongside it.
 """
 
 from dataclasses import dataclass, field
@@ -148,6 +148,11 @@ RESUME_JOBS = [
 ]
 
 RESUME_EDUCATION = [
+    ResumeEducation(
+        degree="Bachelor's degree, Computer Science",
+        school='Full Sail University',
+        date='April 2024',
+    ),
     ResumeEducation(
         degree="Associate's degree, Computer Science",
         school='Full Sail University',
