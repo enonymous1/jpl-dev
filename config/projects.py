@@ -216,3 +216,37 @@ GLOSSARY: dict[str, GlossaryEntry] = {
         'https://www.atlassian.com/software/jira',
     ),
 }
+
+
+# ========================================================================
+# ROLE DEFINITIONS
+# ========================================================================
+# Definitions for the three role pills under the name in the sidebar,
+# exactly as drafted and approved 2026-10-29. Like Team Building and
+# Mentorship, job titles have no official source, so these entries
+# carry no URL and their modals show the definition only. Each entry
+# states what the role is, then what it means in this portfolio's work.
+ROLE_DEFINITIONS: dict[str, GlossaryEntry] = {
+    'IT Manager': GlossaryEntry(
+        "Directs an organization's IT infrastructure and technology "
+        'solutions: support, onboarding, access, and the systems teams '
+        'rely on day to day. At Millennium Partners, that means IT '
+        'support for the headquarters and overseas field offices, '
+        'onboarding and SharePoint access, and technical input on '
+        'international projects and proposals.'
+    ),
+    'Automation Engineer': GlossaryEntry(
+        'Builds software that replaces repetitive manual work: scripts '
+        'and pipelines that collect, transform, and move data without '
+        'someone doing it by hand. His tools automate GSA pricing and '
+        'vendor data, message and photo archives, and video and '
+        'market-data pipelines.'
+    ),
+    'Full-Stack Developer': GlossaryEntry(
+        'Works across the whole of a web application: the user-facing '
+        'interface, the server logic behind it, and the data it stores. '
+        'His stack here is Flask and Jinja2 on the server with Tailwind '
+        'on the front end, plus Android and iOS apps in Kotlin, Java, '
+        'and Swift.'
+    ),
+}

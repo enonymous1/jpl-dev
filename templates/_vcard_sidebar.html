@@ -9,7 +9,7 @@
                 <h2>{{ about.name }}</h2>
                 <div class="vcard-badges">
                     {% for badge in about.badges %}
-                    <span class="badge-theme {% if loop.first %}badge-primary{% endif %}">{{ badge }}</span>
+                    <button type="button" class="badge-theme glossary-pill {% if loop.first %}badge-primary{% endif %}" data-glossary-term="{{ badge }}" aria-haspopup="dialog">{{ badge }}</button>
                     {% endfor %}
                 </div>
             </div>

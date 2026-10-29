@@ -24,7 +24,7 @@ from flask import Flask, Response, abort, render_template
 from flask_frozen import Freezer
 
 from config.blog import load_posts
-from config.projects import ABOUT_ME, GLOSSARY
+from config.projects import ABOUT_ME, GLOSSARY, ROLE_DEFINITIONS
 from config.resume import (
     RESUME_CERTIFICATIONS,
     RESUME_EDUCATION,
@@ -95,6 +95,10 @@ def create_app():
                 term: {'definition': entry.definition, 'url': entry.url}
                 for term, entry in GLOSSARY.items()
             },
+            role_definitions={
+                term: {'definition': entry.definition, 'url': entry.url}
+                for term, entry in ROLE_DEFINITIONS.items()
+            },
             posts=load_posts(),
             resume_headline=RESUME_HEADLINE,
             resume_location=RESUME_LOCATION,
@@ -112,7 +116,18 @@ def create_app():
         for post in load_posts():
             if post.slug == slug:
                 return render_template(
-                    'blog_post.html', post=post, about=ABOUT_ME, site_url=SITE_URL
+                    'blog_post.html',
+                    post=post,
+                    about=ABOUT_ME,
+                    site_url=SITE_URL,
+                    glossary_data={
+                        term: {'definition': entry.definition, 'url': entry.url}
+                        for term, entry in GLOSSARY.items()
+                    },
+                    role_definitions={
+                        term: {'definition': entry.definition, 'url': entry.url}
+                        for term, entry in ROLE_DEFINITIONS.items()
+                    },
                 )
         abort(404)
 

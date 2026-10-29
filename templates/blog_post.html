@@ -53,10 +53,15 @@
                 <p class="blog-tags">{% for tag in post.tags %}<span class="badge-theme">{{ tag }}</span>{% endfor %}</p>
                 {% endif %}
             </article>
+            {% include "_glossary_modal.html" %}
         </div>
     </div>
 </div>
 <script src="{{ url_for('static', filename='global-theme.js') }}"></script>
 <script src="{{ url_for('static', filename='avatar-easter-egg.js') }}"></script>
+<script>
+window.GLOSSARY_DATA = {terms: {{ glossary_data | tojson }}, roles: {{ role_definitions | tojson }}};
+</script>
+<script src="{{ url_for('static', filename='glossary-modal.js') }}"></script>
 </body>
 </html>

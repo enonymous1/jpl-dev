@@ -211,13 +211,7 @@
                 </div>
             </div>
 
-            <div id="glossary-modal" class="repo-modal" hidden>
-                <div class="repo-modal-backdrop" data-glossary-close></div>
-                <div class="repo-modal-card" role="dialog" aria-modal="true" aria-labelledby="glossary-modal-title">
-                    <button type="button" id="glossary-modal-close" class="repo-modal-close" data-glossary-close aria-label="Close definition">&times;</button>
-                    <div id="glossary-modal-content"></div>
-                </div>
-            </div>
+            {% include "_glossary_modal.html" %}
         </div>
     </div>
 </div>
@@ -227,10 +221,6 @@
 function escHtml(s) {
     return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
-// Tools & Tech glossary: baked in at render time (the frozen site has
-// no live Python runtime), so definitions and links travel with the page.
-const GLOSSARY = {{ glossary_data | tojson }};
 
 // GitHub linguist colors, so each language chip and card tag carries
 // the dot GitHub shows next to a language. Only languages actually in
@@ -653,43 +643,6 @@ function closeRepoModal() {
     if (repoModalReturnFocus && document.contains(repoModalReturnFocus)) repoModalReturnFocus.focus();
 }
 
-// ── Tools & Tech glossary modal ─────────────────────────────────────────────
-// Same interaction contract as the project preview: backdrop and
-// close-button clicks and Escape close it, and focus returns to the
-// pill that opened it. Entries without a URL (Team Building,
-// Mentorship) show the definition with no link row.
-let glossaryModalReturnFocus = null;
-
-function openGlossaryModal(term) {
-    const entry = GLOSSARY[term];
-    if (!entry) return;
-    const modal = document.getElementById('glossary-modal');
-    const content = document.getElementById('glossary-modal-content');
-    if (!modal || !content) return;
-    const link = entry.url
-        ? `<div class="repo-modal-actions"><a class="repo-modal-action repo-modal-action--primary" href="${escHtml(entry.url)}" target="_blank" rel="noopener noreferrer">Official site <i class="bi bi-box-arrow-up-right"></i></a></div>`
-        : '';
-    content.innerHTML = `<p class="repo-modal-kicker">Tools &amp; Tech</p><h3 id="glossary-modal-title" class="repo-modal-title">${escHtml(term)}</h3><p class="repo-modal-desc">${escHtml(entry.definition)}</p>${link}`;
-    glossaryModalReturnFocus = document.activeElement;
-    modal.hidden = false;
-    document.body.classList.add('repo-modal-open');
-    document.getElementById('glossary-modal-close').focus();
-}
-
-function closeGlossaryModal() {
-    const modal = document.getElementById('glossary-modal');
-    if (!modal || modal.hidden) return;
-    modal.hidden = true;
-    document.body.classList.remove('repo-modal-open');
-    if (glossaryModalReturnFocus && document.contains(glossaryModalReturnFocus)) glossaryModalReturnFocus.focus();
-}
-
-document.addEventListener('click', (e) => {
-    if (e.target.closest('[data-glossary-close]')) { closeGlossaryModal(); return; }
-    const pill = e.target.closest('[data-glossary-term]');
-    if (pill) openGlossaryModal(pill.getAttribute('data-glossary-term'));
-});
-
 async function copyCloneUrl(btn) {
     const url = btn.getAttribute('data-clone-url');
     try {
@@ -716,7 +669,7 @@ document.addEventListener('click', (e) => {
     if (card && !e.target.closest('a, button')) openRepoModal(card.getAttribute('data-repo-name'));
 });
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { closeRepoModal(); closeGlossaryModal(); return; }
+    if (e.key === 'Escape') { closeRepoModal(); return; }
     if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('repo-card')) {
         e.preventDefault();
         openRepoModal(e.target.getAttribute('data-repo-name'));
@@ -788,5 +741,9 @@ document.querySelectorAll('[data-vcard-tab-link]').forEach(b => {
 })();
 </script>
 <script src="{{ url_for('static', filename='avatar-easter-egg.js') }}"></script>
+<script>
+window.GLOSSARY_DATA = {terms: {{ glossary_data | tojson }}, roles: {{ role_definitions | tojson }}};
+</script>
+<script src="{{ url_for('static', filename='glossary-modal.js') }}"></script>
 </body>
 </html>

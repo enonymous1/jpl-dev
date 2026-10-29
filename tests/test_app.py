@@ -264,7 +264,7 @@ def test_glossary_covers_every_tool_pill():
     assert GLOSSARY['Mentorship'].url is None
 
 
-def test_glossary_modal_rendered_on_homepage_only(client):
+def test_glossary_modal_rendered_on_homepage_and_post_pages(client):
     resp = client.get('/')
     assert b'id="glossary-modal"' in resp.data
     assert b'data-glossary-term="Swift"' in resp.data
@@ -273,10 +273,33 @@ def test_glossary_modal_rendered_on_homepage_only(client):
     # tojson escapes the apostrophe as \u0027; match the unescaped part.
     assert b'programming language for iOS' in resp.data
     assert b'glossary-hint' in resp.data
-    assert b'openGlossaryModal' in resp.data
+    assert b'glossary-modal.js' in resp.data
+    post = client.get('/blog/interesting-links/')
+    assert b'id="glossary-modal"' in post.data
+    assert b'glossary-modal.js' in post.data
     retro = client.get('/retro/')
     assert b'glossary-modal' not in retro.data
     assert b'data-glossary-term' not in retro.data
+
+
+def test_role_definition_modals_use_approved_wording(client):
+    from config.projects import ABOUT_ME, ROLE_DEFINITIONS
+
+    assert set(ROLE_DEFINITIONS) == set(ABOUT_ME.badges)
+    assert ROLE_DEFINITIONS['IT Manager'].definition.startswith(
+        "Directs an organization's IT infrastructure"
+    )
+    assert 'At Millennium Partners' in ROLE_DEFINITIONS['IT Manager'].definition
+    assert 'GSA pricing and vendor data' in ROLE_DEFINITIONS['Automation Engineer'].definition
+    assert 'Flask and Jinja2' in ROLE_DEFINITIONS['Full-Stack Developer'].definition
+    for entry in ROLE_DEFINITIONS.values():
+        assert entry.definition.strip()
+        assert entry.url is None
+    for page in ('/', '/blog/interesting-links/'):
+        resp = client.get(page)
+        for badge in ABOUT_ME.badges:
+            assert f'data-glossary-term="{badge}"'.encode() in resp.data
+        assert b'Directs an organization' in resp.data
 
 
 def test_avatar_easter_egg_quips_homepage_only(client):
@@ -310,9 +333,10 @@ def test_sidebar_and_retro_use_role_pills_not_a_title_line(client):
     assert b'IT Manager | Automation' not in resp.data
     # Role pills, in order, in the sidebar; the first takes the primary
     # badge style. The degree stays in the About bio, not in a pill.
-    assert b'>IT Manager</span>' in resp.data
-    assert b'>Automation Engineer</span>' in resp.data
-    assert b'>Full-Stack Developer</span>' in resp.data
+    # The pills are buttons that open definition modals.
+    assert b'>IT Manager</button>' in resp.data
+    assert b'>Automation Engineer</button>' in resp.data
+    assert b'>Full-Stack Developer</button>' in resp.data
     assert b'>AS &amp; BS in CS</span>' not in resp.data
     retro = client.get('/retro/')
     assert retro.status_code == 200
