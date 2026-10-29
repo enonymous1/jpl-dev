@@ -1179,10 +1179,27 @@ html[data-theme="dark"] .contact-map iframe {
     padding: 14px 16px;
 }
 
+.build-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(0, 123, 255, 0.1);
+    color: var(--primary-color);
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
 .build-card-title {
     font-size: 16px;
     font-weight: 700;
     margin: 0 0 4px;
+}
+
+.build-card-blurb {
+    margin-bottom: 8px;
 }
 
 .build-card p {

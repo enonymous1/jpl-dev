@@ -236,6 +236,14 @@ def test_about_build_cards_and_tool_labels(client):
     assert b'Automation &amp; data' in resp.data
     assert b'Desktop tools' in resp.data
     assert b'Data pipelines' in resp.data
+    assert b'bi bi-gear' in resp.data
+    assert b'bi bi-pc-display' in resp.data
+    assert b'bi bi-globe' in resp.data
+    assert b'bi bi-diagram-3' in resp.data
+    assert b'replace repetitive manual work' in resp.data
+    assert b'photos, messages, and video' in resp.data
+    assert b'Minecraft-style voxel landing page' in resp.data
+    assert b'capture and process market data' in resp.data
     assert b'href="https://github.com/enonymous1/repo-sync"' in resp.data
     assert b'href="https://github.com/enonymous1/kalshi-recorder"' in resp.data
     # Tool-group labels are larger and full-strength text color.
