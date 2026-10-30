@@ -47,7 +47,7 @@ def test_homepage_is_a_portfolio_hero_not_a_dashboard(client):
     assert b'Quick Stats' not in resp.data
     # The old hardcoded stats had no source; the replacement names real work.
     assert b'What I Build' in resp.data
-    assert b'collecting, reconciling, and reformatting data' in resp.data
+    assert b'repetitive data work' in resp.data
 
 
 def test_nav_does_not_link_internal_components_demo(client):
@@ -284,12 +284,14 @@ def test_about_build_cards_and_tool_labels(client):
     assert b'build-card-link' not in resp.data
     assert b'build-card-links' not in resp.data
     assert b'this site, voxel-portfolio' not in resp.data
-    assert b'replace repetitive manual work' in resp.data
-    assert b'photos, messages, and video' in resp.data
-    assert b'Minecraft-style voxel landing page' in resp.data
-    assert b'collecting, reconciling, and reformatting data' in resp.data
-    assert b'running unattended once they' in resp.data
-    assert b'capture market data as it arrives' in resp.data
+    # Blurbs describe the actual work behind each card (reviewed
+    # 2026-10-30 against the live repos), not the category.
+    assert b'repetitive data work' in resp.data
+    assert b'photo-scan stitching wizard' in resp.data
+    assert b'voxel world you walk through' in resp.data
+    assert b'recorded to Parquet' in resp.data
+    assert b'deduped, queryable datasets' in resp.data
+    assert b'client-side billing analyzer' in resp.data
     # Tool-group labels are larger and full-strength text color.
     assert b'font-size:0.85rem;color:var(--text-color)' in resp.data
 
