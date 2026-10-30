@@ -667,3 +667,24 @@ def test_latin_quips_easter_egg(client):
     # Blog post pages have no CV section, so no Latin quip button.
     post = client.get('/blog/interesting-links/')
     assert b'id="latin-quip"' not in post.data
+
+
+def test_project_thumbnails_mapping(client):
+    import os
+
+    from config.projects import PROJECT_THUMBNAILS
+
+    assert PROJECT_THUMBNAILS
+    for repo, path in PROJECT_THUMBNAILS.items():
+        assert repo and path.startswith('images/project-thumbs/')
+        full = os.path.join('static', path)
+        assert os.path.isfile(full), f'missing thumbnail file: {full}'
+        assert os.path.getsize(full) > 0
+    resp = client.get('/')
+    assert resp.status_code == 200
+    assert b'PROJECT_THUMBNAILS' in resp.data
+    for path in PROJECT_THUMBNAILS.values():
+        assert path.encode() in resp.data
+    # No thumbnail or site button on the retro list: cards only.
+    retro = client.get('/retro/')
+    assert b'repo-card-thumb' not in retro.data

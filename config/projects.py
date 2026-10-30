@@ -66,6 +66,24 @@ ABOUT_ME = AboutMe(
 )
 
 # ========================================================================
+# PROJECT THUMBNAILS
+# ========================================================================
+# Card thumbnails, by repo name. Only mapped repos show a thumbnail;
+# every other card renders exactly as before, with no placeholder box.
+# Each file is a real screenshot from that repo's own README on main
+# (verified 2026-10-30), copied into static/ so the card never hotlinks
+# a README asset that could move. A fifth candidate, gas-auditor's
+# docs/demo.gif, was dropped: the README references it, but the file
+# is not on main (raw.githubusercontent returns 404), so it is not a
+# verified image. Add a repo here only with a verified screenshot.
+PROJECT_THUMBNAILS = {
+    'voxel-portfolio': 'images/project-thumbs/voxel-portfolio.png',
+    'photo-stitcher': 'images/project-thumbs/photo-stitcher.gif',
+    'sms-toolkit': 'images/project-thumbs/sms-toolkit.png',
+    'floorplan-studio': 'images/project-thumbs/floorplan-studio.svg',
+}
+
+# ========================================================================
 # GLOSSARY
 # ========================================================================
 # One definition per Tools & Tech pill, exactly as drafted and approved

@@ -24,7 +24,7 @@ from flask import Flask, Response, abort, render_template
 from flask_frozen import Freezer
 
 from config.blog import load_posts
-from config.projects import ABOUT_ME, GLOSSARY, ROLE_DEFINITIONS
+from config.projects import ABOUT_ME, GLOSSARY, PROJECT_THUMBNAILS, ROLE_DEFINITIONS
 from config.resume import (
     RESUME_CERTIFICATIONS,
     RESUME_EDUCATION,
@@ -107,6 +107,7 @@ def create_app():
             resume_jobs=RESUME_JOBS,
             resume_education=RESUME_EDUCATION,
             resume_education_note=RESUME_EDUCATION_NOTE,
+            project_thumbnails=PROJECT_THUMBNAILS,
             resume_certifications=RESUME_CERTIFICATIONS,
             resume_languages=RESUME_LANGUAGES,
             resume_top_skills=RESUME_TOP_SKILLS,

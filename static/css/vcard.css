@@ -1343,3 +1343,14 @@ html[data-theme="dark"] .contact-map iframe {
         animation: none;
     }
 }
+
+/* Project card thumbnails: full-bleed at the top of the card, 16:9,
+   cropped to fill. Only mapped repos render one (see
+   config/projects.py), so unmapped cards are unchanged. */
+.repo-card-thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--vcard-radius) var(--vcard-radius) 0 0;
+}
