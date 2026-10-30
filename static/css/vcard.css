@@ -465,6 +465,10 @@ body.repo-modal-open {
     width: min(720px, 100%);
     max-height: calc(100dvh - 48px);
     overflow-y: auto;
+    /* Themed scrollbar (Firefox): thin, thumb in the secondary
+       text color so it reads in both light and dark themes. */
+    scrollbar-width: thin;
+    scrollbar-color: var(--text-secondary) transparent;
     background: var(--bg-secondary);
     color: var(--text-color);
     border: 1px solid var(--border-color);
@@ -472,6 +476,29 @@ body.repo-modal-open {
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
     padding: 28px;
     margin: auto;
+}
+
+/* Themed scrollbar (Chromium/Safari): the modal card is the scroll
+   container, so its scrollbar gets the treatment, not the page's.
+   Slim thumb with a card-colored gutter so it looks inset;
+   turns the link blue on hover. The glossary modal shares this
+   card class, so it gets the same scrollbar. */
+.repo-modal-card::-webkit-scrollbar {
+    width: 10px;
+}
+
+.repo-modal-card::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.repo-modal-card::-webkit-scrollbar-thumb {
+    background: var(--text-secondary);
+    border-radius: 8px;
+    border: 2px solid var(--bg-secondary);
+}
+
+.repo-modal-card::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
 }
 
 .repo-modal-close {
@@ -1190,27 +1217,6 @@ html[data-theme="dark"] .contact-map iframe {
     font-size: 16px;
     font-weight: 700;
     margin: 0;
-}
-
-.build-card-blurb {
-    margin-bottom: 8px;
-}
-
-.build-card-links {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px;
-}
-
-.build-card-link {
-    border-radius: 999px;
-    text-decoration: none;
-}
-
-.build-card-links a:hover {
-    color: var(--primary-color);
-    border-color: var(--primary-color);
 }
 
 .build-card p {

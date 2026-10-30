@@ -47,7 +47,7 @@ def test_homepage_is_a_portfolio_hero_not_a_dashboard(client):
     assert b'Quick Stats' not in resp.data
     # The old hardcoded stats had no source; the replacement names real work.
     assert b'What I Build' in resp.data
-    assert b'repo-sync' in resp.data
+    assert b'collecting, reconciling, and reformatting data' in resp.data
 
 
 def test_nav_does_not_link_internal_components_demo(client):
@@ -278,14 +278,18 @@ def test_about_build_cards_and_tool_labels(client):
     assert b'bi bi-globe' in resp.data
     assert b'bi bi-diagram-3' in resp.data
     assert resp.data.count(b'class="build-card-header"') == 4
-    assert resp.data.count(b'badge-theme build-card-link') == 5
-    assert b'GSA pricing toolkits</span>' in resp.data
+    # What I Build cards are informative only: no product links, no
+    # product-name row (the Web card's unfinished-looking
+    # "this site, voxel-portfolio" line went with them).
+    assert b'build-card-link' not in resp.data
+    assert b'build-card-links' not in resp.data
+    assert b'this site, voxel-portfolio' not in resp.data
     assert b'replace repetitive manual work' in resp.data
     assert b'photos, messages, and video' in resp.data
     assert b'Minecraft-style voxel landing page' in resp.data
-    assert b'capture and process market data' in resp.data
-    assert b'href="https://github.com/enonymous1/repo-sync"' in resp.data
-    assert b'href="https://github.com/enonymous1/kalshi-recorder"' in resp.data
+    assert b'collecting, reconciling, and reformatting data' in resp.data
+    assert b'running unattended once they' in resp.data
+    assert b'capture market data as it arrives' in resp.data
     # Tool-group labels are larger and full-strength text color.
     assert b'font-size:0.85rem;color:var(--text-color)' in resp.data
 
@@ -706,3 +710,11 @@ def test_project_thumbnails_fit_container(client):
     # rule elsewhere legitimately still uses cover.)
     thumb_rule = css.split('.repo-card-thumb')[1].split('}')[0]
     assert 'object-fit: contain' in thumb_rule
+
+
+def test_project_modal_scrollbar_is_themed(client):
+    css = client.get('/static/css/vcard.css').data.decode()
+    thumb_rule = css.split('.repo-modal-card::-webkit-scrollbar-thumb')[1].split('}')[0]
+    assert 'var(--text-secondary)' in thumb_rule
+    assert 'scrollbar-width: thin' in css
+    assert 'scrollbar-color: var(--text-secondary)' in css
