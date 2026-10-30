@@ -647,3 +647,23 @@ def test_no_baked_in_project_routes_remain():
     # What remains: homepage, retro, and the 404 handler (not a route).
     assert 'widget_demo' not in endpoints
     assert {'index', 'retro'} <= endpoints
+
+
+def test_latin_quips_easter_egg(client):
+    resp = client.get('/')
+    assert resp.status_code == 200
+    assert b'id="latin-quip"' in resp.data
+    assert b'course of life' in resp.data
+    assert b'latin-quips.js' in resp.data
+    # The quips live in the JS file, not the initial HTML.
+    js = client.get('/static/latin-quips.js')
+    assert js.status_code == 200
+    assert b'Ex memoria' in js.data
+    assert b'dum (verum) { spero; }' in js.data
+    assert b'Condo, ergo sum' in js.data
+    assert b'in localhost' in js.data
+    assert b'Tabula rasa' in js.data
+    assert b'Deus ex machina' in js.data
+    # Blog post pages have no CV section, so no Latin quip button.
+    post = client.get('/blog/interesting-links/')
+    assert b'id="latin-quip"' not in post.data

@@ -1302,3 +1302,44 @@ html[data-theme="dark"] .contact-map iframe {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
+
+/* Latin easter egg: the CV subtitle is a button styled as plain hint
+   text. It reserves two lines so cycling quips never shift the CV
+   content below it, and hints at clickability only on hover/focus. */
+.latin-quip {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+    min-height: 2lh;
+    padding: 0;
+    border: none;
+    background: none;
+    font-family: inherit;
+    line-height: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.latin-quip:hover, .latin-quip:focus-visible {
+    text-decoration: underline dotted;
+}
+
+.latin-quip:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.latin-quip.latin-in {
+    animation: latin-in 0.15s ease;
+}
+
+@keyframes latin-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .latin-quip.latin-in {
+        animation: none;
+    }
+}

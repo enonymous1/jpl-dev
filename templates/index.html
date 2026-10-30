@@ -29,7 +29,7 @@
          and filter pills did not appear. Bump the version whenever
          vcard.css changes. -->
     <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-10">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-11">
     <script>
         (function() {
             try {
@@ -157,7 +157,7 @@
 
             <section id="vcard-cv" data-vcard-section="cv" role="tabpanel" hidden>
                 <h2 class="vcard-section-title">Curriculum Vitae</h2>
-                <p class="glossary-hint">CV (short for curriculum vitae, a Latin phrase meaning &ldquo;course of life&rdquo;).</p>
+                <button type="button" id="latin-quip" class="glossary-hint latin-quip" aria-live="polite">CV (short for curriculum vitae, a Latin phrase meaning &ldquo;course of life&rdquo;).</button>
                 <p class="resume-headline">{{ resume_headline }}</p>
                 <p class="resume-location">{{ resume_location }}</p>
                 <button type="button" id="resume-print-btn" class="repo-btn resume-print-btn">Print / Save as PDF</button>
@@ -818,6 +818,7 @@ document.querySelectorAll('[data-vcard-tab-link]').forEach(b => {
 })();
 </script>
 <script src="{{ url_for('static', filename='avatar-easter-egg.js') }}"></script>
+<script src="{{ url_for('static', filename='latin-quips.js') }}"></script>
 <script>
 window.GLOSSARY_DATA = {terms: {{ glossary_data | tojson }}, roles: {{ role_definitions | tojson }}};
 </script>
