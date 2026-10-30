@@ -195,6 +195,7 @@ def test_cv_tab_renders_profile_data(client):
     assert b'data-vcard-tab="cv"' in resp.data
     assert b'data-vcard-section="cv"' in resp.data
     assert b'Curriculum Vitae' in resp.data
+    assert b'course of life' in resp.data
     assert b'data-vcard-tab="resume"' not in resp.data
     assert b'Systems Automation Specialist' in resp.data
     # Headline, Mobile detail, EM3 title, and education notes come
