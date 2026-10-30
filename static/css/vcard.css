@@ -289,6 +289,7 @@ body.vcard-page {
 
 .vcard-layout .repo-btn {
     border-radius: 10px;
+    white-space: nowrap;
 }
 
 .vcard-layout .badge-theme {
@@ -432,20 +433,6 @@ body.vcard-page {
     flex-shrink: 0;
     margin-left: auto;
     align-items: center;
-}
-
-.repo-card-hint {
-    font-size: 12px;
-    color: var(--text-secondary);
-    opacity: 0;
-    transition: opacity 0.15s ease;
-    align-self: center;
-    white-space: nowrap;
-}
-
-.vcard-main .repo-card:hover .repo-card-hint,
-.vcard-main .repo-card:focus-within .repo-card-hint {
-    opacity: 1;
 }
 
 body.repo-modal-open {

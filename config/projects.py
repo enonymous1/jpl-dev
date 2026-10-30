@@ -70,17 +70,31 @@ ABOUT_ME = AboutMe(
 # ========================================================================
 # Card thumbnails, by repo name. Only mapped repos show a thumbnail;
 # every other card renders exactly as before, with no placeholder box.
-# Each file is a real screenshot from that repo's own README on main
-# (verified 2026-10-30), copied into static/ so the card never hotlinks
-# a README asset that could move. A fifth candidate, gas-auditor's
-# docs/demo.gif, was dropped: the README references it, but the file
-# is not on main (raw.githubusercontent returns 404), so it is not a
-# verified image. Add a repo here only with a verified screenshot.
+# The first four files are real screenshots from each repo's own README
+# on main (verified 2026-10-30), copied into static/ so the card never
+# hotlinks a README asset that could move. A fifth candidate,
+# gas-auditor's docs/demo.gif, was dropped: the README references it,
+# but the file is not on main (raw.githubusercontent returns 404), so
+# it is not a verified image. The eight Pages entries are viewport
+# screenshots of each repo's live Pages landing page, shot 2026-10-30
+# with headless Chrome (intranet-dashboard in demo mode, godaddy with
+# its sample data loaded, json-insight with a pasted sample analysed);
+# re-shoot them if a landing page changes materially, since a
+# screenshot freezes the page at shoot time. Add a repo here only
+# with a verified screenshot.
 PROJECT_THUMBNAILS = {
     'voxel-portfolio': 'images/project-thumbs/voxel-portfolio.png',
     'photo-stitcher': 'images/project-thumbs/photo-stitcher.gif',
     'sms-toolkit': 'images/project-thumbs/sms-toolkit.png',
     'floorplan-studio': 'images/project-thumbs/floorplan-studio.svg',
+    'intranet-dashboard': 'images/project-thumbs/intranet-dashboard.png',
+    'godaddy-billing-analyzer': 'images/project-thumbs/godaddy-billing-analyzer.png',
+    'landscape-manager': 'images/project-thumbs/landscape-manager.png',
+    'apps-script-samples': 'images/project-thumbs/apps-script-samples.png',
+    'json-insight': 'images/project-thumbs/json-insight.png',
+    'ngo-eval-webapp': 'images/project-thumbs/ngo-eval-webapp.png',
+    'gsa-mas-offer-checklist': 'images/project-thumbs/gsa-mas-offer-checklist.png',
+    'ss-space_marine_master_crafted': 'images/project-thumbs/ss-space_marine_master_crafted.png',
 }
 
 # ========================================================================

@@ -576,7 +576,7 @@ def test_repo_preview_modal_present(client):
     css = client.get('/static/css/vcard.css').data.decode()
     assert '.repo-modal' in css
     assert '.repo-modal-card' in css
-    assert '.repo-card-hint' in css
+    assert '.repo-card-thumb' in css
 
 
 def test_homepage_vcard_tabs(client):
@@ -688,3 +688,12 @@ def test_project_thumbnails_mapping(client):
     # No thumbnail or site button on the retro list: cards only.
     retro = client.get('/retro/')
     assert b'repo-card-thumb' not in retro.data
+
+
+def test_project_card_buttons_are_labeled(client):
+    resp = client.get('/')
+    assert resp.status_code == 200
+    # Buttons carry their destination as visible text now; the old
+    # ambiguous hover-only "Preview" hint is gone.
+    assert b'Pages site' in resp.data
+    assert b'repo-card-hint' not in resp.data
