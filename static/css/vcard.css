@@ -1332,12 +1332,16 @@ html[data-theme="dark"] .contact-map iframe {
 }
 
 /* Project card thumbnails: full-bleed at the top of the card, 16:9,
-   cropped to fill. Only mapped repos render one (see
-   config/projects.py), so unmapped cards are unchanged. */
+   scaled to fit entirely (contain, not cover: cover cropped the
+   top and bottom off non-16:9 screenshots). The card background
+   fills the letterbox bands, so the image reads as a centered
+   photo. Only mapped repos render one (see config/projects.py),
+   so unmapped cards are unchanged. */
 .repo-card-thumb {
     display: block;
     width: 100%;
     aspect-ratio: 16 / 9;
-    object-fit: cover;
+    object-fit: contain;
+    background: var(--card-bg);
     border-radius: var(--vcard-radius) var(--vcard-radius) 0 0;
 }

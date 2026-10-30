@@ -697,3 +697,12 @@ def test_project_card_buttons_are_labeled(client):
     # ambiguous hover-only "Preview" hint is gone.
     assert b'Pages site' in resp.data
     assert b'repo-card-hint' not in resp.data
+
+
+def test_project_thumbnails_fit_container(client):
+    css = client.get('/static/css/vcard.css').data.decode()
+    # The thumbnail rule scales to fit (contain), never crop: cover
+    # cut the top and bottom off non-16:9 screenshots. (The avatar
+    # rule elsewhere legitimately still uses cover.)
+    thumb_rule = css.split('.repo-card-thumb')[1].split('}')[0]
+    assert 'object-fit: contain' in thumb_rule
