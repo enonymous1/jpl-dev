@@ -56,7 +56,7 @@
             <nav class="vcard-tabs" role="tablist" aria-label="Portfolio sections">
                 <button type="button" role="tab" aria-selected="true" data-vcard-tab="about">About</button>
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="projects">Projects</button>
-                <button type="button" role="tab" aria-selected="false" data-vcard-tab="resume">Resume</button>
+                <button type="button" role="tab" aria-selected="false" data-vcard-tab="cv">Curriculum Vitae</button>
                 {% if posts %}
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="blog">Blog</button>
                 {% endif %}
@@ -155,8 +155,8 @@
                 <p class="text-sm mt-4"><a href="https://github.com/enonymous1?tab=repositories" target="_blank" rel="noopener noreferrer">See all repositories on GitHub &rarr;</a></p>
             </section>
 
-            <section id="vcard-resume" data-vcard-section="resume" role="tabpanel" hidden>
-                <h2 class="vcard-section-title">Resume</h2>
+            <section id="vcard-cv" data-vcard-section="cv" role="tabpanel" hidden>
+                <h2 class="vcard-section-title">Curriculum Vitae</h2>
                 <p class="resume-headline">{{ resume_headline }}</p>
                 <p class="resume-location">{{ resume_location }}</p>
                 <button type="button" id="resume-print-btn" class="repo-btn resume-print-btn">Print / Save as PDF</button>
@@ -186,8 +186,10 @@
                 <div class="resume-job">
                     <h4 class="resume-job-title">{{ entry.degree }}</h4>
                     <p class="resume-job-meta">{{ entry.school }} &middot; {{ entry.date }}</p>
+                    {% if entry.note %}<p class="text-sm">{{ entry.note }}</p>{% endif %}
                 </div>
                 {% endfor %}
+                {% if resume_education_note %}<p class="text-sm">{{ resume_education_note }}</p>{% endif %}
                 <h3 class="resume-heading">Certifications</h3>
                 <ul class="resume-bullets">
                     {% for cert in resume_certifications %}
@@ -796,7 +798,7 @@ function activateVcardTab(name) {
         }
     });
     tabs.forEach(b => { b.setAttribute('aria-selected', String(b.getAttribute('data-vcard-tab') === name)); });
-    if (['about', 'projects', 'contact', 'blog'].includes(name)) {
+    if (['about', 'projects', 'cv', 'contact', 'blog'].includes(name)) {
         history.replaceState(null, '', '#' + name);
     }
 }
@@ -811,7 +813,7 @@ document.querySelectorAll('[data-vcard-tab-link]').forEach(b => {
 });
 (function () {
     const hash = (window.location.hash || '').replace('#', '');
-    if (['about', 'projects', 'resume', 'contact', 'blog'].includes(hash)) activateVcardTab(hash);
+    if (['about', 'projects', 'cv', 'contact', 'blog'].includes(hash)) activateVcardTab(hash);
 })();
 </script>
 <script src="{{ url_for('static', filename='avatar-easter-egg.js') }}"></script>

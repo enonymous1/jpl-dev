@@ -28,6 +28,7 @@ from config.projects import ABOUT_ME, GLOSSARY, ROLE_DEFINITIONS
 from config.resume import (
     RESUME_CERTIFICATIONS,
     RESUME_EDUCATION,
+    RESUME_EDUCATION_NOTE,
     RESUME_HEADLINE,
     RESUME_JOBS,
     RESUME_LANGUAGES,
@@ -105,6 +106,7 @@ def create_app():
             resume_summary=RESUME_SUMMARY,
             resume_jobs=RESUME_JOBS,
             resume_education=RESUME_EDUCATION,
+            resume_education_note=RESUME_EDUCATION_NOTE,
             resume_certifications=RESUME_CERTIFICATIONS,
             resume_languages=RESUME_LANGUAGES,
             resume_top_skills=RESUME_TOP_SKILLS,

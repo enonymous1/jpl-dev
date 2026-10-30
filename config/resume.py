@@ -1,17 +1,26 @@
 #!/usr/bin/env python3
 """
-Resume data for the homepage Resume tab.
+Resume data for the homepage Curriculum Vitae tab.
 
 Transcribed 2026-10-28 from the LinkedIn profile PDF the user uploaded
 (Profile.pdf) — wording, titles, employers, and dates are the PDF's own;
-nothing was added from project work or other sources. Two things from
-the PDF are deliberately NOT rendered on the public site: the mobile
-phone number and the Gmail address. The site's contact address is
-justin@jpl-dev.com (sidebar and Contact tab); add either value back
-only on the user's explicit say-so.
+nothing was added from project work or other sources. Merged
+2026-10-30 from the user's own CV PDF (Justin-Lyons-CV.pdf): the
+headline, the Mobile Application Developer description, the expanded
+EM3 title and employer, and the education notes. Deliberately NOT
+merged from the CV: its Selected Projects section (the Projects tab
+already lists repos live from GitHub, and the CV's test counts are
+dated 2026-10-29), its Technical Skills block (the About section's
+Tools & Tech pills already cover most of it), its portfolio counts
+(dated the moment they are printed), and its Homelab section (not
+approved for the tab). Two things from the LinkedIn PDF are
+deliberately NOT rendered on the public site: the mobile phone number
+and the Gmail address. The site's contact address is justin@jpl-dev.com
+(sidebar and Contact tab); add either value back only on the user's
+explicit say-so.
 
-The PDF lists only the Associate's degree. The bachelor's degree
-(Full Sail University, April 2024) was supplied by the user in
+The LinkedIn PDF lists only the Associate's degree. The bachelor's
+degree (Full Sail University, April 2024) was supplied by the user in
 conversation on 2026-10-28 and is listed alongside it.
 """
 
@@ -38,11 +47,12 @@ class ResumeEducation:
     degree: str
     school: str
     date: str
+    note: str | None = None  # e.g. Salutatorian; rendered under the entry
 
 
-RESUME_HEADLINE = (
-    'Systems Automation Specialist | Python & PowerShell Developer | Streamlining IT Operations'
-)
+# Headline from the user's CV (2026-10-30), replacing the LinkedIn
+# headline it carried before.
+RESUME_HEADLINE = 'Systems Automation Specialist | IT Manager | Full-Stack and Mobile Developer'
 
 RESUME_LOCATION = 'Spotsylvania, Virginia, United States'
 
@@ -115,6 +125,20 @@ RESUME_JOBS = [
         location='',
         start='January 2021',
         end='Present',
+        # Description from the user's CV: the LinkedIn PDF gave this
+        # entry no detail at all, so the tab showed the title alone.
+        description=(
+            'Design and build engaging, user-friendly Android and iOS '
+            'applications in Kotlin, Java, and Swift, with a focus on '
+            'offline-first data, clear navigation, and tested releases. '
+            'Ship Android apps with Jetpack Compose, Navigation, '
+            'ViewModel/StateFlow, Room, and Retrofit, including a maps '
+            'point-of-interest app, a Reddit browser with offline caching '
+            'and installed-app OAuth, and contacts and employee-records '
+            'apps backed by local databases. Build iOS apps in Swift and '
+            'SwiftUI, including a card-matching game, a barcode scanner, '
+            'and UIKit layout examples modernized for current toolchains.'
+        ),
     ),
     ResumeJob(
         title='Freelancer',
@@ -124,8 +148,10 @@ RESUME_JOBS = [
         end='Present',
     ),
     ResumeJob(
-        title='EM3',
-        employer='USNR',
+        # Expanded title and employer from the user's CV; the duty list
+        # below stays the fuller LinkedIn version, not the CV's summary.
+        title="Electrician's Mate Third Class (EM3)",
+        employer='United States Navy Reserve (USNR)',
         location='Richmond, VA',
         start='August 2015',
         end='September 2020',
@@ -157,8 +183,12 @@ RESUME_EDUCATION = [
         degree="Associate's degree, Computer Science",
         school='Full Sail University',
         date='November 2022',
+        note='Salutatorian',
     ),
 ]
+
+# From the user's CV: applies to both degrees above.
+RESUME_EDUCATION_NOTE = 'Both degrees with weight in Mobile Application Development.'
 
 # LinkedIn Learning courses, as listed in the PDF (no years shown there).
 RESUME_CERTIFICATIONS = [

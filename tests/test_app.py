@@ -189,12 +189,24 @@ def test_avatar_quips_script_is_external_and_shared(client):
     assert b'avatar-easter-egg.js' in post.data
 
 
-def test_resume_tab_renders_profile_data(client):
+def test_cv_tab_renders_profile_data(client):
     resp = client.get('/')
     assert resp.status_code == 200
-    assert b'data-vcard-tab="resume"' in resp.data
-    assert b'data-vcard-section="resume"' in resp.data
+    assert b'data-vcard-tab="cv"' in resp.data
+    assert b'data-vcard-section="cv"' in resp.data
+    assert b'Curriculum Vitae' in resp.data
+    assert b'data-vcard-tab="resume"' not in resp.data
     assert b'Systems Automation Specialist' in resp.data
+    # Headline, Mobile detail, EM3 title, and education notes come
+    # from the user's CV PDF (merged 2026-10-30).
+    assert b'Full-Stack and Mobile Developer' in resp.data
+    assert b'offline-first' in resp.data
+    assert b'Jetpack Compose' in resp.data
+    # Jinja escapes the apostrophe in the rendered title.
+    assert b'Electrician&#39;s Mate Third Class (EM3)' in resp.data
+    assert b'United States Navy Reserve (USNR)' in resp.data
+    assert b'Salutatorian' in resp.data
+    assert b'weight in Mobile Application Development' in resp.data
     assert b'Millennium Partners' in resp.data
     assert b'July 2024' in resp.data
     assert b'Full Sail University' in resp.data
@@ -203,9 +215,9 @@ def test_resume_tab_renders_profile_data(client):
     assert b'Agile Foundations' in resp.data
     assert b'IT Infrastructure Management' in resp.data
     assert b'id="resume-print-btn"' in resp.data
-    # The blog post pages share the sidebar, not the resume tab.
+    # The blog post pages share the sidebar, not the CV tab.
     post = client.get('/blog/interesting-links/')
-    assert b'data-vcard-section="resume"' not in post.data
+    assert b'data-vcard-section="cv"' not in post.data
 
 
 def test_resume_omits_private_contact_details(client):
@@ -223,6 +235,13 @@ def test_resume_data_is_complete():
     assert RESUME_EDUCATION
     for job in RESUME_JOBS:
         assert job.title and job.employer and job.start and job.end
+    # The CV merge filled in the Mobile Application Developer entry,
+    # which the LinkedIn PDF left bare. Freelancer stays bare: neither
+    # source gives it any detail, and none is invented here.
+    mobile = next(j for j in RESUME_JOBS if j.title == 'Mobile Application Developer')
+    assert mobile.description and 'offline-first' in mobile.description
+    for entry in RESUME_EDUCATION:
+        assert entry.degree and entry.school and entry.date
 
 
 def test_projects_search_and_sort_controls(client):
