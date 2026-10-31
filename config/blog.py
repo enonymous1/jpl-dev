@@ -48,13 +48,16 @@ _DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 
 @dataclass
 class Post:
-    """A single parsed blog post."""
+    """A single parsed blog post.
+
+    Only ``html`` is rendered (templates use ``post.html``); the raw
+    Markdown body is validated and then dropped, not kept on the object.
+    """
 
     slug: str
     title: str
     date: date
     summary: str
-    body: str
     tags: list[str] = field(default_factory=list)
     pinned: bool = False
     html: str = ''
@@ -159,7 +162,6 @@ def parse_post(path: Path) -> Post:
         title=fields['title'],
         date=parsed_date,
         summary=fields['summary'],
-        body=body,
         tags=_parse_tags(fields.get('tags', ''), path),
         pinned=_parse_bool(fields.get('pinned', 'false'), path),
         html=html,

@@ -47,6 +47,17 @@ jobs:
     - name: Test
       run: pytest
 
+    # The homepage JS modules are classic scripts, but their pure
+    # helpers (escaping, repo URLs, Markdown rendering, mailto) are
+    # exported behind a Node guard and tested with node --test.
+    - name: Set up Node.js for JS tests
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24'
+
+    - name: Test JS modules
+      run: node --test tests/js/test_modules.test.js
+
   build-and-deploy:
     needs: test
     runs-on: ubuntu-latest
@@ -109,10 +120,11 @@ jobs:
       run: python freeze.py
 
     # CNAME must be injected AFTER freeze.py runs and BEFORE the artifact is
-    # uploaded. freeze.py (FREEZER_REMOVE_EXTRA_FILES=True) would delete any
-    # CNAME written earlier; the deploy step consumes the artifact, not docs/
-    # directly, so writing CNAME after upload would have no effect. (A2a)
-    # The canonical CNAME value lives in the repo-root CNAME file. (A2b)
+    # uploaded: the deploy step consumes the artifact, not docs/ directly,
+    # so writing CNAME after upload would have no effect. (A2a) Belt and
+    # braces with app.py's FREEZER_DESTINATION_IGNORE = ['CNAME'], which
+    # also protects a CNAME written before freezing. (A2b)
+    # The canonical CNAME value lives in the repo-root CNAME file.
     # Note: docs/ is build output and is no longer tracked in git; it is
     # created here by freeze.py and uploaded as the Pages artifact.
     - name: Add CNAME file

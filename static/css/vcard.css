@@ -976,6 +976,15 @@ body.repo-modal-open {
     border-color: var(--primary-color);
 }
 
+/* ── Projects: grid shell ─────────────────────────────────────────────── */
+/* Moved from the deleted profile-card.css: the only rule from that file
+   the homepage still used — the grid reserves vertical room while the
+   repos load, so the expand control below it does not jump. */
+.projects-content {
+    position: relative;
+    min-height: 200px;
+}
+
 /* ── Projects: expand control ─────────────────────────────────────────── */
 .projects-expand-wrap {
     text-align: center;

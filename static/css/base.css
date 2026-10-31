@@ -14,3 +14,26 @@ body {
     flex-direction: column;
 }
 main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding-bottom: 42px; }
+
+/* 404-page nav shell, kept from the deleted layout.css: this is the only
+   nav on the site (base.html), and these rules still style it — the
+   element padding (no utility sets it) and the link hover background.
+   Moved here rather than dropped so deleting layout.css changes nothing
+   on the one page that uses a nav. */
+nav {
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav a {
+    color: var(--header-text);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background: var(--button-hover-bg);
+}

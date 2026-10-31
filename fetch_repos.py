@@ -18,6 +18,12 @@ repos are filtered out (the homepage already hides the profile and jpl-dev
 repos itself, so those are kept in the file), and on an API failure the
 previously cached file is kept instead of failing the whole build — unless
 there is no usable cache, in which case the build fails loudly.
+
+Payload notes: the API returns ~80 keys per repo, but the homepage and
+retro grid read about 16 of them. The snapshot is slimmed to those fields
+before writing (see REPO_FIELDS), which cuts the file by roughly two
+thirds — it ships to every visitor on every page load, so the keys nobody
+reads should not travel with it.
 """
 
 import json
@@ -26,12 +32,39 @@ import sys
 import urllib.error
 import urllib.request
 
-GITHUB_USER = os.environ.get('GITHUB_USER', 'enonymous1')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, BASE_DIR)
+
+from config.site import GITHUB_USER  # noqa: E402
+
 PER_PAGE = 100
 MAX_PAGES = 10
-OUTPUT_PATH = os.path.join(os.path.dirname(__file__), 'static', 'data', 'repos.json')
+OUTPUT_PATH = os.path.join(BASE_DIR, 'static', 'data', 'repos.json')
 
 API_BASE = f'https://api.github.com/users/{GITHUB_USER}/repos'
+
+# The only repo fields the site reads (homepage cards + preview modal +
+# retro Top 8). Everything else the API returns (every *_url, owner,
+# node_id, visibility, ...) is dropped by _slim before writing.
+REPO_FIELDS = {
+    'name',
+    'full_name',
+    'description',
+    'language',
+    'topics',
+    'stargazers_count',
+    'forks_count',
+    'html_url',
+    'homepage',
+    'has_pages',
+    'default_branch',
+    'created_at',
+    'pushed_at',
+    'size',
+    'open_issues_count',
+    'fork',
+    'archived',
+}
 
 
 def _headers():
@@ -65,8 +98,27 @@ def filter_repos(repos):
     return [r for r in repos if not r.get('fork') and not r.get('archived')]
 
 
+def _slim(repo):
+    """Reduce one API repo payload to the fields the site reads.
+
+    The license is flattened to its name: the modal renders
+    ``repo.license.name`` and nothing else from the license object.
+    """
+    slim = {key: repo.get(key) for key in REPO_FIELDS}
+    license_ = repo.get('license') or {}
+    slim['license'] = {'name': license_.get('name')} if license_.get('name') else None
+    return slim
+
+
 def fetch_repos():
-    """Fetch all public repos for GITHUB_USER, following pagination."""
+    """Fetch all public repos for GITHUB_USER, following pagination.
+
+    Returns the filtered list (forks and archived repos dropped, API
+    order preserved). Raises RuntimeError on any HTTP or network
+    failure — callers decide whether to fall back to cache; this
+    function never silently returns partial data, because a truncated
+    snapshot would publish as if it were the whole inventory.
+    """
     url = f'{API_BASE}?sort=updated&per_page={PER_PAGE}&type=public'
     all_repos = []
     for _ in range(MAX_PAGES):
@@ -101,7 +153,7 @@ def _cached_repos():
 def main():
     print(f'Fetching repos for {GITHUB_USER}...')
     try:
-        repos = fetch_repos()
+        repos = [_slim(repo) for repo in fetch_repos()]
     except RuntimeError as exc:
         cached = _cached_repos()
         if cached is not None:

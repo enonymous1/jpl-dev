@@ -12,15 +12,6 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class Skill:
-    """A single skill entry for display in the Core Skills widget."""
-
-    name: str
-    level: int  # 0–100
-    color: str = 'primary'  # Theme color name for the progress bar
-
-
-@dataclass
 class ToolGroup:
     """A labelled group of tool/technology tags for the Tools & Tech widget."""
 
@@ -46,5 +37,6 @@ class AboutMe:
     profile_image: str  # filename relative to static/images/
     badges: list[str] = field(default_factory=list)
     highlights: list[str] = field(default_factory=list)
-    skills: list[Skill] = field(default_factory=list)
+    # No percentage skill bars: they were never rendered, and a self-assigned
+    # 90 vs 88 proves nothing. The tool groups are the evidence instead.
     tool_groups: list[ToolGroup] = field(default_factory=list)

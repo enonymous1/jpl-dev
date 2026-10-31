@@ -37,8 +37,6 @@ ABOUT_ME = AboutMe(
         'Runs a homelab stack (Unraid, Docker) for media, backups, and automation',
         'Background in mobile development (Android, iOS) and full-stack web',
     ],
-    # No percentage skill bars: they were never rendered, and a self-assigned
-    # 90 vs 88 proves nothing. The tool groups are the evidence instead.
     tool_groups=[
         ToolGroup(
             'Languages',
@@ -96,6 +94,26 @@ PROJECT_THUMBNAILS = {
     'gsa-mas-offer-checklist': 'images/project-thumbs/gsa-mas-offer-checklist.png',
     'ss-space_marine_master_crafted': 'images/project-thumbs/ss-space_marine_master_crafted.png',
 }
+
+# ========================================================================
+# RETRO TOP 8 SHOWCASE
+# ========================================================================
+# Curated showcase for retro's Top 8 grid, not "most recently updated":
+# recency churned with every push and surfaced modernized old repos
+# instead of the work the portfolio is meant to lead with. Retro fills
+# from recent repos only if a showcase repo is missing, so the grid
+# still reaches 8. Curation lives here (not inline in retro.html) so
+# both the list and the rule for filling it change in one place.
+RETRO_SHOWCASE = [
+    'repo-sync',
+    'gas-auditor',
+    'photo-stitcher',
+    'voxel-portfolio',
+    'sms-toolkit',
+    'gsa-vendor-toolkit',
+    'kalshi-recorder',
+    'gsa-fcp-toolkit',
+]
 
 # ========================================================================
 # GLOSSARY

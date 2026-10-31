@@ -1,80 +1,64 @@
-# JPL-DEV — Justin P. Lyons Digital Portfolio
+# jpl-dev — Justin P. Lyons Digital Portfolio
 
-My portfolio site, live at [justinlyons.dev](https://justinlyons.dev). Flask for development ergonomics, frozen to static files for $0 GitHub Pages hosting — no live server, no database, no auth surface to maintain.
+Personal portfolio site, live at [justinlyons.dev](https://justinlyons.dev).
 
-## 🚀 Live Site
+![Homepage — About section with sidebar, hero line, and What I Build cards](assets/homepage.png)
 
-Visit the live site at: [justinlyons.dev](https://justinlyons.dev)
+## Description
 
-## 🏗️ Architectural Philosophy: The Static Hybrid Model
+A portfolio site built with Flask for development ergonomics and frozen
+to static files for $0 GitHub Pages hosting. There is no live server, no
+database, and no auth surface to maintain — the frozen site is plain
+HTML, CSS, and JavaScript, and everything dynamic (project listings,
+section switching, theme) happens in the browser.
 
-This portfolio intentionally rejects heavy monolithic frameworks and database overhead in favor of a Thick Client / Static Backend architecture.
+Project listings come from GitHub, not a catalog in the repo: a CI step
+snapshots public repo metadata into `static/data/repos.json`, and the
+homepage loads that snapshot with a live GitHub API fallback. The site
+has two skins over the same data — the clean vCard homepage (default)
+and an optional MySpace-style retro mode at `/retro/`.
 
-### Why this route?
+## Prerequisites
 
-- **Low infrastructure cost**: $0 hosting on GitHub Pages
-- **Security-first delivery**: no live server runtime, no SQL injection surface
-- **Performance at scale**: pre-rendered static pages and edge-friendly assets
-- **No baked-in projects**: project listings come from GitHub (repos.json, refreshed in CI, with a live API fallback), not a catalog in the repo
+- Python 3.11 or higher (the code uses PEP 585 built-in generics, e.g. `list[str]`)
+- pip
+- Node.js 24 — only needed when Tailwind template classes change, so the
+  CSS bundle can be rebuilt (CI rebuilds it on every deploy regardless)
+- Git, for cloning and pushing
 
-### The Engineering Green Flags
-
-- **Flask-Frozen compilation**: `freeze.py` crawls the Flask app at build time and produces static output in `docs/` (build output, not tracked in git), combining dynamic development ergonomics with static deployment simplicity. It also writes `404.html`, `robots.txt` and `sitemap.xml` for the static host.
-- **Thick client state management**: statically generated pages rely on browser APIs such as `localStorage` and `IndexedDB` for persistence, enabling rich client-side experiences without a dynamic server.
-
-## ⚖️ Alternative Architectural Routes & Trade-offs
-
-As the platform grows, the next evolution depends on persistence and runtime requirements.
-
-| Architectural Route | Infrastructure Change | What it Enables | Engineering Trade-off |
-| --- | --- | --- | --- |
-| **Current Static Route** (Flask + Frozen) | GitHub Pages static host | $0 hosting, maximum speed, edge caching, localized client state | No live Python runtime; state persistence limited to browser APIs |
-| **Dynamic Monolith** (Flask + live DB) | Migrate to PaaS (Render, Railway, Fly.io) | Persistent database, user auth, live REST endpoints | Hosting cost, server latency, runtime security surface |
-| **Cloud-Native Hybrid** (Jamstack) | Static host + serverless / BaaS | Cloud-synced user state via Supabase/Firebase with static shell | More client-side async plumbing; less Python runtime dependence |
-
-## 🎨 Features
-
-- **Modular CSS Architecture** — Logical styling modules for maintainability
-- **Dark/Light Theme Toggle** — Client-side theme switching with system preference detection
-- **GitHub-driven Projects** — The homepage Projects tab loads the full repo inventory from GitHub (first 10 shown, with an expand control for the rest), and retro's Top 8 uses the same source. The GSA MAS Checklist and Schedule Maker were removed from this repo; they may become standalone projects later, and their code remains in git history before this change.
-- **Retro Mode** — `/retro/` is an optional MySpace-style skin over the same About, Projects, and repo data as the clean homepage. The clean site is the default; retro mode is reached from the homepage sidebar and links back. No autoplay music, no fake friends, and it freezes like any other route. Retro mode has its own light/dark toggle, saved separately from the clean site's theme.
-- **vCard Homepage** — The homepage is a sidebar + tabbed main card (About / Projects / Blog / Contact) in the style of a vCard portfolio, written for this site rather than copied from a template. It is standalone, with no global top nav: the sidebar carries contact, the 'My' Space retro link, and the theme toggle, so the top bar was duplication. The tabs sit anchored to the top-right corner of the main card, like the source vCard navbar. Sections switch without a reload and deep-link via `#about`, `#projects`, `#blog`, `#contact`. No testimonials or resume sections: those would be filler without real content behind them. The Blog tab appears only when at least one post exists in `content/posts/` (see Blog below). Layout width is stabilized so switching tabs does not shift the sidebar: the homepage body is a normal block document (not the flex app shell in base.css, where auto margins made the container shrink to fit the narrow Contact tab), plus reserved scrollbar space and a minimum card height. Cards, the tab bar, the avatar, and inner repo cards use soft 20px corners like the demo, set in Poppins (the demo's font, loaded from Google Fonts with a system-sans fallback), and each section opens with a title repeating its tab (About Me / Projects / Contact) with a short accent bar underneath, like the demo's card header. The Projects card shows the full inventory with GitHub-style language filter chips (color dot + count), derived from the loaded repos rather than hardcoded; an All pill with the total count leads the row, since the default load is unfiltered. The first 10 projects show, with a Show-all expand control under the grid when the list, or a filtered list, is longer, and tapping an active chip again clears the filter. The Contact tab holds a map of Fredericksburg and a contact form that composes a mailto message in the visitor's own email app, since a static site has no server to receive a form post.
-- **Responsive Design** — Modern CSS layouts scaling across device sizes
-- **Smart Tooltips** — Positioning algorithms to prevent off-screen clipping
-
-## 🛠️ Development
-
-### Prerequisites
-
-- Python 3.11 or higher (uses PEP 585 built-in generic types — `tuple[...]`, `list[...]`)
-- Node.js 24 for the Tailwind CSS build (only needed when template classes change)
-- pip (Python package installer)
-
-### Local Development
+## Installation
 
 ```bash
-# Install runtime dependencies
+git clone https://github.com/enonymous1/jpl-dev.git
+cd jpl-dev
+
+# Isolated environment (recommended)
+python -m venv .venv
+source .venv/bin/activate   # Windows PowerShell: .venv\Scripts\Activate.ps1
+
+# Runtime dependencies
 pip install -r requirements.txt
 
-# Install dev dependencies (tests + lint)
+# Dev dependencies (tests + lint)
 pip install -r requirements-dev.txt
+```
 
-# Run development server
+All Python dependencies are pinned with `==` in the requirements files,
+so an install today reproduces the CI environment.
+
+## Local Development
+
+### Run the dev server
+
+```bash
 python app.py
 ```
 
-### Build Tailwind CSS
-
-CI rebuilds the Tailwind bundle before freezing, so the committed CSS is only a local-dev convenience. Rebuild it after changing template classes:
+This serves the Flask app locally (the frozen build is what deploys, so
+the dev server is for iteration only). For debug mode:
 
 ```bash
-# Site root
-npx --yes tailwindcss@3.4.19 \
-  -c tailwind.config.js \
-  -i static/css/tailwind.input.css \
-  -o static/css/tailwind.css \
-  --minify
-
+FLASK_ENV=development python app.py
 ```
 
 ### Refresh GitHub repo data
@@ -82,25 +66,58 @@ npx --yes tailwindcss@3.4.19 \
 ```bash
 # Fetches public repos (paginated, forks/archived filtered out) into
 # static/data/repos.json. On an API failure it keeps the cached file
-# and warns instead of failing the build.
+# and warns instead of failing the build. Set GITHUB_TOKEN to raise
+# the API rate limit from 60 to 5,000 requests/hour.
 python fetch_repos.py
 ```
 
-### Blog
+Local dev works without this step: the homepage falls back to the live
+GitHub API when the snapshot is absent or empty.
 
-Posts are Markdown files in `content/posts/`, each starting with a front-matter block (`title`, `slug`, `date` as `YYYY-MM-DD`, `summary` required; `tags` and `pinned` optional). Pinned posts sort first regardless of date. A new post can be scaffolded with:
+### Write a blog post
+
+Posts are Markdown files in `content/posts/`, each starting with a
+front-matter block (`title`, `slug`, `date` as `YYYY-MM-DD`, `summary`
+required; `tags` and `pinned` optional). Pinned posts sort first
+regardless of date. Scaffold one with:
 
 ```bash
 python new_post.py "My Post Title"
 ```
 
-Unfinished posts belong in `content/drafts/`, which the loader never reads, so they cannot publish by accident. Bad front matter (unknown keys, duplicate slugs, bad dates, empty bodies) fails the build instead of publishing half-rendered. Each post freezes to `/blog/<slug>/`, appears in `sitemap.xml`, and is included in the RSS feed at `/feed.xml`. The Blog tab only renders when at least one post exists. Post pages reuse the homepage's sidebar and card shell (a shared sidebar include, `templates/_vcard_sidebar.html`), with the tab bar as links back to the homepage sections, Blog marked current; the retired `base.html` header is used only by the 404 page.
+Unfinished posts belong in `content/drafts/`, which the loader never
+reads, so they cannot publish by accident. Bad front matter (unknown
+keys, duplicate slugs, bad dates, empty bodies) fails the build instead
+of publishing half-rendered. Each post freezes to `/blog/<slug>/`,
+appears in `sitemap.xml`, and is included in the RSS feed at `/feed.xml`.
+The Blog tab only renders when at least one post exists.
 
-### Generate Static Site
+### Build Tailwind CSS
+
+CI rebuilds the Tailwind bundle before freezing, so the committed CSS is
+only a local-dev convenience. Rebuild it after changing template classes:
 
 ```bash
-# Generate static site in docs/ (ignored by git; CI builds it for Pages)
+npx --yes tailwindcss@3.4.19 \
+  -c tailwind.config.js \
+  -i static/css/tailwind.input.css \
+  -o static/css/tailwind.css \
+  --minify
+```
+
+### Generate the static site
+
+```bash
+# Generates docs/ (gitignored build output; CI builds it for Pages)
 python freeze.py
+```
+
+`freeze.py` also writes `404.html` (served by GitHub Pages for unknown
+paths), `robots.txt`, and `sitemap.xml` from the frozen routes. Preview
+the output with any static server rooted at `docs/`:
+
+```bash
+python -m http.server 8000 --directory docs
 ```
 
 ### Checks
@@ -109,42 +126,142 @@ python freeze.py
 ruff check .
 ruff format --check .
 pytest
+node --test tests/js/test_modules.test.js
 ```
 
-## 📦 Deployment
+These are the exact commands CI runs; a push that fails any of them
+does not deploy.
 
-The site deploys to GitHub Pages when changes are pushed to `main` via GitHub Actions.
+## Features
 
-The automated workflow:
+- **vCard homepage** — A sidebar + tabbed main card (About / Projects /
+  Curriculum Vitae / Blog / Contact), written for this site rather than
+  copied from a template. Sections switch without a reload and
+  deep-link via `#about`, `#projects`, `#cv`, `#blog`, `#contact`.
+  The sidebar carries contact info, the 'My' Space retro link, and the
+  theme toggle; there is no global top nav.
+- **GitHub-driven Projects** — The Projects tab shows the full repo
+  inventory with a search box, sort control (recently updated, name,
+  stars), and GitHub-style language filter chips (color dot + count)
+  derived from the loaded repos, never hardcoded. The first 10 projects
+  show, with a Show-all expand control. Clicking a card opens a preview
+  modal with the README rendered in the browser (fetched on open,
+  cached for the session), repo metadata, and labeled GitHub / Pages
+  site buttons. Twelve repos carry thumbnail images — real screenshots
+  from their READMEs or Pages landing pages, never placeholders.
 
-1. Runs lint (`ruff check`, `ruff format --check`) and tests (`pytest`) on Python 3.11 and 3.12 — deploys only if they pass
+![Projects tab — search, sort, language chips, and thumbnail cards](assets/projects.png)
+
+![Preview modal — README rendered in the browser](assets/modal.png)
+
+- **Curriculum Vitae tab** — Headline, summary, experience, education,
+  certifications, top skills, and languages, with a Print / Save as PDF
+  button. The definition subtitle is clickable: it cycles through a
+  short set of Latin quips, then returns to the definition.
+- **Retro Mode** — `/retro/` is a MySpace-style skin over the same
+  About and repo data: a curated Top 8 showcase (filled from recent
+  repos if a showcase repo is missing), its own light/dark toggle saved
+  separately from the clean site's theme, no autoplay music, no fake
+  friends, no flashing. It freezes like any other route.
+
+![Retro mode — the same portfolio data in a MySpace-style skin](assets/retro.png)
+
+- **Dark/light themes** — Client-side switching with system-preference
+  detection, applied before first paint so the theme never flashes.
+  The clean site and retro mode remember their themes independently.
+- **Glossary and role definitions** — Every Tools & Tech pill and every
+  role pill under the name opens a modal with a short definition; terms
+  with an official source link out to it.
+- **Contact** — A Fredericksburg map plus a form that composes a mailto
+  message in the visitor's own email app (a static site has no server
+  to receive a form post, and the form does not pretend otherwise).
+  Nothing is stored.
+
+### Details worth noticing
+
+- **Avatar easter egg** — Hovering (or focusing) the profile photo
+  shows a "Hello, World!" speech bubble; clicking cycles quips, and the
+  fifth click spins the photo. It resets after 5 idle seconds.
+
+![Avatar easter egg — hover greeting, quip cycle, fifth-click spin](assets/avatar-egg.gif)
+
+## Architecture
+
+Flask + Frozen-Flask: dynamic development ergonomics, static deployment.
+The build crawls the Flask app at build time and produces flat files;
+the browser then does everything else (tabs, theme, project grid,
+modal, search) with no live Python runtime.
+
+```mermaid
+flowchart LR
+    push["Push to main"] --> test["CI: ruff + pytest\n(Python 3.11, 3.12)"]
+    test --> tw["Build Tailwind CSS\n(CLI, pinned 3.4.19)"]
+    tw --> fetch["fetch_repos.py\nGitHub API → static/data/repos.json"]
+    fetch --> freeze["freeze.py\nFlask-Frozen → docs/"]
+    freeze --> cname["Inject CNAME"]
+    cname --> pages["GitHub Pages artifact"]
+    subgraph runtime["At runtime (static, no server)"]
+        snap["repos.json snapshot"] --> grid["Projects grid"]
+        grid -.->|"fallback if snapshot missing"| api["Live GitHub API"]
+    end
+    pages --> runtime
+```
+
+## Deployment
+
+The site deploys to GitHub Pages when changes are pushed to `main` via
+GitHub Actions. The workflow:
+
+1. Runs lint (`ruff check`, `ruff format --check`) and tests (`pytest`)
+   on Python 3.11 and 3.12 — deploys only if they pass
 2. Builds the Tailwind CSS bundle
 3. Refreshes GitHub repo metadata with `fetch_repos.py`
-4. Runs Flask-Frozen to crawl and compile dynamic routes into flat static files in `docs/`, plus `404.html`, `robots.txt` and `sitemap.xml`
-5. Injects the `CNAME` for `justinlyons.dev` and deploys the artifact to GitHub Pages
+4. Runs Flask-Frozen to compile routes into flat static files in
+   `docs/`, plus `404.html`, `robots.txt`, and `sitemap.xml`
+5. Injects the `CNAME` for `justinlyons.dev` and deploys the artifact
+   to GitHub Pages
 
-Pull requests run the same lint/test/build steps without deploying.
+Pull requests run the same lint/test/build steps without deploying, and
+the workflow can also be re-run manually (`workflow_dispatch`).
 
-## 📁 Project Structure
+GitHub Pages must be configured to deploy from **GitHub Actions** (not
+from a branch folder), because `docs/` is build output and is not
+tracked in git.
+
+## Project Structure
 
 ```
-├── app.py                 # Flask application entry point (create_app factory)
+├── app.py                 # Flask app (create_app factory) + routes + RSS feed
 ├── freeze.py              # Static site compiler + 404/robots/sitemap generation
 ├── fetch_repos.py         # GitHub repo metadata cache (static/data/repos.json)
-├── templates/             # Core Jinja2 structural layouts
-├── config/                # Data models and central data repositories
-├── static/                # Global static assets
-│   └── css/               # Modular styling rules (+ Tailwind input/output)
+├── new_post.py            # Blog post scaffolder
+├── config/                # Profile, glossary, role, and resume data
+├── content/posts/         # Published blog posts (Markdown + front matter)
+│                          # (unfinished posts go in content/drafts/,
+│                          # created when needed; the loader never reads it)
+├── templates/             # Jinja2 templates (vCard homepage, retro skin, 404)
+├── assets/                # README screenshots + avatar GIF (not shipped to Pages)
+├── static/
+│   ├── css/               # Tailwind bundle + hand-written styles
+│   ├── js/                # Projects grid, preview modal, tabs, contact,
+│   │                      # retro grid/theme (classic scripts, no bundler)
+│   ├── *.js               # Theme, modals, avatar and Latin easter eggs
+│   ├── data/repos.json    # Repo snapshot (refreshed in CI)
+│   └── images/            # Profile photo + project thumbnails
 ├── tests/                 # pytest smoke + unit tests
+├── tests/js/              # node --test cases for the JS modules' pure helpers
+├── tailwind.config.js     # Tailwind content + theme configuration
 ├── pyproject.toml         # ruff + pytest configuration (no installable package)
-├── requirements.txt       # Runtime dependencies
+├── requirements.txt       # Runtime dependencies (pinned)
 ├── requirements-dev.txt   # Dev dependencies (pytest, ruff)
 ├── .python-version        # 3.12 (CI also tests 3.11)
+├── CNAME                  # Custom domain, injected into docs/ at deploy time
 └── .github/workflows/     # CI + Pages deploy pipeline
 ```
 
-`docs/` is generated by `freeze.py` and intentionally not tracked — do not commit it.
+`docs/` is generated by `freeze.py` and intentionally not tracked — do
+not commit it.
 
-## 📄 License
+## License
 
 MIT — see [LICENSE](LICENSE).

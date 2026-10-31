@@ -1,8 +1,10 @@
 /**
  * Global Theme Management
- * Handles light/dark theme switching across all pages.
- * Writes data-theme (custom CSS) and dispatches a themeChange event.
- * Dispatches 'themeChange' CustomEvent for dependent components (widgets, charts).
+ * Handles light/dark theme switching across all pages: reads the saved
+ * preference (or the OS preference), writes data-theme, and keeps the
+ * #theme-toggle button in sync. The inline script in each page's <head>
+ * duplicates _loadTheme on purpose — it must run before this file loads
+ * so the theme never flashes on first paint.
  */
 
 const GLOBAL_THEME_STORAGE_KEY = 'jpl_dev_global_theme';
@@ -20,14 +22,13 @@ function _applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem(GLOBAL_THEME_STORAGE_KEY, theme);
     _updateThemeToggleButton(theme);
-    document.dispatchEvent(new CustomEvent('themeChange', { detail: { theme } }));
 }
 
 function _updateThemeToggleButton(theme) {
     const themeToggle = document.getElementById('theme-toggle');
     if (!themeToggle) return;
 
-    // Icon-based toggle (base.html)
+    // Icon-based toggle (sidebar and base.html nav).
     const lightIcon = themeToggle.querySelector('.theme-icon-light');
     const darkIcon  = themeToggle.querySelector('.theme-icon-dark');
     if (lightIcon && darkIcon) {
@@ -35,42 +36,10 @@ function _updateThemeToggleButton(theme) {
         darkIcon.classList.toggle('hidden', theme !== 'dark');
     }
 
-    // Label-based toggle (legacy / schedule_maker)
-    const lightLabel = document.querySelector('.theme-label.light-label');
-    const darkLabel  = document.querySelector('.theme-label.dark-label');
-    if (lightLabel && darkLabel) {
-        lightLabel.classList.toggle('active', theme !== 'dark');
-        darkLabel.classList.toggle('active', theme === 'dark');
-    }
-
     themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
     themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
     themeToggle.setAttribute('title',      theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
 }
-
-// ThemeUtils — utilities for theme-aware components (widgets, charts, etc.)
-const ThemeUtils = {
-    getCurrentTheme() {
-        return document.documentElement.getAttribute('data-theme') || 'light';
-    },
-    isDarkTheme() {
-        return this.getCurrentTheme() === 'dark';
-    },
-    getThemeColor(lightColor, darkColor) {
-        return this.isDarkTheme() ? darkColor : lightColor;
-    },
-    getCSSVariable(name) {
-        return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-    },
-    onThemeChange(callback) {
-        document.addEventListener('themeChange', callback);
-    },
-    offThemeChange(callback) {
-        document.removeEventListener('themeChange', callback);
-    }
-};
-
-window.ThemeUtils = ThemeUtils;
 
 document.addEventListener('DOMContentLoaded', function () {
     _applyTheme(_loadTheme());

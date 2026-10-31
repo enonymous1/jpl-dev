@@ -21,10 +21,15 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE_DIR)
 
 from app import freezer  # noqa: E402
+from config.site import CONTACT_EMAIL, GITHUB_USER, LINKEDIN_SLUG, SITE_URL  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
-SITE_URL = os.environ.get('SITE_URL', 'https://justinlyons.dev').rstrip('/')
+# Endpoints whose parameterized routes a @freezer.register_generator
+# above already covers. Anything parameterized outside this set (and
+# outside 'static') must fail the build: a missing generator would
+# otherwise ship a site silently missing pages.
+GENERATOR_COVERED_ENDPOINTS = {'blog_post'}
 
 
 @freezer.register_generator
@@ -36,31 +41,29 @@ def blog_post():
         yield {'slug': post.slug}
 
 
-def _warn_about_dynamic_routes():
-    """
-    Inspect the Flask URL map for parameterized routes.
+def _check_dynamic_routes():
+    """Fail the build on parameterized routes without a generator.
 
-    Flask-Frozen cannot freeze routes containing URL parameters without an
-    explicit generator. This helper reports any dynamic rules so the build
-    author can add a corresponding @freezer.register_generator handler.
+    Flask-Frozen cannot freeze routes containing URL parameters without
+    an explicit generator. This used to log a warning, which also fired
+    spuriously for blog_post (it does have a generator) and was easy to
+    miss in a green build. Now it raises, and only for routes that are
+    genuinely uncovered.
     """
-    dynamic_rules = [
+    uncovered = [
         rule
         for rule in freezer.app.url_map.iter_rules()
-        if '<' in rule.rule and rule.endpoint != 'static'
+        if '<' in rule.rule
+        and rule.endpoint != 'static'
+        and rule.endpoint not in GENERATOR_COVERED_ENDPOINTS
     ]
-    if dynamic_rules:
-        logger.warning('Parameterized dynamic routes detected:')
-        for rule in dynamic_rules:
-            logger.warning('  - %s: %s', rule.endpoint, rule.rule)
-        logger.warning(
-            'Add a custom @freezer.register_generator function in freeze.py '
-            'to handle these endpoints.'
+    if uncovered:
+        details = ', '.join(f'{rule.endpoint}: {rule.rule}' for rule in uncovered)
+        raise RuntimeError(
+            'Parameterized routes without a freezer generator: ' + details + '. '
+            'Add a @freezer.register_generator function in freeze.py for each.'
         )
-    else:
-        logger.info(
-            'No parameterized dynamic routes found. Static freezing is safe for current app.'
-        )
+    logger.info('All parameterized routes have a freezer generator.')
 
 
 def _static_routes():
@@ -81,11 +84,19 @@ def _static_routes():
 def _write_static_extras(destination):
     """Write 404.html, robots.txt and sitemap.xml into the frozen output."""
     # 404: render through the app so it shares base.html, then write it flat.
-    # GitHub Pages serves docs/404.html for any unknown path.
+    # GitHub Pages serves docs/404.html for any unknown path. The error
+    # handler's context is passed explicitly: under a bare test request
+    # context there is no error handler run to supply it.
     with freezer.app.test_request_context():
         from flask import render_template
 
-        not_found = render_template('404.html')
+        not_found = render_template(
+            '404.html',
+            site_url=SITE_URL,
+            github_user=GITHUB_USER,
+            linkedin_slug=LINKEDIN_SLUG,
+            contact_email=CONTACT_EMAIL,
+        )
     with open(os.path.join(destination, '404.html'), 'w', encoding='utf-8') as f:
         f.write(not_found)
 
@@ -118,7 +129,7 @@ def main():
     """
     try:
         logger.info('Starting static site generation...')
-        _warn_about_dynamic_routes()
+        _check_dynamic_routes()
         freezer.freeze()
         _write_static_extras(freezer.app.config['FREEZER_DESTINATION'])
         logger.info('✓ Static site generated successfully in docs/ directory')

@@ -8,7 +8,7 @@
     <meta property="og:title" content="JPL-DEV — Justin P. Lyons">
     <meta property="og:description" content="Portfolio, projects and tools by Justin P. Lyons.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://justinlyons.dev/">
+    <meta property="og:url" content="{{ site_url }}/">
 
     <!-- Bootstrap Icons (icon font only; Bootstrap CSS itself was removed) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet"
@@ -20,10 +20,6 @@
     <!-- Custom CSS (theme variables, typography, project-specific) -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile-card.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/checklist.css') }}">
 
     <!-- Flash the correct theme before first paint to prevent flicker -->
     <script>
@@ -42,8 +38,7 @@
 <body>
     <!-- ── Navigation ─────────────────────────────────────────────────────── -->
     <!-- Nav colors come from --nav-* variables so light and dark themes
-         share one header. The public nav is Home, Projects, GitHub; the
-         internal demo route still exists but is no longer linked here. -->
+         share one header. The public nav is Home and GitHub. -->
     <nav class="sticky top-0 z-50 shadow-md" style="background:var(--nav-bg);color:var(--nav-text-active)" id="main-navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-14">
@@ -72,7 +67,7 @@
                     </a>
                     <a class="px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
                        style="color:var(--nav-text)"
-                       href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer">
+                       href="https://github.com/{{ github_user }}" target="_blank" rel="noopener noreferrer">
                         <i class="bi bi-github mr-1"></i>GitHub
                     </a>
                 </div>
@@ -101,7 +96,7 @@
                 </a>
                 <a class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors no-underline"
                    style="color:var(--nav-text)"
-                   href="https://github.com/enonymous1" target="_blank" rel="noopener noreferrer">
+                   href="https://github.com/{{ github_user }}" target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-github"></i>GitHub
                 </a>
             </div>
@@ -116,7 +111,6 @@
     {% block footer %}{% endblock %}
 
     <!-- Global scripts -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="{{ url_for('static', filename='global-theme.js') }}"></script>
     {% block scripts %}{% endblock %}
 

@@ -9,7 +9,6 @@ for deployment to GitHub Pages.
 Features:
 - Project data comes from GitHub (repos.json / live API), not a baked-in catalog
 - Static site generation with Flask-Frozen
-- Custom template filters for enhanced rendering
 - Responsive design with modern CSS architecture
 
 Author: JPL Development
@@ -17,14 +16,14 @@ Date: July 2025
 """
 
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from xml.sax.saxutils import escape as xml_escape
 
 from flask import Flask, Response, abort, render_template
 from flask_frozen import Freezer
 
 from config.blog import load_posts
-from config.projects import ABOUT_ME, GLOSSARY, PROJECT_THUMBNAILS, ROLE_DEFINITIONS
+from config.projects import ABOUT_ME, GLOSSARY, PROJECT_THUMBNAILS, RETRO_SHOWCASE, ROLE_DEFINITIONS
 from config.resume import (
     RESUME_CERTIFICATIONS,
     RESUME_EDUCATION,
@@ -36,8 +35,36 @@ from config.resume import (
     RESUME_SUMMARY,
     RESUME_TOP_SKILLS,
 )
+from config.site import CONTACT_EMAIL, GITHUB_USER, LINKEDIN_SLUG, SITE_URL
 
-SITE_URL = os.environ.get('SITE_URL', 'https://justinlyons.dev').rstrip('/')
+
+def _glossary_context():
+    """Glossary + role definitions as plain dicts for template JSON.
+
+    Built once here instead of twice (index and blog post used to carry
+    identical comprehensions), so the shape template JSON takes can only
+    change in one place.
+    """
+    return {
+        'glossary_data': {
+            term: {'definition': entry.definition, 'url': entry.url}
+            for term, entry in GLOSSARY.items()
+        },
+        'role_definitions': {
+            term: {'definition': entry.definition, 'url': entry.url}
+            for term, entry in ROLE_DEFINITIONS.items()
+        },
+    }
+
+
+def _site_context():
+    """Site identity values every template renders from (see config/site.py)."""
+    return {
+        'site_url': SITE_URL,
+        'github_user': GITHUB_USER,
+        'linkedin_slug': LINKEDIN_SLUG,
+        'contact_email': CONTACT_EMAIL,
+    }
 
 
 def create_app():
@@ -58,29 +85,6 @@ def create_app():
     # silently deletes docs/CNAME, breaking the custom domain until CI re-injects it.
     application.config['FREEZER_DESTINATION_IGNORE'] = ['CNAME']
 
-    @application.template_filter('nl2br')
-    def nl2br_filter(text):
-        """
-        Convert newline characters to HTML line breaks.
-
-        This custom Jinja2 filter transforms plain text newlines (\\n) into
-        HTML <br> tags, preserving line breaks when rendering text in templates.
-
-        Args:
-            text (str or None): The input text to process
-
-        Returns:
-            str: Text with newlines converted to HTML breaks, or empty string if input is None
-
-        Example:
-            In template: {{ some_text | nl2br | safe }}
-            Input: "Line 1\\nLine 2"
-            Output: "Line 1<br>\\nLine 2"
-        """
-        if text is None:
-            return ''
-        return text.replace('\n', '<br>\n')
-
     @application.route('/')
     def index():
         """
@@ -92,14 +96,8 @@ def create_app():
         return render_template(
             'index.html',
             about=ABOUT_ME,
-            glossary_data={
-                term: {'definition': entry.definition, 'url': entry.url}
-                for term, entry in GLOSSARY.items()
-            },
-            role_definitions={
-                term: {'definition': entry.definition, 'url': entry.url}
-                for term, entry in ROLE_DEFINITIONS.items()
-            },
+            **_glossary_context(),
+            **_site_context(),
             posts=load_posts(),
             resume_headline=RESUME_HEADLINE,
             resume_location=RESUME_LOCATION,
@@ -122,15 +120,8 @@ def create_app():
                     'blog_post.html',
                     post=post,
                     about=ABOUT_ME,
-                    site_url=SITE_URL,
-                    glossary_data={
-                        term: {'definition': entry.definition, 'url': entry.url}
-                        for term, entry in GLOSSARY.items()
-                    },
-                    role_definitions={
-                        term: {'definition': entry.definition, 'url': entry.url}
-                        for term, entry in ROLE_DEFINITIONS.items()
-                    },
+                    **_glossary_context(),
+                    **_site_context(),
                 )
         abort(404)
 
@@ -139,7 +130,7 @@ def create_app():
         """RSS feed for the blog, generated from the same post data."""
         items = ''
         for post in load_posts():
-            pub_date = datetime.combine(post.date, datetime.min.time(), tzinfo=timezone.utc)
+            pub_date = datetime.combine(post.date, datetime.min.time(), tzinfo=UTC)
             items += (
                 '  <item>\n'
                 f'    <title>{xml_escape(post.title)}</title>\n'
@@ -168,13 +159,18 @@ def create_app():
         stays the default; this page is reached only via its link, and it
         links back. It is frozen like any other route, so it works on the
         static GitHub Pages site with no live Python runtime."""
-        return render_template('retro.html', about=ABOUT_ME)
+        return render_template(
+            'retro.html',
+            about=ABOUT_ME,
+            retro_showcase=RETRO_SHOWCASE,
+            **_site_context(),
+        )
 
     @application.errorhandler(404)
     def page_not_found(error):
         """Render the 404 page. ``freeze.py`` also writes it to ``docs/404.html``
         so GitHub Pages serves it for unknown paths on the static site."""
-        return render_template('404.html'), 404
+        return render_template('404.html', **_site_context()), 404
 
     return application
 

@@ -32,14 +32,6 @@ def test_unknown_path_returns_404_page(client):
     assert b'404' in resp.data
 
 
-def test_nl2br_filter(client):
-    app = client.application
-    with app.test_request_context():
-        text = 'a' + chr(10) + 'b'
-        rendered = app.jinja_env.from_string('{{ text | nl2br | safe }}').render(text=text)
-    assert rendered == 'a<br>' + chr(10) + 'b'
-
-
 def test_homepage_is_a_portfolio_hero_not_a_dashboard(client):
     resp = client.get('/')
     assert b'I build tools that automate repetitive work.' in resp.data
@@ -82,10 +74,15 @@ def test_projects_language_filters_are_derived_from_repo_data(client):
     assert b'data-language-filter="All"' in resp.data
     assert b'data-language-filter="Python"' not in resp.data
     assert b'data-language-filter="PowerShell"' not in resp.data
-    assert b"chip('All', repos.length, false)" in resp.data
-    assert b"selectedLanguage = (lang === selectedLanguage) ? 'All' : lang" in resp.data
-    assert b'renderLanguageFilters' in resp.data
-    assert b'LANGUAGE_COLORS' in resp.data
+    # The chip builder lives in the extracted modules now, not inline.
+    assert b'js/projects.js' in resp.data
+    assert b'js/repo-loader.js' in resp.data
+    projects_js = client.get('/static/js/projects.js').data
+    assert b"chip('All', repos.length, false)" in projects_js
+    assert b"selectedLanguage = (lang === selectedLanguage) ? 'All' : lang" in projects_js
+    assert b'renderLanguageFilters' in projects_js
+    loader_js = client.get('/static/js/repo-loader.js').data
+    assert b'LANGUAGE_COLORS' in loader_js
 
     css = client.get('/static/css/vcard.css').data.decode()
     assert '.language-filter-btn' in css
@@ -94,8 +91,10 @@ def test_projects_language_filters_are_derived_from_repo_data(client):
 
 def test_vcard_tab_sections_animate_on_switch(client):
     resp = client.get('/')
-    assert b'vcard-section-enter' in resp.data
-    assert b'void s.offsetWidth' in resp.data
+    assert b'js/tabs.js' in resp.data
+    tabs_js = client.get('/static/js/tabs.js').data
+    assert b'vcard-section-enter' in tabs_js
+    assert b'void s.offsetWidth' in tabs_js
     css = client.get('/static/css/vcard.css').data.decode()
     assert '@keyframes vcard-section-in' in css
     assert '.vcard-section-enter' in css
@@ -442,9 +441,10 @@ def test_sidebar_has_myspace_tooltip_and_social_row(client):
 
 
 def test_repo_card_footer_anchors_github_button_and_socials_centered(client):
-    resp = client.get('/')
-    assert b'repo-card-tags' in resp.data
-    assert b'repo-card-actions' in resp.data
+    # Card markup is rendered by the extracted grid module, not inline.
+    projects_js = client.get('/static/js/projects.js').data
+    assert b'repo-card-tags' in projects_js
+    assert b'repo-card-actions' in projects_js
     css = client.get('/static/css/vcard.css').data.decode()
     assert '.repo-card-actions' in css
     assert 'margin-left: auto' in css
@@ -458,7 +458,8 @@ def test_projects_single_grid_with_expand_control(client):
     # 10 show, the expand control reveals the rest.
     assert b'id="projects-grid"' in resp.data
     assert b'id="projects-expand-btn"' in resp.data
-    assert b'PROJECTS_INITIAL_COUNT = 10' in resp.data
+    projects_js = client.get('/static/js/projects.js').data
+    assert b'PROJECTS_INITIAL_COUNT = 10' in projects_js
     assert b'toggleProjectsView' not in resp.data
     assert b'id="recentBtn"' not in resp.data
     assert b'id="featuredBtn"' not in resp.data
@@ -488,7 +489,11 @@ def test_contact_section_has_map_and_mailto_form(client):
     # copy of the sidebar's contact list. No phone or birthday fields:
     # those were the demo's fictional data, not Justin's.
     assert b'id="contact-form"' in resp.data
-    assert b'buildContactMailto' in resp.data
+    assert b'js/contact.js' in resp.data
+    contact_js = client.get('/static/js/contact.js').data
+    assert b'buildContactMailto' in contact_js
+    # No inline handler: the form submits through the module listener.
+    assert b'onsubmit' not in resp.data
     assert b'Open in Maps' in resp.data
     assert b'maps.google.com/maps?q=Fredericksburg' in resp.data
     assert b'Send Message' in resp.data
@@ -521,7 +526,11 @@ def test_retro_page_is_a_skin_not_a_second_portfolio(client):
     assert b'autoplay=' not in resp.data
     assert b'<audio' not in resp.data
     assert b'Top 8 here means a curated showcase of 8 repos' in resp.data
-    assert b'SHOWCASE' in resp.data
+    # The showcase list reaches the page as config JSON, and the grid
+    # module reads it from there.
+    assert b'retroShowcase' in resp.data
+    top8_js = client.get('/static/js/retro-top8.js').data
+    assert b'retroShowcase' in top8_js
 
 
 def test_retro_grid_cannot_overflow_on_long_repo_names():
@@ -580,10 +589,18 @@ def test_repo_preview_modal_present(client):
     assert b'id="repo-modal"' in resp.data
     assert b'id="repo-modal-content"' in resp.data
     assert b'data-modal-close' in resp.data
-    assert b'openRepoModal' in resp.data
-    assert b'renderMarkdown' in resp.data
-    assert b'data-repo-name' in resp.data
-    assert b'api.github.com/repos/enonymous1/' in resp.data
+    # Card markup (including data-repo-name) is rendered by the grid module.
+    assert b'data-repo-name' in client.get('/static/js/projects.js').data
+    # The modal code lives in modules; the GitHub user reaches it
+    # through page config, not a hardcoded URL in the markup.
+    assert b'js/repo-modal.js' in resp.data
+    assert b'js/readme-md.js' in resp.data
+    modal_js = client.get('/static/js/repo-modal.js').data
+    assert b'openRepoModal' in modal_js
+    assert b'api.github.com/repos/' in modal_js
+    readme_js = client.get('/static/js/readme-md.js').data
+    assert b'renderMarkdown' in readme_js
+    assert b'githubUser' in resp.data
     css = client.get('/static/css/vcard.css').data.decode()
     assert '.repo-modal' in css
     assert '.repo-modal-card' in css
@@ -693,7 +710,7 @@ def test_project_thumbnails_mapping(client):
         assert os.path.getsize(full) > 0
     resp = client.get('/')
     assert resp.status_code == 200
-    assert b'PROJECT_THUMBNAILS' in resp.data
+    assert b'projectThumbnails' in resp.data
     for path in PROJECT_THUMBNAILS.values():
         assert path.encode() in resp.data
     # No thumbnail or site button on the retro list: cards only.
@@ -705,8 +722,9 @@ def test_project_card_buttons_are_labeled(client):
     resp = client.get('/')
     assert resp.status_code == 200
     # Buttons carry their destination as visible text now; the old
-    # ambiguous hover-only "Preview" hint is gone.
-    assert b'Pages site' in resp.data
+    # ambiguous hover-only "Preview" hint is gone. Button labels live
+    # in the grid module's card template.
+    assert b'Pages site' in client.get('/static/js/projects.js').data
     assert b'repo-card-hint' not in resp.data
 
 
@@ -725,3 +743,23 @@ def test_project_modal_scrollbar_is_themed(client):
     assert 'var(--text-secondary)' in thumb_rule
     assert 'scrollbar-width: thin' in css
     assert 'scrollbar-color: var(--text-secondary)' in css
+
+
+def test_homepage_and_retro_load_js_modules_with_config(client):
+    # Page config carries site identity to the modules; retro loads its
+    # own pair of modules, not the homepage grid/modal code.
+    home = client.get('/')
+    assert b'js/repo-loader.js' in home.data
+    assert b'js/projects.js' in home.data
+    assert b'js/repo-modal.js' in home.data
+    assert b'js/tabs.js' in home.data
+    assert b'js/contact.js' in home.data
+    assert b'githubUser' in home.data
+    assert b'contactEmail' in home.data
+    retro = client.get('/retro/')
+    assert b'js/repo-loader.js' in retro.data
+    assert b'js/retro-top8.js' in retro.data
+    assert b'js/retro-theme.js' in retro.data
+    assert b'retroShowcase' in retro.data
+    assert b'js/projects.js' not in retro.data
+    assert b'js/repo-modal.js' not in retro.data

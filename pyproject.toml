@@ -13,7 +13,10 @@ target-version = "py311"
 quote-style = "single"
 
 [tool.ruff.lint]
-select = ["E", "F", "I"]
+# E/F/I are the baseline; B (bugbear) catches real bugs (mutable
+# defaults, unused loop variables, f-string placeholders) and UP
+# (pyupgrade) keeps syntax at the py311 floor. Both are low-noise here.
+select = ["E", "F", "I", "B", "UP"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
