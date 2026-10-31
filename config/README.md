@@ -17,9 +17,13 @@ Holds only `ABOUT_ME`, the profile data rendered by the homepage and
 retro mode (name, bio, profile photo, badges, highlights, tool groups),
 plus `PROJECT_THUMBNAILS` (card thumbnails by repo name),
 `RETRO_SHOWCASE` (the curated Top 8 list), `GLOSSARY` (one definition
-per Tools & Tech pill), and `ROLE_DEFINITIONS` (the three role pills).
-Every glossary/role definition here is the approved wording; changing
-one changes the modal everywhere it appears.
+per Tools & Tech pill), `ROLE_DEFINITIONS` (the three role pills), and
+`LOCATION_FACTS` (the eleven Fredericksburg facts for the sidebar
+location modal). Every glossary/role definition here is the approved
+wording; changing one changes the modal everywhere it appears. The
+location facts carry a comment recording the three corrections made
+when they were checked before shipping (tunnels as lore, no dam length,
+arcade count/hardware); do not "fix" those back.
 
 Project data used to live here as a baked-in catalog, along with the
 `/projects` page and the GSA MAS Checklist and Schedule Maker

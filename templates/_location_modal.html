@@ -1,0 +1,24 @@
+<!-- Location modal, shared by the homepage and the blog post pages:
+     both render the sidebar include, whose Fredericksburg button opens
+     this dialog. Unlike the glossary modal, the content is rendered
+     server-side here (map + facts from LOCATION_FACTS), so the script
+     only opens and closes it. The map embed and Maps link reuse the
+     Contact section's URLs, so the two never drift apart. -->
+<div id="location-modal" class="repo-modal" hidden>
+    <div class="repo-modal-backdrop" data-location-close></div>
+    <div class="repo-modal-card" role="dialog" aria-modal="true" aria-labelledby="location-modal-title">
+        <button type="button" id="location-modal-close" class="repo-modal-close" data-location-close aria-label="Close location details">&times;</button>
+        <p class="repo-modal-kicker">Where I'm based</p>
+        <h3 id="location-modal-title" class="repo-modal-title">Fredericksburg, Virginia</h3>
+        <div class="location-map">
+            <iframe title="Map of Fredericksburg, Virginia" src="https://maps.google.com/maps?q=Fredericksburg%2C%20VA%2C%20USA&amp;t=&amp;z=11&amp;ie=UTF8&amp;iwloc=&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="repo-modal-actions"><a class="repo-modal-action repo-modal-action--primary" href="https://www.google.com/maps/search/?api=1&amp;query=Fredericksburg%2C+VA%2C+USA" target="_blank" rel="noopener noreferrer">Open in Maps <i class="bi bi-box-arrow-up-right"></i></a></div>
+        <div class="location-facts">
+            {% for fact in location_facts %}
+            <h4 class="location-fact-title">{{ fact.title }}</h4>
+            <p class="location-fact-body">{{ fact.body }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>

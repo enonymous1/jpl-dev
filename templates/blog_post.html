@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-17">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261031-01">
     <script>
         (function() {
             try {
@@ -50,6 +50,7 @@
                 {% endif %}
             </article>
             {% include "_glossary_modal.html" %}
+            {% include "_location_modal.html" %}
         </div>
     </div>
 </div>
@@ -59,5 +60,6 @@
 window.GLOSSARY_DATA = {terms: {{ glossary_data | tojson }}, roles: {{ role_definitions | tojson }}};
 </script>
 <script src="{{ url_for('static', filename='glossary-modal.js') }}"></script>
+<script src="{{ url_for('static', filename='location-modal.js') }}"></script>
 </body>
 </html>

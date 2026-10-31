@@ -352,6 +352,46 @@ def test_glossary_modal_rendered_on_homepage_and_post_pages(client):
     assert b'data-glossary-term' not in retro.data
 
 
+def test_location_modal_rendered_on_homepage_and_post_pages(client):
+    resp = client.get('/')
+    assert b'id="location-modal-open"' in resp.data
+    assert b'id="location-modal"' in resp.data
+    assert b'location-modal.js' in resp.data
+    assert b'maps.google.com/maps?q=Fredericksburg' in resp.data
+    assert b'google.com/maps/search/?api=1' in resp.data
+    for title in (
+        b'The birth of the power chord',
+        b'The blueprint for the First Amendment',
+        b'The first Civil Rights stop',
+        b'A massive crossing to freedom',
+        b'Royal street names',
+        b'The true Washington home',
+        b'19th-century big data',
+        b'The hydroelectric shift',
+        b'The mystery tunnels',
+        b'The local maker hub',
+        b'The 2026 arcade expansion',
+    ):
+        assert title in resp.data
+    # The sidebar entry is a button now, not plain text.
+    assert b'<i class="bi bi-geo-alt"></i> Fredericksburg, VA</li>' not in resp.data
+    post = client.get('/blog/interesting-links/')
+    assert b'id="location-modal"' in post.data
+    assert b'location-modal.js' in post.data
+    retro = client.get('/retro/')
+    assert b'location-modal' not in retro.data
+    assert b'location-modal-open' not in retro.data
+
+
+def test_location_facts_shape(client):
+    from config.projects import LOCATION_FACTS
+
+    assert len(LOCATION_FACTS) == 11
+    for fact in LOCATION_FACTS:
+        assert fact['title'].strip()
+        assert fact['body'].strip()
+
+
 def test_role_definition_modals_use_approved_wording(client):
     from config.projects import ABOUT_ME, ROLE_DEFINITIONS
 

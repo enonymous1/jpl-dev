@@ -14,7 +14,8 @@ templates/
 ├── base.html            # Shell used ONLY by the 404 page (nav + theme)
 ├── 404.html             # Not-found page (also written to docs/404.html by freeze.py)
 ├── _vcard_sidebar.html  # Shared sidebar (homepage + blog post pages)
-└── _glossary_modal.html # Shared glossary/role modal shell
+├── _glossary_modal.html # Shared glossary/role modal shell
+└── _location_modal.html # Shared location modal shell (map + facts)
 ```
 
 `base.html` is not a master layout: the homepage and retro are standalone
@@ -36,7 +37,7 @@ js/projects.js    # Projects grid: chips, search, sort, expand
 js/repo-modal.js  # preview modal: README fetch, focus trap, clone copy
 js/tabs.js        # vCard tab switching + deep links + CV print button
 js/contact.js     # mailto contact form
-avatar-easter-egg.js, latin-quips.js, glossary-modal.js
+avatar-easter-egg.js, latin-quips.js, glossary-modal.js, location-modal.js
 ```
 
 `retro.html` loads `js/repo-loader.js` plus its own `js/retro-top8.js`
@@ -49,5 +50,7 @@ Routes pass site identity from `config/site.py` (`site_url`,
 `github_user`, `linkedin_slug`, `contact_email`) to every template, so
 no template hardcodes the domain, the GitHub user, or the contact
 address. The homepage additionally receives `about`, `posts`,
-`glossary_data`, `role_definitions`, `project_thumbnails`, and the
-`resume_*` values; retro receives `about` and `retro_showcase`.
+`glossary_data`, `role_definitions`, `project_thumbnails`,
+`location_facts`, and the `resume_*` values; blog posts receive
+`about`, `glossary_data`, and `location_facts`; retro receives
+`about` and `retro_showcase`.

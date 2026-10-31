@@ -23,7 +23,14 @@ from flask import Flask, Response, abort, render_template
 from flask_frozen import Freezer
 
 from config.blog import load_posts
-from config.projects import ABOUT_ME, GLOSSARY, PROJECT_THUMBNAILS, RETRO_SHOWCASE, ROLE_DEFINITIONS
+from config.projects import (
+    ABOUT_ME,
+    GLOSSARY,
+    LOCATION_FACTS,
+    PROJECT_THUMBNAILS,
+    RETRO_SHOWCASE,
+    ROLE_DEFINITIONS,
+)
 from config.resume import (
     RESUME_CERTIFICATIONS,
     RESUME_EDUCATION,
@@ -55,6 +62,16 @@ def _glossary_context():
             for term, entry in ROLE_DEFINITIONS.items()
         },
     }
+
+
+def _location_context():
+    """Fredericksburg facts for the sidebar location modal.
+
+    Rendered server-side into the modal partial, so the frozen site
+    needs no JavaScript data for it; the modal script only opens and
+    closes the dialog.
+    """
+    return {'location_facts': LOCATION_FACTS}
 
 
 def _site_context():
@@ -98,6 +115,7 @@ def create_app():
             about=ABOUT_ME,
             **_glossary_context(),
             **_site_context(),
+            **_location_context(),
             posts=load_posts(),
             resume_headline=RESUME_HEADLINE,
             resume_location=RESUME_LOCATION,
@@ -122,6 +140,7 @@ def create_app():
                     about=ABOUT_ME,
                     **_glossary_context(),
                     **_site_context(),
+                    **_location_context(),
                 )
         abort(404)
 

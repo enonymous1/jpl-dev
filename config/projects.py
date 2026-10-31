@@ -300,3 +300,115 @@ ROLE_DEFINITIONS: dict[str, GlossaryEntry] = {
         'and Swift.'
     ),
 }
+
+# ========================================================================
+# LOCATION FACTS
+# ========================================================================
+# Facts about Fredericksburg, VA for the sidebar location modal, drafted
+# 2026-10-31 and checked against public sources before shipping. Three
+# of the supplied drafts were corrected in that check, and the
+# corrections are the shipped wording, so do not "fix" them back:
+# - The tunnels' purpose is unconfirmed (city tourism copy calls it
+#   speculation), so the entry frames the goods-moving claim as local
+#   lore instead of stating it as fact.
+# - The Embrey Dam marker gives 1,070 feet overall with a 770-foot
+#   spillway, so the entry carries no length at all rather than the
+#   supplied 770-foot total.
+# - Planet Novak Rewind opened in July 2026 (no longer "launching"),
+#   with 25 cabinets per the opening coverage, not 24, and the cabinets
+#   run the original games on modern hardware, not native hardware.
+LOCATION_FACTS = [
+    {
+        'title': 'The birth of the power chord',
+        'body': (
+            'At a sock hop at the Fredericksburg Armory, Link Wray '
+            "improvised 'Rumble', the power chords and distortion that "
+            'became modern rock guitar.'
+        ),
+    },
+    {
+        'title': 'The blueprint for the First Amendment',
+        'body': (
+            'In January 1777, Thomas Jefferson met with his advisory '
+            'committee here to draft the Bill for Establishing Religious '
+            'Freedom, later the Virginia Statute for Religious Freedom '
+            'and the model for the First Amendment.'
+        ),
+    },
+    {
+        'title': 'The first Civil Rights stop',
+        'body': (
+            'Fredericksburg was the first stop of the Freedom Rides on '
+            'May 4, 1961, as the riders traveled south from Washington, '
+            'D.C. to challenge segregated bus terminals.'
+        ),
+    },
+    {
+        'title': 'A massive crossing to freedom',
+        'body': (
+            'In 1862, an estimated 10,000 enslaved people freed '
+            'themselves by crossing the Rappahannock River to Union lines.'
+        ),
+    },
+    {
+        'title': 'Royal street names',
+        'body': (
+            'Named in 1728 for Frederick, Prince of Wales, the town '
+            'named its streets after members of the royal family.'
+        ),
+    },
+    {
+        'title': 'The true Washington home',
+        'body': (
+            'George Washington moved to Ferry Farm, across the '
+            'Rappahannock from Fredericksburg, in 1738 at age six, and '
+            'spent most of his boyhood there.'
+        ),
+    },
+    {
+        'title': '19th-century big data',
+        'body': (
+            'Matthew Fontaine Maury, born in Spotsylvania County just '
+            "outside Fredericksburg, aggregated thousands of ships' logs "
+            'to chart ocean currents and winds around the world, an early '
+            "form of crowdsourced data. He was known as the 'Pathfinder "
+            "of the Seas'."
+        ),
+    },
+    {
+        'title': 'The hydroelectric shift',
+        'body': (
+            'In 1909-10, the Fredericksburg Water Power Company built '
+            'the Ambursen-type Embrey Dam across the Rappahannock to '
+            'generate hydroelectric power. It powered the region into '
+            'the 1960s and was removed in 2004.'
+        ),
+    },
+    {
+        'title': 'The mystery tunnels',
+        'body': (
+            'Brick-lined passages run beneath downtown near the old '
+            'river docks, with torch smudges still visible on their '
+            'walls. Their purpose is unconfirmed; local lore says they '
+            'moved goods from the docks to shops out of sight.'
+        ),
+    },
+    {
+        'title': 'The local maker hub',
+        'body': (
+            "The Central Rappahannock Regional Library's IdeaSpace, on "
+            'Princess Anne Street, is a community fabrication lab with '
+            '3D printers, a laser cutter, and an AV booth for prototyping '
+            'and digital design.'
+        ),
+    },
+    {
+        'title': 'The 2026 arcade expansion',
+        'body': (
+            'Planet Novak Rewind opened at Spotsylvania Towne Centre in '
+            'summer 2026, with 25 retro cabinets, Pac-Man, Donkey Kong, '
+            'Mortal Kombat, and more, running the original games on '
+            'modern hardware.'
+        ),
+    },
+]
