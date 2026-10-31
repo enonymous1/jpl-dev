@@ -390,8 +390,13 @@ def test_avatar_easter_egg_quips_homepage_only(client):
         assert line in script.data
     css = client.get('/static/css/vcard.css').data.decode()
     assert '@keyframes avatar-spin' in css
-    assert '.vcard-quip' in css
+    assert '.vcard-bubble' in css
+    assert '.vcard-quip' not in css
     assert 'prefers-reduced-motion' in css
+    # Hovering (or focusing) the photo greets; clicking still cycles.
+    assert b'Hello, World!' in script.data
+    assert b'mouseenter' in script.data
+    assert b'vcard-bubble-wrap' in resp.data
     # Retro keeps its plain photo: the easter egg is shared by the
     # homepage and the blog post pages only.
     retro = client.get('/retro/')

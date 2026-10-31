@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile-card.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/checklist.css') }}">
     <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-15">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261028-16">
     <script>
         (function() {
             try {
@@ -58,7 +58,7 @@
     </div>
 </div>
 <script src="{{ url_for('static', filename='global-theme.js') }}"></script>
-<script src="{{ url_for('static', filename='avatar-easter-egg.js') }}"></script>
+<script src="{{ url_for('static', filename='avatar-easter-egg.js') }}?v=20261030-01"></script>
 <script>
 window.GLOSSARY_DATA = {terms: {{ glossary_data | tojson }}, roles: {{ role_definitions | tojson }}};
 </script>
