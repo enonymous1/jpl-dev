@@ -11,6 +11,7 @@ global.escHtml = loader.escHtml;
 const { renderMarkdown, resolveReadmeUrl } = require('../../static/js/readme-md.js');
 const { buildContactMailto } = require('../../static/js/contact.js');
 const { computeStretch } = require('../../static/avatar-easter-egg.js');
+const { nextFactIndex, prevFactIndex } = require('../../static/location-modal.js');
 
 const repo = {
     name: 'demo',
@@ -128,4 +129,11 @@ test('computeStretch scales with drag and clamps at 0.5x-2x', () => {
     assert.deepEqual(computeStretch(150, 75), { scaleX: 2, scaleY: 1.5 });
     assert.deepEqual(computeStretch(1000, -1000), { scaleX: 2, scaleY: 0.5 });
     assert.deepEqual(computeStretch(-75, -75), { scaleX: 0.5, scaleY: 0.5 });
+});
+
+test('carousel index math wraps at both ends', () => {
+    assert.equal(nextFactIndex(10, 11), 0);
+    assert.equal(nextFactIndex(0, 11), 1);
+    assert.equal(prevFactIndex(0, 11), 10);
+    assert.equal(prevFactIndex(5, 11), 4);
 });

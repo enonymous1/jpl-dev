@@ -1139,6 +1139,64 @@ html[data-theme="dark"] .location-map iframe {
     margin: 0;
 }
 
+/* ── Location facts carousel ─────────────────────────────────────── */
+/* One slide visible: the track is a flex row of full-width slides
+   moved with translateX. Slides stretch to the tallest one, so the
+   card never changes height mid-carousel. The wrap jump reuses the
+   no-transition class to snap instead of sweeping back. */
+.location-track {
+    display: flex;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.location-track.no-transition {
+    transition: none;
+}
+
+.location-slide {
+    flex: 0 0 100%;
+    min-width: 0;
+}
+
+/* Visually hidden but announced: the status line speaks the current
+   fact's title when it changes (the counter is plain text so it is
+   not announced twice). */
+.location-fact-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.location-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.location-counter {
+    flex: 1;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.location-arrow {
+    font-size: 18px;
+    line-height: 1;
+    padding: 2px 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .location-track {
+        transition: none;
+    }
+}
+
 .contact-form-heading {
     font-size: 20px;
     font-weight: 700;

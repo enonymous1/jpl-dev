@@ -383,6 +383,19 @@ def test_location_modal_rendered_on_homepage_and_post_pages(client):
     assert b'location-modal-open' not in retro.data
 
 
+def test_location_facts_carousel_controls(client):
+    resp = client.get('/')
+    assert b'id="location-track"' in resp.data
+    assert b'id="location-fact-prev"' in resp.data
+    assert b'id="location-fact-next"' in resp.data
+    assert b'Fact 1 of 11' in resp.data
+    assert resp.data.count(b'class="location-slide"') == 11
+    assert b'id="location-fact-status"' in resp.data
+    script = client.get('/static/location-modal.js')
+    assert b'nextFactIndex' in script.data
+    assert b'prevFactIndex' in script.data
+
+
 def test_location_facts_shape(client):
     from config.projects import LOCATION_FACTS
 

@@ -1,9 +1,13 @@
 <!-- Location modal, shared by the homepage and the blog post pages:
      both render the sidebar include, whose Fredericksburg button opens
      this dialog. Unlike the glossary modal, the content is rendered
-     server-side here (map + facts from LOCATION_FACTS), so the script
-     only opens and closes it. The map embed and Maps link reuse the
-     Contact section's URLs, so the two never drift apart. -->
+     server-side here (map + facts from LOCATION_FACTS). The map embed
+     and Maps link reuse the Contact section's URLs, so the two never
+     drift apart. The facts are a sliding carousel: one slide visible,
+     prev/next arrows plus a counter, wrapping at both ends. The status
+     line announces the current fact's title to screen readers when it
+     changes; the counter itself is plain text so it is not announced
+     twice. -->
 <div id="location-modal" class="repo-modal" hidden>
     <div class="repo-modal-backdrop" data-location-close></div>
     <div class="repo-modal-card" role="dialog" aria-modal="true" aria-labelledby="location-modal-title">
@@ -14,11 +18,21 @@
             <iframe title="Map of Fredericksburg, Virginia" src="https://maps.google.com/maps?q=Fredericksburg%2C%20VA%2C%20USA&amp;t=&amp;z=11&amp;ie=UTF8&amp;iwloc=&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <div class="repo-modal-actions"><a class="repo-modal-action repo-modal-action--primary" href="https://www.google.com/maps/search/?api=1&amp;query=Fredericksburg%2C+VA%2C+USA" target="_blank" rel="noopener noreferrer">Open in Maps <i class="bi bi-box-arrow-up-right"></i></a></div>
-        <div class="location-facts">
-            {% for fact in location_facts %}
-            <h4 class="location-fact-title">{{ fact.title }}</h4>
-            <p class="location-fact-body">{{ fact.body }}</p>
-            {% endfor %}
+        <div class="location-carousel">
+            <div class="location-track" id="location-track">
+                {% for fact in location_facts %}
+                <div class="location-slide">
+                    <h4 class="location-fact-title">{{ fact.title }}</h4>
+                    <p class="location-fact-body">{{ fact.body }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <p class="location-fact-status" id="location-fact-status" role="status">{{ location_facts[0].title }}</p>
+            <div class="location-controls">
+                <button type="button" class="repo-btn location-arrow" id="location-fact-prev" aria-label="Previous fact">&lsaquo;</button>
+                <span class="location-counter" id="location-fact-counter">Fact 1 of {{ location_facts|length }}</span>
+                <button type="button" class="repo-btn location-arrow" id="location-fact-next" aria-label="Next fact">&rsaquo;</button>
+            </div>
         </div>
     </div>
 </div>

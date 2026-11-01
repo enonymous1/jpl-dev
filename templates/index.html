@@ -25,7 +25,7 @@
          and filter pills did not appear. Bump the version whenever
          vcard.css changes. -->
     <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261101-01">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261101-02">
     <!-- Apply the saved theme before first paint, like global-theme.js
          does on load: this copy must stay inline (it runs before the
          external file loads) so the theme never flashes on a dark visit. -->
@@ -279,6 +279,6 @@ window.GLOSSARY_DATA = {terms: {{ glossary_data | tojson }}, roles: {{ role_defi
 <script src="{{ url_for('static', filename='avatar-easter-egg.js') }}?v=20261101-01"></script>
 <script src="{{ url_for('static', filename='latin-quips.js') }}"></script>
 <script src="{{ url_for('static', filename='glossary-modal.js') }}"></script>
-<script src="{{ url_for('static', filename='location-modal.js') }}"></script>
+<script src="{{ url_for('static', filename='location-modal.js') }}?v=20261101-01"></script>
 </body>
 </html>
