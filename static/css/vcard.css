@@ -187,9 +187,21 @@ body.vcard-page {
 /* Avatar play modal: the large photo stretches under a pointer drag
    and springs back on release. touch-action keeps a touch drag from
    scrolling the modal; the spring is skipped under reduced motion. */
+/* The play modal never scrolls: a stretched photo's transformed box
+   counts toward the card's scrollable overflow under overflow:auto,
+   so stretching past the card's edge spawned scrollbars (intermittent
+   because it depended on viewport size and stretch amount). Clipping
+   at the card keeps the full stretch visible up to the card's edge
+   and no scrollbar ever appears. The 55dvh cap keeps kicker + hint
+   inside the card's max-height on short viewports now that the card
+   cannot scroll. */
+.repo-modal-card.avatar-play-card {
+    overflow: hidden;
+}
+
 .avatar-play-photo {
     display: block;
-    width: min(320px, 80vw);
+    width: min(320px, 80vw, 55dvh);
     height: auto;
     margin: 0 auto;
     border-radius: var(--vcard-radius);
@@ -1143,10 +1155,16 @@ html[data-theme="dark"] .location-map iframe {
 /* One slide visible: the track is a flex row of full-width slides
    moved with translateX. Slides stretch to the tallest one, so the
    card never changes height mid-carousel. The wrap jump reuses the
-   no-transition class to snap instead of sweeping back. */
+   no-transition class to snap instead of sweeping back. The clip
+   MUST live on the viewport, not the track: a transformed element's
+   clip box moves with its own transform, so overflow:hidden on the
+   track hid every slide past the first. */
+.location-carousel-viewport {
+    overflow: hidden;
+}
+
 .location-track {
     display: flex;
-    overflow: hidden;
     transition: transform 0.3s ease;
 }
 

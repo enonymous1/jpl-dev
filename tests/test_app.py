@@ -386,6 +386,7 @@ def test_location_modal_rendered_on_homepage_and_post_pages(client):
 def test_location_facts_carousel_controls(client):
     resp = client.get('/')
     assert b'id="location-track"' in resp.data
+    assert b'class="location-carousel-viewport"' in resp.data
     assert b'id="location-fact-prev"' in resp.data
     assert b'id="location-fact-next"' in resp.data
     assert b'Fact 1 of 11' in resp.data
@@ -466,6 +467,8 @@ def test_avatar_play_modal_rendered_on_homepage_and_post_pages(client):
     css = client.get('/static/css/vcard.css').data.decode()
     assert '.avatar-play-photo' in css
     assert '.avatar-play-photo.is-springing' in css
+    assert b'avatar-play-card' in resp.data
+    assert '.avatar-play-card' in css
     post = client.get('/blog/interesting-links/')
     assert b'id="avatar-play-modal"' in post.data
     retro = client.get('/retro/')

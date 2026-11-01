@@ -7,7 +7,10 @@
      prev/next arrows plus a counter, wrapping at both ends. The status
      line announces the current fact's title to screen readers when it
      changes; the counter itself is plain text so it is not announced
-     twice. -->
+     twice. The clip lives on the viewport wrapper, NOT on the track:
+     a transformed element's clip box moves with its own transform, so
+     overflow:hidden on the track itself hid every slide past the
+     first (shipped bug, fixed 2026-11-01). -->
 <div id="location-modal" class="repo-modal" hidden>
     <div class="repo-modal-backdrop" data-location-close></div>
     <div class="repo-modal-card" role="dialog" aria-modal="true" aria-labelledby="location-modal-title">
@@ -19,13 +22,15 @@
         </div>
         <div class="repo-modal-actions"><a class="repo-modal-action repo-modal-action--primary" href="https://www.google.com/maps/search/?api=1&amp;query=Fredericksburg%2C+VA%2C+USA" target="_blank" rel="noopener noreferrer">Open in Maps <i class="bi bi-box-arrow-up-right"></i></a></div>
         <div class="location-carousel">
-            <div class="location-track" id="location-track">
-                {% for fact in location_facts %}
-                <div class="location-slide">
-                    <h4 class="location-fact-title">{{ fact.title }}</h4>
-                    <p class="location-fact-body">{{ fact.body }}</p>
+            <div class="location-carousel-viewport">
+                <div class="location-track" id="location-track">
+                    {% for fact in location_facts %}
+                    <div class="location-slide">
+                        <h4 class="location-fact-title">{{ fact.title }}</h4>
+                        <p class="location-fact-body">{{ fact.body }}</p>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
             <p class="location-fact-status" id="location-fact-status" role="status">{{ location_facts[0].title }}</p>
             <div class="location-controls">
