@@ -25,7 +25,7 @@
          and filter pills did not appear. Bump the version whenever
          vcard.css changes. -->
     <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261031-01">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261101-01">
     <!-- Apply the saved theme before first paint, like global-theme.js
          does on load: this copy must stay inline (it runs before the
          external file loads) so the theme never flashes on a dark visit. -->
@@ -253,6 +253,7 @@
 
             {% include "_glossary_modal.html" %}
             {% include "_location_modal.html" %}
+            {% include "_avatar_play_modal.html" %}
         </div>
     </div>
 </div>
@@ -275,7 +276,7 @@ window.GLOSSARY_DATA = {terms: {{ glossary_data | tojson }}, roles: {{ role_defi
 <script src="{{ url_for('static', filename='js/repo-modal.js') }}"></script>
 <script src="{{ url_for('static', filename='js/tabs.js') }}"></script>
 <script src="{{ url_for('static', filename='js/contact.js') }}"></script>
-<script src="{{ url_for('static', filename='avatar-easter-egg.js') }}?v=20261030-01"></script>
+<script src="{{ url_for('static', filename='avatar-easter-egg.js') }}?v=20261101-01"></script>
 <script src="{{ url_for('static', filename='latin-quips.js') }}"></script>
 <script src="{{ url_for('static', filename='glossary-modal.js') }}"></script>
 <script src="{{ url_for('static', filename='location-modal.js') }}"></script>

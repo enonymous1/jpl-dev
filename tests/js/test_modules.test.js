@@ -10,6 +10,7 @@ const loader = require('../../static/js/repo-loader.js');
 global.escHtml = loader.escHtml;
 const { renderMarkdown, resolveReadmeUrl } = require('../../static/js/readme-md.js');
 const { buildContactMailto } = require('../../static/js/contact.js');
+const { computeStretch } = require('../../static/avatar-easter-egg.js');
 
 const repo = {
     name: 'demo',
@@ -120,4 +121,11 @@ test('buildContactMailto encodes subject and body', () => {
     assert.match(url, /Hello%20%26%20bye/);
     // encodeURIComponent leaves ( ) unescaped, so they appear literally.
     assert.match(url, /%E2%80%94%20Jane%20Doe%20\(jane%40example\.dev\)/);
+});
+
+test('computeStretch scales with drag and clamps at 0.5x-2x', () => {
+    assert.deepEqual(computeStretch(0, 0), { scaleX: 1, scaleY: 1 });
+    assert.deepEqual(computeStretch(150, 75), { scaleX: 2, scaleY: 1.5 });
+    assert.deepEqual(computeStretch(1000, -1000), { scaleX: 2, scaleY: 0.5 });
+    assert.deepEqual(computeStretch(-75, -75), { scaleX: 0.5, scaleY: 0.5 });
 });

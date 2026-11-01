@@ -442,6 +442,23 @@ def test_avatar_easter_egg_quips_homepage_only(client):
     assert b'avatar-easter-egg' not in retro.data
 
 
+def test_avatar_play_modal_rendered_on_homepage_and_post_pages(client):
+    resp = client.get('/')
+    assert b'id="avatar-play-modal"' in resp.data
+    assert b'id="avatar-play-photo"' in resp.data
+    assert b'Drag the photo to stretch it' in resp.data
+    script = client.get('/static/avatar-easter-egg.js')
+    assert b'avatar-play-modal' in script.data
+    assert b'computeStretch' in script.data
+    css = client.get('/static/css/vcard.css').data.decode()
+    assert '.avatar-play-photo' in css
+    assert '.avatar-play-photo.is-springing' in css
+    post = client.get('/blog/interesting-links/')
+    assert b'id="avatar-play-modal"' in post.data
+    retro = client.get('/retro/')
+    assert b'avatar-play-modal' not in retro.data
+
+
 def test_sidebar_and_retro_use_role_pills_not_a_title_line(client):
     resp = client.get('/')
     assert b'class="vcard-title"' not in resp.data
