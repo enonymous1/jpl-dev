@@ -13,8 +13,9 @@ HTML, CSS, and JavaScript, and everything dynamic (project listings,
 section switching, theme) happens in the browser.
 
 Project listings come from GitHub, not a catalog in the repo: a CI step
-snapshots public repo metadata into `static/data/repos.json`, and the
-homepage loads that snapshot with a live GitHub API fallback. The site
+snapshots public repo metadata into `static/data/repos.json` on every
+push to main and once daily on a schedule, and the homepage loads that
+snapshot with a live GitHub API fallback. The site
 has two skins over the same data — the clean vCard homepage (default)
 and an optional MySpace-style retro mode at `/retro/`.
 

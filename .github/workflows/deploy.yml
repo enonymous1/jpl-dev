@@ -7,6 +7,16 @@ on:
     branches: [ main ]
   # Allow manual re-deploys without requiring a new commit (A2d)
   workflow_dispatch:
+  # Daily refresh of the project listings: the build-and-deploy job
+  # re-snapshots repo metadata and redeploys, so new repos, stars,
+  # and descriptions land on the site without a push. Cron runs in
+  # UTC: 12:00 UTC is 07:00 EST / 08:00 EDT. GitHub pauses scheduled
+  # runs after 60 days with no repo activity. The deploy step's
+  # `github.ref == 'refs/heads/main'` gate already admits scheduled
+  # runs (they run on the default branch), so no other change is
+  # needed for the schedule to deploy.
+  schedule:
+    - cron: '0 12 * * *'
 
 permissions:
   contents: read
