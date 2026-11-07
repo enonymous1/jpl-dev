@@ -19,8 +19,9 @@ from config.models import AboutMe, GlossaryEntry, ToolGroup
 ABOUT_ME = AboutMe(
     name='Justin P. Lyons',
     bio=(
-        'IT Manager with AS & BS in Computer Science. I build tools that automate '
-        'repetitive work — pricing and vendor data, message and photo archives, '
+        'IT Manager with AS & BS in Computer Science, with weight in Mobile '
+        'Application Development. I build tools that automate repetitive work — '
+        'GSA schedule pricing and vendor data, message and photo archives, '
         'video and market-data pipelines — and the dashboards and infrastructure '
         'that run them. Mobile development is where I started; automation and '
         'full-stack tools are where most of my recent work lives.'
