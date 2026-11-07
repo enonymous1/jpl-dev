@@ -81,6 +81,25 @@ ABOUT_ME = AboutMe(
 # re-shoot them if a landing page changes materially, since a
 # screenshot freezes the page at shoot time. Add a repo here only
 # with a verified screenshot.
+#
+# Second batch, 2026-11-07 (19 more, 31 total): four more README shots,
+# all verified 200 on raw.githubusercontent that day
+# (achievement-trackers docs/screenshots/tracker-dark.png,
+# profileforge assets/screenshots/portfolio-site.png,
+# workspace-monitor docs/assets/home-dashboard.png,
+# product-lookup-poc docs/assets/web-frontend.png — that last one is
+# the top 1280x720 of a 1280x3400 full-page capture, cropped so the
+# card shows the hero instead of a sliver); plus fifteen Pages shots,
+# 1280x520 headless Chrome of each live landing page
+# (face-stretch-playground, web-mtg-draft, web-conway-game-of-life,
+# gas-auditor, dirt-bike-ghost-racer, number-chomper, snoodle-pop,
+# fuzzle, android-automations, web-privacy-export-viewer, pdf-toolkit,
+# tech6-cv-generator, video-optimizer-suite, walgreens-photo-prints,
+# windows-sandbox-toolkit). web-mtg-draft's shot shows the set list
+# still loading from Scryfall — the sandbox capture caught the first
+# paint; the list loads on a real browser. Still no thumbnail for the
+# CLI/library repos (kalshi-recorder, repo-sync, gsa-vendor-toolkit,
+# ...): nothing visual to show, and no image is faked.
 PROJECT_THUMBNAILS = {
     'voxel-portfolio': 'images/project-thumbs/voxel-portfolio.png',
     'photo-stitcher': 'images/project-thumbs/photo-stitcher.gif',
@@ -94,6 +113,25 @@ PROJECT_THUMBNAILS = {
     'ngo-eval-webapp': 'images/project-thumbs/ngo-eval-webapp.png',
     'gsa-mas-offer-checklist': 'images/project-thumbs/gsa-mas-offer-checklist.png',
     'ss-space_marine_master_crafted': 'images/project-thumbs/ss-space_marine_master_crafted.png',
+    'achievement-trackers': 'images/project-thumbs/achievement-trackers.png',
+    'profileforge': 'images/project-thumbs/profileforge.png',
+    'workspace-monitor': 'images/project-thumbs/workspace-monitor.png',
+    'product-lookup-poc': 'images/project-thumbs/product-lookup-poc.png',
+    'face-stretch-playground': 'images/project-thumbs/face-stretch-playground.png',
+    'web-mtg-draft': 'images/project-thumbs/web-mtg-draft.png',
+    'web-conway-game-of-life': 'images/project-thumbs/web-conway-game-of-life.png',
+    'gas-auditor': 'images/project-thumbs/gas-auditor.png',
+    'dirt-bike-ghost-racer': 'images/project-thumbs/dirt-bike-ghost-racer.png',
+    'number-chomper': 'images/project-thumbs/number-chomper.png',
+    'snoodle-pop': 'images/project-thumbs/snoodle-pop.png',
+    'fuzzle': 'images/project-thumbs/fuzzle.png',
+    'android-automations': 'images/project-thumbs/android-automations.png',
+    'web-privacy-export-viewer': 'images/project-thumbs/web-privacy-export-viewer.png',
+    'pdf-toolkit': 'images/project-thumbs/pdf-toolkit.png',
+    'tech6-cv-generator': 'images/project-thumbs/tech6-cv-generator.png',
+    'video-optimizer-suite': 'images/project-thumbs/video-optimizer-suite.png',
+    'walgreens-photo-prints': 'images/project-thumbs/walgreens-photo-prints.png',
+    'windows-sandbox-toolkit': 'images/project-thumbs/windows-sandbox-toolkit.png',
 }
 
 # ========================================================================
