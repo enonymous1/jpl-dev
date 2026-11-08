@@ -80,7 +80,13 @@ ABOUT_ME = AboutMe(
 # its sample data loaded, json-insight with a pasted sample analysed);
 # re-shoot them if a landing page changes materially, since a
 # screenshot freezes the page at shoot time. Add a repo here only
-# with a verified screenshot.
+# with a verified screenshot. floorplan-studio's demo.svg re-copied
+# 2026-11-08: the shipped copy was the Oct 28 portrait render, the
+# repo's current file is the Nov 1 landscape (1100x850pt) render of
+# the rebuilt sample plan. Note: the floorplan-studio README also
+# references docs/assets/editor-hero.png and draw-export-render.gif,
+# but both 404 on main as of 2026-11-08 — a floorplan-studio repo
+# issue, not fixed here.
 #
 # Second batch, 2026-11-07 (19 more, 31 total): four more README shots,
 # all verified 200 on raw.githubusercontent that day
