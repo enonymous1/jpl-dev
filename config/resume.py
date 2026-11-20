@@ -22,6 +22,14 @@ explicit say-so.
 The LinkedIn PDF lists only the Associate's degree. The bachelor's
 degree (Full Sail University, April 2024) was supplied by the user in
 conversation on 2026-10-28 and is listed alongside it.
+
+CORRECTED 2026-11-04 from contracts the user uploaded that day:
+the IT Manager role's term was July 2024-July 2025, not "Present",
+and a February-May 2026 Finance and Close-Out Consultant engagement
+was added below. Do not restore "Present" for the IT Manager role
+without a written extension. The summary paragraphs below still use
+the LinkedIn present-tense wording and should be re-tense-checked
+before the site is republished.
 """
 
 from dataclasses import dataclass, field
@@ -86,11 +94,34 @@ RESUME_SUMMARY = [
 
 RESUME_JOBS = [
     ResumeJob(
+        title='Finance and Close-Out Consultant',
+        employer='Millennium Partners',
+        location='',
+        start='February 2026',
+        end='May 2026',
+        description=(
+            'Finance and close-out consulting on a short, day-rate '
+            'engagement (contract MPC-2026-004, initial 17 days). '
+            'Scope was set month by month and could be adjusted as needed.'
+        ),
+        bullets=[
+            'Reviewed GSA Professional Services Refresh 31 and identified '
+            'changes to incorporate into technical and pricing proposals.',
+            'Reviewed GSA labor categories and pricing under Refresh 31, '
+            'then finalized proposal pricing for submission.',
+            'Supported development of cost and technical proposals for '
+            'possible grant or contract proposals.',
+            'Supported possible rollout support for the Kosovo '
+            'interoperability contract, website updates for Millennium '
+            'Partners and Millennium Global Solutions, and proposal work.',
+        ],
+    ),
+    ResumeJob(
         title='IT Manager',
         employer='Millennium Partners',
         location='',
         start='July 2024',
-        end='Present',
+        end='July 2025',
         description=(
             'As the Information Technology Manager at Millennium Partners, '
             'I am responsible for directing the IT infrastructure and '
@@ -117,6 +148,21 @@ RESUME_JOBS = [
             'to proposals for new engagements.',
             'Functioning as a key technical resource for the home office '
             'and senior leadership, including the CEO.',
+        ],
+    ),
+    ResumeJob(
+        title='IT Technical Support Consultant',
+        employer='Millennium Partners',
+        location='',
+        start='September 2023',
+        end='March 2024',
+        description=(
+            'Independent-contractor IT technical support for '
+            'Millennium Partners, on an hourly basis.'
+        ),
+        bullets=[
+            'Provided information technology technical support services '
+            'to support Millennium Partners.',
         ],
     ),
     ResumeJob(
