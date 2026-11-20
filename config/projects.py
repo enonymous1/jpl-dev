@@ -37,6 +37,7 @@ ABOUT_ME = AboutMe(
         'Ships tested, documented tools with CI — not just demos',
         'Runs a homelab stack (Unraid, Docker) for media, backups, and automation',
         'Background in mobile development (Android, iOS) and full-stack web',
+        'Plays Pokémon GO — Trainer enonymous1, friend code 8456 7104 2978',
     ],
     tool_groups=[
         ToolGroup(
