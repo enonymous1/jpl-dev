@@ -27,9 +27,8 @@ CORRECTED 2026-11-04 from contracts the user uploaded that day:
 the IT Manager role's term was July 2024-July 2025, not "Present",
 and a February-May 2026 Finance and Close-Out Consultant engagement
 was added below. Do not restore "Present" for the IT Manager role
-without a written extension. The summary paragraphs below still use
-the LinkedIn present-tense wording and should be re-tense-checked
-before the site is republished.
+without a written extension. The summary paragraphs were re-tensed
+to past tense 2026-11-20 (user-approved draft).
 """
 
 from dataclasses import dataclass, field
@@ -65,12 +64,12 @@ RESUME_HEADLINE = 'Systems Automation Specialist | IT Manager | Full-Stack and M
 RESUME_LOCATION = 'Spotsylvania, Virginia, United States'
 
 RESUME_SUMMARY = [
-    'As the Information Technology Manager at Millennium Partners, I am '
+    'As the Information Technology Manager at Millennium Partners, I was '
     'responsible for directing the IT infrastructure and technology '
-    "solutions that support the company's global initiatives. I am "
+    "solutions that supported the company's global initiatives. I am "
     'passionate about creating user-focused, efficient technology '
     'environments that empower teams to meet their objectives.',
-    'My core responsibilities in this role include: Providing '
+    'My core responsibilities in this role included: Providing '
     'comprehensive IT support to staff at the corporate headquarters and '
     'in various overseas field offices. Creating dynamic multimedia '
     'products, such as videos and infographics, to advance project goals '
@@ -79,15 +78,15 @@ RESUME_SUMMARY = [
     'access to collaborative platforms like Microsoft SharePoint. '
     'Designing and implementing IT solutions for a range of international '
     'projects and contributing technical expertise to new proposals.',
-    'This position builds upon my foundation as a highly motivated and '
+    'This position built upon my foundation as a highly motivated and '
     'results-oriented Mobile Application Developer, where I specialized '
     'in creating engaging and user-friendly applications. With a strong '
     'computer science background as a Salutatorian from Full Sail '
     'University, I have a proven track record of delivering high-quality '
     'apps using Java, Kotlin, and Swift. Furthermore, my prior '
     'experience in the mobile sales industry honed my ability to '
-    'communicate effectively and understand end-user needs. I now '
-    'leverage this unique combination of technical expertise and '
+    'communicate effectively and understand end-user needs. I '
+    'leveraged this unique combination of technical expertise and '
     'interpersonal skills to support my colleagues and contribute to '
     'innovative solutions at Millennium Partners.',
 ]
