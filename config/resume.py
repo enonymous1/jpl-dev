@@ -123,10 +123,10 @@ RESUME_JOBS = [
         end='July 2025',
         description=(
             'As the Information Technology Manager at Millennium Partners, '
-            'I am responsible for directing the IT infrastructure and '
-            "technology solutions that support our company's global "
-            'initiatives. My role is central to ensuring that both our '
-            'domestic and international teams have the technical '
+            'I was responsible for directing the IT infrastructure and '
+            "technology solutions that supported our company's global "
+            'initiatives. My role was central to ensuring that both our '
+            'domestic and international teams had the technical '
             'capabilities required to meet their objectives effectively.'
         ),
         bullets=[
