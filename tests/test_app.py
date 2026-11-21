@@ -681,6 +681,15 @@ def test_repo_preview_modal_present(client):
     assert '.repo-card-thumb' in css
 
 
+def test_websites_tab_sorts_web_languages_first(client):
+    # The Websites tab's default order is web-first (HTML/JavaScript/
+    # TypeScript), then the rest, recently updated inside each group.
+    projects_js = client.get('/static/js/projects.js').data
+    assert b'sortWebsites(allRepos' in projects_js
+    loader_js = client.get('/static/js/repo-loader.js').data
+    assert b"WEBSITE_FIRST_LANGUAGES = ['HTML', 'JavaScript', 'TypeScript']" in loader_js
+
+
 def test_homepage_vcard_tabs(client):
     resp = client.get('/')
     assert b'vcard-layout' in resp.data

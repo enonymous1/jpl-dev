@@ -101,7 +101,19 @@ function hasWebsite(repo, githubUser) {
     return repoSiteUrl(repo, githubUser) !== '';
 }
 
+// Languages whose repos ARE the website go first on the Websites tab;
+// the rest (Python tools with a landing page, and so on) follow.
+// Order inside each group stays the API's (recently updated):
+// Array.sort is stable, so this only moves groups, never reorders
+// within one. A repo with no language counts as not web-first.
+const WEBSITE_FIRST_LANGUAGES = ['HTML', 'JavaScript', 'TypeScript'];
+
+function sortWebsites(repos) {
+    const rank = (repo) => WEBSITE_FIRST_LANGUAGES.includes(repo.language) ? 0 : 1;
+    return [...repos].sort((a, b) => rank(a) - rank(b));
+}
+
 // Node-test exports (guarded: browsers never define module).
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { escHtml, filterActiveRepos, repoSiteUrl, hasWebsite, langColor, LANGUAGE_COLORS };
+    module.exports = { escHtml, filterActiveRepos, repoSiteUrl, hasWebsite, sortWebsites, WEBSITE_FIRST_LANGUAGES, langColor, LANGUAGE_COLORS };
 }

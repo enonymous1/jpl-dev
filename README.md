@@ -155,7 +155,7 @@ does not deploy.
 
 ![Preview modal — README rendered in the browser](assets/modal.png)
 
-- **Websites tab** — The project list filtered to repos with a live website (a homepage URL or a GitHub Pages site), shown in full with every card leading with its thumbnail. Clicking a card opens the same preview modal, with the README and a visit-site button.
+- **Websites tab** — The project list filtered to repos with a live website (a homepage URL or a GitHub Pages site), shown in full with every card leading with its thumbnail. Clicking a card opens the same preview modal, with the README and a visit-site button. Web languages (HTML, JavaScript, TypeScript) sort first, then the rest, recently updated within each group.
 
 ![Websites tab — every project with a live site, each card leading with its preview](assets/websites.png)
 

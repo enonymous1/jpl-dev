@@ -158,7 +158,7 @@ async function loadHomepageProjects() {
 function renderWebsites() {
     const gridEl = document.getElementById('websites-grid');
     if (!gridEl) return;
-    const sites = allRepos.filter(r => hasWebsite(r, window.JPL_CONFIG.githubUser));
+    const sites = sortWebsites(allRepos.filter(r => hasWebsite(r, window.JPL_CONFIG.githubUser)));
     gridEl.innerHTML = sites.length
         ? sites.map(r => renderRepoCard(r)).join('')
         : `<p class="col-span-full text-center py-4 text-sm" style="color:var(--text-secondary)">No live websites found.</p>`;

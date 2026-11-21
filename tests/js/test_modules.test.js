@@ -66,6 +66,27 @@ test('hasWebsite is true exactly when repoSiteUrl finds a site', () => {
     assert.equal(loader.hasWebsite({ ...repo, homepage: '   ' }, 'enonymous1'), false);
 });
 
+test('sortWebsites puts web languages first, keeps API order within groups', () => {
+    assert.deepEqual(loader.WEBSITE_FIRST_LANGUAGES, ['HTML', 'JavaScript', 'TypeScript']);
+    const mk = (name, language) => ({ ...repo, name, language });
+    const input = [
+        mk('py-tool', 'Python'),
+        mk('web-game', 'JavaScript'),
+        mk('docs-site', 'HTML'),
+        mk('py-lib', 'Python'),
+        mk('ts-app', 'TypeScript'),
+        mk('no-lang', null),
+        mk('ps-tool', 'PowerShell'),
+        mk('web-page', 'HTML'),
+    ];
+    assert.deepEqual(
+        loader.sortWebsites(input).map((r) => r.name),
+        ['web-game', 'docs-site', 'ts-app', 'web-page', 'py-tool', 'py-lib', 'no-lang', 'ps-tool'],
+    );
+    // Input untouched: the sort returns a new list.
+    assert.equal(input[0].name, 'py-tool');
+});
+
 test('langColor returns linguist colors and a fallback', () => {
     assert.equal(loader.langColor('Python'), '#3572a5');
     assert.equal(loader.langColor('Brainfuck'), '#888888');
