@@ -102,7 +102,10 @@ ABOUT_ME = AboutMe(
 # gas-auditor, dirt-bike-ghost-racer, number-chomper, snoodle-pop,
 # fuzzle, android-automations, web-privacy-export-viewer, pdf-toolkit,
 # tech6-cv-generator, video-optimizer-suite, walgreens-photo-prints,
-# windows-sandbox-toolkit). web-mtg-draft's shot shows the set list
+# windows-sandbox-toolkit). Plus six more Pages shots, 1280x520, for
+# the Websites tab (gmail-filter-builder, voice-generator, web-backtalk,
+# web-typing-trainer, whenwhere-biz-main-site, whenwhere-drone-light-shows)
+# — every repo with a live site now has a thumbnail. web-mtg-draft's shot shows the set list
 # still loading from Scryfall — the sandbox capture caught the first
 # paint; the list loads on a real browser. Still no thumbnail for the
 # CLI/library repos (kalshi-recorder, repo-sync, gsa-vendor-toolkit,
@@ -139,6 +142,12 @@ PROJECT_THUMBNAILS = {
     'video-optimizer-suite': 'images/project-thumbs/video-optimizer-suite.png',
     'walgreens-photo-prints': 'images/project-thumbs/walgreens-photo-prints.png',
     'windows-sandbox-toolkit': 'images/project-thumbs/windows-sandbox-toolkit.png',
+    'gmail-filter-builder': 'images/project-thumbs/gmail-filter-builder.png',
+    'voice-generator': 'images/project-thumbs/voice-generator.png',
+    'web-backtalk': 'images/project-thumbs/web-backtalk.png',
+    'web-typing-trainer': 'images/project-thumbs/web-typing-trainer.png',
+    'whenwhere-biz-main-site': 'images/project-thumbs/whenwhere-biz-main-site.png',
+    'whenwhere-drone-light-shows': 'images/project-thumbs/whenwhere-drone-light-shows.png',
 }
 
 # ========================================================================

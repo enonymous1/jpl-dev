@@ -55,6 +55,7 @@
             <nav class="vcard-tabs" role="tablist" aria-label="Portfolio sections">
                 <button type="button" role="tab" aria-selected="true" data-vcard-tab="about">About</button>
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="projects">Projects</button>
+                <button type="button" role="tab" aria-selected="false" data-vcard-tab="websites">Websites</button>
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="cv">Curriculum Vitae</button>
                 {% if posts %}
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="blog">Blog</button>
@@ -149,6 +150,17 @@
                     <button type="button" id="projects-expand-btn" class="projects-expand-btn" aria-expanded="false" hidden></button>
                 </div>
                 <p class="text-sm mt-4"><a href="https://github.com/{{ github_user }}?tab=repositories" target="_blank" rel="noopener noreferrer">See all repositories on GitHub &rarr;</a></p>
+            </section>
+
+            <section id="vcard-websites" data-vcard-section="websites" role="tabpanel" hidden>
+                <h2 class="vcard-section-title">Websites</h2>
+                <p class="text-sm mb-3" style="color:var(--text-secondary)">Live websites from the project list — every card here opens a real site. Click a card to preview it, then visit the site from the preview.</p>
+                <div id="websites-grid" class="projects-content grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
+                        <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...
+                    <noscript><p class="text-sm" style="color:var(--text-secondary)">Websites load from GitHub, which needs JavaScript. See all repositories on GitHub instead.</p></noscript>
+                    </div>
+                </div>
             </section>
 
             <section id="vcard-cv" data-vcard-section="cv" role="tabpanel" hidden>

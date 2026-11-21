@@ -94,7 +94,14 @@ function repoSiteUrl(repo, githubUser) {
     return '';
 }
 
+// A repo "has a website" when the grid can link one for it: its
+// homepage field, or its GitHub Pages site. Same rule as repoSiteUrl,
+// as a predicate so the Websites tab can filter on it.
+function hasWebsite(repo, githubUser) {
+    return repoSiteUrl(repo, githubUser) !== '';
+}
+
 // Node-test exports (guarded: browsers never define module).
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { escHtml, filterActiveRepos, repoSiteUrl, langColor, LANGUAGE_COLORS };
+    module.exports = { escHtml, filterActiveRepos, repoSiteUrl, hasWebsite, langColor, LANGUAGE_COLORS };
 }

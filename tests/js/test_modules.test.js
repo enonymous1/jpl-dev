@@ -59,6 +59,13 @@ test('repoSiteUrl prefers homepage, then Pages, then empty', () => {
     );
 });
 
+test('hasWebsite is true exactly when repoSiteUrl finds a site', () => {
+    assert.equal(loader.hasWebsite({ ...repo, homepage: 'https://example.dev/' }, 'enonymous1'), true);
+    assert.equal(loader.hasWebsite({ ...repo, has_pages: true }, 'enonymous1'), true);
+    assert.equal(loader.hasWebsite(repo, 'enonymous1'), false);
+    assert.equal(loader.hasWebsite({ ...repo, homepage: '   ' }, 'enonymous1'), false);
+});
+
 test('langColor returns linguist colors and a fallback', () => {
     assert.equal(loader.langColor('Python'), '#3572a5');
     assert.equal(loader.langColor('Brainfuck'), '#888888');

@@ -636,6 +636,7 @@ def test_vcard_section_titles_repeat_the_active_tab(client):
     # About -> "About Me", Projects -> "Projects", Contact -> "Contact".
     assert b'class="vcard-section-title">About Me</h2>' in resp.data
     assert b'class="vcard-section-title">Projects</h2>' in resp.data
+    assert b'class="vcard-section-title">Websites</h2>' in resp.data
     assert b'class="vcard-section-title">Contact</h2>' in resp.data
     assert b'Featured Projects' not in resp.data
     # Poppins, the demo's font, loaded only on the homepage.
@@ -687,10 +688,16 @@ def test_homepage_vcard_tabs(client):
     for tab in (
         b'data-vcard-tab="about"',
         b'data-vcard-tab="projects"',
+        b'data-vcard-tab="websites"',
         b'data-vcard-tab="contact"',
     ):
         assert tab in resp.data
     assert b'data-vcard-section="projects"' in resp.data
+    assert b'data-vcard-section="websites"' in resp.data
+    assert b'id="websites-grid"' in resp.data
+    # The Websites tab deep-links like the others.
+    tabs_js = client.get('/static/js/tabs.js').data
+    assert b"'websites'" in tabs_js
     # The old sticky contact footer is gone: sidebar + Contact tab cover it.
     assert b"Let's Connect" not in resp.data
     # Homepage is standalone: no global top nav, but the theme toggle

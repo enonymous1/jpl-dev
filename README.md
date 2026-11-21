@@ -148,12 +148,14 @@ does not deploy.
   show, with a Show-all expand control. Clicking a card opens a preview
   modal with the README rendered in the browser (fetched on open,
   cached for the session), repo metadata, and labeled GitHub / Pages
-  site buttons. Thirty-one repos carry thumbnail images — real screenshots
+  site buttons. Thirty-seven repos carry thumbnail images — real screenshots
   from their READMEs or Pages landing pages, never placeholders.
 
 ![Projects tab — search, sort, language chips, and thumbnail cards](assets/projects.png)
 
 ![Preview modal — README rendered in the browser](assets/modal.png)
+
+- **Websites tab** — The project list filtered to repos with a live website (a homepage URL or a GitHub Pages site), shown in full with every card leading with its thumbnail. Clicking a card opens the same preview modal, with the README and a visit-site button.
 
 - **Curriculum Vitae tab** — Headline, summary, experience, education,
   certifications, top skills, and languages, with a Print / Save as PDF

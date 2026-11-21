@@ -1,7 +1,8 @@
 // ── Homepage Projects grid ─────────────────────────────────────────────────
 // Loads the repo inventory (via repo-loader.js), renders the grid with
-// language filter chips, search, sort, and the expand control. The grid
-// shows one list in API order (sorted by last push); the 'updated' sort
+// language filter chips, search, sort, and the expand control, and
+// renders the Websites tab from the same list filtered to repos with
+// a live site. The grid shows one list in API order (sorted by last
 // key is therefore a no-op by design, not a missing feature. Filter,
 // search, and sort combine, and any change collapses the grid back to
 // the first PROJECTS_INITIAL_COUNT. Card thumbnails come from the
@@ -136,6 +137,8 @@ async function loadHomepageProjects() {
     const repos = await loadRepos(window.JPL_CONFIG.githubUser);
     if (!repos) {
         gridEl.innerHTML = `<p class="col-span-full text-center py-4 text-sm" style="color:var(--text-secondary)"><i class="bi bi-exclamation-circle mr-1"></i>Could not load GitHub repositories.</p>`;
+        const websitesEl = document.getElementById('websites-grid');
+        if (websitesEl) websitesEl.innerHTML = gridEl.innerHTML;
         return;
     }
     // One list, in API order (sorted by last push). The 'featured'
@@ -144,6 +147,21 @@ async function loadHomepageProjects() {
     window.JPL.repos = allRepos;
     renderLanguageFilters(allRepos);
     renderProjects();
+    renderWebsites();
+}
+
+// The Websites tab: the same cards, filtered to repos with a live
+// site (homepage field or GitHub Pages) and shown in full — no search,
+// sort, or expand control. Every site repo has a thumbnail, so each
+// card leads with its preview. Renders from the same allRepos list
+// the Projects tab uses, so it stays in sync with it for free.
+function renderWebsites() {
+    const gridEl = document.getElementById('websites-grid');
+    if (!gridEl) return;
+    const sites = allRepos.filter(r => hasWebsite(r, window.JPL_CONFIG.githubUser));
+    gridEl.innerHTML = sites.length
+        ? sites.map(r => renderRepoCard(r)).join('')
+        : `<p class="col-span-full text-center py-4 text-sm" style="color:var(--text-secondary)">No live websites found.</p>`;
 }
 
 // Wiring: only on pages that carry the grid (the homepage). The

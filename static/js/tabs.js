@@ -1,6 +1,6 @@
 // ── vCard section tabs ─────────────────────────────────────────────────────
-// About / Projects / Curriculum Vitae / Blog / Contact, no reload.
-// Deep-linkable via #about, #projects, #cv, #blog, #contact so a link
+// About / Projects / Websites / Curriculum Vitae / Blog / Contact, no reload.
+// Deep-linkable via #about, #projects, #websites, #cv, #blog, #contact so a link
 // can open a specific section on the frozen static site.
 function activateVcardTab(name) {
     // Unknown names (e.g. #blog with no posts yet, so no Blog section
@@ -18,7 +18,7 @@ function activateVcardTab(name) {
         }
     });
     tabs.forEach(b => { b.setAttribute('aria-selected', String(b.getAttribute('data-vcard-tab') === name)); });
-    if (['about', 'projects', 'cv', 'contact', 'blog'].includes(name)) {
+    if (['about', 'projects', 'websites', 'cv', 'contact', 'blog'].includes(name)) {
         history.replaceState(null, '', '#' + name);
     }
 }
@@ -34,6 +34,6 @@ if (typeof document !== 'undefined') {
     document.getElementById('resume-print-btn')?.addEventListener('click', () => window.print());
     (function () {
         const hash = (window.location.hash || '').replace('#', '');
-        if (['about', 'projects', 'cv', 'contact', 'blog'].includes(hash)) activateVcardTab(hash);
+        if (['about', 'projects', 'websites', 'cv', 'contact', 'blog'].includes(hash)) activateVcardTab(hash);
     })();
 }
