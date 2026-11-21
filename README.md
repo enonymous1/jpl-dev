@@ -148,7 +148,7 @@ does not deploy.
   show, with a Show-all expand control. Clicking a card opens a preview
   modal with the README rendered in the browser (fetched on open,
   cached for the session), repo metadata, and labeled GitHub / Pages
-  site buttons. Twelve repos carry thumbnail images — real screenshots
+  site buttons. Thirty-one repos carry thumbnail images — real screenshots
   from their READMEs or Pages landing pages, never placeholders.
 
 ![Projects tab — search, sort, language chips, and thumbnail cards](assets/projects.png)
@@ -170,6 +170,7 @@ does not deploy.
 - **Dark/light themes** — Client-side switching with system-preference
   detection, applied before first paint so the theme never flashes.
   The clean site and retro mode remember their themes independently.
+  Screenshots in this README are in dark mode.
 - **Glossary and role definitions** — Every Tools & Tech pill and every
   role pill under the name opens a modal with a short definition; terms
   with an official source link out to it.
@@ -177,12 +178,17 @@ does not deploy.
   message in the visitor's own email app (a static site has no server
   to receive a form post, and the form does not pretend otherwise).
   Nothing is stored.
+- **Location modal** — The sidebar's Fredericksburg, VA entry opens a
+  modal with the same map plus a carousel of 11 local facts (arrow keys
+  navigate, no autoplay, reopening resets to fact 1).
 
 ### Details worth noticing
 
 - **Avatar easter egg** — Hovering (or focusing) the profile photo
   shows a "Hello, World!" speech bubble; clicking cycles quips, and the
-  fifth click spins the photo. It resets after 5 idle seconds.
+  fifth click spins the photo. It resets after 5 idle seconds. Ten rapid
+  clicks (within 3 seconds) open a face-stretch play modal instead:
+  drag the photo to stretch it, release and it springs back.
 
 ![Avatar easter egg — hover greeting, quip cycle, fifth-click spin](assets/avatar-egg.gif)
 
@@ -213,8 +219,9 @@ flowchart LR
 The site deploys to GitHub Pages when changes are pushed to `main` via
 GitHub Actions. The workflow:
 
-1. Runs lint (`ruff check`, `ruff format --check`) and tests (`pytest`)
-   on Python 3.11 and 3.12 — deploys only if they pass
+1. Runs lint (`ruff check`, `ruff format --check`) and tests (`pytest`
+   plus the node module tests) on Python 3.11 and 3.12 — deploys only
+   if they pass
 2. Builds the Tailwind CSS bundle
 3. Refreshes GitHub repo metadata with `fetch_repos.py`
 4. Runs Flask-Frozen to compile routes into flat static files in
@@ -223,7 +230,9 @@ GitHub Actions. The workflow:
    to GitHub Pages
 
 Pull requests run the same lint/test/build steps without deploying, and
-the workflow can also be re-run manually (`workflow_dispatch`).
+the workflow can also be re-run manually (`workflow_dispatch`). It also
+runs on a daily schedule (12:00 UTC) so the repo snapshot stays fresh
+even without a push.
 
 GitHub Pages must be configured to deploy from **GitHub Actions** (not
 from a branch folder), because `docs/` is build output and is not
