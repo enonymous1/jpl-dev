@@ -18,6 +18,14 @@ quote-style = "single"
 # (pyupgrade) keeps syntax at the py311 floor. Both are low-noise here.
 select = ["E", "F", "I", "B", "UP"]
 
+[tool.ruff.lint.isort]
+# The scripts/ modules are first-party code (pytest puts scripts/ on
+# sys.path), but ruff only auto-detects top-level modules, so without
+# this it files freeze/fetch_repos/new_post under third-party and the
+# import order in tests/test_freeze.py fails I001. app/ and config/
+# are top-level, so ruff finds those on its own.
+known-first-party = ["freeze", "fetch_repos", "new_post"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 # Repo root and scripts/ on sys.path for every pytest invocation, not
