@@ -820,9 +820,27 @@ def test_project_thumbnails_fit_container(client):
 def test_project_modal_scrollbar_is_themed(client):
     css = client.get('/static/css/vcard.css').data.decode()
     thumb_rule = css.split('.repo-modal-card::-webkit-scrollbar-thumb')[1].split('}')[0]
-    assert 'var(--text-secondary)' in thumb_rule
+    # Thumb in the border color, not the secondary text color: #b0b0b0
+    # in dark mode read as a bright, unstyled bar (caught from a
+    # screenshot of the voice-generator preview).
+    assert 'var(--border-color)' in thumb_rule
     assert 'scrollbar-width: thin' in css
-    assert 'scrollbar-color: var(--text-secondary)' in css
+    assert 'scrollbar-color: var(--border-color)' in css
+
+
+def test_repo_preview_modal_is_wide(client):
+    # The repo preview renders README tables, so it alone gets the
+    # 920px card; glossary/location/avatar modals keep the 720px one.
+    # At 720px "Backend" squeezed into "Backe nd" in the
+    # voice-generator preview. Table cells break words only when a
+    # token cannot fit, instead of the container's `anywhere`.
+    resp = client.get('/')
+    assert b'repo-modal-card repo-modal-wide' in resp.data
+    css = client.get('/static/css/vcard.css').data.decode()
+    wide_rule = css.split('.repo-modal-card.repo-modal-wide')[1].split('}')[0]
+    assert 'min(920px, 100%)' in wide_rule
+    cell_rule = css.split('.repo-modal-readme td,')[1].split('}')[0]
+    assert 'overflow-wrap: break-word' in cell_rule
 
 
 def test_homepage_and_retro_load_js_modules_with_config(client):

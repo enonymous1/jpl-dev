@@ -157,6 +157,8 @@ does not deploy.
 
 - **Websites tab** — The project list filtered to repos with a live website (a homepage URL or a GitHub Pages site), shown in full with every card leading with its thumbnail. Clicking a card opens the same preview modal, with the README and a visit-site button.
 
+![Websites tab — every project with a live site, each card leading with its preview](assets/websites.png)
+
 - **Curriculum Vitae tab** — Headline, summary, experience, education,
   certifications, top skills, and languages, with a Print / Save as PDF
   button. The definition subtitle is clickable: it cycles through a

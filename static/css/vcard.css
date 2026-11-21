@@ -549,10 +549,11 @@ body.repo-modal-open {
     width: min(720px, 100%);
     max-height: calc(100dvh - 48px);
     overflow-y: auto;
-    /* Themed scrollbar (Firefox): thin, thumb in the secondary
-       text color so it reads in both light and dark themes. */
+    /* Themed scrollbar (Firefox): thin, thumb in the border color so
+       it stays subdued in both themes. The secondary text color
+       (#b0b0b0 in dark mode) read as a bright, unstyled bar. */
     scrollbar-width: thin;
-    scrollbar-color: var(--text-secondary) transparent;
+    scrollbar-color: var(--border-color) transparent;
     background: var(--bg-secondary);
     color: var(--text-color);
     border: 1px solid var(--border-color);
@@ -560,6 +561,13 @@ body.repo-modal-open {
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
     padding: 28px;
     margin: auto;
+}
+
+/* The repo preview is the only modal that renders README tables, so
+   it alone gets the wider card: at 720px "Backend" squeezed into
+   "Backe nd". Glossary/location/avatar modals keep the 720px card. */
+.repo-modal-card.repo-modal-wide {
+    width: min(920px, 100%);
 }
 
 /* Themed scrollbar (Chromium/Safari): the modal card is the scroll
@@ -576,7 +584,7 @@ body.repo-modal-open {
 }
 
 .repo-modal-card::-webkit-scrollbar-thumb {
-    background: var(--text-secondary);
+    background: var(--border-color);
     border-radius: 8px;
     border: 2px solid var(--bg-secondary);
 }
@@ -936,6 +944,11 @@ body.repo-modal-open {
 }
 .repo-modal-table { overflow-x: auto; margin: 0 0 14px; }
 .repo-modal-readme table { width: 100%; border-collapse: collapse; font-size: 13px; }
+/* Cells break a word only when the token cannot fit on its own line:
+   the container's `overflow-wrap: anywhere` split ordinary words
+   mid-word ("Backend" -> "Backe nd") once a table was squeezed. */
+.repo-modal-readme td,
+.repo-modal-readme th { overflow-wrap: break-word; }
 .repo-modal-readme th,
 .repo-modal-readme td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border-color); }
 .repo-modal-readme th { font-weight: 700; }
