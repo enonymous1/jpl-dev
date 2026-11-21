@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scaffold a new blog post: ``python new_post.py "My Post Title"``.
+"""Scaffold a new blog post: ``python scripts/new_post.py "My Post Title"``.
 
 Writes ``content/posts/YYYY-MM-DD-<slug>.md`` with the front-matter
 filled in and the body left for the author. Refuses to overwrite an
@@ -10,13 +10,18 @@ that directory.
 
 import sys
 from datetime import date
+from pathlib import Path
 
-from config.blog import POSTS_DIR, build_post_source, slugify
+# The scripts live in scripts/, one level below the repo root; the
+# config package lives at the root, so that is what goes on sys.path.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from config.blog import POSTS_DIR, build_post_source, slugify  # noqa: E402
 
 
 def main(argv: list[str]) -> int:
     if len(argv) != 2:
-        print('Usage: python new_post.py "Post Title"', file=sys.stderr)
+        print('Usage: python scripts/new_post.py "Post Title"', file=sys.stderr)
         return 2
     title = argv[1].strip()
     if not title:

@@ -7,7 +7,7 @@ imports these values and passes them to templates.
 
 `SITE_URL`, `GITHUB_USER`, `LINKEDIN_SLUG`, `CONTACT_EMAIL`, each read
 from the environment with the live value as default. `app.py`,
-`freeze.py`, `fetch_repos.py`, and the templates all import from here;
+`scripts/freeze.py`, `scripts/fetch_repos.py`, and the templates all import from here;
 nothing re-derives these values, so a renamed user or a moved domain
 changes in exactly one place.
 
@@ -29,7 +29,7 @@ Project data used to live here as a baked-in catalog, along with the
 `/projects` page and the GSA MAS Checklist and Schedule Maker
 blueprints. Those were removed: project listings now come from GitHub
 — the homepage Projects tab loads `static/data/repos.json` (refreshed
-by `fetch_repos.py` in CI) with a live GitHub API fallback, and retro's
+by `scripts/fetch_repos.py` in CI) with a live GitHub API fallback, and retro's
 Top 8 uses the same source.
 
 ## `models.py` — Profile models

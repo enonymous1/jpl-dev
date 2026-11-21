@@ -3,11 +3,11 @@
 Fetch public GitHub repository metadata and cache it to static/data/repos.json.
 
 Run this script to refresh the cached repo data used by the Featured Projects
-widget.  In CI (deploy.yml) this runs automatically before freeze.py so the
+widget.  In CI (deploy.yml) this runs automatically before scripts/freeze.py so the
 frozen site always ships up-to-date data.  Run it locally whenever you want to
 pull fresh data into your dev environment:
 
-    python fetch_repos.py
+    python scripts/fetch_repos.py
 
 The JS in index.html loads from /static/data/repos.json first and falls back
 to the live GitHub API if the file is absent or empty — so local dev still
@@ -32,7 +32,10 @@ import sys
 import urllib.error
 import urllib.request
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# The scripts live in scripts/, one level below the repo root; the
+# config package (and the repos.json this writes) live at the root, so
+# that is what BASE_DIR points at (this file used to live at the root).
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
 from config.site import GITHUB_USER  # noqa: E402

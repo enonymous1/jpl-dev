@@ -119,24 +119,24 @@ jobs:
     # Snapshot public repo metadata to static/data/repos.json so the frozen site
     # ships the data as a static file (no client-side API call needed, no rate limits).
     # GITHUB_TOKEN is automatically available in Actions with contents:read scope.
-    # On an API failure fetch_repos.py keeps the previously cached file and
+    # On an API failure scripts/fetch_repos.py keeps the previously cached file and
     # warns, instead of failing the whole deploy.
     - name: Cache GitHub repo metadata
-      run: python fetch_repos.py
+      run: python scripts/fetch_repos.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Generate static site
-      run: python freeze.py
+      run: python scripts/freeze.py
 
-    # CNAME must be injected AFTER freeze.py runs and BEFORE the artifact is
+    # CNAME must be injected AFTER scripts/freeze.py runs and BEFORE the artifact is
     # uploaded: the deploy step consumes the artifact, not docs/ directly,
     # so writing CNAME after upload would have no effect. (A2a) Belt and
     # braces with app.py's FREEZER_DESTINATION_IGNORE = ['CNAME'], which
     # also protects a CNAME written before freezing. (A2b)
     # The canonical CNAME value lives in the repo-root CNAME file.
     # Note: docs/ is build output and is no longer tracked in git; it is
-    # created here by freeze.py and uploaded as the Pages artifact.
+    # created here by scripts/freeze.py and uploaded as the Pages artifact.
     - name: Add CNAME file
       run: cp CNAME docs/CNAME
 

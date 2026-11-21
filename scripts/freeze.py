@@ -17,7 +17,10 @@ import os
 import sys
 from datetime import date
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# The scripts live in scripts/, one level below the repo root; the app
+# and config packages live at the root, so that is what goes on sys.path
+# (this file used to live at the root itself).
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
 from app import freezer  # noqa: E402
@@ -61,7 +64,7 @@ def _check_dynamic_routes():
         details = ', '.join(f'{rule.endpoint}: {rule.rule}' for rule in uncovered)
         raise RuntimeError(
             'Parameterized routes without a freezer generator: ' + details + '. '
-            'Add a @freezer.register_generator function in freeze.py for each.'
+            'Add a @freezer.register_generator function in scripts/freeze.py for each.'
         )
     logger.info('All parameterized routes have a freezer generator.')
 

@@ -12,7 +12,7 @@ templates/
 ├── blog_post.html       # One blog post (route: /blog/<slug>/), vCard shell
 ├── retro.html           # Retro skin (route: /retro/)
 ├── base.html            # Shell used ONLY by the 404 page (nav + theme)
-├── 404.html             # Not-found page (also written to docs/404.html by freeze.py)
+├── 404.html             # Not-found page (also written to docs/404.html by scripts/freeze.py)
 ├── _vcard_sidebar.html  # Shared sidebar (homepage + blog post pages)
 ├── _glossary_modal.html # Shared glossary/role modal shell
 ├── _location_modal.html # Shared location modal shell (map + facts carousel)

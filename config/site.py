@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Site identity: the single source of truth for values used across the app.
 
-``app.py``, ``freeze.py``, ``fetch_repos.py`` and the templates all used to
+``app.py``, ``scripts/freeze.py``, ``scripts/fetch_repos.py`` and the templates all used to
 derive these independently (same env var, same default, same ``rstrip``),
 which is how a renamed user or a moved domain drifts out of sync one file
 at a time. Import from here; never re-derive them elsewhere.

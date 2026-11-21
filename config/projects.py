@@ -6,7 +6,7 @@ Project data no longer lives here: the GSA MAS Checklist and Schedule Maker
 were removed from this repo (they may become standalone projects later),
 the /projects page was removed with them, and project listings now come
 from GitHub — the homepage Projects tab loads repos.json (refreshed by
-fetch_repos.py in CI) with a live GitHub API fallback, and retro's Top 8
+scripts/fetch_repos.py in CI) with a live GitHub API fallback, and retro's Top 8
 uses the same source. This module holds only the profile data both the
 clean homepage and retro render.
 """
