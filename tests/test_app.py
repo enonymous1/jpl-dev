@@ -456,23 +456,26 @@ def test_avatar_easter_egg_quips_homepage_only(client):
     assert b'avatar-easter-egg' not in retro.data
 
 
-def test_avatar_play_modal_rendered_on_homepage_and_post_pages(client):
-    resp = client.get('/')
-    assert b'id="avatar-play-modal"' in resp.data
-    assert b'id="avatar-play-photo"' in resp.data
-    assert b'Drag the photo to stretch it' in resp.data
-    script = client.get('/static/avatar-easter-egg.js')
-    assert b'avatar-play-modal' in script.data
-    assert b'computeStretch' in script.data
+def test_face_stretch_play_modal_is_gone(client):
+    # The ten-rapid-clicks face-stretch egg and its play modal were
+    # removed 2026-11-22; the base five-click quip egg stays. Assert
+    # the modal, its markup, its stretch math and its styles are all
+    # gone from the homepage and the blog post pages, while the base
+    # egg (button, bubble) is still there.
+    for path in ('/', '/blog/interesting-links/'):
+        resp = client.get(path)
+        assert b'avatar-play-modal' not in resp.data
+        assert b'avatar-play-photo' not in resp.data
+        assert b'Drag the photo to stretch it' not in resp.data
+        assert b'id="avatar-easter-egg"' in resp.data
+        assert b'id="avatar-quip"' in resp.data
+    script = client.get('/static/avatar-easter-egg.js').data
+    assert b'computeStretch' not in script
+    assert b'avatar-play-modal' not in script
+    assert b'RAPID_CLICKS' not in script
     css = client.get('/static/css/vcard.css').data.decode()
-    assert '.avatar-play-photo' in css
-    assert '.avatar-play-photo.is-springing' in css
-    assert b'avatar-play-card' in resp.data
-    assert '.avatar-play-card' in css
-    post = client.get('/blog/interesting-links/')
-    assert b'id="avatar-play-modal"' in post.data
-    retro = client.get('/retro/')
-    assert b'avatar-play-modal' not in retro.data
+    assert '.avatar-play-photo' not in css
+    assert '.avatar-play-card' not in css
 
 
 def test_sidebar_and_retro_use_role_pills_not_a_title_line(client):

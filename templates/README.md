@@ -16,7 +16,7 @@ templates/
 ├── _vcard_sidebar.html  # Shared sidebar (homepage + blog post pages)
 ├── _glossary_modal.html # Shared glossary/role modal shell
 ├── _location_modal.html # Shared location modal shell (map + facts carousel)
-└── _avatar_play_modal.html # Shared avatar play modal shell (stretch photo)
+├── _pokemon_modal.html  # Shared Pokémon GO modal shell (trainer + friend code)
 ```
 
 `base.html` is not a master layout: the homepage and retro are standalone

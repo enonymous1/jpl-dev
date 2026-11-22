@@ -187,50 +187,6 @@ body.vcard-page {
 /* Avatar play modal: the large photo stretches under a pointer drag
    and springs back on release. touch-action keeps a touch drag from
    scrolling the modal; the spring is skipped under reduced motion. */
-/* The play modal never scrolls: a stretched photo's transformed box
-   counts toward the card's scrollable overflow under overflow:auto,
-   so stretching past the card's edge spawned scrollbars (intermittent
-   because it depended on viewport size and stretch amount). Clipping
-   at the card keeps the full stretch visible up to the card's edge
-   and no scrollbar ever appears. The 55dvh cap keeps kicker + hint
-   inside the card's max-height on short viewports now that the card
-   cannot scroll. */
-.repo-modal-card.avatar-play-card {
-    overflow: hidden;
-}
-
-.avatar-play-photo {
-    display: block;
-    width: min(320px, 80vw, 55dvh);
-    height: auto;
-    margin: 0 auto;
-    border-radius: var(--vcard-radius);
-    touch-action: none;
-    cursor: grab;
-    user-select: none;
-}
-
-.avatar-play-photo:active {
-    cursor: grabbing;
-}
-
-.avatar-play-photo.is-springing {
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.avatar-play-hint {
-    text-align: center;
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin: 12px 0 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .avatar-play-photo.is-springing {
-        transition: none;
-    }
-}
-
 .vcard-badges {
     display: flex;
     flex-wrap: wrap;

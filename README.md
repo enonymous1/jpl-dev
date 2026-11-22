@@ -195,9 +195,7 @@ does not deploy.
 
 - **Avatar easter egg** — Hovering (or focusing) the profile photo
   shows a "Hello, World!" speech bubble; clicking cycles quips, and the
-  fifth click spins the photo. It resets after 5 idle seconds. Ten rapid
-  clicks (within 3 seconds) open a face-stretch play modal instead:
-  drag the photo to stretch it, release and it springs back.
+  fifth click spins the photo. It resets after 5 idle seconds.
 
 ![Avatar easter egg — hover greeting, quip cycle, fifth-click spin](assets/avatar-egg.gif)
 
