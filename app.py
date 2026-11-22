@@ -27,6 +27,7 @@ from config.projects import (
     ABOUT_ME,
     GLOSSARY,
     LOCATION_FACTS,
+    POKEMON_GO,
     PROJECT_THUMBNAILS,
     RETRO_SHOWCASE,
     ROLE_DEFINITIONS,
@@ -64,14 +65,15 @@ def _glossary_context():
     }
 
 
-def _location_context():
-    """Fredericksburg facts for the sidebar location modal.
+def _sidebar_modal_context():
+    """Content for the sidebar's server-rendered modals.
 
-    Rendered server-side into the modal partial, so the frozen site
-    needs no JavaScript data for it; the modal script only opens and
-    closes the dialog.
+    The Fredericksburg facts for the location modal and the Pokémon GO
+    trainer card for the Poké Ball modal. Rendered server-side into the
+    modal partials, so the frozen site needs no JavaScript data for
+    them; the modal scripts only open and close the dialogs.
     """
-    return {'location_facts': LOCATION_FACTS}
+    return {'location_facts': LOCATION_FACTS, 'pokemon_go': POKEMON_GO}
 
 
 def _site_context():
@@ -115,7 +117,7 @@ def create_app():
             about=ABOUT_ME,
             **_glossary_context(),
             **_site_context(),
-            **_location_context(),
+            **_sidebar_modal_context(),
             posts=load_posts(),
             resume_headline=RESUME_HEADLINE,
             resume_location=RESUME_LOCATION,
@@ -140,7 +142,7 @@ def create_app():
                     about=ABOUT_ME,
                     **_glossary_context(),
                     **_site_context(),
-                    **_location_context(),
+                    **_sidebar_modal_context(),
                 )
         abort(404)
 
@@ -183,6 +185,7 @@ def create_app():
             about=ABOUT_ME,
             retro_showcase=RETRO_SHOWCASE,
             **_site_context(),
+            **_sidebar_modal_context(),
         )
 
     @application.errorhandler(404)

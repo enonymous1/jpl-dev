@@ -185,6 +185,11 @@ does not deploy.
 - **Location modal** — The sidebar's Fredericksburg, VA entry opens a
   modal with the same map plus a carousel of 11 local facts (arrow keys
   navigate, no autoplay, reopening resets to fact 1).
+- **Pokémon GO button** — The sidebar's social row ends with a Poké Ball
+  icon; it opens a small modal with the trainer name and friend code,
+  plus a Copy button (the code copies digits-only, which is what the
+  game accepts). The About section no longer lists it; retro keeps it
+  as a plain line in its Contacting Justin list.
 
 ### Details worth noticing
 

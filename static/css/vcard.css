@@ -570,6 +570,45 @@ body.repo-modal-open {
     width: min(920px, 100%);
 }
 
+/* The Pokémon GO dialog is three lines (trainer, code, one button),
+   so it alone gets the narrow card: a 720px box around it would be
+   mostly empty. */
+.repo-modal-card.pokemon-card {
+    width: min(420px, 100%);
+}
+
+/* Pokémon GO modal body: the code reads as a value to copy, not prose,
+   so it sits in its own bordered box; the status line under the button
+   is the copy confirmation (empty until the first copy). */
+.pokemon-intro {
+    margin: 0 0 14px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.pokemon-code {
+    margin: 0 0 16px;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.pokemon-code code {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.pokemon-status {
+    min-height: 1.2em;
+    margin: 10px 0 0;
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-align: center;
+}
+
 /* Themed scrollbar (Chromium/Safari): the modal card is the scroll
    container, so its scrollbar gets the treatment, not the page's.
    Slim thumb with a card-colored gutter so it looks inset;
@@ -1018,7 +1057,11 @@ body.repo-modal-open {
     border-top: 1px solid var(--border-color);
 }
 
-.vcard-social a {
+/* The social row mixes links (GitHub, LinkedIn, mail) and one button
+   (the Poké Ball, which opens a dialog instead of navigating), so the
+   box rules cover both; the button carries its own resets. */
+.vcard-social a,
+.vcard-social button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1031,9 +1074,24 @@ body.repo-modal-open {
     text-decoration: none;
 }
 
-.vcard-social a:hover {
+.vcard-social button {
+    background: transparent;
+    padding: 0;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.vcard-social a:hover,
+.vcard-social button:hover {
     color: var(--primary-color);
     border-color: var(--primary-color);
+}
+
+/* The Poké Ball is a coloured SVG, not a monochrome Bootstrap icon,
+   so it keeps its own colours on hover; the block display keeps it
+   centred in the 36px box instead of sitting on the text baseline. */
+.pokemon-icon {
+    display: block;
 }
 
 /* ── Projects: grid shell ─────────────────────────────────────────────── */

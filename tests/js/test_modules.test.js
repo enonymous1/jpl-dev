@@ -12,6 +12,7 @@ const { renderMarkdown, resolveReadmeUrl } = require('../../static/js/readme-md.
 const { buildContactMailto } = require('../../static/js/contact.js');
 const { computeStretch } = require('../../static/avatar-easter-egg.js');
 const { nextFactIndex, prevFactIndex } = require('../../static/location-modal.js');
+const { friendCodeDigits } = require('../../static/pokemon-modal.js');
 
 const repo = {
     name: 'demo',
@@ -64,6 +65,12 @@ test('hasWebsite is true exactly when repoSiteUrl finds a site', () => {
     assert.equal(loader.hasWebsite({ ...repo, has_pages: true }, 'enonymous1'), true);
     assert.equal(loader.hasWebsite(repo, 'enonymous1'), false);
     assert.equal(loader.hasWebsite({ ...repo, homepage: '   ' }, 'enonymous1'), false);
+});
+
+test('friendCodeDigits strips the display spacing, keeps digits only', () => {
+    assert.equal(friendCodeDigits('8456 7104 2978'), '845671042978');
+    assert.equal(friendCodeDigits('845671042978'), '845671042978');
+    assert.equal(friendCodeDigits(''), '');
 });
 
 test('sortWebsites puts web languages first, keeps API order within groups', () => {

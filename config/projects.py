@@ -37,7 +37,6 @@ ABOUT_ME = AboutMe(
         'Ships tested, documented tools with CI — not just demos',
         'Runs a homelab stack (Unraid, Docker) for media, backups, and automation',
         'Background in mobile development (Android, iOS) and full-stack web',
-        'Plays Pokémon GO — Trainer enonymous1, friend code 8456 7104 2978',
     ],
     tool_groups=[
         ToolGroup(
@@ -169,6 +168,14 @@ RETRO_SHOWCASE = [
     'kalshi-recorder',
     'gsa-fcp-toolkit',
 ]
+
+# Pokémon GO trainer card: the sidebar's Poké Ball icon opens a modal
+# with the trainer name and friend code (the About highlights used to
+# carry this line; it moved to the icon on 2026-11-21). The code is
+# shown spaced for reading; the modal's Copy button copies digits only,
+# which is what the game accepts.
+POKEMON_GO = {'trainer': 'enonymous1', 'friend_code': '8456 7104 2978'}
+
 
 # ========================================================================
 # GLOSSARY

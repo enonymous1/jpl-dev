@@ -681,6 +681,36 @@ def test_repo_preview_modal_present(client):
     assert '.repo-card-thumb' in css
 
 
+def test_sidebar_pokemon_go_button_opens_modal(client):
+    # The Poké Ball sits in the sidebar social row next to GitHub,
+    # LinkedIn and email; it opens a modal with the trainer name and
+    # friend code, plus a Copy button. The About highlights no longer
+    # carry the line — the modal is its only home on the clean site.
+    home = client.get('/').data
+    assert b'id="pokemon-modal-open"' in home
+    assert 'Pokémon GO — Trainer enonymous1'.encode() in home
+    assert b'id="pokemon-modal"' in home
+    assert b'Trainer enonymous1' in home
+    assert b'8456 7104 2978' in home
+    assert b'id="pokemon-copy-code"' in home
+    assert 'Plays Pokémon GO'.encode() not in home
+    # The modal is shared with the blog post pages, and the narrow card
+    # and button box rules ship in the same stylesheet.
+    post = client.get('/blog/interesting-links/').data
+    assert b'id="pokemon-modal"' in post
+    assert b'repo-modal-card pokemon-card' in home
+    assert b'.vcard-social button' in client.get('/static/css/vcard.css?v=20261121-02').data
+
+
+def test_retro_contact_lists_pokemon_go(client):
+    # Retro has no modals, so the trainer card stays a plain line in
+    # its Contacting Justin list instead of disappearing with the
+    # About highlight it used to ride on.
+    retro = client.get('/retro/').data
+    assert b'Trainer enonymous1' in retro
+    assert b'8456 7104 2978' in retro
+
+
 def test_websites_tab_sorts_web_languages_first(client):
     # The Websites tab's default order is web-first (HTML/JavaScript/
     # TypeScript), then the rest, recently updated inside each group.

@@ -1,0 +1,20 @@
+<!-- Pokémon GO modal, shared by the homepage and the blog post pages:
+     both render the sidebar include, whose Poké Ball button opens this
+     dialog. Same interaction contract as the location modal: backdrop
+     and close-button clicks and Escape close it, and focus returns to
+     the button that opened it. The friend code is shown spaced for
+     reading; Copy copies digits only, which is what Pokémon GO accepts. -->
+<div id="pokemon-modal" class="repo-modal" hidden>
+    <div class="repo-modal-backdrop" data-pokemon-close></div>
+    <div class="repo-modal-card pokemon-card" role="dialog" aria-modal="true" aria-labelledby="pokemon-modal-title">
+        <button type="button" id="pokemon-modal-close" class="repo-modal-close" data-pokemon-close aria-label="Close Pokémon GO details">&times;</button>
+        <p class="repo-modal-kicker">Pokémon GO</p>
+        <h3 id="pokemon-modal-title" class="repo-modal-title">Trainer {{ pokemon_go.trainer }}</h3>
+        <p class="pokemon-intro">Add me in Pokémon GO — the friend code below works in the app.</p>
+        <p class="pokemon-code"><code id="pokemon-friend-code">{{ pokemon_go.friend_code }}</code></p>
+        <div class="repo-modal-actions">
+            <button type="button" class="repo-btn" id="pokemon-copy-code">Copy friend code</button>
+        </div>
+        <p class="pokemon-status" id="pokemon-copy-status" role="status"></p>
+    </div>
+</div>

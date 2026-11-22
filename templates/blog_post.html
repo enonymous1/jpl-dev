@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261121-01">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261121-02">
     <script>
         (function() {
             try {
@@ -51,6 +51,7 @@
             </article>
             {% include "_glossary_modal.html" %}
             {% include "_location_modal.html" %}
+            {% include "_pokemon_modal.html" %}
             {% include "_avatar_play_modal.html" %}
         </div>
     </div>
@@ -62,5 +63,6 @@ window.GLOSSARY_DATA = {terms: {{ glossary_data | tojson }}, roles: {{ role_defi
 </script>
 <script src="{{ url_for('static', filename='glossary-modal.js') }}"></script>
 <script src="{{ url_for('static', filename='location-modal.js') }}?v=20261101-01"></script>
+<script src="{{ url_for('static', filename='pokemon-modal.js') }}?v=20261121-01"></script>
 </body>
 </html>
