@@ -90,7 +90,7 @@ Practical rules, whichever side you're on:
 
 **No, it doesn't absolutely require Android/iOS for everything. But for workers, effectively yes.**
 
-- **Workers (Get Gigs): app-only to sign up and work shifts.** GigSmart's help centre puts it as step 1: create a free account by downloading the Get Gigs iOS or Android mobile apps. The signup guide is the same — download the app, verify your phone by SMS, complete your profile in the app. I found no worker web signup or web login. The one web exception is browsing only: the Job Board can also be viewed on the GigSmart website, but applying to shifts, clocking in, and getting paid are app-based.
+- **Workers (Get Gigs): app-only to sign up and work shifts.** GigSmart's help centre puts it as step 1: create a free account by downloading the Get Gigs iOS or Android mobile apps. The signup guide is the same — download the app, verify your phone by SMS, complete your profile in the app. I found no worker web signup or web login. The one web exception is browsing only: the Job Board can also be viewed on the GigSmart website at [gigsmart.com/work/g-board/browse](https://gigsmart.com/work/g-board/browse), but applying to shifts, clocking in, and getting paid are app-based.
 - **Hirers (Get Workers): web works fine.** Sign up via your web browser at getworkers.gigsmart.com, or download the Get Workers app. Log in from a web browser or the iOS/Android app to post, manage, and pay.
 - **Homeowners posting a Project Gig** use the Get Workers side, so the same web option applies.
 
@@ -113,6 +113,7 @@ Everything below was checked on November 24, 2026. Official links first, then th
 - [Setting Up an Organization Profile for Your Business in Get Workers](https://gigsmart.com/blog/how-to-set-up-an-organization-profile-for-your-business-in-get-workers) — why the organisation profile matters before your first post.
 - [How do I create a Project Gig? — GigSmart Help Center](https://help.gigsmart.com/how-do-i-create-a-project-gig) — Project Gig steps for hirers, from a web browser or the mobile app.
 - [What is the GigSmart Job Board? — GigSmart Help Center](https://help.gigsmart.com/what-is-the-gigsmart-job-board) — Job Board explained; accessible from the Get Gigs app or the GigSmart website.
+- [Browse the Job Board (G-Board)](https://gigsmart.com/work/g-board/browse) — the actual board itself: browse open part-time and full-time positions by location, company, title, industry, or keyword, no app needed.
 - [Advertise Part-Time or Full-Time Positions on the GigSmart Job Board](https://gigsmart.com/blog/advertise-part-time-or-full-time-positions-on-the-gigsmart-job-board) — how hirers list permanent roles.
 - [G-Flex Pricing](https://gigsmart.com/business/g-flex/pricing) — the official fee table: 35% for 1099, 45% for W-2, minimums, and what's included. Updated April 15, 2026.
 - [Shift Worker Insurance](https://gigsmart.com/legal/shift-worker-insurance) — the official OAI page: the $1.00/hr fee, what's covered, and the note that Project Gigs and Job Board applications aren't covered.
