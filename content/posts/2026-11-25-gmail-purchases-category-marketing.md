@@ -23,10 +23,16 @@ This is not a one-off misfile. It is a pattern, and it is worth understanding, b
 - **You cannot remove a message from Purchases**, because it is not a label. It is computed by Google at search time, and Purchases has no label ID in the Gmail API.
 - **Archiving does not help**, and deleting is the only thing that takes a message out of the results.
 - **What helps**: per-sender filters, training the five inbox tabs, and reporting the misclassification with a concrete example.
+- **The closest thing to an off-switch** is turning off Smart features — it kills the summary cards, package tracking, and automatic categorization, but it also takes Smart Compose, Smart Reply, and the inbox tabs with it.
 
 ## Where the Purchases view came from
 
-Purchases is not just an old search operator. Google launched a dedicated Purchases view in the left-hand menu on September 11, 2025, rolling out to personal Google accounts on web, Android, and iOS. It gathers order, shipping, and delivery confirmations in one place, with a timeline for upcoming deliveries — and it is only documented for personal Gmail accounts, not for Google Workspace accounts.
+Purchases is not just an old search operator — it is the visible end of something Google has been building, quietly, for years:
+
+- **May 2019:** CNBC reported that Google had been saving a purchase history pulled from Gmail receipts — years of it, from stores the reader had never bought through Google — and that there was no way to delete an entry from Purchases without deleting the Gmail message itself.
+- **October 2, 2024:** Google redesigned Gmail's summary cards into four categories — Purchases, Events, Bills, and Travel — and added a "Happening soon" section at the top of the inbox for imminent deliveries.
+
+Google launched a dedicated Purchases view in the left-hand menu on September 11, 2025, rolling out to personal Google accounts on web, Android, and iOS. It gathers order, shipping, and delivery confirmations in one place, with a timeline for upcoming deliveries — and it is only documented for personal Gmail accounts, not for Google Workspace accounts.
 
 The view organises orders into two sections:
 
@@ -92,7 +98,7 @@ That has three practical consequences:
 
 - **There is no "remove from Purchases" operation** — not in Gmail settings, not in the API, and not in any third-party tool. My own Gmail toolkit could not touch it for the same reason.
 - **Archiving does not help.** Search covers All Mail, so an archived message still shows up in `category:purchases`. Deleting a message is the only thing that takes it out of the results.
-- **There is no toggle to stop Google classifying future mail the same way.** You can influence the five inbox tabs, but Purchases is not one of them.
+- **There is no toggle for Purchases itself.** You can influence the five inbox tabs, but Purchases is not one of them. There is a broader switch — turning off Smart features — but it is all-or-nothing, and it is covered below.
 
 Google's own help page confirms the tab side of this: you can only choose from the current categories, you cannot create your own, and moving an email to the wrong category helps Gmail learn your preferences over time. That training applies to the five tabs — Primary, Social, Promotions, Updates, Forums — not directly to the Purchases search bucket.
 
@@ -114,6 +120,8 @@ The description I sent:
 > Please exclude promotional mail with no receipt, order, or tracking signals from category:purchases, and reserve it for actual order confirmations, shipping notices, and receipts.
 
 Do not expect a reply. This goes to the product team as feedback, not to support. I sent it anyway, because a classifier problem that nobody reports is a classifier problem Google has no signal on at all.
+
+On mobile, the same channel is Menu → Help &amp; feedback → Send feedback. If you would rather escalate in public, the [Gmail Help Community](https://support.google.com/mail/community) is the public route — post or upvote a thread there; Google's volunteer Product Experts watch for recurring complaints and can escalate widespread ones to Gmail engineering.
 
 ## What you can do
 
@@ -149,10 +157,22 @@ category:purchases has:attachment
 
 The first finds one retailer's receipts, the second a date range, the third the ones with a receipt PDF attached. It does not remove the marketing — it just lets you work around it while you are looking for a specific order.
 
+### The closest thing to an off-switch: turn off Smart features
+
+There is no standalone toggle for Purchases. But there is a broader switch that powers the machinery behind it, and it is the only way to stop the automatic classification entirely:
+
+1. In Gmail on a computer, click the **gear icon** at the top right, then **See all settings**, and stay on the **General** tab.
+2. Scroll to **Smart features** and uncheck **Turn on smart features in Gmail, Chat, and Meet**.
+3. Click **Turn off and reload** (or scroll to the bottom and click **Save Changes**).
+
+Google's own help page says that setting is what provides automatic email filtering and categorization, Smart Compose, Smart Reply, and the summary cards above emails — including travel and package tracking. Turn it off, and you lose all of those: the cards and package tracking go, the automatic categorization goes, and so do Smart Compose, Smart Reply, and the inbox tabs themselves.
+
+Two things to know before you flip it. First, Google does not say the left-hand Purchases view itself disappears — what I could verify is that the cards, the tracking, and the categorization go, so treat this as the closest thing to an off-switch, not a guaranteed removal of the view. Second, the flight and event detection in Google Calendar is a *separate* setting — "Smart features in Google Workspace" — so this toggle alone does not stop that. It is a heavy price for hiding one noisy category, which is why it sits last in this list, not first.
+
 ## The honest summary
 
 `category:purchases` is a useful idea with a noisy implementation: it catches receipts, and it also catches anything that looks like shopping. Because it is a computed search category with no label behind it, you cannot fix it yourself, message by message. The levers you do have are per-sender filters, tab training, and feedback with concrete examples.
 
 If you have run into the same thing, the most useful thing you can do is report it the same way, with your own example. And if you want a clean list of actual purchases in the meantime, do not trust the category — filter on receipt signals instead: order confirmation, order number, total, and tracking.
 
-*Checked November 25, 2026. Links: [Track your purchases in Gmail](https://support.google.com/mail/answer/16624561), [Organize your emails into categories](https://support.google.com/mail/answer/3094499), [Send feedback in Gmail](https://support.google.com/mail/answer/9212652), and Google's [September 11, 2025 announcement of the Purchases view](https://blog.google/products-and-platforms/products/gmail/one-stop-purchase-tracking-in-gmail/).*
+*Checked November 25, 2026. Links: [Track your purchases in Gmail](https://support.google.com/mail/answer/16624561), [Organize your emails into categories](https://support.google.com/mail/answer/3094499), [Send feedback in Gmail](https://support.google.com/mail/answer/9212652), [Learn about smart features &amp; controls](https://support.google.com/mail/answer/15604322), Google's [September 11, 2025 announcement of the Purchases view](https://blog.google/products-and-platforms/products/gmail/one-stop-purchase-tracking-in-gmail/), Google's [October 2, 2024 summary cards announcement](https://blog.google/products-and-platforms/products/gmail/new-gmail-summary-cards/), and CNBC's [May 17, 2019 report on Gmail purchase tracking](https://www.cnbc.com/2019/05/17/google-gmail-tracks-purchase-history-how-to-delete-it.html).*
