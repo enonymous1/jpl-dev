@@ -113,7 +113,7 @@ PROJECT_THUMBNAILS = {
     'voxel-portfolio': 'images/project-thumbs/voxel-portfolio.png',
     'photo-stitcher': 'images/project-thumbs/photo-stitcher.gif',
     'sms-toolkit': 'images/project-thumbs/sms-toolkit.png',
-    'floorplan-studio': 'images/project-thumbs/floorplan-studio.svg',
+    'floorplan-studio': 'images/project-thumbs/floorplan-studio.png',
     'intranet-dashboard': 'images/project-thumbs/intranet-dashboard.png',
     'godaddy-billing-analyzer': 'images/project-thumbs/godaddy-billing-analyzer.png',
     'landscape-manager': 'images/project-thumbs/landscape-manager.png',
@@ -154,14 +154,69 @@ PROJECT_THUMBNAILS = {
 # side-by-side composite (see below), rendered in the wider 9/4 thumb
 # box instead of the standard 16:9 one. A repo lands here only with
 # its composite file above and a mapping entry in PROJECT_THUMBNAILS.
+# Captures are shot with prefers-color-scheme: dark, so a site with a
+# dark variant shows dark and a light-only site renders its normal
+# look — that is the convention, not a per-site choice. (Dark is the
+# right default here: the site itself is dark-first and most of these
+# pages have a dark variant; a light shot of a dark-capable page
+# reads as the wrong theme.) Re-shoot a composite if its landing page
+# changes materially, since a screenshot freezes the page at shoot time.
 # 2026-11-25 pilot: whenwhere-biz-coming-soon — desktop 1920x1080 and
 # mobile 390x844 viewport shots of the live page, composited at equal
-# height with a 24px transparent gap (2443x1080, ~2.26:1, no cropping).
-# The page fits exactly one viewport at both sizes, so the shots are
-# the whole page, not just the hero. Still no thumbnail for
+# height with a 24px transparent gap (2443x1080 source, half-scaled
+# to 1221x540 for the shipped file, ~2.26:1, no cropping). The page
+# fits exactly one viewport at both sizes, so the shots are the whole
+# page, not just the hero. First shot in light, corrected the same
+# day to the dark variant (the page's Night & Gold theme has a real
+# dark mode — verified by pixel-diff, mean delta ~219/255 — and the
+# light shot showed the cream version). Rollout the same day: all 36
+# Websites-tab cards are wide composites now, shot the same way (dark
+# captures, same composite, half-scaled; ~10 MB total for the 36).
+# floorplan-studio's mapping switched svg -> png with the rollout:
+# the svg was the repo's own demo render, the png is the live editor.
+# Still no thumbnail for
 # enonymous1 and jpl-dev (both point at justinlyons.dev) — the
 # "every repo with a live site has a thumbnail" line above is stale.
-WIDE_THUMBNAILS = frozenset({'whenwhere-biz-coming-soon'})
+WIDE_THUMBNAILS = frozenset(
+    {
+        'achievement-trackers',
+        'android-automations',
+        'apps-script-samples',
+        'dirt-bike-ghost-racer',
+        'face-stretch-playground',
+        'floorplan-studio',
+        'fuzzle',
+        'gas-auditor',
+        'gmail-filter-builder',
+        'godaddy-billing-analyzer',
+        'gsa-mas-offer-checklist',
+        'intranet-dashboard',
+        'json-insight',
+        'landscape-manager',
+        'ngo-eval-webapp',
+        'number-chomper',
+        'pdf-toolkit',
+        'product-lookup-poc',
+        'profileforge',
+        'sms-toolkit',
+        'snoodle-pop',
+        'ss-space_marine_master_crafted',
+        'tech6-cv-generator',
+        'video-optimizer-suite',
+        'voice-generator',
+        'walgreens-photo-prints',
+        'web-backtalk',
+        'web-conway-game-of-life',
+        'web-mtg-draft',
+        'web-privacy-export-viewer',
+        'web-typing-trainer',
+        'whenwhere-biz-coming-soon',
+        'whenwhere-biz-main-site',
+        'whenwhere-drone-light-shows',
+        'windows-sandbox-toolkit',
+        'workspace-monitor',
+    }
+)
 
 # ========================================================================
 # RETRO TOP 8 SHOWCASE
