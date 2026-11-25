@@ -18,10 +18,22 @@ This is not a one-off misfile. It is a pattern, and it is worth understanding, b
 ## The short version
 
 - **Purchases is meant for receipts**, not marketing — order confirmations, shipping notices, delivery confirmations.
+- **The view itself is new**: Google launched the dedicated Purchases view on September 11, 2025, for personal Gmail accounts.
 - **The Lucky Brand mail has none of the receipt signals**: no order number, no total, no payment, no tracking.
 - **You cannot remove a message from Purchases**, because it is not a label. It is computed by Google at search time, and Purchases has no label ID in the Gmail API.
 - **Archiving does not help**, and deleting is the only thing that takes a message out of the results.
 - **What helps**: per-sender filters, training the five inbox tabs, and reporting the misclassification with a concrete example.
+
+## Where the Purchases view came from
+
+Purchases is not just an old search operator. Google launched a dedicated Purchases view in the left-hand menu on September 11, 2025, rolling out to personal Google accounts on web, Android, and iOS. It gathers order, shipping, and delivery confirmations in one place, with a timeline for upcoming deliveries — and it is only documented for personal Gmail accounts, not for Google Workspace accounts.
+
+The view organises orders into two sections:
+
+- **Arriving soon:** at the top, cards for orders with an estimated delivery date of today or in the future, listed chronologically by arrival, with **Track package** and **More details** actions.
+- **Purchases:** below the cards, the chronological list of purchase-related emails.
+
+Packages expected to arrive within 24 hours also continue to surface at the top of the Primary inbox. That is why the view feels like a delivery tracker as much as an email search — and why a marketing email that slips into it is more than a filing error: it shows up next to the packages you are actually waiting for.
 
 ## Receipt or marketing? Check the signals
 
@@ -125,10 +137,22 @@ The detail on each one follows.
 
 **4. Do not mark legitimate marketing as spam to fix this.** Unsubscribing from a sender you no longer want is fine, and reporting genuinely deceptive mail as spam is fine. But marking a retailer's marketing as spam because it is in the wrong category can damage that sender's classification for the messages you do still want from them — including their order confirmations.
 
+### Narrow the search while you are in it
+
+You cannot fix the category, but you can shrink it. `category:purchases` chains with Gmail's ordinary search operators, so instead of scrolling 4,977 messages, try:
+
+```
+category:purchases from:amazon.com
+category:purchases after:2026/01/01 before:2026/12/31
+category:purchases has:attachment
+```
+
+The first finds one retailer's receipts, the second a date range, the third the ones with a receipt PDF attached. It does not remove the marketing — it just lets you work around it while you are looking for a specific order.
+
 ## The honest summary
 
 `category:purchases` is a useful idea with a noisy implementation: it catches receipts, and it also catches anything that looks like shopping. Because it is a computed search category with no label behind it, you cannot fix it yourself, message by message. The levers you do have are per-sender filters, tab training, and feedback with concrete examples.
 
 If you have run into the same thing, the most useful thing you can do is report it the same way, with your own example. And if you want a clean list of actual purchases in the meantime, do not trust the category — filter on receipt signals instead: order confirmation, order number, total, and tracking.
 
-*Checked November 25, 2026. Links: [Organize your emails into categories](https://support.google.com/mail/answer/3094499) and [Send feedback in Gmail](https://support.google.com/mail/answer/9212652).*
+*Checked November 25, 2026. Links: [Track your purchases in Gmail](https://support.google.com/mail/answer/16624561), [Organize your emails into categories](https://support.google.com/mail/answer/3094499), [Send feedback in Gmail](https://support.google.com/mail/answer/9212652), and Google's [September 11, 2025 announcement of the Purchases view](https://blog.google/products-and-platforms/products/gmail/one-stop-purchase-tracking-in-gmail/).*
