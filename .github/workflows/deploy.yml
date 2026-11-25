@@ -7,11 +7,11 @@ on:
     branches: [ main ]
   # Allow manual re-deploys without requiring a new commit (A2d)
   workflow_dispatch:
-  # Daily refresh of the project listings: the build-and-deploy job
+  # Daily refresh of the project listings: the build job
   # re-snapshots repo metadata and redeploys, so new repos, stars,
   # and descriptions land on the site without a push. Cron runs in
   # UTC: 12:00 UTC is 07:00 EST / 08:00 EDT. GitHub pauses scheduled
-  # runs after 60 days with no repo activity. The deploy step's
+  # runs after 60 days with no repo activity. The deploy job's
   # `github.ref == 'refs/heads/main'` gate already admits scheduled
   # runs (they run on the default branch), so no other change is
   # needed for the schedule to deploy.
@@ -68,15 +68,9 @@ jobs:
     - name: Test JS modules
       run: node --test tests/js/test_modules.test.js
 
-  build-and-deploy:
+  build:
     needs: test
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
     - name: Checkout
@@ -145,9 +139,28 @@ jobs:
       with:
         path: ./docs
 
-    # Build and freeze run on every push/PR for validation.
-    # Deployment to GitHub Pages is gated to pushes on main only. (A2c)
+  # Deploy is its own job, gated to pushes on main only (build and
+  # freeze still run on every push/PR for validation). (A2c) A
+  # separate job means the deploy can be re-run on its own: re-running
+  # it never re-uploads the artifact, so a re-run can never produce
+  # the "multiple artifacts named github-pages" failure that re-running
+  # the old single build-and-deploy job caused on run 86 (2026-11-24).
+  # The job handoff also puts a gap between the upload and the deploy
+  # step's artifact lookup, which the single-job layout lacked when
+  # run 87's deploy found 0 artifacts twice with the artifact present
+  # (2026-11-25). No checkout here: deploy-pages only needs the
+  # uploaded artifact.
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
-      if: github.ref == 'refs/heads/main'
