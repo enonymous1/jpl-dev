@@ -55,6 +55,32 @@ The honest downsides: the apps put function ahead of polish, health reports and 
 - **Apple Passwords / Google Password Manager** — free, and fine if you live entirely inside one company's devices or browser. The moment you mix platforms, the friction starts, and friction is what kills a manager.
 - **KeePassXC** — free and open source, but the vault is a local file you sync yourself. Powerful, and exactly the wrong default for anyone who will not maintain the sync.
 
+### At a glance
+
+Every manager here stores passkeys. Built-in 2FA codes come with 1Password, Dashlane, and Keeper's paid plans; Bitwarden and Proton Pass put them on the paid tier. Prices are the standard annual rate, checked November 24, 2026 — intro prices are lower, renewals are what you budget for.
+
+| Manager | Individual / yr | Free tier | Family / yr | Self-host | Best for |
+|---|---|---|---|---|---|
+| 1Password | $47.88 | No (14-day trial) | $71.88 (5 + 5 guests) | No | Polish + family sharing |
+| Bitwarden | $19.80 (Premium) | Yes | $47.88 (6) | Yes (paid tiers) | Free, open, self-hosted |
+| Proton Pass | $35.88 (Plus) | Yes | $59.88 (6) | No | Privacy + Proton users |
+| NordPass | $35.88 (renewal) | Limited | $71.88 (6) | No | Value on intro pricing |
+| Dashlane | ~$65 | No (14-day trial) | $97.49 (10) | No | All-in-one + VPN |
+| Keeper | $42.99 | Limited | $91.99 (5) | No | Enterprise-grade certs |
+
+Individual plan, standard annual price:
+
+<div style="margin: 0 0 14px;">
+  <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;"><span style="width:110px; text-align:right; font-size:14px; color:var(--text-secondary);">Bitwarden</span><span style="flex:1; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:4px; height:18px;"><span style="display:block; height:100%; width:30%; background:var(--primary-color); border-radius:4px;"></span></span><span style="width:64px; font-size:14px;">$19.80</span></div>
+  <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;"><span style="width:110px; text-align:right; font-size:14px; color:var(--text-secondary);">Proton Pass</span><span style="flex:1; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:4px; height:18px;"><span style="display:block; height:100%; width:55%; background:var(--primary-color); border-radius:4px;"></span></span><span style="width:64px; font-size:14px;">$35.88</span></div>
+  <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;"><span style="width:110px; text-align:right; font-size:14px; color:var(--text-secondary);">NordPass</span><span style="flex:1; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:4px; height:18px;"><span style="display:block; height:100%; width:55%; background:var(--primary-color); border-radius:4px;"></span></span><span style="width:64px; font-size:14px;">$35.88</span></div>
+  <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;"><span style="width:110px; text-align:right; font-size:14px; color:var(--text-secondary);">Keeper</span><span style="flex:1; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:4px; height:18px;"><span style="display:block; height:100%; width:66%; background:var(--primary-color); border-radius:4px;"></span></span><span style="width:64px; font-size:14px;">$42.99</span></div>
+  <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;"><span style="width:110px; text-align:right; font-size:14px; color:var(--text-secondary);">1Password</span><span style="flex:1; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:4px; height:18px;"><span style="display:block; height:100%; width:74%; background:var(--primary-color); border-radius:4px;"></span></span><span style="width:64px; font-size:14px;">$47.88</span></div>
+  <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;"><span style="width:110px; text-align:right; font-size:14px; color:var(--text-secondary);">Dashlane</span><span style="flex:1; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:4px; height:18px;"><span style="display:block; height:100%; width:100%; background:var(--primary-color); border-radius:4px;"></span></span><span style="width:64px; font-size:14px;">~$65</span></div>
+</div>
+
+NordPass renews at $35.88 after a $23.88 first year; the rest are standard rates.
+
 ## What the breaches actually teach
 
 Two incidents, two different lessons.
@@ -98,6 +124,15 @@ A password manager is not set-and-forget. It is a garden. The schedule:
 
 **When something happens.** A breach notice involving a site you use means changing that password now, not at the next quarterly review. A new phone or laptop means verifying you can still sign in and that recovery works before you wipe the old device. A job change means moving work credentials out of your personal vault and offboarding the old shared vaults.
 
+### The schedule at a glance
+
+| When | Do this | Time |
+|---|---|---|
+| Monthly | Open Watchtower / health report; act on breach alerts the same day; save any new login not in the vault | 5 min |
+| Quarterly | Change the worst 5 weak/reused passwords; check 2FA on email, bank, manager; delete accounts you no longer use; check shared vault members | 30 min |
+| Annually | Confirm emergency access + recovery kit; take an encrypted export; review family members and guests; re-check prices | 1 hour |
+| When it happens | Breach notice → change that password now; new device → verify sign-in + recovery before wiping the old one; job change → move work credentials out | As needed |
+
 ## Moving without losing anything
 
 Import from wherever your passwords live now — the browser's saved-password export works, and both managers take the file. Then spend one evening fixing the import: the browser will have duplicates, dead accounts, and passwords saved under the wrong site. Turn off the browser's own password saving once the manager is in place, or you will end up with two sources of truth. Keep the old store for a month, then delete it.
@@ -107,6 +142,20 @@ Import from wherever your passwords live now — the browser's saved-password ex
 - **Solo:** either pick works. Bitwarden Free costs nothing and covers the whole job; 1Password Individual is the smoother daily experience.
 - **Family:** 1Password Families for the easiest sharing and the recovery option for a locked-out member; Bitwarden Families for the same job at $47.88 a year for six. Either way, give everyone their own private vault and share only through shared vaults.
 - **Small business:** shared vaults per team or function, a written offboarding step that removes someone from every vault on their last day, and emergency access for at least one other person. This is the same access hygiene as onboarding — the manager just makes it enforceable.
+
+Work down the list until one answers yes:
+
+<div style="max-width:560px; margin:0 auto 14px; text-align:center;">
+  <div style="border:1px solid var(--border-color); border-radius:8px; padding:10px 14px; background:var(--bg-secondary);"><strong>Want to pay nothing, or host the vault yourself?</strong><br><span style="color:var(--text-secondary);">Yes → <strong>Bitwarden</strong></span></div>
+  <div style="font-size:18px; color:var(--text-secondary); margin:2px 0;">↓</div>
+  <div style="border:1px solid var(--border-color); border-radius:8px; padding:10px 14px; background:var(--bg-secondary);"><strong>Want the smoothest apps and the easiest family sharing?</strong><br><span style="color:var(--text-secondary);">Yes → <strong>1Password</strong></span></div>
+  <div style="font-size:18px; color:var(--text-secondary); margin:2px 0;">↓</div>
+  <div style="border:1px solid var(--border-color); border-radius:8px; padding:10px 14px; background:var(--bg-secondary);"><strong>Already use Proton Mail or VPN?</strong><br><span style="color:var(--text-secondary);">Yes → <strong>Proton Pass</strong></span></div>
+  <div style="font-size:18px; color:var(--text-secondary); margin:2px 0;">↓</div>
+  <div style="border:1px solid var(--border-color); border-radius:8px; padding:10px 14px; background:var(--bg-secondary);"><strong>Only ever on Apple devices?</strong><br><span style="color:var(--text-secondary);">Yes → <strong>Apple Passwords</strong></span></div>
+  <div style="font-size:18px; color:var(--text-secondary); margin:2px 0;">↓</div>
+  <div style="border:1px solid var(--border-color); border-radius:8px; padding:10px 14px;">None of the above? Either pick works — take the one you'll actually use.</div>
+</div>
 
 ## The short version
 
