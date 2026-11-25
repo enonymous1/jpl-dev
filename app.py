@@ -31,6 +31,7 @@ from config.projects import (
     PROJECT_THUMBNAILS,
     RETRO_SHOWCASE,
     ROLE_DEFINITIONS,
+    WIDE_THUMBNAILS,
 )
 from config.resume import (
     RESUME_CERTIFICATIONS,
@@ -126,6 +127,7 @@ def create_app():
             resume_education=RESUME_EDUCATION,
             resume_education_note=RESUME_EDUCATION_NOTE,
             project_thumbnails=PROJECT_THUMBNAILS,
+            wide_thumbnails=sorted(WIDE_THUMBNAILS),
             resume_certifications=RESUME_CERTIFICATIONS,
             resume_languages=RESUME_LANGUAGES,
             resume_top_skills=RESUME_TOP_SKILLS,

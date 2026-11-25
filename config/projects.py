@@ -147,7 +147,21 @@ PROJECT_THUMBNAILS = {
     'web-typing-trainer': 'images/project-thumbs/web-typing-trainer.png',
     'whenwhere-biz-main-site': 'images/project-thumbs/whenwhere-biz-main-site.png',
     'whenwhere-drone-light-shows': 'images/project-thumbs/whenwhere-drone-light-shows.png',
+    'whenwhere-biz-coming-soon': 'images/project-thumbs/whenwhere-biz-coming-soon.png',
 }
+
+# Wide thumbnails: repos whose card image is a desktop + mobile
+# side-by-side composite (see below), rendered in the wider 9/4 thumb
+# box instead of the standard 16:9 one. A repo lands here only with
+# its composite file above and a mapping entry in PROJECT_THUMBNAILS.
+# 2026-11-25 pilot: whenwhere-biz-coming-soon — desktop 1920x1080 and
+# mobile 390x844 viewport shots of the live page, composited at equal
+# height with a 24px transparent gap (2443x1080, ~2.26:1, no cropping).
+# The page fits exactly one viewport at both sizes, so the shots are
+# the whole page, not just the hero. Still no thumbnail for
+# enonymous1 and jpl-dev (both point at justinlyons.dev) — the
+# "every repo with a live site has a thumbnail" line above is stale.
+WIDE_THUMBNAILS = frozenset({'whenwhere-biz-coming-soon'})
 
 # ========================================================================
 # RETRO TOP 8 SHOWCASE

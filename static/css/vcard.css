@@ -1596,3 +1596,12 @@ html[data-theme="dark"] .location-map iframe {
     background: var(--card-bg);
     border-radius: var(--vcard-radius) var(--vcard-radius) 0 0;
 }
+
+/* Wide thumbnails: desktop + mobile side-by-side composites (~2.26:1).
+   The 9/4 box nearly fills with the composite, so the phone sliver
+   stays visible instead of letterboxing inside the 16:9 box above.
+   The img carries both classes, so object-fit: contain still applies
+   and nothing is cropped. Only repos in WIDE_THUMBNAILS get this. */
+.repo-card-thumb-wide {
+    aspect-ratio: 9 / 4;
+}

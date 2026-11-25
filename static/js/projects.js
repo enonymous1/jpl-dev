@@ -46,8 +46,12 @@ function renderRepoCard(repo) {
         ? `<a href="${escHtml(siteUrl)}" class="repo-btn" target="_blank" rel="noopener noreferrer" aria-label="Open Pages site for ${name}"><i class="bi bi-globe"></i>Pages site</a>`
         : '';
     const thumbnails = window.JPL_CONFIG.projectThumbnails || {};
+    const wideThumbnails = window.JPL_CONFIG.wideThumbnails || [];
+    const thumbClass = wideThumbnails.includes(repo.name)
+        ? 'repo-card-thumb repo-card-thumb-wide'
+        : 'repo-card-thumb';
     const thumb = thumbnails[repo.name]
-        ? `<img class="repo-card-thumb" src="/static/${escHtml(thumbnails[repo.name])}" alt="" loading="lazy">`
+        ? `<img class="${thumbClass}" src="/static/${escHtml(thumbnails[repo.name])}" alt="" loading="lazy">`
         : '';
 
     return `<div class="repo-card" data-repo-name="${name}" tabindex="0" role="button" aria-label="Preview ${name} repository" style="border-top-color:var(--primary-color)">${thumb}<div class="repo-card-body"><div class="repo-card-title"><span class="font-semibold text-sm">${name}${statsHtml}</span>${statusBadge}</div><p class="repo-card-desc">${desc}</p><div class="repo-card-footer"><div class="repo-card-tags flex flex-wrap gap-1">${techTags}</div><div class="repo-card-actions flex gap-1">${btnGithub}${btnSite}</div></div></div></div>`;
@@ -152,9 +156,10 @@ async function loadHomepageProjects() {
 
 // The Websites tab: the same cards, filtered to repos with a live
 // site (homepage field or GitHub Pages) and shown in full — no search,
-// sort, or expand control. Every site repo has a thumbnail, so each
-// card leads with its preview. Renders from the same allRepos list
-// the Projects tab uses, so it stays in sync with it for free.
+// sort, or expand control. Site repos with a thumbnail lead with
+// their preview; unmapped ones render text-only, never a placeholder
+// box. Renders from the same allRepos list the Projects tab uses, so
+// it stays in sync with it for free.
 function renderWebsites() {
     const gridEl = document.getElementById('websites-grid');
     if (!gridEl) return;

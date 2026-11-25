@@ -844,6 +844,29 @@ def test_project_thumbnails_mapping(client):
     assert b'repo-card-thumb' not in retro.data
 
 
+def test_wide_thumbnails_mapping(client):
+    import os
+
+    from config.projects import PROJECT_THUMBNAILS, WIDE_THUMBNAILS
+
+    # Wide composites are a subset of the thumbnail map, one file each,
+    # and the homepage injects the set so renderRepoCard can add the
+    # wider thumb class for exactly those repos.
+    assert WIDE_THUMBNAILS
+    assert WIDE_THUMBNAILS <= set(PROJECT_THUMBNAILS)
+    for repo in WIDE_THUMBNAILS:
+        full = os.path.join('static', PROJECT_THUMBNAILS[repo])
+        assert os.path.isfile(full), f'missing wide thumbnail file: {full}'
+    resp = client.get('/')
+    assert resp.status_code == 200
+    assert b'wideThumbnails' in resp.data
+    for repo in WIDE_THUMBNAILS:
+        assert repo.encode() in resp.data
+    css = client.get('/static/css/vcard.css').data.decode()
+    wide_rule = css.split('.repo-card-thumb-wide')[1].split('}')[0]
+    assert 'aspect-ratio: 9 / 4' in wide_rule
+
+
 def test_project_card_buttons_are_labeled(client):
     resp = client.get('/')
     assert resp.status_code == 200
