@@ -51,6 +51,13 @@ body.vcard-page {
     min-width: 0;
 }
 
+/* Prose measure cap (2026-11-25): the wrapper widened to 1600px, so the
+   About bio would run ~165 chars/line. 75ch keeps it readable while
+   the grids below use the full width. */
+.vcard-bio {
+    max-width: 75ch;
+}
+
 .vcard-sidebar {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -822,8 +829,12 @@ body.repo-modal-open {
     margin: 20px 0 6px;
 }
 
+/* Prose measure cap (2026-11-25): the wrapper widened to 1600px. The
+   post's tables, chart, and flow diagrams keep the full width — only
+   paragraphs and list items are capped, at 75ch. */
 .blog-post-body p {
     margin: 0 0 14px;
+    max-width: 75ch;
 }
 
 .blog-post-body ul,
@@ -834,6 +845,7 @@ body.repo-modal-open {
 
 .blog-post-body li {
     margin-bottom: 6px;
+    max-width: 75ch;
 }
 
 .blog-post-body a {

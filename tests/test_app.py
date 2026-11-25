@@ -773,7 +773,11 @@ def test_vcard_layout_is_stable_across_tabs(client):
     assert 'display: block' in css
     resp = client.get('/')
     assert b'class="vcard-page"' in resp.data
-    assert b'w-full max-w-7xl' in resp.data
+    # Wrapper cap widened 1280px -> 1600px on 2026-11-25 (dead space at
+    # 2560px fell from ~640px to ~480px per side); the w-full + cap
+    # structure above is unchanged, so the width still cannot depend
+    # on which tab is active.
+    assert b'w-full max-w-[1600px]' in resp.data
 
 
 def test_retro_theme_toggle(client):
