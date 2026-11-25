@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 # above already covers. Anything parameterized outside this set (and
 # outside 'static') must fail the build: a missing generator would
 # otherwise ship a site silently missing pages.
-GENERATOR_COVERED_ENDPOINTS = {'blog_post'}
+GENERATOR_COVERED_ENDPOINTS = {'blog_post', 'blog_tag'}
 
 
 @freezer.register_generator
@@ -42,6 +42,15 @@ def blog_post():
 
     for post in load_posts():
         yield {'slug': post.slug}
+
+
+@freezer.register_generator
+def blog_tag():
+    """Yield one frozen URL per tag for the /blog/tag/<tag>/ route."""
+    from config.blog import all_tags
+
+    for tag in all_tags():
+        yield {'tag': tag}
 
 
 def _check_dynamic_routes():
@@ -76,11 +85,12 @@ def _static_routes():
         if rule.endpoint == 'static' or '<' in rule.rule:
             continue
         routes.append(rule.rule)
-    # Parameterized blog routes are frozen via the generator above but
+    # Parameterized blog routes are frozen via the generators above but
     # skipped by the loop, so add their URLs for the sitemap.
-    from config.blog import load_posts
+    from config.blog import all_tags, load_posts, tag_url_path
 
     routes.extend(post.url_path for post in load_posts())
+    routes.extend(tag_url_path(tag) for tag in all_tags())
     return sorted(set(routes))
 
 

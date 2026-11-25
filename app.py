@@ -22,7 +22,7 @@ from xml.sax.saxutils import escape as xml_escape
 from flask import Flask, Response, abort, render_template
 from flask_frozen import Freezer
 
-from config.blog import load_posts
+from config.blog import load_posts, posts_for_tag, related_posts, tag_url_path
 from config.projects import (
     ABOUT_ME,
     GLOSSARY,
@@ -141,12 +141,31 @@ def create_app():
                 return render_template(
                     'blog_post.html',
                     post=post,
+                    related=related_posts(post),
                     about=ABOUT_ME,
                     **_glossary_context(),
                     **_site_context(),
                     **_sidebar_modal_context(),
                 )
         abort(404)
+
+    @application.route('/blog/tag/<tag>/')
+    def blog_tag(tag):
+        """List every post carrying ``tag``. Unknown tags 404, like
+        unknown post slugs — a tag page only exists if a post uses it."""
+        posts = posts_for_tag(tag)
+        if not posts:
+            abort(404)
+        return render_template(
+            'blog_tag.html',
+            tag=tag,
+            posts=posts,
+            tag_url_path=tag_url_path(tag),
+            about=ABOUT_ME,
+            **_glossary_context(),
+            **_site_context(),
+            **_sidebar_modal_context(),
+        )
 
     @application.route('/feed.xml')
     def feed():

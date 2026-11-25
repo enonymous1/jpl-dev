@@ -785,6 +785,38 @@ body.repo-modal-open {
     gap: 4px;
 }
 
+/* Tag pills are links to the tag's page (/blog/tag/<tag>/). Keep the
+   badge look, add a hover state so they read as clickable. */
+.blog-tags a.badge-theme {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.blog-tags a.badge-theme:hover {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.blog-tags a.badge-theme:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Related posts at the foot of a post: same list as the Blog tab,
+   separated from the article by a rule. Only rendered when another
+   post shares a tag, so a post with no overlap shows nothing here. */
+.blog-related {
+    margin-top: 32px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+.blog-related h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+
 .blog-back {
     margin: 0 0 16px;
     font-size: 14px;

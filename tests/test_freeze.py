@@ -20,6 +20,8 @@ def test_freeze_writes_404_robots_and_sitemap(monkeypatch, tmp_path):
     assert '<loc>https://justinlyons.dev/</loc>' in sitemap
     assert '<loc>https://justinlyons.dev/retro/</loc>' in sitemap
     assert '<loc>https://justinlyons.dev/blog/interesting-links/</loc>' in sitemap
+    assert '<loc>https://justinlyons.dev/blog/tag/gig-work/</loc>' in sitemap
+    assert (tmp_path / 'blog' / 'tag' / 'gig-work' / 'index.html').is_file()
 
 
 def test_freeze_fails_on_uncovered_dynamic_route(monkeypatch):
@@ -61,5 +63,13 @@ def test_freeze_fails_on_uncovered_dynamic_route(monkeypatch):
         freeze,
         'freezer',
         FakeFreezer([Rule('/blog/<slug>/', 'blog_post')]),
+    )
+    freeze._check_dynamic_routes()
+
+    # blog_tag is covered the same way.
+    monkeypatch.setattr(
+        freeze,
+        'freezer',
+        FakeFreezer([Rule('/blog/tag/<tag>/', 'blog_tag')]),
     )
     freeze._check_dynamic_routes()

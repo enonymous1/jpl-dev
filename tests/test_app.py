@@ -314,6 +314,95 @@ def test_blog_tab_post_page_and_feed(client):
     assert b'data-vcard-tab="blog"' not in retro.data
 
 
+def test_blog_tag_page_lists_only_matching_posts(client):
+    # gig-work is the one tag shared by two published posts.
+    resp = client.get('/blog/tag/gig-work/')
+    assert resp.status_code == 200
+    assert b'Posts tagged' in resp.data
+    assert b'GigSmart Explained' in resp.data
+    assert b'iSecretShop Explained' in resp.data
+    assert b'Choosing a Password Manager' not in resp.data
+    assert b'2 posts' in resp.data
+    # A single-post tag still renders, with the singular count.
+    single = client.get('/blog/tag/passwords/')
+    assert single.status_code == 200
+    assert b'Choosing a Password Manager' in single.data
+    assert b'1 post' in single.data
+    assert b'2 posts' not in single.data
+    assert client.get('/blog/tag/no-such-tag/').status_code == 404
+
+
+def test_blog_tag_pills_are_links_on_homepage_and_post_pages(client):
+    resp = client.get('/')
+    assert b'href="/blog/tag/gig-work/"' in resp.data
+    assert b'href="/blog/tag/passwords/"' in resp.data
+    post = client.get('/blog/choosing-a-password-manager/')
+    assert post.status_code == 200
+    assert b'href="/blog/tag/passwords/"' in post.data
+    # Linked pills keep the badge look and get a hover state.
+    css = client.get('/static/css/vcard.css').data.decode()
+    assert '.blog-tags a.badge-theme' in css
+    assert '.blog-tags a.badge-theme:hover' in css
+
+
+def test_blog_tag_helpers_are_sorted_and_deduplicated():
+    from config.blog import all_tags, posts_for_tag, tag_url_path
+
+    tags = all_tags()
+    assert tags == sorted(tags)
+    assert len(tags) == len(set(tags))
+    assert 'gig-work' in tags
+    assert [p.slug for p in posts_for_tag('gig-work')] == [
+        'gigsmart-explained-what-it-is-and-how-to-use-it',
+        'isecretshop-explained-what-it-is-and-how-it-works',
+    ]
+    assert posts_for_tag('no-such-tag') == []
+    assert tag_url_path('gmail') == '/blog/tag/gmail/'
+
+
+def test_blog_related_posts_by_tag(client):
+    # GigSmart and iSecretShop share gig-work, so each links the other —
+    # and never itself.
+    gig = client.get('/blog/gigsmart-explained-what-it-is-and-how-to-use-it/')
+    assert gig.status_code == 200
+    assert b'Related posts' in gig.data
+    assert b'iSecretShop Explained' in gig.data
+    assert b'href="/blog/isecretshop-explained-what-it-is-and-how-it-works/"' in gig.data
+    secret = client.get('/blog/isecretshop-explained-what-it-is-and-how-it-works/')
+    assert b'GigSmart Explained' in secret.data
+    # The password-manager post shares no tag with anything, so the
+    # section stays hidden rather than showing an empty heading.
+    passwords = client.get('/blog/choosing-a-password-manager/')
+    assert passwords.status_code == 200
+    assert b'Related posts' not in passwords.data
+
+
+def test_blog_related_posts_rank_by_shared_tag_count():
+    from datetime import date
+
+    from config.blog import Post, related_posts
+
+    def post(slug, tags, day):
+        return Post(
+            slug=slug,
+            title=slug,
+            date=date(2026, 11, day),
+            summary='x',
+            tags=tags,
+        )
+
+    current = post('current', ['a', 'b'], 10)
+    one_tag = post('one-tag', ['a'], 20)
+    two_tags = post('two-tags', ['a', 'b'], 1)
+    unrelated = post('unrelated', ['c'], 25)
+    assert [p.slug for p in related_posts(current, [current, one_tag, two_tags, unrelated])] == [
+        'two-tags',
+        'one-tag',
+    ]
+    assert related_posts(post('lonely', [], 10), [current, one_tag]) == []
+    assert related_posts(current, [current, one_tag, two_tags], limit=1) == [two_tags]
+
+
 def test_blog_tab_hidden_with_no_posts(client, tmp_path, monkeypatch):
     monkeypatch.setattr('config.blog.POSTS_DIR', tmp_path)
     resp = client.get('/')

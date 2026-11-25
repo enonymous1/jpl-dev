@@ -168,6 +168,47 @@ def parse_post(path: Path) -> Post:
     )
 
 
+def all_tags(posts: list[Post] | None = None) -> list[str]:
+    """Every distinct tag across ``posts`` (or all posts), sorted.
+
+    Tags are the front-matter tokens as written — lowercase, hyphenated,
+    URL-safe in practice — so a tag doubles as its own URL segment.
+    """
+    source = posts if posts is not None else load_posts()
+    return sorted({tag for post in source for tag in post.tags})
+
+
+def posts_for_tag(tag: str, posts: list[Post] | None = None) -> list[Post]:
+    """Posts carrying ``tag``, in the same pinned-then-newest order."""
+    source = posts if posts is not None else load_posts()
+    return [post for post in source if tag in post.tags]
+
+
+def tag_url_path(tag: str) -> str:
+    return f'/blog/tag/{tag}/'
+
+
+def related_posts(post: Post, posts: list[Post] | None = None, limit: int = 3) -> list[Post]:
+    """Posts sharing at least one tag with ``post``, excluding itself.
+
+    Ranked by shared-tag count (most shared first), then by the usual
+    pinned-then-newest order, so a post sharing two tags outranks one
+    sharing one. A post with no tags — or no tag in common with any
+    other post — has no related posts, and the section stays hidden.
+    """
+    source = posts if posts is not None else load_posts()
+    own_tags = set(post.tags)
+    if not own_tags:
+        return []
+    scored = [
+        (len(own_tags & set(other.tags)), index, other)
+        for index, other in enumerate(source)
+        if other.slug != post.slug and own_tags & set(other.tags)
+    ]
+    scored.sort(key=lambda item: (-item[0], item[1]))
+    return [other for _, _, other in scored[:limit]]
+
+
 def load_posts(posts_dir: Path | None = None) -> list[Post]:
     """Load every post in ``posts_dir``, pinned first, then newest first.
 

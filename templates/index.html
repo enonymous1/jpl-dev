@@ -247,7 +247,7 @@
                         <span class="blog-date">{{ post.date_label }}</span>
                         <p class="blog-summary">{{ post.summary }}</p>
                         {% if post.tags %}
-                        <p class="blog-tags">{% for tag in post.tags %}<span class="badge-theme">{{ tag }}</span>{% endfor %}</p>
+                        <p class="blog-tags">{% for tag in post.tags %}<a class="badge-theme" href="{{ url_for('blog_tag', tag=tag) }}">{{ tag }}</a>{% endfor %}</p>
                         {% endif %}
                     </li>
                     {% endfor %}
