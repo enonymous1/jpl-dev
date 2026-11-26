@@ -45,6 +45,7 @@ from config.resume import (
     RESUME_TOP_SKILLS,
 )
 from config.site import CONTACT_EMAIL, GITHUB_USER, LINKEDIN_SLUG, SITE_URL
+from config.videos import VIDEO_SECTIONS
 
 
 def _glossary_context():
@@ -130,6 +131,7 @@ def create_app():
             resume_education_note=RESUME_EDUCATION_NOTE,
             project_thumbnails=PROJECT_THUMBNAILS,
             wide_thumbnails=sorted(WIDE_THUMBNAILS),
+            video_sections=VIDEO_SECTIONS,
             resume_certifications=RESUME_CERTIFICATIONS,
             resume_languages=RESUME_LANGUAGES,
             resume_top_skills=RESUME_TOP_SKILLS,

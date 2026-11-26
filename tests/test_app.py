@@ -284,6 +284,49 @@ def test_websites_search_sort_and_language_filters(client):
     assert b'id="websites-search"' not in post.data
 
 
+def test_videos_tab_lists_youtube_uploads(client):
+    resp = client.get('/')
+    assert resp.status_code == 200
+    assert b'data-vcard-tab="videos"' in resp.data
+    assert b'data-vcard-section="videos"' in resp.data
+    # The four real uploads from the channel, newest first.
+    assert b'Xbox One COD Ghosts FFA Tremor 30 3' in resp.data
+    assert b'enonymous1 - MW3 Game Clip' in resp.data
+    assert b'25ToCBeasts.mp4' in resp.data
+    assert b'10HToCBoss2' in resp.data
+    assert b'https://www.youtube.com/watch?v=xp-cd9AwNr8' in resp.data
+    assert b'https://www.youtube.com/@JustinLyons364' in resp.data
+    # Retro and post pages carry no Videos tab.
+    retro = client.get('/retro/')
+    assert b'data-vcard-tab="videos"' not in retro.data
+    post = client.get('/blog/interesting-links/')
+    assert b'data-vcard-tab="videos"' not in post.data
+
+
+def test_video_sections_reference_real_uploads():
+    # Every listed video is a real public upload: an 11-char YouTube
+    # id, an ISO date, and a thumbnail file that actually exists.
+    import os
+    import re
+    from datetime import date
+
+    from config.videos import VIDEO_SECTIONS
+
+    assert VIDEO_SECTIONS
+    seen = set()
+    for section in VIDEO_SECTIONS:
+        assert section['channel_url'].startswith('https://www.youtube.com/')
+        for video in section['videos']:
+            assert re.fullmatch(r'[A-Za-z0-9_-]{11}', video['id'])
+            assert video['id'] not in seen
+            seen.add(video['id'])
+            date.fromisoformat(video['date'])
+            assert video['title'] and video['date_label']
+            thumb = os.path.join('static/images/video-thumbs', video['thumbnail'])
+            assert os.path.isfile(thumb), f'missing video thumbnail: {thumb}'
+            assert os.path.getsize(thumb) > 0
+
+
 def test_about_build_cards_and_tool_labels(client):
     resp = client.get('/')
     assert resp.status_code == 200

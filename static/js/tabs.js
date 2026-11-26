@@ -1,7 +1,11 @@
 // ── vCard section tabs ─────────────────────────────────────────────────────
-// About / Projects / Websites / Curriculum Vitae / Blog / Contact, no reload.
-// Deep-linkable via #about, #projects, #websites, #cv, #blog, #contact so a link
-// can open a specific section on the frozen static site.
+// About / Projects / Websites / Curriculum Vitae / Blog / Videos / Contact,
+// no reload. Deep-linkable via #about, #projects, #websites, #cv, #blog,
+// #videos, #contact so a link can open a specific section on the frozen
+// static site. One list drives both the history update and the hash
+// handler, so they can't drift apart.
+const VCARD_TABS = ['about', 'projects', 'websites', 'cv', 'contact', 'blog', 'videos'];
+
 function activateVcardTab(name) {
     // Unknown names (e.g. #blog with no posts yet, so no Blog section
     // exists) leave the current tab alone instead of hiding everything.
@@ -18,7 +22,7 @@ function activateVcardTab(name) {
         }
     });
     tabs.forEach(b => { b.setAttribute('aria-selected', String(b.getAttribute('data-vcard-tab') === name)); });
-    if (['about', 'projects', 'websites', 'cv', 'contact', 'blog'].includes(name)) {
+    if (VCARD_TABS.includes(name)) {
         history.replaceState(null, '', '#' + name);
     }
 }
@@ -34,6 +38,10 @@ if (typeof document !== 'undefined') {
     document.getElementById('resume-print-btn')?.addEventListener('click', () => window.print());
     (function () {
         const hash = (window.location.hash || '').replace('#', '');
-        if (['about', 'projects', 'websites', 'cv', 'contact', 'blog'].includes(hash)) activateVcardTab(hash);
+        if (VCARD_TABS.includes(hash)) activateVcardTab(hash);
     })();
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { VCARD_TABS };
 }

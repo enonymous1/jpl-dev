@@ -221,3 +221,9 @@ test('sortWebsiteRepos keeps web languages first by default, and sorts by recenc
     assert.deepEqual(sortWebsiteRepos(repos, 'recent').map((r) => r.name), ['py-tool', 'html-site', 'js-site', 'ts-site']);
     assert.deepEqual(sortWebsiteRepos(repos, 'name').map((r) => r.name), ['html-site', 'js-site', 'py-tool', 'ts-site']);
 });
+
+const { VCARD_TABS } = require('../../static/js/tabs.js');
+
+test('vCard tabs include the Videos tab', () => {
+    assert.deepEqual(VCARD_TABS, ['about', 'projects', 'websites', 'cv', 'contact', 'blog', 'videos']);
+});

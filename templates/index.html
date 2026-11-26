@@ -25,7 +25,7 @@
          and filter pills did not appear. Bump the version whenever
          vcard.css changes. -->
     <link rel="alternate" type="application/rss+xml" title="Justin P. Lyons — Blog" href="{{ url_for('feed') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261125-02">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vcard.css') }}?v=20261126-01">
     <!-- Apply the saved theme before first paint, like global-theme.js
          does on load: this copy must stay inline (it runs before the
          external file loads) so the theme never flashes on a dark visit. -->
@@ -59,6 +59,9 @@
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="cv">Curriculum Vitae</button>
                 {% if posts %}
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="blog">Blog</button>
+                {% endif %}
+                {% if video_sections %}
+                <button type="button" role="tab" aria-selected="false" data-vcard-tab="videos">Videos</button>
                 {% endif %}
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="contact">Contact</button>
             </nav>
@@ -290,6 +293,29 @@
                     {% endfor %}
                 </ul>
                 <p id="blog-no-results" class="text-center py-4 text-sm" style="color:var(--text-secondary)" hidden></p>
+            </section>
+            {% endif %}
+
+            {% if video_sections %}
+            <section id="vcard-videos" data-vcard-section="videos" role="tabpanel" hidden>
+                <h2 class="vcard-section-title">Videos</h2>
+                <p class="text-sm mb-3" style="color:var(--text-secondary)">Game clips from 2009–2013 — where the channel starts. New uploads land here as they're published.</p>
+                {% for section in video_sections %}
+                <h3 class="video-section-title">{{ section.platform }} — <a href="{{ section.channel_url }}" target="_blank" rel="noopener">{{ section.channel }} ({{ section.channel_handle }})</a></h3>
+                <div class="video-grid grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {% for video in section.videos %}
+                    <article class="video-card">
+                        <a class="video-thumb" href="https://www.youtube.com/watch?v={{ video.id }}" target="_blank" rel="noopener" aria-label="Watch {{ video.title }} on YouTube">
+                            <img src="{{ url_for('static', filename='images/video-thumbs/' + video.thumbnail) }}" alt="" loading="lazy">
+                            {% if video.duration %}<span class="video-duration">{{ video.duration }}</span>{% endif %}
+                        </a>
+                        <h4 class="video-title"><a href="https://www.youtube.com/watch?v={{ video.id }}" target="_blank" rel="noopener">{{ video.title }}</a></h4>
+                        <p class="video-meta">{{ video.date_label }}</p>
+                        {% if video.description %}<p class="video-description">{{ video.description }}</p>{% endif %}
+                    </article>
+                    {% endfor %}
+                </div>
+                {% endfor %}
             </section>
             {% endif %}
 
