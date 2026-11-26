@@ -17,6 +17,9 @@ let projectsExpanded = false;
 // to any language-filtered list alike.
 const PROJECTS_INITIAL_COUNT = 10;
 let allRepos = [];
+let selectedWebsiteLanguage = 'All';
+let websiteSearchQuery = '';
+let websiteSortKey = 'web';
 
 function renderRepoCard(repo) {
     const githubUser = window.JPL_CONFIG.githubUser;
@@ -150,23 +153,90 @@ async function loadHomepageProjects() {
     allRepos = filterActiveRepos(repos, window.JPL_CONFIG.githubUser);
     window.JPL.repos = allRepos;
     renderLanguageFilters(allRepos);
+    renderWebsiteLanguageFilters(allRepos.filter(r => hasWebsite(r, window.JPL_CONFIG.githubUser)));
     renderProjects();
     renderWebsites();
 }
 
+// ── Websites tab: search, sort, and language pills ──────────────────────
+// A website-grid repo matches when its language is the selected one
+// ('All' matches everything) and the query appears in its name,
+// description, or topics. A repo with no language counts as 'Other'.
+function websiteRepoMatches(repo, language, query) {
+    if (language !== 'All' && (repo.language || 'Other') !== language) return false;
+    const q = query.trim().toLowerCase();
+    if (!q) return true;
+    const haystack = [repo.name, repo.description, ...(repo.topics || [])].filter(Boolean).join(' ').toLowerCase();
+    return haystack.includes(q);
+}
+
+// Sort the Websites tab: 'web' keeps the web-first order (HTML,
+// JavaScript, TypeScript first, API order inside each group);
+// 'recent' is last-push first; 'name' is A-Z. Ties fall back to name
+// so the result is stable instead of looking shuffled.
+function sortWebsiteRepos(repos, sortKey) {
+    if (sortKey === 'recent') {
+        return [...repos].sort((a, b) => (b.pushed_at || '').localeCompare(a.pushed_at || '') || a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+    }
+    if (sortKey === 'name') {
+        return [...repos].sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+    }
+    return sortWebsites(repos);
+}
+
+function renderWebsiteLanguageFilters(sites) {
+    const container = document.getElementById('website-language-filters');
+    if (!container) return;
+    // Chips are derived from the loaded site repos, never hardcoded:
+    // a new language in a future site gets a chip automatically, and
+    // a language with no sites gets none.
+    const counts = new Map();
+    sites.forEach(r => {
+        const lang = r.language || 'Other';
+        counts.set(lang, (counts.get(lang) || 0) + 1);
+    });
+    const langs = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    const chip = (lang, count, showDot) => {
+        const active = lang === selectedWebsiteLanguage;
+        const dot = showDot ? `<span class="lang-dot" style="background:${langColor(lang)}" aria-hidden="true"></span>` : '';
+        return `<button type="button" class="language-filter-btn${active ? ' active' : ''}" data-website-language="${escHtml(lang)}" aria-pressed="${active}">${dot}${escHtml(lang)} <span class="lang-count">${count}</span></button>`;
+    };
+    container.innerHTML = chip('All', sites.length, false) + langs.map(([lang, count]) => chip(lang, count, true)).join('');
+    container.querySelectorAll('[data-website-language]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-website-language');
+            selectedWebsiteLanguage = (lang === selectedWebsiteLanguage) ? 'All' : lang;
+            container.querySelectorAll('[data-website-language]').forEach(b => {
+                const isActive = b.getAttribute('data-website-language') === selectedWebsiteLanguage;
+                b.classList.toggle('active', isActive);
+                b.setAttribute('aria-pressed', String(isActive));
+            });
+            renderWebsites();
+        });
+    });
+}
+
 // The Websites tab: the same cards, filtered to repos with a live
-// site (homepage field or GitHub Pages) and shown in full — no search,
-// sort, or expand control. Site repos with a thumbnail lead with
-// their preview; unmapped ones render text-only, never a placeholder
-// box. Renders from the same allRepos list the Projects tab uses, so
-// it stays in sync with it for free.
+// site (homepage field or GitHub Pages) and shown in full — no expand
+// control. Search, sort, and the language pills combine, mirroring
+// the Projects tab. Renders from the same allRepos list the Projects
+// tab uses, so it stays in sync with it for free.
 function renderWebsites() {
     const gridEl = document.getElementById('websites-grid');
     if (!gridEl) return;
-    const sites = sortWebsites(allRepos.filter(r => hasWebsite(r, window.JPL_CONFIG.githubUser)));
-    gridEl.innerHTML = sites.length
-        ? sites.map(r => renderRepoCard(r)).join('')
-        : `<p class="col-span-full text-center py-4 text-sm" style="color:var(--text-secondary)">No live websites found.</p>`;
+    const sites = sortWebsiteRepos(
+        allRepos.filter(r => hasWebsite(r, window.JPL_CONFIG.githubUser))
+            .filter(r => websiteRepoMatches(r, selectedWebsiteLanguage, websiteSearchQuery)),
+        websiteSortKey,
+    );
+    const noSites = (msg) => `<p class="col-span-full text-center py-4 text-sm" style="color:var(--text-secondary)">${msg}</p>`;
+    const query = websiteSearchQuery.trim();
+    const empty = query
+        ? `No websites match &ldquo;${escHtml(query)}&rdquo;. Try a different search or language.`
+        : selectedWebsiteLanguage === 'All'
+            ? 'No live websites found.'
+            : `No ${escHtml(selectedWebsiteLanguage)} websites. Try a different language.`;
+    gridEl.innerHTML = sites.length ? sites.map(r => renderRepoCard(r)).join('') : noSites(empty);
 }
 
 // Wiring: only on pages that carry the grid (the homepage). The
@@ -186,5 +256,17 @@ if (typeof document !== 'undefined') {
         projectsExpanded = false;
         renderProjects();
     });
+    document.getElementById('websites-search')?.addEventListener('input', (e) => {
+        websiteSearchQuery = e.target.value;
+        renderWebsites();
+    });
+    document.getElementById('websites-sort')?.addEventListener('change', (e) => {
+        websiteSortKey = e.target.value;
+        renderWebsites();
+    });
     document.addEventListener('DOMContentLoaded', loadHomepageProjects);
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { websiteRepoMatches, sortWebsiteRepos };
 }

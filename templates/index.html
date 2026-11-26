@@ -155,6 +155,23 @@
             <section id="vcard-websites" data-vcard-section="websites" role="tabpanel" hidden>
                 <h2 class="vcard-section-title">Websites</h2>
                 <p class="text-sm mb-3" style="color:var(--text-secondary)">Live websites from the project list — every card here opens a real site. Click a card to preview it, then visit the site from the preview.</p>
+                <div class="projects-controls">
+                    <label class="projects-search-wrap">
+                        <i class="bi bi-search" aria-hidden="true"></i>
+                        <input type="search" id="websites-search" placeholder="Search websites..." aria-label="Search websites">
+                    </label>
+                    <label class="projects-sort-wrap">
+                        <span aria-hidden="true">Sort</span>
+                        <select id="websites-sort" aria-label="Sort websites">
+                            <option value="web" selected>Web first</option>
+                            <option value="recent">Recently updated</option>
+                            <option value="name">Name A&ndash;Z</option>
+                        </select>
+                    </label>
+                </div>
+                <div id="website-language-filters" class="language-filters" role="group" aria-label="Filter websites by language">
+                    <button type="button" class="language-filter-btn active" data-website-language="All" aria-pressed="true">All</button>
+                </div>
                 <div id="websites-grid" class="projects-content grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="col-span-full text-center py-6 text-sm" style="color:var(--text-secondary)">
                         <div class="inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin mr-2"></div>Loading from GitHub...

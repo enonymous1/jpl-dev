@@ -261,6 +261,29 @@ def test_projects_search_and_sort_controls(client):
     assert b'id="projects-search"' not in post.data
 
 
+def test_websites_search_sort_and_language_filters(client):
+    resp = client.get('/')
+    assert resp.status_code == 200
+    assert b'id="websites-search"' in resp.data
+    assert b'Search websites...' in resp.data
+    assert b'id="websites-sort"' in resp.data
+    assert b'value="web"' in resp.data
+    assert b'value="recent"' in resp.data
+    assert b'value="name"' in resp.data
+    # The static HTML carries only the "All" pill; the language pills
+    # are built by JS from the loaded site repos, like the Projects chips.
+    assert b'id="website-language-filters"' in resp.data
+    assert b'aria-label="Filter websites by language"' in resp.data
+    assert b'data-website-language="All"' in resp.data
+    assert b'data-website-language="Python"' not in resp.data
+    # Retro and post pages carry no Websites controls.
+    retro = client.get('/retro/')
+    assert b'id="websites-search"' not in retro.data
+    assert b'id="websites-sort"' not in retro.data
+    post = client.get('/blog/interesting-links/')
+    assert b'id="websites-search"' not in post.data
+
+
 def test_about_build_cards_and_tool_labels(client):
     resp = client.get('/')
     assert resp.status_code == 200
@@ -843,8 +866,11 @@ def test_retro_contact_lists_pokemon_go(client):
 def test_websites_tab_sorts_web_languages_first(client):
     # The Websites tab's default order is web-first (HTML/JavaScript/
     # TypeScript), then the rest, recently updated inside each group.
+    # The default sort key is 'web', and that branch delegates to the
+    # shared sortWebsites helper in repo-loader.js.
     projects_js = client.get('/static/js/projects.js').data
-    assert b'sortWebsites(allRepos' in projects_js
+    assert b"websiteSortKey = 'web'" in projects_js
+    assert b'return sortWebsites(repos);' in projects_js
     loader_js = client.get('/static/js/repo-loader.js').data
     assert b"WEBSITE_FIRST_LANGUAGES = ['HTML', 'JavaScript', 'TypeScript']" in loader_js
 

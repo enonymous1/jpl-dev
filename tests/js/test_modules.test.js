@@ -190,3 +190,34 @@ test('sortBlogItems keeps pinned first in every sort', () => {
     assert.deepEqual(sortBlogItems(items, 'oldest').map((i) => i.title), ['Pinned Post', 'B Post', 'A Post']);
     assert.deepEqual(sortBlogItems(items, 'title').map((i) => i.title), ['Pinned Post', 'A Post', 'B Post']);
 });
+
+global.sortWebsites = loader.sortWebsites;
+const { websiteRepoMatches, sortWebsiteRepos } = require('../../static/js/projects.js');
+
+test('websiteRepoMatches filters by language and searches name, description, and topics', () => {
+    const repo = { name: 'whenwhere-drone-light-shows', description: 'Drone light shows in Charlottesville', language: 'JavaScript', topics: ['drone-light-show', 'canvas'] };
+    assert.equal(websiteRepoMatches(repo, 'All', ''), true);
+    assert.equal(websiteRepoMatches(repo, 'JavaScript', ''), true);
+    assert.equal(websiteRepoMatches(repo, 'Python', ''), false);
+    assert.equal(websiteRepoMatches(repo, 'All', 'drone'), true);
+    assert.equal(websiteRepoMatches(repo, 'All', 'charlottesville'), true);
+    assert.equal(websiteRepoMatches(repo, 'All', 'canvas'), true);
+    assert.equal(websiteRepoMatches(repo, 'All', 'gmail'), false);
+    assert.equal(websiteRepoMatches(repo, 'JavaScript', 'drone'), true);
+    assert.equal(websiteRepoMatches(repo, 'Python', 'drone'), false);
+    const untyped = { name: 'x', description: '', language: null, topics: [] };
+    assert.equal(websiteRepoMatches(untyped, 'Other', ''), true);
+    assert.equal(websiteRepoMatches(untyped, 'All', ''), true);
+});
+
+test('sortWebsiteRepos keeps web languages first by default, and sorts by recency or name', () => {
+    const repos = [
+        { name: 'py-tool', language: 'Python', pushed_at: '2026-11-25T00:00:00Z' },
+        { name: 'js-site', language: 'JavaScript', pushed_at: '2026-11-20T00:00:00Z' },
+        { name: 'html-site', language: 'HTML', pushed_at: '2026-11-24T00:00:00Z' },
+        { name: 'ts-site', language: 'TypeScript', pushed_at: '2026-11-10T00:00:00Z' },
+    ];
+    assert.deepEqual(sortWebsiteRepos(repos, 'web').map((r) => r.name), ['js-site', 'html-site', 'ts-site', 'py-tool']);
+    assert.deepEqual(sortWebsiteRepos(repos, 'recent').map((r) => r.name), ['py-tool', 'html-site', 'js-site', 'ts-site']);
+    assert.deepEqual(sortWebsiteRepos(repos, 'name').map((r) => r.name), ['html-site', 'js-site', 'py-tool', 'ts-site']);
+});
