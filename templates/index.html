@@ -299,23 +299,33 @@
             {% if video_sections %}
             <section id="vcard-videos" data-vcard-section="videos" role="tabpanel" hidden>
                 <h2 class="vcard-section-title">Videos</h2>
-                <p class="text-sm mb-3" style="color:var(--text-secondary)">Game clips from 2009–2013 — where the channel starts. New uploads land here as they're published.</p>
+                <p class="text-sm mb-3" style="color:var(--text-secondary)">Game clips from two channels, 2009–2024. New uploads land here as they're published.</p>
+                <div class="projects-controls">
+                    <label class="projects-search-wrap">
+                        <i class="bi bi-search" aria-hidden="true"></i>
+                        <input type="search" id="videos-search" placeholder="Search videos..." aria-label="Search videos">
+                    </label>
+                </div>
                 {% for section in video_sections %}
+                <div class="video-section">
                 <h3 class="video-section-title">{{ section.platform }} — <a href="{{ section.channel_url }}" target="_blank" rel="noopener">{{ section.channel }} ({{ section.channel_handle }})</a></h3>
                 <div class="video-grid grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {% for video in section.videos %}
-                    <article class="video-card">
+                    {% set video_summary = video.description.split('\n\n')[0] %}
+                    <article class="video-card" data-video-title="{{ video.title }}" data-video-description="{{ video_summary }}" data-video-channel="{{ section.channel }}">
                         <a class="video-thumb" href="https://www.youtube.com/watch?v={{ video.id }}" target="_blank" rel="noopener" aria-label="Watch {{ video.title }} on YouTube">
                             <img src="{{ url_for('static', filename='images/video-thumbs/' + video.thumbnail) }}" alt="" loading="lazy">
                             {% if video.duration %}<span class="video-duration">{{ video.duration }}</span>{% endif %}
                         </a>
                         <h4 class="video-title"><a href="https://www.youtube.com/watch?v={{ video.id }}" target="_blank" rel="noopener">{{ video.title }}</a></h4>
                         <p class="video-meta">{{ video.date_label }}</p>
-                        {% if video.description %}<p class="video-description">{{ video.description }}</p>{% endif %}
+                        {% if video_summary %}<p class="video-description">{{ video_summary }}</p>{% endif %}
                     </article>
                     {% endfor %}
                 </div>
+                </div>
                 {% endfor %}
+                <p id="videos-no-results" class="text-center py-4 text-sm" style="color:var(--text-secondary)" hidden></p>
             </section>
             {% endif %}
 
@@ -353,6 +363,7 @@ window.GLOSSARY_DATA = {terms: {{ glossary_data | tojson }}, roles: {{ role_defi
 <script src="{{ url_for('static', filename='js/readme-md.js') }}"></script>
 <script src="{{ url_for('static', filename='js/projects.js') }}"></script>
 <script src="{{ url_for('static', filename='js/blog.js') }}"></script>
+<script src="{{ url_for('static', filename='js/videos.js') }}"></script>
 <script src="{{ url_for('static', filename='js/repo-modal.js') }}"></script>
 <script src="{{ url_for('static', filename='js/tabs.js') }}"></script>
 <script src="{{ url_for('static', filename='js/contact.js') }}"></script>

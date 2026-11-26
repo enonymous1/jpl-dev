@@ -227,3 +227,15 @@ const { VCARD_TABS } = require('../../static/js/tabs.js');
 test('vCard tabs include the Videos tab', () => {
     assert.deepEqual(VCARD_TABS, ['about', 'projects', 'websites', 'cv', 'contact', 'blog', 'videos']);
 });
+
+const { videoMatches } = require('../../static/js/videos.js');
+
+test('videoMatches finds titles, descriptions, and channel names', () => {
+    assert.equal(videoMatches('Lego Worlds 1 Billion studs method', '', 'Enonymous1 Gaming', 'lego'), true);
+    assert.equal(videoMatches('Titanfall Assault', '', 'Enonymous1 Gaming', 'TITANFALL'), true);
+    assert.equal(videoMatches('10HToCBoss2', 'Realm: Thrall', 'Justin Lyons', 'thrall'), true);
+    assert.equal(videoMatches('10HToCBoss2', 'Realm: Thrall', 'Justin Lyons', 'gaming'), false);
+    assert.equal(videoMatches('ANVIL Brone', '', 'Enonymous1 Gaming', 'gaming'), true);
+    assert.equal(videoMatches('ANVIL Brone', '', 'Enonymous1 Gaming', ''), true);
+    assert.equal(videoMatches('ANVIL Brone', '', 'Enonymous1 Gaming', 'zzz'), false);
+});

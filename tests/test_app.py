@@ -284,6 +284,29 @@ def test_websites_search_sort_and_language_filters(client):
     assert b'id="websites-search"' not in post.data
 
 
+def test_videos_tab_lists_both_channels(client):
+    resp = client.get('/')
+    assert resp.status_code == 200
+    assert b'id="videos-search"' in resp.data
+    assert b'Enonymous1 Gaming' in resp.data
+    assert b'https://www.youtube.com/@enonymous1gaming' in resp.data
+    # The gaming channel's newest and oldest uploads.
+    assert b'ANVIL   Brone   no3   Symphonia' in resp.data
+    assert b'Lego Worlds 1 Billion studs method! Works with current patch' in resp.data
+    assert b'Titanfall Assault' in resp.data
+    # 75 cards across both channels; long-form durations render as H:MM:SS.
+    assert resp.data.count(b'class="video-card"') == 75
+    assert b'3:33:15' in resp.data
+    # Cards show the first paragraph of a description only: the Lego
+    # video's later paragraphs never reach the page.
+    assert b'Search no more, 1 Billion studs is achievable' in resp.data
+    assert b'Requirements' not in resp.data
+    assert b'Cronusmax' not in resp.data
+    # The three upcoming/offline stream placeholders are not videos.
+    assert b'Enonymous1 Gaming Live Stream' not in resp.data
+    assert b'Overwatch Arcade fun' not in resp.data
+
+
 def test_videos_tab_lists_youtube_uploads(client):
     resp = client.get('/')
     assert resp.status_code == 200
@@ -322,6 +345,9 @@ def test_video_sections_reference_real_uploads():
             seen.add(video['id'])
             date.fromisoformat(video['date'])
             assert video['title'] and video['date_label']
+            assert video['duration'] == '' or re.fullmatch(
+                r'[0-9]+:[0-9][0-9](:[0-9][0-9])?', video['duration']
+            )
             thumb = os.path.join('static/images/video-thumbs', video['thumbnail'])
             assert os.path.isfile(thumb), f'missing video thumbnail: {thumb}'
             assert os.path.getsize(thumb) > 0
