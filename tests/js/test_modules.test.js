@@ -164,3 +164,29 @@ test('carousel index math wraps at both ends', () => {
     assert.equal(prevFactIndex(0, 11), 10);
     assert.equal(prevFactIndex(5, 11), 4);
 });
+
+const { blogItemMatches, sortBlogItems } = require('../../static/js/blog.js');
+
+test('blogItemMatches filters by tag and searches title, summary, and tags', () => {
+    const item = { title: 'The FAR Overhaul, Explained', summary: 'Model deviations, proposed rules', tags: ['far', 'gsa'], date: '2026-11-25', pinned: false };
+    assert.equal(blogItemMatches(item, 'All', ''), true);
+    assert.equal(blogItemMatches(item, 'far', ''), true);
+    assert.equal(blogItemMatches(item, 'gmail', ''), false);
+    assert.equal(blogItemMatches(item, 'All', 'far overhaul'), true);
+    assert.equal(blogItemMatches(item, 'All', 'deviations'), true);
+    assert.equal(blogItemMatches(item, 'All', 'gsa'), true);
+    assert.equal(blogItemMatches(item, 'All', 'password'), false);
+    assert.equal(blogItemMatches(item, 'far', 'overhaul'), true);
+    assert.equal(blogItemMatches(item, 'gmail', 'overhaul'), false);
+});
+
+test('sortBlogItems keeps pinned first in every sort', () => {
+    const items = [
+        { title: 'B Post', summary: '', tags: [], date: '2026-11-24', pinned: false },
+        { title: 'A Post', summary: '', tags: [], date: '2026-11-25', pinned: false },
+        { title: 'Pinned Post', summary: '', tags: [], date: '2026-10-28', pinned: true },
+    ];
+    assert.deepEqual(sortBlogItems(items, 'newest').map((i) => i.title), ['Pinned Post', 'A Post', 'B Post']);
+    assert.deepEqual(sortBlogItems(items, 'oldest').map((i) => i.title), ['Pinned Post', 'B Post', 'A Post']);
+    assert.deepEqual(sortBlogItems(items, 'title').map((i) => i.title), ['Pinned Post', 'A Post', 'B Post']);
+});

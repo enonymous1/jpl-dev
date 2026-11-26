@@ -184,6 +184,22 @@ def posts_for_tag(tag: str, posts: list[Post] | None = None) -> list[Post]:
     return [post for post in source if tag in post.tags]
 
 
+def tag_counts(posts: list[Post] | None = None) -> list[tuple[str, int]]:
+    """(tag, post count) pairs across ``posts`` (or all posts).
+
+    Sorted by count descending, then tag name, so the most-used tag
+    leads the Blog tab filter row. Counts are derived from the loaded
+    posts, never hardcoded: a new tag gets a pill automatically, and a
+    tag with no posts gets none.
+    """
+    source = posts if posts is not None else load_posts()
+    counts: dict[str, int] = {}
+    for post in source:
+        for tag in post.tags:
+            counts[tag] = counts.get(tag, 0) + 1
+    return sorted(counts.items(), key=lambda item: (-item[1], item[0]))
+
+
 def tag_url_path(tag: str) -> str:
     return f'/blog/tag/{tag}/'
 

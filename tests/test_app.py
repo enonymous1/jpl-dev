@@ -332,6 +332,27 @@ def test_blog_tag_page_lists_only_matching_posts(client):
     assert client.get('/blog/tag/no-such-tag/').status_code == 404
 
 
+def test_blog_tab_has_search_sort_and_tag_filters(client):
+    resp = client.get('/')
+    assert resp.status_code == 200
+    html = resp.data.decode()
+    assert 'id="blog-search"' in html
+    assert 'placeholder="Search posts..."' in html
+    assert 'id="blog-sort"' in html
+    assert '<option value="newest" selected>Newest</option>' in html
+    assert '<option value="oldest">Oldest</option>' in html
+    assert '<option value="title">Title A' in html
+    # All pill leads with the total; pills carry counts, most-used first.
+    assert '>All <span class="lang-count">6</span>' in html
+    assert '>gig-work <span class="lang-count">2</span>' in html
+    assert 'data-blog-tag="far"' in html
+    # Items carry the data the filter reads; the filter script loads.
+    assert 'data-blog-date="2026-11-25"' in html
+    assert 'data-blog-pinned="true"' in html
+    assert 'id="blog-no-results"' in html
+    assert 'js/blog.js' in html
+
+
 def test_blog_tag_pills_are_links_on_homepage_and_post_pages(client):
     resp = client.get('/')
     assert b'href="/blog/tag/gig-work/"' in resp.data
@@ -358,6 +379,22 @@ def test_blog_tag_helpers_are_sorted_and_deduplicated():
     ]
     assert posts_for_tag('no-such-tag') == []
     assert tag_url_path('gmail') == '/blog/tag/gmail/'
+
+
+def test_blog_tag_counts_are_sorted_by_count_then_name():
+    from datetime import date
+
+    from config.blog import Post, tag_counts
+
+    def post(slug, tags):
+        return Post(slug=slug, title=slug, date=date(2026, 11, 25), summary='x', tags=tags)
+
+    # Most-used first, ties broken by name; an untagged post adds nothing.
+    assert tag_counts([post('a', ['gig-work', 'far']), post('b', ['gig-work']), post('c', [])]) == [
+        ('gig-work', 2),
+        ('far', 1),
+    ]
+    assert tag_counts([]) == []
 
 
 def test_blog_related_posts_by_tag(client):

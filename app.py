@@ -22,7 +22,7 @@ from xml.sax.saxutils import escape as xml_escape
 from flask import Flask, Response, abort, render_template
 from flask_frozen import Freezer
 
-from config.blog import load_posts, posts_for_tag, related_posts, tag_url_path
+from config.blog import load_posts, posts_for_tag, related_posts, tag_counts, tag_url_path
 from config.projects import (
     ABOUT_ME,
     GLOSSARY,
@@ -113,13 +113,15 @@ def create_app():
         Returns:
             str: Rendered HTML template for the homepage
         """
+        posts = load_posts()
         return render_template(
             'index.html',
             about=ABOUT_ME,
             **_glossary_context(),
             **_site_context(),
             **_sidebar_modal_context(),
-            posts=load_posts(),
+            posts=posts,
+            blog_tag_counts=tag_counts(posts),
             resume_headline=RESUME_HEADLINE,
             resume_location=RESUME_LOCATION,
             resume_summary=RESUME_SUMMARY,

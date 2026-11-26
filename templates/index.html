@@ -239,9 +239,29 @@
             <section id="vcard-blog" data-vcard-section="blog" role="tabpanel" hidden>
                 <h2 class="vcard-section-title">Blog</h2>
                 <p class="blog-feed"><a href="{{ url_for('feed') }}"><i class="bi bi-rss"></i> RSS feed</a></p>
-                <ul class="blog-list">
+                <div class="projects-controls">
+                    <label class="projects-search-wrap">
+                        <i class="bi bi-search" aria-hidden="true"></i>
+                        <input type="search" id="blog-search" placeholder="Search posts..." aria-label="Search posts">
+                    </label>
+                    <label class="projects-sort-wrap">
+                        <span aria-hidden="true">Sort</span>
+                        <select id="blog-sort" aria-label="Sort posts">
+                            <option value="newest" selected>Newest</option>
+                            <option value="oldest">Oldest</option>
+                            <option value="title">Title A&ndash;Z</option>
+                        </select>
+                    </label>
+                </div>
+                <div id="blog-tag-filters" class="language-filters" role="group" aria-label="Filter posts by tag">
+                    <button type="button" class="language-filter-btn active" data-blog-tag="All" aria-pressed="true">All <span class="lang-count">{{ posts|length }}</span></button>
+                    {% for tag, count in blog_tag_counts %}
+                    <button type="button" class="language-filter-btn" data-blog-tag="{{ tag }}" aria-pressed="false">{{ tag }} <span class="lang-count">{{ count }}</span></button>
+                    {% endfor %}
+                </div>
+                <ul class="blog-list" id="blog-list">
                     {% for post in posts %}
-                    <li class="blog-item">
+                    <li class="blog-item" data-blog-date="{{ post.date.isoformat() }}" data-blog-tags="{{ post.tags | join(' ') }}" data-blog-pinned="{{ 'true' if post.pinned else 'false' }}">
                         <a class="blog-item-title" href="{{ url_for('blog_post', slug=post.slug) }}">{{ post.title }}</a>
                         {% if post.pinned %}<span class="blog-pinned">Pinned</span>{% endif %}
                         <span class="blog-date">{{ post.date_label }}</span>
@@ -252,6 +272,7 @@
                     </li>
                     {% endfor %}
                 </ul>
+                <p id="blog-no-results" class="text-center py-4 text-sm" style="color:var(--text-secondary)" hidden></p>
             </section>
             {% endif %}
 
@@ -288,6 +309,7 @@ window.GLOSSARY_DATA = {terms: {{ glossary_data | tojson }}, roles: {{ role_defi
 <script src="{{ url_for('static', filename='js/repo-loader.js') }}"></script>
 <script src="{{ url_for('static', filename='js/readme-md.js') }}"></script>
 <script src="{{ url_for('static', filename='js/projects.js') }}"></script>
+<script src="{{ url_for('static', filename='js/blog.js') }}"></script>
 <script src="{{ url_for('static', filename='js/repo-modal.js') }}"></script>
 <script src="{{ url_for('static', filename='js/tabs.js') }}"></script>
 <script src="{{ url_for('static', filename='js/contact.js') }}"></script>

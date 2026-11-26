@@ -1508,7 +1508,8 @@ html[data-theme="dark"] .location-map iframe {
     }
 }
 
-/* Projects search + sort controls, above the language chips. Field
+/* Search + sort controls, above the filter chips. The Blog tab reuses
+   these same classes for its post search, sort, and tag pills. Field
    styling matches the Contact form inputs (page background, border,
    12px radius); the row wraps on narrow screens. */
 .projects-controls {
