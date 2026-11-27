@@ -225,7 +225,7 @@ test('sortWebsiteRepos keeps web languages first by default, and sorts by recenc
 const { VCARD_TABS } = require('../../static/js/tabs.js');
 
 test('vCard tabs include the Videos tab', () => {
-    assert.deepEqual(VCARD_TABS, ['about', 'projects', 'websites', 'cv', 'contact', 'blog', 'videos']);
+    assert.deepEqual(VCARD_TABS, ['about', 'websites', 'projects', 'cv', 'blog', 'videos', 'contact']);
 });
 
 const { videoMatches } = require('../../static/js/videos.js');

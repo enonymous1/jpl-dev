@@ -54,9 +54,9 @@
         <div class="vcard-main">
             <nav class="vcard-tabs" role="tablist" aria-label="Portfolio sections">
                 <button type="button" role="tab" aria-selected="true" data-vcard-tab="about">About</button>
-                <button type="button" role="tab" aria-selected="false" data-vcard-tab="projects">Projects</button>
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="websites">Websites</button>
-                <button type="button" role="tab" aria-selected="false" data-vcard-tab="cv">Curriculum Vitae</button>
+                <button type="button" role="tab" aria-selected="false" data-vcard-tab="projects">Projects</button>
+                <button type="button" role="tab" aria-selected="false" data-vcard-tab="cv">CV</button>
                 {% if posts %}
                 <button type="button" role="tab" aria-selected="false" data-vcard-tab="blog">Blog</button>
                 {% endif %}
@@ -110,7 +110,7 @@
                         <p class="build-card-blurb">Pipelines that capture data as it arrives or on a schedule: prediction-market order books and crypto feeds recorded to Parquet and DuckDB, and public feeds — procurement listings, store deals — scraped into deduped, queryable datasets. The research stack (PyTorch, LightGBM, Polars) backtests strategies under a pre-registered, no-lookahead gauntlet before any paper trading.</p>
                     </article>
                 </div>
-                <h2>Tools &amp; Tech</h2>
+                <h2>Skills</h2>
                 <p class="glossary-hint">Tap a technology for a quick definition.</p>
                 {% for group in about.tool_groups %}
                 <div class="mb-2 leading-relaxed">

@@ -378,6 +378,9 @@ def test_about_build_cards_and_tool_labels(client):
     assert b'shipped as tested, documented tools, not demos' not in resp.data
     assert b'I build tools that automate repetitive work.' in resp.data
     assert b'What I Build' in resp.data
+    # The tool inventory is headed "Skills", not "Tools & Tech".
+    assert b'<h2>Skills</h2>' in resp.data
+    assert b'Tools &amp; Tech' not in resp.data
     # Four What I Build cards plus the Contributions and site cards below them.
     assert resp.data.count(b'class="build-card"') == 6
     assert b'Automation &amp; data' in resp.data
@@ -989,6 +992,12 @@ def test_homepage_vcard_tabs(client):
     assert b'data-vcard-section="projects"' in resp.data
     assert b'data-vcard-section="websites"' in resp.data
     assert b'id="websites-grid"' in resp.data
+    # Nav order: Websites (live showcase) before Projects (full catalog),
+    # and the CV tab is labeled CV, not Curriculum Vitae.
+    websites_tab = resp.data.index(b'data-vcard-tab="websites"')
+    projects_tab = resp.data.index(b'data-vcard-tab="projects"')
+    assert websites_tab < projects_tab
+    assert b'data-vcard-tab="cv">CV</button>' in resp.data
     # The Websites tab deep-links like the others.
     tabs_js = client.get('/static/js/tabs.js').data
     assert b"'websites'" in tabs_js

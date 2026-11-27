@@ -135,10 +135,10 @@ does not deploy.
 
 ## Features
 
-- **vCard homepage** — A sidebar + tabbed main card (About / Projects /
-  Curriculum Vitae / Blog / Contact), written for this site rather than
+- **vCard homepage** — A sidebar + tabbed main card (About / Websites /
+  Projects / CV / Blog / Videos / Contact), written for this site rather than
   copied from a template. Sections switch without a reload and
-  deep-link via `#about`, `#projects`, `#cv`, `#blog`, `#contact`.
+  deep-link via `#about`, `#websites`, `#projects`, `#cv`, `#blog`, `#videos`, `#contact`.
   The sidebar carries contact info, the 'My' Space retro link, and the
   theme toggle; there is no global top nav.
 - **GitHub-driven Projects** — The Projects tab shows the full repo
