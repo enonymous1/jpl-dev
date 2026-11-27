@@ -453,7 +453,7 @@ def test_blog_tab_has_search_sort_and_tag_filters(client):
     assert '<option value="oldest">Oldest</option>' in html
     assert '<option value="title">Title A' in html
     # All pill leads with the total; pills carry counts, most-used first.
-    assert '>All <span class="lang-count">6</span>' in html
+    assert '>All <span class="lang-count">7</span>' in html
     assert '>gig-work <span class="lang-count">2</span>' in html
     assert 'data-blog-tag="far"' in html
     # Items carry the data the filter reads; the filter script loads.
