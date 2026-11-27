@@ -284,6 +284,24 @@ def test_websites_search_sort_and_language_filters(client):
     assert b'id="websites-search"' not in post.data
 
 
+def test_goatcounter_snippet_on_every_page(client):
+    # The jpl-dev GoatCounter site — never the whenwherebiz one: each
+    # domain gets its own site because GoatCounter records the path
+    # only, not the domain.
+    for route, status in (
+        ('/', 200),
+        ('/retro/', 200),
+        ('/blog/interesting-links/', 200),
+        ('/blog/tag/gig-work/', 200),
+        ('/no-such-page/', 404),
+    ):
+        resp = client.get(route)
+        assert resp.status_code == status, route
+        assert b'https://jpl-dev.goatcounter.com/count' in resp.data, route
+        assert b'https://gc.zgo.at/count.js' in resp.data, route
+        assert b'whenwherebiz.goatcounter.com' not in resp.data, route
+
+
 def test_videos_tab_lists_both_channels(client):
     resp = client.get('/')
     assert resp.status_code == 200
