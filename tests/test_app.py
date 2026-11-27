@@ -378,8 +378,8 @@ def test_about_build_cards_and_tool_labels(client):
     assert b'shipped as tested, documented tools, not demos' not in resp.data
     assert b'I build tools that automate repetitive work.' in resp.data
     assert b'What I Build' in resp.data
-    # Four What I Build cards plus the Contributions card below them.
-    assert resp.data.count(b'class="build-card"') == 5
+    # Four What I Build cards plus the Contributions and site cards below them.
+    assert resp.data.count(b'class="build-card"') == 6
     assert b'Automation &amp; data' in resp.data
     assert b'Desktop tools' in resp.data
     assert b'Data pipelines' in resp.data
@@ -387,13 +387,19 @@ def test_about_build_cards_and_tool_labels(client):
     assert b'bi bi-pc-display' in resp.data
     assert b'bi bi-globe' in resp.data
     assert b'bi bi-diagram-3' in resp.data
-    assert resp.data.count(b'class="build-card-header"') == 5
+    assert resp.data.count(b'class="build-card-header"') == 6
     # Contributions sits above the stack block, as one card per project.
     assert b'Contributions' in resp.data
     assert resp.data.index(b'Contributions') < resp.data.index(b'How This Site Is Built')
     assert b'Skybrush' in resp.data
+    assert b'href="https://skybrush.io"' in resp.data
     assert b'skybrush-io/skybrush-server/pull/52' in resp.data
     assert b'skybrush-io/live/pull/262' in resp.data
+    assert b'href="https://github.com/skybrush-io/skybrush-server"' in resp.data
+    assert b'href="https://github.com/skybrush-io/live"' in resp.data
+    # The stack block is a card too, titled with the repo name.
+    assert b'jpl-dev' in resp.data
+    assert b'bi bi-code-slash' in resp.data
     # What I Build cards are informative only: no product links, no
     # product-name row (the Web card's unfinished-looking
     # "this site, voxel-portfolio" line went with them).

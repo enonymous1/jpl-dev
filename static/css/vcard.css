@@ -1573,6 +1573,13 @@ html[data-theme="dark"] .location-map iframe {
     color: var(--text-secondary);
 }
 
+/* Links inside cards read as links: Tailwind's preflight strips the
+   default link color and underline, so cards state it explicitly. */
+.build-card a {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
 @media (max-width: 640px) {
     .build-cards {
         grid-template-columns: 1fr;
