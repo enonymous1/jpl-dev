@@ -1,0 +1,31 @@
+<!-- Analytics: GoatCounter + sheetcounter, one vendored count.js load.
+     GoatCounter (https://jpl-dev.goatcounter.com): privacy-friendly
+     page-view counts — no cookies, no personal data. sheetcounter
+     (https://github.com/enonymous1/sheetcounter): the same hit format,
+     logged to a Google Sheet by a Google Apps Script web app instead of
+     a GoatCounter dashboard. Both run: the point is comparison, since
+     Brave Shields blocks gc.zgo.at / *.goatcounter.com while the
+     sheetcounter beacon goes to script.google.com, which is not on
+     tracker blocklists.
+     WHY ONE LOAD: count.js picks its endpoint with
+     document.querySelector('script[data-goatcounter]'), which always
+     returns the FIRST such tag — two tags with different endpoints
+     would both beacon to the first one. So there is NO data-goatcounter
+     attribute anywhere on the page: the endpoint is set on
+     window.goatcounter before count.js loads, the automatic count fires
+     to the Sheet, and the onload handler swaps the endpoint and counts
+     again to GoatCounter. count.js is vendored as static/count.js
+     (unmodified, GoatCounter upstream, ISC) — served from
+     justinlyons.dev, so no tracker domain is fetched at all. If
+     count.js is ever updated, bump the ?v= below. -->
+<script>
+  window.goatcounter = window.goatcounter || {};
+  window.goatcounter.endpoint = 'https://script.google.com/macros/s/AKfycbzRXraVC2_9GVWQlZpU0Xi5X4AmaW1Huy9t_y-dupLTYvGstk8jqRT_1DuOZZ9WM5enLg/exec';
+  window.__dualCount = function() {
+    var gc = window.goatcounter;
+    if (!gc || !gc.count) return;
+    gc.endpoint = 'https://jpl-dev.goatcounter.com/count';
+    gc.count();
+  };
+</script>
+<script async src="{{ url_for('static', filename='count.js') }}?v=20261128-01" onload="window.__dualCount()"></script>

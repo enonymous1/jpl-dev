@@ -284,10 +284,17 @@ def test_websites_search_sort_and_language_filters(client):
     assert b'id="websites-search"' not in post.data
 
 
-def test_goatcounter_snippet_on_every_page(client):
-    # The jpl-dev GoatCounter site — never the whenwherebiz one: each
-    # domain gets its own site because GoatCounter records the path
-    # only, not the domain.
+def test_analytics_snippet_on_every_page(client):
+    # One vendored count.js load counts to BOTH collectors: the Sheet
+    # (sheetcounter, GAS endpoint preset on window.goatcounter) via the
+    # automatic count, and GoatCounter via the onload handler swapping
+    # the endpoint. There is NO data-goatcounter attribute anywhere —
+    # count.js picks its endpoint with querySelector('script
+    # [data-goatcounter]'), which always returns the first such tag, so
+    # two tags would both beacon to the same endpoint. The jpl-dev
+    # GoatCounter site — never the whenwherebiz one: each domain gets
+    # its own site because GoatCounter records the path only, not the
+    # domain.
     for route, status in (
         ('/', 200),
         ('/retro/', 200),
@@ -297,8 +304,19 @@ def test_goatcounter_snippet_on_every_page(client):
     ):
         resp = client.get(route)
         assert resp.status_code == status, route
-        assert b'https://jpl-dev.goatcounter.com/count' in resp.data, route
-        assert b'https://gc.zgo.at/count.js' in resp.data, route
+        # Both endpoints, each exactly once.
+        assert (
+            resp.data.count(
+                b'https://script.google.com/macros/s/'
+                b'AKfycbzRXraVC2_9GVWQlZpU0Xi5X4AmaW1Huy9t_y-dupLTYvGstk8jqRT_1DuOZZ9WM5enLg/exec'
+            )
+            == 1
+        ), route
+        assert resp.data.count(b'https://jpl-dev.goatcounter.com/count') == 1, route
+        # Vendored count.js, never the gc.zgo.at script (Brave blocks it).
+        assert b'/static/count.js' in resp.data, route
+        assert b'https://gc.zgo.at/count.js' not in resp.data, route
+        assert b'data-goatcounter=' not in resp.data, route
         assert b'whenwherebiz.goatcounter.com' not in resp.data, route
 
 
