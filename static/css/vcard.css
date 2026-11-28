@@ -51,11 +51,12 @@ body.vcard-page {
     min-width: 0;
 }
 
-/* Prose measure cap (2026-11-25): the wrapper widened to 1600px, so the
-   About bio would run ~165 chars/line. 75ch keeps it readable while
+/* Prose measure cap (2026-11-25, widened 2026-11-28): the wrapper
+   widened to 1600px, so the About bio would run ~165 chars/line.
+   100ch (his pick) fills more of the card than the old 75ch while
    the grids below use the full width. */
 .vcard-bio {
-    max-width: 75ch;
+    max-width: 100ch;
 }
 
 .vcard-sidebar {
