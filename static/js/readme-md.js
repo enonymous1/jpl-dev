@@ -21,6 +21,17 @@ function resolveReadmeUrl(src, repo, branch, isImage, githubUser) {
         : `${repo.html_url}/blob/${branch}/${stripped}`;
 }
 
+// Emphasis, applied to text runs only: the string is split on tags first,
+// so a ** or _ pair can never match across (or inside) a generated
+// <a href="..."> — with two links in one paragraph the old whole-string
+// pass matched from one target="_blank" to the next and mangled both.
+function mdEmphasis(s) {
+    return s.split(/(<[^>]+>)/g).map((seg) => (seg.startsWith('<') ? seg
+        : seg.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+            .replace(/__([^_]+)__/g, '<strong>$1</strong>')
+            .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+            .replace(/_([^_]+)_/g, '<em>$1</em>'))).join('');
+}
 // Small, dependency-free Markdown renderer for READMEs, with the HTML
 // escaped first so a README can never inject markup into the page.
 // Covers the shapes these READMEs actually use: headings, lists
@@ -44,10 +55,27 @@ function mdInline(text, repo, branch, refs, githubUser) {
         const url = refs[(ref || label).toLowerCase()];
         return url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>` : label;
     });
-    s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-         .replace(/__([^_]+)__/g, '<strong>$1</strong>')
-         .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-         .replace(/_([^_]+)_/g, '<em>$1</em>');
+    // Autolinks, the way GitHub renders them: <https://...> angle form
+    // (the text is already escaped, so the brackets read &lt;...&gt;)
+    // and bare https:// URLs. Runs after the link replacements; the
+    // bare-URL lookbehind keeps it out of the href and label of links
+    // already built (and out of <img src>), and code spans are hidden
+    // behind placeholders above, so backticked URLs stay literal.
+    s = s.replace(/&lt;(https?:\/\/[^<>\s]+?)&gt;/g, (m, url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
+    s = s.replace(/(?<![\w"'=>])https?:\/\/[^\s<>"'\]]+/g, (m) => {
+        let url = m;
+        let trail = '';
+        // Peel trailing punctuation and unmatched close-parens, one
+        // layer at a time: "(see https://x/a_(b).)" keeps the (b).
+        let changed = true;
+        while (changed) {
+            changed = false;
+            if (/[.,;:!?]$/.test(url)) { trail = url.slice(-1) + trail; url = url.slice(0, -1); changed = true; }
+            else if (url.endsWith(')') && (url.split('(').length - 1) < (url.split(')').length - 1)) { trail = ')' + trail; url = url.slice(0, -1); changed = true; }
+        }
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>${trail}`;
+    });
+    s = mdEmphasis(s);
     return s.replace(/\u0001CODE(\d+)\u0001/g, (m, i) => codes[+i]);
 }
 

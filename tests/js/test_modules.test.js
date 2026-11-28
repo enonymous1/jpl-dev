@@ -149,6 +149,28 @@ test('renderMarkdown resolves reference links and relative images', () => {
     assert.match(html, /src="https:\/\/raw\.githubusercontent\.com\/enonymous1\/demo\/main\/docs\/shot\.png"/);
 });
 
+test('renderMarkdown autolinks angle-bracket and bare URLs like GitHub', () => {
+    const md = 'Live: <https://whenwhere.biz/> — see https://example.com/docs, and [Deployment](#deployment).';
+    const html = renderMarkdown(md, repo, 'main', 'enonymous1');
+    assert.match(html, /<a href="https:\/\/whenwhere\.biz\/" target="_blank" rel="noopener noreferrer">https:\/\/whenwhere\.biz\/<\/a>/);
+    assert.match(html, /<a href="https:\/\/example\.com\/docs" target="_blank" rel="noopener noreferrer">https:\/\/example\.com\/docs<\/a>,/);
+    assert.doesNotMatch(html, /&lt;https:\/\/whenwhere\.biz\/&gt;/);
+    assert.match(html, /<a href="https:\/\/github\.com\/enonymous1\/demo#deployment"[^>]*>Deployment<\/a>/);
+    // No nested anchors: the bare-URL pass must not re-link a label.
+    assert.doesNotMatch(html, /<a[^>]*><a /);
+});
+
+test('renderMarkdown autolinks skip code spans, built links, and trailing punctuation', () => {
+    const md = 'Run `curl https://example.com/x` then visit [the site](https://example.com/y) and https://example.com/page. (See https://example.com/a_(b).)';
+    const html = renderMarkdown(md, repo, 'main', 'enonymous1');
+    assert.match(html, /<code>curl https:\/\/example\.com\/x<\/code>/);
+    assert.doesNotMatch(html, /<a href="https:\/\/example\.com\/x"/);
+    assert.doesNotMatch(html, /<a href="https:\/\/example\.com\/y"[^>]*><a /);
+    assert.match(html, /<a href="https:\/\/example\.com\/y" target="_blank" rel="noopener noreferrer">the site<\/a>/);
+    assert.match(html, /<a href="https:\/\/example\.com\/page" target="_blank" rel="noopener noreferrer">https:\/\/example\.com\/page<\/a>\./);
+    assert.match(html, /<a href="https:\/\/example\.com\/a_\(b\)" target="_blank" rel="noopener noreferrer">https:\/\/example\.com\/a_\(b\)<\/a>\.\)/);
+});
+
 test('buildContactMailto encodes subject and body', () => {
     const url = buildContactMailto('Jane Doe', 'jane@example.dev', 'Hello & bye', 'justin@jpl-dev.com');
     assert.ok(url.startsWith('mailto:justin@jpl-dev.com?subject='));

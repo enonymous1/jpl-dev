@@ -600,9 +600,11 @@ body.repo-modal-open {
 
 /* The repo preview is the only modal that renders README tables, so
    it alone gets the wider card: at 720px "Backend" squeezed into
-   "Backe nd". Glossary/location/avatar modals keep the 720px card. */
+   "Backe nd". Glossary/location/avatar modals keep the 720px card.
+   Wide card (2026-11-28): 90vw up to a 1200px cap, so it grows with
+   the viewport instead of stopping at a fixed 920px. */
 .repo-modal-card.repo-modal-wide {
-    width: min(920px, 100%);
+    width: min(90vw, 1200px);
 }
 
 /* The Pokémon GO dialog is three lines (trainer, code, one button),

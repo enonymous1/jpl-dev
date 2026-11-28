@@ -1178,15 +1178,15 @@ def test_project_modal_scrollbar_is_themed(client):
 
 def test_repo_preview_modal_is_wide(client):
     # The repo preview renders README tables, so it alone gets the
-    # 920px card; glossary/location/avatar modals keep the 720px one.
-    # At 720px "Backend" squeezed into "Backe nd" in the
-    # voice-generator preview. Table cells break words only when a
-    # token cannot fit, instead of the container's `anywhere`.
+    # wider card: 90vw up to a 1200px cap. Glossary/location/avatar
+    # modals keep the 720px one. At 720px "Backend" squeezed into
+    # "Backe nd" in the voice-generator preview. Table cells break words
+    # only when a token cannot fit, instead of the container's `anywhere`.
     resp = client.get('/')
     assert b'repo-modal-card repo-modal-wide' in resp.data
     css = client.get('/static/css/vcard.css').data.decode()
     wide_rule = css.split('.repo-modal-card.repo-modal-wide')[1].split('}')[0]
-    assert 'min(920px, 100%)' in wide_rule
+    assert 'min(90vw, 1200px)' in wide_rule
     cell_rule = css.split('.repo-modal-readme td,')[1].split('}')[0]
     assert 'overflow-wrap: break-word' in cell_rule
 
