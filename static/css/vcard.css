@@ -1159,9 +1159,10 @@ body.repo-modal-open {
     border-color: var(--primary-color);
 }
 
-/* The Poké Ball is a coloured SVG, not a monochrome Bootstrap icon,
-   so it keeps its own colours on hover; the block display keeps it
-   centred in the 36px box instead of sitting on the text baseline. */
+/* The Poké Ball is an outline SVG in currentColor (2026-11-28), so it
+   matches the monochrome Bootstrap icons beside it and tints with
+   them on hover; the block display keeps it centred in the 36px box
+   instead of sitting on the text baseline. */
 .pokemon-icon {
     display: block;
 }
