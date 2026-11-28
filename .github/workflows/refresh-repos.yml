@@ -1,0 +1,76 @@
+name: Refresh repo snapshot
+
+# Keeps the committed static/data/repos.json fresh: the deploy workflow
+# re-snapshots on every build but never commits it back, so without
+# this the committed copy freezes at the last local run (it sat at 18
+# repos from Oct 31, 2026 while the live site served 101). The frozen
+# site and local previews read the committed copy, so a stale one
+# shows a fraction of the repos.
+#
+# Schedule-only on purpose: this job pushes a commit to main, and a
+# push trigger would make that commit re-trigger the job. Runs at
+# 13:00 UTC, an hour after the daily deploy's 12:00 UTC run, so the
+# two never race over the snapshot. Cron runs in UTC: 13:00 UTC is
+# 08:00 EST / 09:00 EDT. GitHub pauses scheduled runs after 60 days
+# with no repo activity.
+on:
+  schedule:
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+
+# Write scope is needed to push the refreshed snapshot back to main.
+# The default GITHUB_TOKEN can push unless main is branch-protected
+# against it; if the push step starts failing, that is the first
+# place to look.
+permissions:
+  contents: write
+
+# Serialize: a second run must not commit on top of a first that is
+# still pushing.
+concurrency:
+  group: refresh-repos
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+    # Full history: the commit-back step rebases onto main first so a
+    # push that landed after checkout does not reject the push.
+    - name: Checkout
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    # scripts/fetch_repos.py is stdlib-only, so no dependencies to
+    # install. GITHUB_TOKEN raises the rate limit from 60 to 5000/hr;
+    # on an API failure the script keeps the cached file and exits 0,
+    # so a bad fetch can never commit a truncated snapshot.
+    - name: Fetch repo metadata
+      run: python scripts/fetch_repos.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Commit only the snapshot, and only when it actually changed.
+    # The push triggers the deploy workflow, so a changed snapshot
+    # also redeploys the site. A push that lands after checkout is
+    # handled by rebasing first; a genuine conflict (only possible if
+    # someone hand-edited repos.json in the same window) aborts and
+    # fails the run, and the next scheduled run retries.
+    - name: Commit and push if changed
+      run: |
+        if git diff --quiet -- static/data/repos.json; then
+          echo "No repo changes; nothing to commit."
+          exit 0
+        fi
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add static/data/repos.json
+        git commit -m "chore: refresh repos.json snapshot"
+        git pull --rebase origin main || { git rebase --abort; exit 1; }
+        git push origin main
